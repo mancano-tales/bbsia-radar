@@ -1,0 +1,301 @@
+# ==============================================================================
+# codebook.yml — Livro de códigos do bbsia-radar / bbsia-radar codebook
+#
+# (pt) Decide o que entra no radar e como cada solução é descrita. É escrito
+#      ANTES da coleta e usado de três formas:
+#        1. pelas regras automáticas (R/, WP5 passo 1);
+#        2. como instrução ao LLM que classifica o resto (WP5 passo 2);
+#        3. como guia de quem codifica a amostra humana de validação (WP5 passo 3).
+#      Mudou o codebook? Suba `versao`, registre no NEWS.md e recodifique a amostra.
+# (en) Decides what enters the radar and how each solution is described. Written
+#      BEFORE data collection; read by the rule engine, by the LLM classifier and
+#      by human coders. Any change bumps `versao` and triggers re-coding.
+#
+# Issue: #3 · Plano: repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md §5
+#
+# Status das decisões: cada caso-limite traz `decisao_status`:
+#   proposta        -> escolha do agente, vale até o autor revisar;
+#   autor           -> decidida pelo autor (registrada por commit, nunca em comentário);
+#   depende_bbsia   -> depende da coordenação do BBSIA (issue #2 / plano §3).
+# ==============================================================================
+
+versao: "0.1.0"
+data: "2026-09-26"
+status: rascunho          # rascunho | em_validacao | estavel
+issue: 3
+
+# ------------------------------------------------------------------------------
+# 1. Unidade de análise / unit of analysis
+# ------------------------------------------------------------------------------
+unidade_de_analise:
+  definicao: >
+    Uma SOLUÇÃO: algo que alguém pode usar para resolver um problema (aplicação,
+    biblioteca, modelo, base de dados, benchmark). Não é um repositório: uma
+    solução pode ter vários artefatos em plataformas diferentes.
+  agregacao:
+    - regra: "Modelo no Hugging Face + código no GitHub do mesmo grupo, que se citam mutuamente = 1 solução, com as duas URLs."
+    - regra: "Família de modelos do mesmo projeto (tamanhos base/large, versões v1/v2) = 1 solução; as variantes vão em `artefatos`."
+    - regra: "Dataset criado para treinar um modelo do mesmo projeto = mesma solução. Dataset reutilizável e documentado por si = solução própria (tipo `dataset`)."
+    - regra: "Organização com vários projetos independentes = 1 solução por projeto, nunca 1 por organização."
+  chave: >
+    `id_solucao` = slug estável (ex.: `neuralmind-bertimbau`); `artefatos` = lista
+    de {plataforma, url, papel}. A deduplicação contra o BBSIA (WP7) opera sobre
+    soluções, não sobre URLs.
+
+# ------------------------------------------------------------------------------
+# 2. Filtro de entrada: é IA? / Entry filter: is it AI?
+# ------------------------------------------------------------------------------
+e_ia:
+  pergunta: "A solução usa, produz ou avalia um modelo aprendido a partir de dados?"
+  valores: [sim, nao, incerto]
+  inclui:
+    - "Aprendizado de máquina clássico ou profundo (classificação, regressão, agrupamento)."
+    - "Modelos de linguagem, de fala, de visão, multimodais; embeddings; RAG."
+    - "Ferramentas cujo núcleo é chamar um modelo (ex.: transcrição com Whisper, codificação de texto por LLM)."
+    - "Bases de dados e benchmarks feitos para treinar ou avaliar IA."
+  exclui:
+    - "Automação por regras fixas, RPA sem modelo, raspadores, CRUD, painéis de dados."
+    - "Pacotes de acesso a dados públicos sem modelo (valiosos, mas fora do escopo do BBSIA de IA)."
+  nota: "`nao` elimina a solução; `incerto` vai para revisão humana."
+
+# ------------------------------------------------------------------------------
+# 3. Vínculo com o Brasil / Link to Brazil
+#    (pt) Três marcações INDEPENDENTES, não uma categoria exclusiva: um modelo
+#         pode ser brasileiro E adaptado ao pt-BR. Entra no piloto quem tem
+#         `brasileira` ou `ptbr` = sim.
+#    (en) Three independent flags, not mutually exclusive categories.
+# ------------------------------------------------------------------------------
+vinculo:
+  brasileira:
+    rotulo: "A — Brasileira"
+    definicao: >
+      Feita, mantida ou financiada principalmente por pessoa, grupo, empresa,
+      universidade ou órgão sediado no Brasil.
+    valores: [sim, nao, incerto]
+    sinais:
+      fortes:
+        - "Dono (usuário ou organização) na lista semente de instituições brasileiras (`config/seeds.yml`)."
+        - "README, model card ou artigo nomeia instituição brasileira como autora."
+        - "Financiamento brasileiro declarado (CNPq, CAPES, FAPs, FINEP, BNDES, órgão público)."
+        - "Site oficial do projeto em domínio `.br`."
+      medios:
+        - "Campo `location` do dono cita Brasil, uma UF ou uma cidade brasileira."
+        - "Documentação principal em português brasileiro."
+        - "Contribuidores principais com `location` no Brasil."
+      fracos:
+        - "Nome do projeto em português."
+        - "Problema tipicamente brasileiro (SUS, ENEM, Pix, CPF, Diário Oficial)."
+    regra_de_decisao: >
+      `sim` com 1 sinal forte, ou 2 médios. `incerto` com 1 médio ou só fracos.
+      `nao` sem sinais. Sinal fraco sozinho nunca basta.
+    exemplos_sim:
+      - "Transcritório (antrologos): app de transcrição de entrevistas, autor brasileiro."
+      - "BERTimbau (NeuralMind): modelo e código de empresa brasileira."
+    exemplos_nao:
+      - "Whisper (OpenAI): usado em muitas soluções brasileiras, mas não é uma delas."
+
+  ptbr:
+    rotulo: "B — Adaptada ao português brasileiro"
+    definicao: >
+      Treinada, ajustada ou avaliada especificamente em português brasileiro, ou
+      que tem o pt-BR como funcionalidade central, e não como um entre dezenas
+      de idiomas.
+    valores: [sim, nao, incerto]
+    sinais:
+      fortes:
+        - "Model card ou README diz que o modelo foi treinado ou ajustado em dados em português do Brasil."
+        - "Avaliação em benchmark brasileiro (ex.: questões do ENEM, da OAB, de concursos) reportada pelo próprio projeto."
+        - "Dataset composto de texto, fala ou imagem de fontes brasileiras."
+      medios:
+        - "Tag `language:pt` no Hugging Face E menção a Brasil/pt-BR no card."
+        - "Tópicos do GitHub `brazilian-portuguese`, `pt-br`."
+      fracos:
+        - "Tag `language:pt` sozinha (pode ser pt-PT, ou só um entre muitos idiomas)."
+        - "Tópico `portuguese` ou `portuguese-nlp` sozinho."
+    regra_de_decisao: >
+      `sim` com 1 sinal forte, ou 2 médios. Modelo multilíngue genérico que
+      apenas inclui português = `nao`.
+    exemplos_sim:
+      - "Tucano / TeenyTinyLlama (Nicholas Kluge Corrêa): modelos treinados em português."
+    exemplos_nao:
+      - "Um LLM multilíngue que lista `pt` entre 100 idiomas, sem ajuste nem avaliação em pt-BR."
+
+  interesse_publico:
+    rotulo: "C — De interesse público, adaptável"
+    definicao: >
+      Solução aberta que resolve um problema típico do setor público e poderia
+      ser adaptada ao Brasil, mesmo sem vínculo com o país.
+    valores: [sim, nao, incerto, nao_avaliado]
+    no_piloto: false
+    nota: >
+      Fora do piloto: sem critério mais preciso, o volume explode. Critério a
+      combinar com a coordenação do BBSIA (plano §3, pergunta 5). Até lá, o
+      valor é sempre `nao_avaliado`.
+
+# ------------------------------------------------------------------------------
+# 4. Exclusões / Exclusions (valem antes de qualquer marcação)
+# ------------------------------------------------------------------------------
+exclusoes:
+  - codigo: fork_sem_mudanca
+    descricao: "Fork sem commits próprios relevantes. Um fork com adaptação ao pt-BR NÃO é excluído (ver caso-limite)."
+  - codigo: reupload_modelo
+    descricao: "Cópia ou quantização de modelo de terceiros (GGUF, AWQ, etc.) sem treino, ajuste ou avaliação própria."
+  - codigo: material_didatico
+    descricao: "Tutorial, curso, exercício de disciplina, notebook de estudo, portfólio pessoal."
+  - codigo: lista_curada
+    descricao: "Lista 'awesome' ou diretório. Vira fonte de sementes, não solução."
+  - codigo: vazio
+    descricao: "Repositório só com README, sem código, modelo ou dados utilizáveis."
+  - codigo: so_pt_pt
+    descricao: "Feito em Portugal e só para pt-PT, sem uso ou avaliação em pt-BR."
+  - codigo: dados_pessoais
+    descricao: "Expõe dados pessoais (vazamentos, raspagem de perfis). Excluir e não registrar o conteúdo."
+  - codigo: nao_acessivel
+    descricao: "Sem código, modelo ou API publicamente acessível (o radar só vê o que é público)."
+
+# ------------------------------------------------------------------------------
+# 5. Descrição da solução / Describing the solution
+# ------------------------------------------------------------------------------
+tipo_artefato:
+  valores:
+    aplicacao: "Sistema ou app pronto para uso final (desktop, web, bot)."
+    biblioteca: "Pacote ou biblioteca para desenvolvedores (R, Python, JS...)."
+    modelo: "Modelo treinado disponível para uso."
+    dataset: "Base de dados ou corpus para treinar ou avaliar IA."
+    benchmark: "Conjunto de avaliação com protocolo e métricas."
+    demo: "Demonstração (ex.: Space do Hugging Face) sem uso real previsto."
+  nota: "Escolher o principal; os outros artefatos vão em `artefatos`."
+
+area_problema:
+  status: provisorio      # substituir pelo vocabulário do BBSIA quando a issue #2 trouxer
+  multiplo: true          # até 2 áreas
+  valores:
+    - saude
+    - educacao
+    - justica_e_direito
+    - seguranca_publica
+    - gestao_publica          # processos internos, compras, RH, documentos
+    - atendimento_ao_cidadao
+    - transparencia_e_controle
+    - financas_e_tributos
+    - trabalho_e_assistencia_social
+    - meio_ambiente_e_agro
+    - infraestrutura_e_mobilidade
+    - ciencia_e_pesquisa
+    - cultura_e_linguagem     # inclui PLN em português de uso geral
+    - transversal             # ferramentas genéricas (transcrição, OCR, anonimização)
+
+problema_resumo:
+  descricao: >
+    1 a 2 frases, em português simples, no formato "Ajuda <quem> a <resolver o
+    quê>", sem jargão técnico. É a primeira coisa que o BBSIA mostra de uma solução.
+  exemplo: "Ajuda pesquisadores a transcrever e identificar falantes em entrevistas gravadas em português, sem enviar o áudio para a internet."
+  proibido: "Descrever a tecnologia antes do problema (\"Um modelo BERT que...\")."
+
+# ------------------------------------------------------------------------------
+# 6. Maturidade / Maturity — ESTIMATIVA, revisável pela equipe do BBSIA
+# ------------------------------------------------------------------------------
+maturidade:
+  trl_provavel:
+    nota: >
+      "Todos os TRLs" entram (combinado com o BBSIA): maturidade é coluna, não
+      filtro. A escala exata do formulário depende da issue #2.
+    faixas:
+      "1-3":
+        rotulo: "Ideia ou prova de conceito"
+        sinais: ["repositório recente ou parado", "sem release", "sem documentação de uso", "1 contribuidor"]
+      "4-6":
+        rotulo: "Protótipo validado"
+        sinais: ["README com instalação e exemplo", "avaliação ou resultados reportados", "algum uso (estrelas, downloads)", "atividade nos últimos 12 meses"]
+      "7-9":
+        rotulo: "Em operação"
+        sinais: ["releases versionadas", "publicado em CRAN/PyPI/Hub com uso expressivo", "vários contribuidores", "uso institucional declarado"]
+  ativo:
+    definicao: "Houve push (GitHub) ou atualização (Hugging Face) nos últimos 12 meses."
+    valores: [sim, nao]
+  manutencao:
+    definicao: "Sinais de que alguém cuida: issues respondidas, PRs aceitos, mais de um contribuidor."
+    valores: [alta, media, baixa, sem_sinal]
+
+# ------------------------------------------------------------------------------
+# 7. Confiança e proveniência / Confidence and provenance
+# ------------------------------------------------------------------------------
+confianca:
+  valores:
+    alta: "Decidida por sinal forte, ou por humano."
+    media: "Decidida por sinais médios concordantes."
+    baixa: "Decidida com sinais fracos ou conflitantes. Vai para revisão humana antes de sair na planilha."
+proveniencia:
+  valores: [regra, llm, humano]
+  nota: "Toda marcação registra quem a fez e, para `llm`, o modelo e a versão do codebook."
+
+# ------------------------------------------------------------------------------
+# 8. Casos-limite / Edge cases
+# ------------------------------------------------------------------------------
+casos_limite:
+  - caso: "Brasileiro que mora e trabalha no exterior, projeto pessoal."
+    decisao: "brasileira = incerto; sim se o projeto tem foco no Brasil (dados, idioma, problema)."
+    decisao_status: proposta
+  - caso: "Empresa estrangeira com filial ou equipe no Brasil."
+    decisao: "brasileira = sim só se o projeto foi feito pela equipe brasileira e isso está declarado."
+    decisao_status: proposta
+  - caso: "Fork de projeto estrangeiro com adaptação ao pt-BR (tradução, ajuste, dados)."
+    decisao: "Não é exclusão `fork_sem_mudanca`; ptbr = sim; brasileira segue as regras do autor do fork."
+    decisao_status: proposta
+  - caso: "Projeto de Portugal que também é usado ou avaliado em pt-BR."
+    decisao: "brasileira = nao; ptbr = sim se houver avaliação explícita em pt-BR."
+    decisao_status: proposta
+  - caso: "TCC, dissertação ou projeto acadêmico encerrado, com código publicado."
+    decisao: "Entra se passar nos critérios; TRL 1-3 e ativo = nao, mas não é excluído (todos os TRLs)."
+    decisao_status: proposta
+  - caso: "Produto comercial fechado com só uma API ou SDK público (ex.: cliente de API de um LLM brasileiro)."
+    decisao: "Entra como solução se a API é pública e documentada; a planilha marca que o núcleo é fechado."
+    decisao_status: depende_bbsia
+  - caso: "Solução de órgão público já cadastrada no BBSIA com outro nome."
+    decisao: "Deduplicação (WP7) casa por URL e por nome; em dúvida, marcar `possivel_duplicata` e não enviar."
+    decisao_status: proposta
+  - caso: "Pacote de acesso a dados públicos brasileiros sem modelo (ex.: ecossistema de pacotes R de dados oficiais)."
+    decisao: "e_ia = nao, fora do radar; pode ir para a lista de sementes como fonte de dados para soluções de IA."
+    decisao_status: depende_bbsia
+
+# ------------------------------------------------------------------------------
+# 9. Validação humana / Human validation (WP5 passo 3)
+# ------------------------------------------------------------------------------
+validacao:
+  amostra: >
+    Aleatória, estratificada por fonte (GitHub, Hugging Face, sementes) e pela
+    marcação automática (sim/incerto/nao). Tamanho inicial: 100 soluções, ou
+    todas, se houver menos.
+  codificadores: "O autor; se possível, uma segunda pessoa (idealmente da equipe do BBSIA) em 30 soluções da amostra."
+  cego: "Quem codifica não vê a marcação da máquina."
+  metricas: "Concordância percentual e kappa de Cohen por dimensão (`brasileira`, `ptbr`, `e_ia`, `area_problema`)."
+  limiar: >
+    Kappa >= 0.70 em `brasileira`, `ptbr` e `e_ia` para usar a classificação
+    automática sem revisão. Abaixo disso, revisar o codebook e o prompt, subir
+    `versao` e recodificar. Limiar proposto; decisão do autor.
+  desempate: "Divergência entre humanos: o autor decide e o caso vira exemplo neste arquivo."
+
+# ------------------------------------------------------------------------------
+# 10. Campos de saída / Output fields (mapa provisório para a planilha)
+#     Os nomes finais seguem o formulário do BBSIA (issue #2).
+# ------------------------------------------------------------------------------
+campos_saida:
+  - id_solucao
+  - nome
+  - problema_resumo
+  - area_problema
+  - tipo_artefato
+  - artefatos            # lista de {plataforma, url, papel}
+  - responsavel          # nome público do dono (organização ou pessoa); nunca e-mail
+  - brasileira
+  - ptbr
+  - interesse_publico
+  - e_ia
+  - trl_provavel
+  - ativo
+  - manutencao
+  - licenca
+  - confianca
+  - proveniencia
+  - versao_codebook
+  - ja_no_bbsia          # sim | nao | possivel_duplicata

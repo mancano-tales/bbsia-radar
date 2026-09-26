@@ -2,6 +2,28 @@
 
 Log intelectual do projeto: decisões e o porquê delas. Entrada nova no topo; nada é reescrito. Toda entrada de agente termina com os Metadados de Execução (ver `AGENTS.md`).
 
+## 2026-09-26 11:45 — Codebook v0.1.0 e sementes curadas (WP2)
+
+O **codebook** (`config/codebook.yml`, issue #3) define o que entra no radar antes de qualquer coleta. As principais escolhas:
+- **Unidade de análise**: a solução, não o repositório. Modelo no Hugging Face e código no GitHub do mesmo grupo formam uma solução só.
+- **Filtro `e_ia` na entrada**: a solução precisa usar, produzir ou avaliar um modelo aprendido. Por isso ficam de fora pacotes de acesso a dados sem modelo, como o `brverse` do Ipea.
+- **Os tipos A, B e C viraram três marcações independentes** (`brasileira`, `ptbr`, `interesse_publico`), porque um modelo pode ser brasileiro e adaptado ao pt-BR ao mesmo tempo. Os sinais estão divididos em fortes, médios e fracos, com regra de decisão, e sinal fraco sozinho nunca basta.
+- **8 exclusões**, entre elas `reupload_modelo` (quantizações e cópias no Hugging Face, muito comuns) e `dados_pessoais`.
+- **8 casos-limite**: 6 com decisão proposta pelo agente e 2 que dependem do BBSIA (produto fechado com API pública, pacote de dados sem modelo).
+- **Protocolo de validação**: amostra de 100 estratificada, codificação cega, kappa de Cohen mínimo de 0,70 (proposto) e o autor como desempate.
+- **Área do problema provisória** até a issue #2 trazer o vocabulário do BBSIA.
+
+As **sementes** (`config/seeds.yml`, issue #4) têm 3 listas curadas e um **gabarito de recall** com 7 soluções que o radar tem de encontrar: Transcritório, Open Notebook, QualiLab e Decifra (as três primeiras da lista do autor), mais BERTimbau, TeenyTinyLlama e Tucano. Há também contas a varrer. O campo `verificado` separa "o endereço existe" de "o vínculo com o Brasil foi conferido". A existência de 10 repositórios foi conferida por `git ls-remote`. O vínculo só foi marcado nos casos de projeto do autor, e nada do Hugging Face foi conferido, porque esta sessão não alcança o site. O QualiLab é um caso de teste do filtro `e_ia`.
+
+Sem R no contêiner, o validador em R do codebook fica para depois; a checagem desta rodada foi em Python: os dois YAML carregam, e todo valor esperado do gabarito existe no codebook.
+
+**Metadados de Execução**:
+- **Data/Hora**: 2026-09-26 11:45 (Horário de Brasília; relógio do contêiner em UTC, convertido)
+- **Agente**: Claude Code / Claude Opus 5.5 / Claude Code on the web
+- **Issue**: #3, #4
+- **Mensagem do Commit**: "feat(config): codebook v0.1.0 e sementes curadas"
+- **Arquivos afetados**: `config/codebook.yml`, `config/seeds.yml`, `repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md`, `TODO.md`, `NEWS.md`
+
 ## 2026-09-26 11:36 — Coordenação por issues alinhada à convenção do hub
 
 Enquanto este repositório era montado, uma sessão do `mancano-repo-hub` (058c7b) implantou lá a mesma ideia ("todo plano tem uma issue", issue #2 do hub; propagação aos repos filhos, issue #23, que cita o `bbsia-radar`). Duas regras de lá entraram aqui:

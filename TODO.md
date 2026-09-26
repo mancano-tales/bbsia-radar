@@ -15,12 +15,17 @@
 - [ ] **Autor: ativar o hook de pre-commit no clone local** — `git config core.hooksPath hooks`.
   - Criado: 2026-09-26 11:03 por Claude Opus 5.5
   - Issue: #1
+- [ ] **Autor: revisar o codebook v0.1.0 e as sementes** — decisões `proposta` dos casos-limite, limiar de kappa (0,70), tamanho da amostra (100); confirmar se o Transcritório é o transcritor citado e passar as outras soluções já cadastradas à mão.
+  - Criado: 2026-09-26 11:45 por Claude Opus 5.5
+  - Issues: #3, #4 · PR `claude/3-codebook`
 - [ ] **WP2 — Escrever o codebook** (`config/codebook.yml`): tipos A (brasileira), B (adaptada ao pt-BR), C (interesse público), fora; sinais observáveis; unidade = solução, não repositório.
   - Criado: 2026-09-26 11:03 por Claude Opus 5.5
-  - Issue: #1 (abrir issue própria ao começar) · Plano §5
+  - Progresso 2026-09-26 11:45 (Claude Opus 5.5): v0.1.0 em `config/codebook.yml`, aguardando revisão do autor.
+  - Issue: #3 · Plano §5
 - [ ] **Sementes curadas** (`config/seeds.yml`): listas awesome de NLP em português, `awesome-open-source-research-tools` do autor, organizações conhecidas do Hugging Face e do GitHub (cada uma conferida antes de entrar), soluções que o autor já cadastrou à mão (ex.: o transcritor com Whisper). Servem também de gabarito para medir o recall dos coletores.
   - Criado: 2026-09-26 11:03 por Claude Opus 5.5
-  - Issue: #1 · Plano §6
+  - Progresso 2026-09-26 11:45 (Claude Opus 5.5): v0.1.0 em `config/seeds.yml`, com 3 listas, 7 soluções no gabarito, 3 contas GitHub com existência conferida e 6 do Hugging Face não conferidas; `instituicoes` vazia.
+  - Issue: #4 · Plano §6
 
 ## Prospectivo
 
