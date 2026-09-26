@@ -1,6 +1,6 @@
 # AGENTS.md — bbsia-radar
 
-<!-- BEGIN governanca-comum v2026-09-26 (fonte: hub, tools/governanca-comum; não editar aqui) -->
+<!-- BEGIN governanca-comum v2026-09-26b (fonte: hub, tools/governanca-comum; não editar aqui) -->
 ## Governança comum do ecossistema
 
 > Bloco mantido no hub (`mancano-tales/mancano-repo-hub`, `tools/governanca-comum/`) e copiado para
@@ -37,6 +37,9 @@
 - **Caminhos relativos**, nunca absolutos de máquina (`C:/Users/...`), em código, configuração e
   documentação.
 - **Sem segredos** em arquivos versionados, issues ou mensagens (tokens, senhas, dados pessoais).
+- **Exportar conversas está descontinuado** (autor, 2026-09-26): não exporte sessões para `llm-reviews/`;
+  `tools/export_conversa.R`, onde existir, recusa rodar, e a skill `export-conversation` está desativada.
+  O registro de uma sessão é o `NEWS.md`, o plano, a issue e o `git log`; exports antigos ficam como histórico.
 - **Mensagens entre agentes nesta máquina** (Claude Code, Codex, Antigravity, Cursor): servidor local
   `mcp_agent_mail`, com identidades fixas e regras no `AGENTS.md` do hub (seção "Mensagens entre
   agentes"). Para conversa sobre um plano, prefira a issue.
@@ -138,7 +141,7 @@ As issues do GitHub são o **quadro de avisos compartilhado** entre o autor e to
   ```
 - **`TODO.md`**: append-only, três seções (Pendente / Prospectivo / Concluído), item novo no topo, com data+hora e quem criou/concluiu, e o `#N` da issue quando houver. O TODO é o índice curto; a issue é a conversa; o plano é o detalhe.
 - **Timestamps** em horário de Brasília (`YYYY-MM-DD HH:MM`). Confira `date '+%z'`: deve dar `-0300`. Contêineres de nuvem costumam estar em UTC (`+0000`) — converta (subtraia 3 horas). No Git Bash do Windows, `TZ=America/Sao_Paulo` cai em UTC silenciosamente: use `date` puro. Se não souber a hora, deixe só a data e diga por quê; nunca invente.
-- **Auditoria de conversas**: ao fim de uma sessão com mudança relevante, `Rscript tools/export_conversa.R <session_uuid> [slug]` e registrar em `repo-governance/llm-reviews/README.md`. Se o ambiente não tiver R, diga isso no comentário final da issue.
+- **Auditoria de conversas**: **descontinuada em 2026-09-26** (decisão do autor; ver o bloco de governança comum acima). Não exporte sessões; o registro é o `NEWS.md`, o plano, a issue e o `git log`.
 
 ## Trava de comandos git destrutivos (Claude Code)
 
@@ -190,7 +193,7 @@ As issues do GitHub são o **quadro de avisos compartilhado** entre o autor e to
 | `diretorio_governanca` | `repo-governance/` |
 | `diretorio_autoria_primaria` | — |
 | `arquivo_gerenciado_externamente` | — |
-| `script_exportar_conversa` | `tools/export_conversa.R` |
+| `script_exportar_conversa` | — (descontinuado em 2026-09-26) |
 | `diretorios_trabalho_continuo` | `repo-governance/plan/` |
 
 ## Comandos frequentes
@@ -198,4 +201,3 @@ As issues do GitHub são o **quadro de avisos compartilhado** entre o autor e to
 - Ativar o hook: `git config core.hooksPath hooks`
 - Testar a trava git: `printf '{"tool_input":{"command":"git add ."}}' | bash tools/guard-git-command.sh; echo $?`
 - Regenerar o changelog: `Rscript tools/render-changelog.R`
-- Exportar conversa: `Rscript tools/export_conversa.R <session_uuid> [slug]`

@@ -1,5 +1,18 @@
 # NEWS — bbsia-radar
 
+## 2026-09-26 — Exportador de conversas descontinuado (governança comum v2026-09-26b)
+
+**Decisão do autor, no chat:** desabilitar o exportador de conversas em todos os repositórios. Plano: `repo-governance/plan/2026-09-26_Plano_Descontinuar_Exportador_Conversas.md` do `mancano-repo-hub` (issue #27 de lá). O bloco de governança comum subiu para v2026-09-26b, com a regra nova, aplicado por `tools/sync_governanca.py`. Fora do bloco:
+- o `tools/export_conversa.R` daqui recusa rodar (o código fica, só para histórico);
+- a seção "Auditoria de conversas", a chave `script_exportar_conversa` e o comando de exportação saíram do `AGENTS.md`;
+- o `repo-governance/llm-reviews/README.md` registra a descontinuação. Nenhum export tinha sido feito aqui.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-26
+- **Agente**: Claude Code / Claude Opus 5.5 / Claude Code on the web (bloco aplicado com `tools/sync_governanca.py aplicar --sem-commit`)
+- **Mensagem do Commit**: "docs(governance): descontinua o exportador de conversas (governanca comum v2026-09-26b)"
+- **Arquivos afetados**: `AGENTS.md`, `NEWS.md`, `tools/export_conversa.R`, `repo-governance/llm-reviews/README.md`
+
 ## 2026-09-26 — PR #5 mergeado por agente, com autorização do autor
 
 O autor pediu em chat que o agente mergeasse o PR #5 (codebook v0.1.0 e sementes), já revisado pelo Copilot, com os 8 achados corrigidos. O merge foi feito pelo agente (`1ce0bc0`), com o SHA da cabeça travado em `3f590ac`. A regra "mergear PR exige o autor" continua valendo: aqui o autor exigiu, no chat, que o agente fizesse. Na mesma instrução, o agente mergeou também o PR #5 do `decifra-text-as-data` (só documentação do R1.1), entendendo "o PR5" como os dois PRs de número 5 revisados; se a intenção era só este, aquele merge pode ser revertido. O PR #7 foi atualizado com o `main` e continua aguardando o autor.

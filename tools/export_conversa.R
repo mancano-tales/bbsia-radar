@@ -13,6 +13,20 @@
 #        `diretorio_governanca` em AGENTS.md § "Configuração de Skills".
 # ==============================================================================
 
+# ── DESCONTINUADO (2026-09-26) ────────────────────────────────────────────────
+# (pt) O exportador de conversas foi descontinuado em todo o ecossistema por
+#      decisão do autor. O registro de uma sessão é o NEWS.md, o plano, a issue e
+#      o git log; os exports antigos em llm-reviews/ ficam como histórico. Plano no
+#      hub: repo-governance/plan/2026-09-26_Plano_Descontinuar_Exportador_Conversas.md
+# (en) The conversation exporter is deprecated ecosystem-wide by the author's
+#      decision. The script stops here; the code below is kept only for history.
+message(
+  "tools/export_conversa.R foi DESCONTINUADO em 2026-09-26 (decisão do autor).\n",
+  "Não exporte conversas: registre a sessão no NEWS.md, no plano e na issue.\n",
+  "Plano: repo-governance/plan/2026-09-26_Plano_Descontinuar_Exportador_Conversas.md (no mancano-repo-hub)."
+)
+quit(save = "no", status = 1)
+
 suppressPackageStartupMessages(library(jsonlite))
 
 get_claude_project_dir_name <- function() {
