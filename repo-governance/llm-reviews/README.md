@@ -1,6 +1,6 @@
 # llm-reviews/ — Conversas com agentes de IA
 
-**Exportação descontinuada em 2026-09-26** (decisão do autor; plano `2026-09-26_Plano_Descontinuar_Exportador_Conversas.md` no hub). Não se exportam sessões para esta pasta; `tools/export_conversa.R` recusa rodar. O registro de uma sessão é o `NEWS.md`, o plano, a issue e o `git log`. A tabela abaixo fica como histórico.
+Exports das sessões de agentes, gerados por `Rscript tools/export_conversa.R <session_uuid> [slug]` **só quando o autor pedir** (uma vez por sessão; nunca ao fim de toda tarefa). Cada export entra na tabela abaixo, com a issue correspondente.
 
 | Arquivo | Data | Agente | Issue | Assunto |
 |---|---|---|---|---|

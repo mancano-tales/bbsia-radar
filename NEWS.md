@@ -1,5 +1,18 @@
 # NEWS — bbsia-radar
 
+## 2026-09-26 — Correção: exportar conversa só quando o autor pedir (governança comum v2026-09-26c)
+
+**A entrada anterior partiu de um mal-entendido.** O autor não queria desativar o exportador nem as skills, e sim acabar com a instrução de exportar ao fim de toda tarefa, que gera cópias repetidas da mesma conversa. Plano: `repo-governance/plan/2026-09-26_Plano_AGENTS_Enxutos_e_Export_Sob_Demanda.md` do `mancano-repo-hub` (issue #27 de lá). O que mudou:
+- o `tools/export_conversa.R` voltou a funcionar;
+- no `AGENTS.md`, a seção "Auditoria de conversas", a chave `script_exportar_conversa` e o comando dizem **"só quando o autor pedir"**;
+- o `repo-governance/llm-reviews/README.md` diz o mesmo;
+- o bloco de governança comum subiu para v2026-09-26c, com a regra reescrita.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-26
+- **Agente**: Claude Code / Claude Opus 5.5 / Claude Code on the web
+- **Mensagem do Commit**: "docs(governance): exportar conversa so quando o autor pedir (governanca comum v2026-09-26c)"
+- **Arquivos afetados**: `AGENTS.md`, `NEWS.md`, `tools/export_conversa.R`, `repo-governance/llm-reviews/README.md`
 ## 2026-09-26 — Exportador de conversas descontinuado (governança comum v2026-09-26b)
 
 **Decisão do autor, no chat:** desabilitar o exportador de conversas em todos os repositórios. Plano: `repo-governance/plan/2026-09-26_Plano_Descontinuar_Exportador_Conversas.md` do `mancano-repo-hub` (issue #27 de lá). O bloco de governança comum subiu para v2026-09-26b, com a regra nova, aplicado por `tools/sync_governanca.py`. Fora do bloco:
