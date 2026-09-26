@@ -1,10 +1,31 @@
-# Python
+# --- R ---
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+
+# --- Segredos e configuração local (GITHUB_PAT, HF_TOKEN, MANCANO_BBSIA_RADAR_ROOT) ---
+.Renviron
+.env
+
+# --- Dados brutos e cache das APIs: sempre fora do git (ver AGENTS.md § Regras do domínio) ---
+cache/
+data/raw/
+data/cache/
+*.sqlite
+*.parquet
+
+# --- Pipeline e relatório ---
+_targets/
+report/_site/
+report/*_files/
+/.quarto/
+
+# --- Python (se um dia entrar) ---
 __pycache__/
-*.pyc
 .venv/
-# Sistema
+
+# --- Sistema ---
 .DS_Store
 Thumbs.db
-# Segredos locais (nunca versionar)
-.env
-*.token
