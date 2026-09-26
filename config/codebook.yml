@@ -113,8 +113,10 @@ vinculo:
         - "Tag `language:pt` sozinha (pode ser pt-PT, ou só um entre muitos idiomas)."
         - "Tópico `portuguese` ou `portuguese-nlp` sozinho."
     regra_de_decisao: >
-      `sim` com 1 sinal forte, ou 2 médios. Modelo multilíngue genérico que
-      apenas inclui português = `nao`.
+      `sim` com 1 sinal forte, ou 2 médios. `incerto` com 1 médio sozinho, só
+      sinais fracos, ou sinais conflitantes (ex.: `language:pt` mas documentação
+      só sobre pt-PT). `nao` sem sinais. Modelo multilíngue genérico que apenas
+      inclui português = `nao`.
     exemplos_sim:
       - "Tucano / TeenyTinyLlama (Nicholas Kluge Corrêa): modelos treinados em português."
     exemplos_nao:
@@ -125,12 +127,14 @@ vinculo:
     definicao: >
       Solução aberta que resolve um problema típico do setor público e poderia
       ser adaptada ao Brasil, mesmo sem vínculo com o país.
-    valores: [sim, nao, incerto, nao_avaliado]
+    # v0.1.0: dimensão RESERVADA, não codificável. Único valor permitido nesta
+    # versão: `nao_avaliado`. Sinais, regra de decisão e exemplos entram numa
+    # versão futura, junto com os valores sim/nao/incerto.
+    valores: [nao_avaliado]
     no_piloto: false
     nota: >
       Fora do piloto: sem critério mais preciso, o volume explode. Critério a
-      combinar com a coordenação do BBSIA (plano §3, pergunta 5). Até lá, o
-      valor é sempre `nao_avaliado`.
+      combinar com a coordenação do BBSIA (plano §3, pergunta 5).
 
 # ------------------------------------------------------------------------------
 # 4. Exclusões / Exclusions (valem antes de qualquer marcação)
@@ -168,7 +172,8 @@ tipo_artefato:
 
 area_problema:
   status: provisorio      # substituir pelo vocabulário do BBSIA quando a issue #2 trouxer
-  multiplo: true          # até 2 áreas
+  multiplo: true
+  maximo: 2               # no máximo 2 áreas; a primeira é a área principal
   valores:
     - saude
     - educacao
@@ -268,11 +273,18 @@ validacao:
     todas, se houver menos.
   codificadores: "O autor; se possível, uma segunda pessoa (idealmente da equipe do BBSIA) em 30 soluções da amostra."
   cego: "Quem codifica não vê a marcação da máquina."
-  metricas: "Concordância percentual e kappa de Cohen por dimensão (`brasileira`, `ptbr`, `e_ia`, `area_problema`)."
+  metricas: >
+    Concordância percentual e kappa de Cohen por dimensão de rótulo único
+    (`e_ia`, `brasileira`, `ptbr`, `tipo_artefato`). Para `area_problema`
+    (multirrótulo): kappa de Cohen na área principal (a primeira listada) e,
+    para cada área do vocabulário, kappa da marcação binária presente/ausente.
   limiar: >
     Kappa >= 0.70 em `brasileira`, `ptbr` e `e_ia` para usar a classificação
     automática sem revisão. Abaixo disso, revisar o codebook e o prompt, subir
-    `versao` e recodificar. Limiar proposto; decisão do autor.
+    `versao` e recodificar. `area_problema` e `tipo_artefato` ficam sem limiar
+    (exploratórias) enquanto o vocabulário for provisório (issue #2): até lá,
+    toda classificação dessas colunas passa por revisão humana. Limiares
+    propostos; decisão do autor.
   desempate: "Divergência entre humanos: o autor decide e o caso vira exemplo neste arquivo."
 
 # ------------------------------------------------------------------------------

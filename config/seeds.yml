@@ -15,7 +15,9 @@
 #   vinculo: alguém leu a página e confirmou o vínculo com o Brasil/pt-BR
 #            segundo o codebook (true/false/null = não conferido)
 #   em, como: quando e como foi conferido
-# NUNCA marque `vinculo: true` sem ter aberto a página. Nome conhecido não é prova.
+# `vinculo: true` exige evidência registrada em `como`: página ou documentação
+# aberta e lida, ou projeto do próprio autor. Nome conhecido, `git ls-remote` ou
+# confirmação em chat não bastam (provam existência ou identidade, não o vínculo).
 # ==============================================================================
 
 versao: "0.1.0"
@@ -49,15 +51,8 @@ gabarito:
       - { plataforma: github, url: "https://github.com/antrologos/Transcritorio", papel: codigo }
     esperado: { e_ia: sim, brasileira: sim, ptbr: sim, tipo_artefato: aplicacao }
     fonte: "awesome-open-source-research-tools (tag brazil): app local de transcrição e diarização de entrevistas em português brasileiro."
-    verificado: { existe: true, vinculo: true, em: "2026-09-26", como: "git ls-remote; confirmado pelo autor em chat" }
-    nota: "É o transcritor citado pelo autor na conversa com o BBSIA (confirmado em 2026-09-26). Usa o Whisper e o modelo brasileiro Tagarela (ver entrada abaixo)."
-  - id_solucao: tagarela
-    nome: "Tagarela"
-    artefatos: []          # link a conferir: provavelmente um modelo no Hugging Face
-    esperado: { e_ia: sim, brasileira: incerto, ptbr: sim, tipo_artefato: modelo }
-    fonte: "Autor, 2026-09-26: modelo de transcrição para português brasileiro usado pelo Transcritório."
-    verificado: { existe: null, vinculo: null }
-    nota: "Nome e link a conferir (precisa-rede); a documentação do Transcritório deve citar o repositório exato."
+    verificado: { existe: true, vinculo: null, em: "2026-09-26", como: "git ls-remote; identidade confirmada pelo autor em chat" }
+    nota: "É o transcritor citado pelo autor na conversa com o BBSIA (confirmado em 2026-09-26). Usa o Whisper e o modelo brasileiro Tagarela (em `candidatos_pendentes`)."
   - id_solucao: lfnovo-open-notebook
     nome: "Open Notebook"
     artefatos:
@@ -102,6 +97,20 @@ gabarito:
     esperado: { e_ia: sim, brasileira: sim, ptbr: sim, tipo_artefato: modelo }
     fonte: "Pesquisa web de 2026-09-26 (subagente; artigo arXiv 2411.07854)."
     verificado: { existe: true, vinculo: null, em: "2026-09-26", como: "git ls-remote" }
+
+# ------------------------------------------------------------------------------
+# 2a. Candidatos pendentes / Pending candidates — sem URL verificada, FORA do
+#     gabarito (não entram no denominador do recall). Sobem para `gabarito`
+#     quando tiverem artefato com URL e `existe: true`.
+# ------------------------------------------------------------------------------
+candidatos_pendentes:
+  - id_solucao: tagarela
+    nome: "Tagarela"
+    artefatos: []          # link a conferir: provavelmente um modelo no Hugging Face
+    esperado: { e_ia: sim, brasileira: incerto, ptbr: sim, tipo_artefato: modelo }
+    fonte: "Autor, 2026-09-26: modelo de transcrição para português brasileiro usado pelo Transcritório."
+    verificado: { existe: null, vinculo: null }
+    nota: "Nome e link a conferir (precisa-rede); a documentação do Transcritório deve citar o repositório exato."
 
 # ------------------------------------------------------------------------------
 # 2b. Gabarito do catálogo do BBSIA / BBSIA catalogue test set (ideia do autor, 2026-09-26)
@@ -151,4 +160,4 @@ referencias:
   - nome: "ipea (organização)"
     url: "https://github.com/ipea"
     nota: "Pacotes R de dados oficiais (brverse), da lista do autor. Pelo codebook, e_ia = nao: fonte de dados, não solução do radar (caso-limite `depende_bbsia`)."
-    verificado: { existe: null, vinculo: true, em: "2026-09-26", como: "descrição da lista do autor" }
+    verificado: { existe: null, vinculo: null, em: "2026-09-26", como: "descrição da lista do autor (não é página aberta)" }

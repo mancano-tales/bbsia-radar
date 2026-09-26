@@ -1,8 +1,24 @@
 # NEWS — bbsia-radar
 
+## 2026-09-26 — Codebook e sementes: correções da revisão do Copilot no PR #5
+
+Os 8 achados da revisão automática procediam; todos foram corrigidos:
+- **Denominador do recall**: o Tagarela, sem URL, saiu do `gabarito` e foi para `candidatos_pendentes`. O gabarito continua com 7 soluções, e as contagens do `NEWS.md` e do `TODO.md` voltam a bater com o arquivo.
+- **Contrato do `vinculo`**: o vínculo com o Brasil agora exige evidência registrada (página lida, ou projeto do autor). O Transcritório (a confirmação em chat provou a identidade, não o vínculo) e o Ipea (a descrição da lista não é página aberta) voltaram a `null`.
+- **`ptbr`**: a regra passa a dizer quando o valor é `incerto` (1 sinal médio sozinho, só fracos ou sinais conflitantes).
+- **`interesse_publico`**: fica reservada nesta versão, com `nao_avaliado` como único valor.
+- **`area_problema`**: ganhou `maximo: 2` estruturado e uma regra de concordância (kappa na área principal e por área binária). Ela e `tipo_artefato` ficam sem limiar, com revisão humana obrigatória, enquanto o vocabulário for provisório.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-26
+- **Agente**: Claude Code / Claude Opus 5.5 / Claude Code on the web
+- **Issue**: #3, #4
+- **Mensagem do Commit**: "fix(config): correcoes da revisao do codebook e das sementes"
+- **Arquivos afetados**: `config/codebook.yml`, `config/seeds.yml`, `NEWS.md`
+
 ## 2026-09-26 — Transcritório confirmado, gabarito do catálogo do BBSIA e a pergunta do Decifra
 
-O autor confirmou que o **Transcritório** é o transcritor citado à coordenação do BBSIA. Ele usa o Whisper e o modelo brasileiro **Tagarela**, que entrou no gabarito com link a conferir. O autor também informou que não cadastrou nada à mão no BBSIA. Por ideia dele, entrou um **segundo gabarito**: as soluções que o BBSIA já cadastrou e que têm link para GitHub ou Hugging Face servem para medir o recall da descoberta e para testar `area_problema` contra a área atribuída pelo BBSIA. A seção fica vazia até o export do catálogo (#2).
+O autor confirmou que o **Transcritório** é o transcritor citado à coordenação do BBSIA. Ele usa o Whisper e o modelo brasileiro **Tagarela**, que entrou em `candidatos_pendentes`, fora do gabarito, até ter link conferido. O autor também informou que não cadastrou nada à mão no BBSIA. Por ideia dele, entrou um **segundo gabarito**: as soluções que o BBSIA já cadastrou e que têm link para GitHub ou Hugging Face servem para medir o recall da descoberta e para testar `area_problema` contra a área atribuída pelo BBSIA. A seção fica vazia até o export do catálogo (#2).
 
 **O radar é um problema de Decifra?** Metade é. Classificação e validação humana são o núcleo do Decifra; coleta, enriquecimento, TRL por metadados, deduplicação e entrega não são. Duas diferenças decidem o desenho: o Decifra **classifica uma variável por codebook** (o do radar tem cinco) e só vê texto, então os metadados de cada solução precisam entrar escritos no documento. A análise e as opções A, B e C estão na issue #6. A recomendação é a A, o Decifra como está, uma variável por execução, com CSV de ida e volta. A decisão é do autor.
 
