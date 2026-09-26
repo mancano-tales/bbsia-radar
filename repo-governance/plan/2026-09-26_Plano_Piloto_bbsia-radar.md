@@ -185,11 +185,20 @@ documentação e de testes, dono (usuário ou org) e a `location` dele.
 
 ## 8. WP5 — Classificação e validação
 
-> **2026-09-26 — Integração com o Decifra em discussão (issue #6).** Análise: a classificação e a
-> validação são o problema do Decifra; coleta, enriquecimento, TRL por metadados, deduplicação e entrega
-> não são. O Decifra hoje classifica uma variável por codebook. Opções A (Decifra como está, uma
-> variável por execução, CSV de ida e volta; recomendada), B (multivariável no Decifra antes) e C (sem
-> Decifra; não recomendada). **Decisão do autor pendente**, a registrar aqui.
+> **2026-09-26 — Decisão do autor (em chat; issue #6): o radar produz o corpus e o Decifra classifica.**
+> O Decifra é desenvolvido para dar conta desta tarefa, e o radar é o primeiro caso de uso real dele.
+> Na prática, isso junta as opções A e B da issue #6: o piloto usa o que já existe, e o que faltar é
+> construído **no Decifra**, não contornado aqui. Estado do Decifra conferido em `31f576f`: o codebook
+> multivariável e multirrótulo (R1.1) foi aprovado pelo autor em 2026-09-13, e os passos 1, 2 e 4 já
+> estão no `main` (contrato `variables:`/`multi_label`/`max_labels`, validação multirrótulo); **falta o
+> passo 3** (extração, estimativa e banco consumirem as variáveis) e os seguintes (API e interface).
+> Consequências para este plano:
+> - **WP4** passa a entregar o **corpus do Decifra**: um documento por solução, com os metadados em
+>   texto, mais um CSV com `id_solucao` e o texto;
+> - **WP5** passa a ser: regras de triagem aqui; conversor `config/codebook.yml` → YAML `variables:` do
+>   Decifra; execução e validação humana no Decifra; importação dos resultados de volta;
+> - requisitos do radar abertos como issue no `decifra-text-as-data`.
+> O texto abaixo é o desenho original do WP5, mantido como histórico.
 
 1. **Regras** (baratas) para os casos óbvios: org na lista semente → (a); `language:pt` + "pt-BR"
    → (b); fork sem commits próprios → fora.

@@ -1,5 +1,20 @@
 # NEWS — bbsia-radar
 
+## 2026-09-26 — O radar produz o corpus, o Decifra classifica
+
+**Decisão do autor** (issue #6): o `bbsia-radar` é a parte que produz o corpus: descoberta, enriquecimento, um documento por solução, regras de triagem, TRL por metadados, deduplicação e entrega. A classificação e a validação humana ficam com o Decifra. E o Decifra passa a ser desenvolvido para dar conta desta tarefa: o que faltar é construído lá, não contornado aqui. O radar vira o primeiro caso de uso real do Decifra.
+
+Ao conferir o Decifra (`31f576f`), a análise da issue #6 se mostrou desatualizada num ponto. Ela dizia que o Decifra só classifica uma variável por codebook. Na verdade, o codebook multivariável e multirrótulo (R1.1) foi aprovado pelo autor em 2026-09-13 e já tem três de onze passos no `main` (contrato `variables:`/`multi_label`/`max_labels` e validação multirrótulo). Falta a extração passar a usar as variáveis (passo 3) e o que vem depois. O `docs/MVP_STATUS.md` do Decifra, de 2026-09-07, não registra isso; o `docs/ROADMAP.md` registra.
+
+A decisão entrou no `AGENTS.md` (divisão de trabalho, fonte única do codebook aqui, fronteira por arquivos ou pela API local, versão do Decifra registrada em cada rodada), no `README.md` (seção "O radar e o Decifra" e o diagrama) e no plano (§8, com as consequências para WP4 e WP5).
+
+**Metadados de Execução**:
+- **Data**: 2026-09-26
+- **Agente**: Claude Code / Claude Opus 5.5 / Claude Code on the web
+- **Issue**: #6
+- **Mensagem do Commit**: "docs: o radar produz o corpus e o Decifra classifica"
+- **Arquivos afetados**: `AGENTS.md`, `README.md`, `repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md`, `TODO.md`, `NEWS.md`
+
 ## 2026-09-26 — Codebook e sementes: correções da revisão do Copilot no PR #5
 
 Os 8 achados da revisão automática procediam; todos foram corrigidos:

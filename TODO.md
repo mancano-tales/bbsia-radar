@@ -6,6 +6,12 @@
 
 ## Pendente
 
+- [ ] **Decifra: requisitos do caso de uso bbsia-radar** — terminar o R1.1 (passo 3 em diante) e os outros itens da issue aberta no `decifra-text-as-data`; desenvolvido lá.
+  - Criado: 2026-09-26 por Claude Opus 5.5 (decisão de Tales Mançano: o radar produz o corpus, o Decifra classifica)
+  - Issue: #6 (aqui) e a issue correspondente no Decifra
+- [ ] **Conversor do codebook para o formato do Decifra e exportador do corpus** (WP4/WP5) — `config/codebook.yml` → YAML `variables:`; documento por solução com metadados em texto → CSV `id_solucao,text`.
+  - Criado: 2026-09-26 por Claude Opus 5.5
+  - Issue: #6 · Plano §7–§8
 - [ ] **Verificar o site e o formulário do BBSIA** (agente com acesso à rede) — campos e quais são obrigatórios, escala TRL, API ou importação por planilha, export do catálogo, termos de uso, filtros e áreas do catálogo. Com fonte para cada resposta; depois, reescrever o `README.md` (seção "A verificar") e os §1.1 e §5 do plano.
   - Criado: 2026-09-26 11:03 por Claude Opus 5.5 (a pedido de Tales Mançano)
   - Issue: #2 · Plano: `repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md` (WP0a)
