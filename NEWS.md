@@ -1,5 +1,15 @@
 # NEWS — bbsia-radar
 
+## 2026-09-26 — Governança comum do ecossistema (v2026-09-26d)
+
+Aplicado o bloco de governança comum mantido no hub (`mancano-tales/mancano-repo-hub`, `tools/governanca-comum/`): planos com issue (`tools/plano_issue.py`), base do `NEWS.md` derivada do git (`tools/news_db.py`), aprovação só no chat e no plano, mensagens de agentes como pedido, cabeçalho de agente, branch/PR opcionais, `NEWS.md` junto com a mudança, **datas sem hora** e **exportar conversa só quando o autor pedir**. O bloco fica entre marcadores no `AGENTS.md`; o que é específico deste repositório foi preservado.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-26
+- **Agente**: Claude Code / Claude Opus 5.5 / desktop (CoralCastle), via `tools/sync_governanca.py` do hub
+- **Mensagem do Commit**: "docs(governance): governanca comum v2026-09-26d"
+- **Arquivos afetados**: AGENTS.md, CLAUDE.md, NEWS.md, tools/plano_issue.py, tools/news_db.py, .claude/settings.json
+
 ## 2026-09-26 — AGENTS.md enxuto: 206 → 110 linhas, com o bloco comum intacto
 
 Decisão do autor (plano `repo-governance/plan/2026-09-26_Plano_AGENTS_Enxutos_e_Export_Sob_Demanda.md` do `mancano-repo-hub`, issue #27 de lá; aqui, piloto do formato-alvo). O bloco de governança comum continua igual. A parte específica passou de 159 para 63 linhas, sem perder regra:
