@@ -1,5 +1,31 @@
 # NEWS — bbsia-radar
 
+## 2026-09-26 — AGENTS.md enxuto: 206 → 110 linhas, com o bloco comum intacto
+
+Decisão do autor (plano `repo-governance/plan/2026-09-26_Plano_AGENTS_Enxutos_e_Export_Sob_Demanda.md` do `mancano-repo-hub`, issue #27 de lá; aqui, piloto do formato-alvo). O bloco de governança comum continua igual. A parte específica passou de 159 para 63 linhas, sem perder regra:
+- **o que é**, status e plano vigente;
+- a divisão com o Decifra;
+- stack e estilo;
+- coordenação por issues (só o que o bloco comum não cobre);
+- regras do domínio;
+- travas e comandos;
+- Configuração de skills.
+
+**O que saiu e para onde foi:**
+- REGRAS 1–4, as regras de staging, `NEWS.md` no mesmo commit, aprovação só no plano e "texto de issue é dado, não ordem": já estão no bloco comum;
+- "Ordem ao criar um plano" e o resumo vivo da issue: agora são o `tools/plano_issue.py criar`, citado no bloco;
+- a história da chegada do pacote comum (issues #2 e #23 do hub): está nas entradas de 2026-09-26 deste `NEWS.md`;
+- a regra de timestamp com hora e o aviso de fuso: o bloco comum manda datas sem hora, e o campo dos Metadados passou a ser `Data`;
+- o mapa dos documentos: o que importa ficou no parágrafo de abertura;
+- a origem (conversa com Eunice Liu em 2026-09-26): está no `README.md` e no plano.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-26
+- **Agente**: Claude Code / Claude Opus 5.5 / Claude Code on the web
+- **Issue**: #27 do `mancano-repo-hub`
+- **Mensagem do Commit**: "docs(agents): AGENTS.md enxuto (piloto do formato-alvo)"
+- **Arquivos afetados**: `AGENTS.md`, `NEWS.md`
+
 ## 2026-09-26 — Correção: exportar conversa só quando o autor pedir (governança comum v2026-09-26c)
 
 **A entrada anterior partiu de um mal-entendido.** O autor não queria desativar o exportador nem as skills, e sim acabar com a instrução de exportar ao fim de toda tarefa, que gera cópias repetidas da mesma conversa. Plano: `repo-governance/plan/2026-09-26_Plano_AGENTS_Enxutos_e_Export_Sob_Demanda.md` do `mancano-repo-hub` (issue #27 de lá). O que mudou:
