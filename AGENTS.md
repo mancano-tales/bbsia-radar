@@ -64,7 +64,7 @@ Radar de soluções de IA **brasileiras**, **adaptadas ao português brasileiro*
 
 **Saída:** planilha de candidatos no formato do formulário do BBSIA, com estimativa de maturidade (TRL), mais um relatório do método. Maturidade é coluna, não filtro (combinado com a coordenação: "todos os TRLs").
 
-- **Status**: `ATIVO`, natureza `projeto`. **Privado** até existir um piloto para apresentar à coordenação do BBSIA. Tornar público, transferir ou convidar colaboradores é decisão do autor.
+- **Status**: `ATIVO`, natureza `projeto`. **Público** (decisão do autor, 2026-09-26): tudo o que entra aqui é visível a qualquer um, então nada de rascunho de mensagem pessoal, token ou dado não público. Transferir para uma organização do BBSIA/LIIA ou convidar colaboradores é decisão do autor.
 - **Plano vigente**: [`repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md`](repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md) (issue #1).
 - **Concepção provisória**: o `README.md` e o plano foram escritos sem acesso ao site do BBSIA. Formulário, uso da escala TRL, API/envio em lote e termos de uso **não foram verificados** (issue #2): não trate nada disso como fato antes de a issue #2 fechar.
 

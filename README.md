@@ -73,7 +73,7 @@ O radar é **a parte que produz o corpus**: encontra as soluções, junta o que 
 
 ## Estado
 
-Repositório **privado** e em fase inicial: governança e plano prontos, nenhum código ainda. Plano vigente: [`repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md`](repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md) ([issue #1](../../issues/1)).
+Repositório **público** e em fase inicial: governança e plano prontos, nenhum código ainda. Plano vigente: [`repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md`](repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md) ([issue #1](../../issues/1)).
 
 ## Estrutura
 

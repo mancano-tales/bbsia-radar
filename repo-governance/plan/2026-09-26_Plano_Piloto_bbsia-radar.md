@@ -264,6 +264,7 @@ declarado no relatório.
 2. Quando mandar as perguntas do §3 à coordenação: com o piloto, ou antes, se o WP0a não bastar.
 3. Licença do repositório.
 4. R puro ou R + Python (recomendação: R, e Python só se o `huggingface_hub` fizer falta).
+5. **Visibilidade (2026-09-26, no chat, depois da decisão 1):** "bbsia vai ser público mesmo". O repositório é **público** desde já, e a regra "privado até o piloto" (§3 WP0b e §4) está aposentada. A coordenação continua vendo o projeto com o piloto. Com isso, a licença (item 3) deixa de ser "antes de tornar público" e passa a ser urgente.
 
 ### Rascunho de mensagem para a Eunice
 

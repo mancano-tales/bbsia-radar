@@ -1,5 +1,18 @@
 # NEWS — bbsia-radar
 
+## 2026-09-26 — O repositório é público; aposentada a regra "privado até o piloto"
+
+Decisão do autor, no chat: "bbsia vai ser público mesmo". O repositório já estava público no GitHub. O `AGENTS.md`, o `README.md` e o plano (§13, decisão 5) diziam "privado até o piloto" e foram alinhados. O `AGENTS.md` ganhou o lembrete de que tudo aqui é visível.
+
+No `TODO.md`, o item "tornar público" foi para Concluído. A **licença** passou a ser urgente: sem ela, ninguém pode reusar o código legalmente.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-26
+- **Agente**: Claude Code / Claude Opus 5.5 / Claude Code on the web
+- **Issue**: #1
+- **Mensagem do Commit**: "docs: repositorio publico; aposenta a regra privado ate o piloto"
+- **Arquivos afetados**: `AGENTS.md`, `README.md`, `TODO.md`, `repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md`, `NEWS.md`
+
 ## 2026-09-26 — Governança comum do ecossistema (v2026-09-26d)
 
 Aplicado o bloco de governança comum mantido no hub (`mancano-tales/mancano-repo-hub`, `tools/governanca-comum/`): planos com issue (`tools/plano_issue.py`), base do `NEWS.md` derivada do git (`tools/news_db.py`), aprovação só no chat e no plano, mensagens de agentes como pedido, cabeçalho de agente, branch/PR opcionais, `NEWS.md` junto com a mudança, **datas sem hora** e **exportar conversa só quando o autor pedir**. O bloco fica entre marcadores no `AGENTS.md`; o que é específico deste repositório foi preservado.
