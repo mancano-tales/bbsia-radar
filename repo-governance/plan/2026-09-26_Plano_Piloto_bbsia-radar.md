@@ -189,7 +189,9 @@ documentação e de testes, dono (usuário ou org) e a `location` dele.
 > O Decifra é desenvolvido para dar conta desta tarefa, e o radar é o primeiro caso de uso real dele.
 > Na prática, isso junta as opções A e B da issue #6: o piloto usa o que já existe, e o que faltar é
 > construído **no Decifra**, não contornado aqui. Estado do Decifra conferido em `31f576f`: o codebook
-> multivariável e multirrótulo (R1.1) foi aprovado pelo autor em 2026-09-13, e os passos 1, 2 e 4 já
+> multivariável e multirrótulo (R1.1) foi aprovado pelo autor em 2026-09-13 (§15 da especificação de
+> 2026-09-13; o cabeçalho dela e o `ROADMAP.md` ainda diziam "aguardando", corrigido em
+> decifra-text-as-data#5), e os passos 1, 2 e 4 já
 > estão no `main` (contrato `variables:`/`multi_label`/`max_labels`, validação multirrótulo); **falta o
 > passo 3** (extração, estimativa e banco consumirem as variáveis) e os seguintes (API e interface).
 > Consequências para este plano:
