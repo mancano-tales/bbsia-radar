@@ -6,7 +6,7 @@
 
 Ao conferir o Decifra (`31f576f`), a análise da issue #6 se mostrou desatualizada num ponto. Ela dizia que o Decifra só classifica uma variável por codebook. Na verdade, o codebook multivariável e multirrótulo (R1.1) foi aprovado pelo autor em 2026-09-13 (§15 "Author sign-off (2026-09-13)" da especificação `docs/superpowers/specs/2026-09-13-r1.1-multi-variable-and-multi-label-codebooks-design.md`, em `31f576f`; o cabeçalho da mesma especificação e o `ROADMAP.md` ainda diziam "aguardando aprovação", contradição corrigida no PR mancano-tales/decifra-text-as-data#5) e já tem três de onze passos no `main` (contrato `variables:`/`multi_label`/`max_labels` e validação multirrótulo). Falta a extração passar a usar as variáveis (passo 3) e o que vem depois. O `docs/MVP_STATUS.md` do Decifra, de 2026-09-07, não registra isso; o `docs/ROADMAP.md` registra.
 
-A decisão entrou no `AGENTS.md` (divisão de trabalho, fonte única do codebook aqui, fronteira por arquivos ou pela API local, versão do Decifra registrada em cada rodada), no `README.md` (seção "O radar e o Decifra" e o diagrama) e no plano (§8, com as consequências para WP4 e WP5).
+Revisão do Copilot no PR #7: o item do `TODO.md` que ainda pedia ao autor para escolher entre A, B e C passou a pedir a revisão do que foi decidido, e os dois itens novos ganharam a hora de criação (12:29, a hora do commit `6ade12c`). A decisão entrou no `AGENTS.md` (divisão de trabalho, fonte única do codebook aqui, fronteira por arquivos ou pela API local, versão do Decifra registrada em cada rodada), no `README.md` (seção "O radar e o Decifra" e o diagrama) e no plano (§8, com as consequências para WP4 e WP5).
 
 **Metadados de Execução**:
 - **Data**: 2026-09-26
