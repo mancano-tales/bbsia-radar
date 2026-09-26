@@ -1,5 +1,31 @@
 # NEWS — bbsia-radar
 
+## 2026-09-26 — PR #5 mergeado por agente, com autorização do autor
+
+O autor pediu em chat que o agente mergeasse o PR #5 (codebook v0.1.0 e sementes), já revisado pelo Copilot, com os 8 achados corrigidos. O merge foi feito pelo agente (`1ce0bc0`), com o SHA da cabeça travado em `3f590ac`. A regra "mergear PR exige o autor" continua valendo: aqui o autor exigiu, no chat, que o agente fizesse. Na mesma instrução, o agente mergeou também o PR #5 do `decifra-text-as-data` (só documentação do R1.1), entendendo "o PR5" como os dois PRs de número 5 revisados; se a intenção era só este, aquele merge pode ser revertido. O PR #7 foi atualizado com o `main` e continua aguardando o autor.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-26
+- **Agente**: Claude Code / Claude Opus 5.5 / Claude Code on the web
+- **Issue**: #1, #3, #4
+- **Mensagem do Commit**: "docs(news): registra o merge do PR #5 autorizado pelo autor"
+- **Arquivos afetados**: `NEWS.md`
+
+## 2026-09-26 — O radar produz o corpus, o Decifra classifica
+
+**Decisão do autor** (issue #6): o `bbsia-radar` é a parte que produz o corpus: descoberta, enriquecimento, um documento por solução, regras de triagem, TRL por metadados, deduplicação e entrega. A classificação e a validação humana ficam com o Decifra. E o Decifra passa a ser desenvolvido para dar conta desta tarefa: o que faltar é construído lá, não contornado aqui. O radar vira o primeiro caso de uso real do Decifra.
+
+Ao conferir o Decifra (`31f576f`), a análise da issue #6 se mostrou desatualizada num ponto. Ela dizia que o Decifra só classifica uma variável por codebook. Na verdade, o codebook multivariável e multirrótulo (R1.1) foi aprovado pelo autor em 2026-09-13 (§15 "Author sign-off (2026-09-13)" da especificação `docs/superpowers/specs/2026-09-13-r1.1-multi-variable-and-multi-label-codebooks-design.md`, em `31f576f`; o cabeçalho da mesma especificação e o `ROADMAP.md` ainda diziam "aguardando aprovação", contradição corrigida no PR mancano-tales/decifra-text-as-data#5) e já tem três de onze passos no `main` (contrato `variables:`/`multi_label`/`max_labels` e validação multirrótulo). Falta a extração passar a usar as variáveis (passo 3) e o que vem depois. O `docs/MVP_STATUS.md` do Decifra, de 2026-09-07, não registra isso; o `docs/ROADMAP.md` registra.
+
+Revisão do Copilot no PR #7: o item do `TODO.md` que ainda pedia ao autor para escolher entre A, B e C passou a pedir a revisão do que foi decidido, e os dois itens novos ganharam a hora de criação (12:29, a hora do commit `6ade12c`). A decisão entrou no `AGENTS.md` (divisão de trabalho, fonte única do codebook aqui, fronteira por arquivos ou pela API local, versão do Decifra registrada em cada rodada), no `README.md` (seção "O radar e o Decifra" e o diagrama) e no plano (§8, com as consequências para WP4 e WP5).
+
+**Metadados de Execução**:
+- **Data**: 2026-09-26
+- **Agente**: Claude Code / Claude Opus 5.5 / Claude Code on the web
+- **Issue**: #6
+- **Mensagem do Commit**: "docs: o radar produz o corpus e o Decifra classifica"
+- **Arquivos afetados**: `AGENTS.md`, `README.md`, `repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md`, `TODO.md`, `NEWS.md`
+
 ## 2026-09-26 — Codebook e sementes: correções da revisão do Copilot no PR #5
 
 Os 8 achados da revisão automática procediam; todos foram corrigidos:
