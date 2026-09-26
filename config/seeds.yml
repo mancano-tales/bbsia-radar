@@ -1,0 +1,163 @@
+# ==============================================================================
+# seeds.yml — Sementes curadas e gabarito de recall / curated seeds and recall set
+#
+# (pt) Pontos de partida da descoberta (WP3) e, ao mesmo tempo, GABARITO: toda
+#      entrada em `gabarito` é uma solução que já sabemos que existe. Um coletor
+#      que não a encontra está mal calibrado; o recall contra esta lista vai para
+#      o relatório.
+# (en) Discovery starting points (WP3) and a known-positives set used to measure
+#      collector recall.
+#
+# Issue: #4 · Plano: repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md §6
+#
+# Campo `verificado` / verification field:
+#   existe:  o endereço responde (true/false/null = não conferido)
+#   vinculo: alguém leu a página e confirmou o vínculo com o Brasil/pt-BR
+#            segundo o codebook (true/false/null = não conferido)
+#   em, como: quando e como foi conferido
+# `vinculo: true` exige evidência registrada em `como`: página ou documentação
+# aberta e lida, ou projeto do próprio autor. Nome conhecido, `git ls-remote` ou
+# confirmação em chat não bastam (provam existência ou identidade, não o vínculo).
+# ==============================================================================
+
+versao: "0.1.0"
+data: "2026-09-26"
+issue: 4
+
+# ------------------------------------------------------------------------------
+# 1. Listas curadas / Curated lists — fontes de candidatos, não soluções
+# ------------------------------------------------------------------------------
+listas:
+  - nome: "awesome-open-source-research-tools"
+    url: "https://github.com/mancano-tales/awesome-open-source-research-tools"
+    nota: "Lista do autor. Dados em data/tools.json; itens brasileiros levam a tag `brazil`."
+    verificado: { existe: true, vinculo: true, em: "2026-09-26", como: "clone e leitura de data/tools.json" }
+  - nome: "awesome-Portuguese-NLP"
+    url: "https://github.com/davidsbatista/awesome-Portuguese-NLP"
+    nota: "Mistura pt-PT e pt-BR: cada item passa pelo codebook (exclusão so_pt_pt)."
+    verificado: { existe: true, vinculo: null, em: "2026-09-26", como: "git ls-remote" }
+  - nome: "Portuguese-NLP"
+    url: "https://github.com/ajdavidl/Portuguese-NLP"
+    nota: "Mesma ressalva sobre pt-PT."
+    verificado: { existe: true, vinculo: null, em: "2026-09-26", como: "git ls-remote" }
+
+# ------------------------------------------------------------------------------
+# 2. Gabarito / Known positives — soluções que o radar TEM de encontrar
+# ------------------------------------------------------------------------------
+gabarito:
+  - id_solucao: antrologos-transcritorio
+    nome: "Transcritório"
+    artefatos:
+      - { plataforma: github, url: "https://github.com/antrologos/Transcritorio", papel: codigo }
+    esperado: { e_ia: sim, brasileira: sim, ptbr: sim, tipo_artefato: aplicacao }
+    fonte: "awesome-open-source-research-tools (tag brazil): app local de transcrição e diarização de entrevistas em português brasileiro."
+    verificado: { existe: true, vinculo: null, em: "2026-09-26", como: "git ls-remote; identidade confirmada pelo autor em chat" }
+    nota: "É o transcritor citado pelo autor na conversa com o BBSIA (confirmado em 2026-09-26). Usa o Whisper e o modelo brasileiro Tagarela (em `candidatos_pendentes`)."
+  - id_solucao: lfnovo-open-notebook
+    nome: "Open Notebook"
+    artefatos:
+      - { plataforma: github, url: "https://github.com/lfnovo/open-notebook", papel: codigo }
+    esperado: { e_ia: sim, brasileira: sim, ptbr: incerto, tipo_artefato: aplicacao }
+    fonte: "awesome-open-source-research-tools (tag brazil): alternativa aberta ao NotebookLM, desenvolvida no Brasil."
+    verificado: { existe: true, vinculo: null, em: "2026-09-26", como: "git ls-remote; descrição da lista do autor" }
+  - id_solucao: luizpf42-qualilab
+    nome: "QualiLab"
+    artefatos:
+      - { plataforma: github, url: "https://github.com/LuizPF42/QualiLab", papel: codigo }
+    esperado: { e_ia: incerto, brasileira: sim, ptbr: incerto, tipo_artefato: aplicacao }
+    fonte: "awesome-open-source-research-tools (tag brazil): análise qualitativa e codificação de texto, desenvolvida no Brasil."
+    verificado: { existe: true, vinculo: null, em: "2026-09-26", como: "git ls-remote; descrição da lista do autor" }
+    nota: "Caso de teste do filtro `e_ia`: só entra se usar modelo."
+  - id_solucao: mancano-decifra
+    nome: "Decifra"
+    artefatos:
+      - { plataforma: github, url: "https://github.com/mancano-tales/decifra-text-as-data", papel: codigo }
+    esperado: { e_ia: sim, brasileira: sim, ptbr: incerto, tipo_artefato: aplicacao }
+    fonte: "Projeto do autor: texto não estruturado vira dado categórico via LLM contra codebook, validado contra codificação humana."
+    verificado: { existe: true, vinculo: true, em: "2026-09-26", como: "git ls-remote; projeto do autor" }
+  - id_solucao: neuralmind-bertimbau
+    nome: "BERTimbau"
+    artefatos:
+      - { plataforma: github, url: "https://github.com/neuralmind-ai/portuguese-bert", papel: codigo }
+      - { plataforma: huggingface, url: "https://huggingface.co/neuralmind/bert-base-portuguese-cased", papel: modelo }
+    esperado: { e_ia: sim, brasileira: sim, ptbr: sim, tipo_artefato: modelo }
+    fonte: "Pesquisa web de 2026-09-26 (subagente)."
+    verificado: { existe: true, vinculo: null, em: "2026-09-26", como: "git ls-remote (GitHub); Hugging Face não conferido" }
+  - id_solucao: nkluge-teenytinyllama
+    nome: "TeenyTinyLlama"
+    artefatos:
+      - { plataforma: github, url: "https://github.com/nkluge-correa/TeenyTinyLlama", papel: codigo }
+    esperado: { e_ia: sim, brasileira: sim, ptbr: sim, tipo_artefato: modelo }
+    fonte: "Pesquisa web de 2026-09-26 (subagente)."
+    verificado: { existe: true, vinculo: null, em: "2026-09-26", como: "git ls-remote" }
+  - id_solucao: nkluge-tucano
+    nome: "Tucano"
+    artefatos:
+      - { plataforma: github, url: "https://github.com/nkluge-correa/Tucano", papel: codigo }
+    esperado: { e_ia: sim, brasileira: sim, ptbr: sim, tipo_artefato: modelo }
+    fonte: "Pesquisa web de 2026-09-26 (subagente; artigo arXiv 2411.07854)."
+    verificado: { existe: true, vinculo: null, em: "2026-09-26", como: "git ls-remote" }
+
+# ------------------------------------------------------------------------------
+# 2a. Candidatos pendentes / Pending candidates — sem URL verificada, FORA do
+#     gabarito (não entram no denominador do recall). Sobem para `gabarito`
+#     quando tiverem artefato com URL e `existe: true`.
+# ------------------------------------------------------------------------------
+candidatos_pendentes:
+  - id_solucao: tagarela
+    nome: "Tagarela"
+    artefatos: []          # link a conferir: provavelmente um modelo no Hugging Face
+    esperado: { e_ia: sim, brasileira: incerto, ptbr: sim, tipo_artefato: modelo }
+    fonte: "Autor, 2026-09-26: modelo de transcrição para português brasileiro usado pelo Transcritório."
+    verificado: { existe: null, vinculo: null }
+    nota: "Nome e link a conferir (precisa-rede); a documentação do Transcritório deve citar o repositório exato."
+
+# ------------------------------------------------------------------------------
+# 2b. Gabarito do catálogo do BBSIA / BBSIA catalogue test set (ideia do autor, 2026-09-26)
+#     Soluções JÁ cadastradas no BBSIA que tenham link para GitHub ou Hugging Face.
+#     Dois usos: (1) recall — o radar as encontra sozinho?; (2) validade externa —
+#     a área atribuída pelo BBSIA serve de gabarito para `area_problema`.
+#     Na saída final elas saem como `ja_no_bbsia: sim`. Depende do export (#2).
+#     O autor não cadastrou nenhuma solução à mão (informado em 2026-09-26).
+# ------------------------------------------------------------------------------
+gabarito_bbsia: []
+
+# ------------------------------------------------------------------------------
+# 3. Contas e organizações a varrer / Accounts to crawl
+#    Tudo de cada conta passa pelo codebook: estar aqui dá sinal forte de
+#    `brasileira` só DEPOIS de `vinculo: true`.
+# ------------------------------------------------------------------------------
+contas:
+  github:
+    - { conta: neuralmind-ai, tipo: organizacao, nota: "Empresa brasileira de IA (BERTimbau).", verificado: { existe: true, vinculo: null, em: "2026-09-26", como: "repositório portuguese-bert responde" } }
+    - { conta: nkluge-correa, tipo: usuario, nota: "TeenyTinyLlama, Tucano.", verificado: { existe: true, vinculo: null, em: "2026-09-26", como: "repositórios respondem" } }
+    - { conta: antrologos, tipo: usuario, nota: "Transcritório.", verificado: { existe: true, vinculo: null, em: "2026-09-26", como: "repositório responde" } }
+  huggingface:
+    # Nada conferido: a sessão que escreveu este arquivo não alcançava huggingface.co.
+    - { conta: neuralmind, nota: "BERTimbau.", verificado: { existe: null, vinculo: null } }
+    - { conta: nicholasKluge, nota: "TeenyTinyLlama (nome de conta citado pela pesquisa; conferir a grafia).", verificado: { existe: null, vinculo: null } }
+    - { conta: recogna-nlp, nota: "Citada pela pesquisa web como grupo de PLN com uploads em português.", verificado: { existe: null, vinculo: null } }
+    - { conta: maritaca-ai, nota: "Maritaca AI (Sabiá). Núcleo comercial: ver caso-limite de API pública no codebook.", verificado: { existe: null, vinculo: null } }
+    - { conta: eduagarcia, nota: "Citada como candidata, não confirmada pela pesquisa.", verificado: { existe: null, vinculo: null } }
+    - { conta: pierreguillou, nota: "Citada como candidata, não confirmada pela pesquisa.", verificado: { existe: null, vinculo: null } }
+
+# ------------------------------------------------------------------------------
+# 4. Instituições brasileiras (sinal forte de `brasileira` quando dono do repo)
+#    A preencher com contas verificadas: universidades, ICTs, órgãos públicos
+#    (ex.: grupos de IA de universidades federais e estaduais, Ipea, Serpro,
+#    tribunais). Só entra conta com página aberta e conferida.
+# ------------------------------------------------------------------------------
+instituicoes: []
+
+# ------------------------------------------------------------------------------
+# 5. Referências (não são sementes) / References
+# ------------------------------------------------------------------------------
+referencias:
+  - nome: "Roger-Quinelato/BBSIA"
+    url: "https://github.com/Roger-Quinelato/BBSIA"
+    nota: "Projeto de terceiros (RAG sobre o catálogo do BBSIA, MIT). Útil para entender como o catálogo é lido (issue #2); não é oficial."
+    verificado: { existe: true, em: "2026-09-26", como: "git ls-remote" }
+  - nome: "ipea (organização)"
+    url: "https://github.com/ipea"
+    nota: "Pacotes R de dados oficiais (brverse), da lista do autor. Pelo codebook, e_ia = nao: fonte de dados, não solução do radar (caso-limite `depende_bbsia`)."
+    verificado: { existe: null, vinculo: null, em: "2026-09-26", como: "descrição da lista do autor (não é página aberta)" }

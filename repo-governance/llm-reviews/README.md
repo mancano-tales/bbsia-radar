@@ -1,6 +1,6 @@
 # llm-reviews/ — Conversas com agentes de IA
 
-Exports das sessões de agentes que mudaram algo relevante neste repositório, gerados por `Rscript tools/export_conversa.R <session_uuid> [slug]` (caminhos absolutos são saneados pelo próprio script). Cada export entra na tabela abaixo, com a issue correspondente.
+Exports das sessões de agentes, gerados por `Rscript tools/export_conversa.R <session_uuid> [slug]` **só quando o autor pedir** (uma vez por sessão; nunca ao fim de toda tarefa). Cada export entra na tabela abaixo, com a issue correspondente.
 
 | Arquivo | Data | Agente | Issue | Assunto |
 |---|---|---|---|---|

@@ -14,7 +14,7 @@ tarefas:
   - { desc: "WP0a — Verificar site e formulário do BBSIA com agente que tenha acesso à rede (issue #2)", status: pendente, data: null }
   - { desc: "WP0b — Perguntas à coordenação do BBSIA (Eunice Liu), depois do piloto ou do WP0a", status: pendente, data: null }
   - { desc: "WP1 — Repositório mancano-tales/bbsia-radar (privado) com governança: AGENTS.md, README, TODO, plano, tools, hooks", status: concluido, data: "2026-09-26 11:03" }
-  - { desc: "WP2 — Codebook: o que conta como solução 'brasileira', 'adaptada ao pt-BR' e 'de interesse público adaptável'", status: pendente, data: null }
+  - { desc: "WP2 — Codebook: o que conta como solução 'brasileira', 'adaptada ao pt-BR' e 'de interesse público adaptável' (issue #3; config/codebook.yml v0.1.0, em revisão pelo autor)", status: em_revisao, data: "2026-09-26 11:45" }
   - { desc: "WP3 — Descoberta: coletores GitHub e Hugging Face + sementes curadas (listas awesome, orgs conhecidas)", status: pendente, data: null }
   - { desc: "WP4 — Enriquecimento: metadados, README/model card, sinais de manutenção", status: pendente, data: null }
   - { desc: "WP5 — Classificação (regras + LLM contra o codebook) e validação humana por amostra", status: pendente, data: null }
@@ -133,6 +133,8 @@ mas pode mostrar como o catálogo é lido. Vale olhar no WP0.
 
 ## 5. WP2 — Codebook: o que é "brasileira"
 
+> **2026-09-26 11:45 — v0.1.0 escrita** em [`config/codebook.yml`](../../config/codebook.yml) (issue #3), que passa a ser a referência; a tabela abaixo é o rascunho original. Mudanças em relação a ela: os tipos A, B e C viraram **três marcações independentes** (um modelo pode ser brasileiro e adaptado ao pt-BR); entrou um filtro de entrada `e_ia` (o que conta como IA); as exclusões ganharam `reupload_modelo` (quantizações e cópias no Hugging Face) e `dados_pessoais`; 8 casos-limite têm decisão proposta, 2 dependem do BBSIA. Sementes e gabarito de recall em [`config/seeds.yml`](../../config/seeds.yml) (issue #4).
+
 Escrito **antes** da coleta, porque é ele que decide o que entra. Rascunho:
 
 | Escopo | Critério | Sinais observáveis |
@@ -183,6 +185,23 @@ documentação e de testes, dono (usuário ou org) e a `location` dele.
 
 ## 8. WP5 — Classificação e validação
 
+> **2026-09-26 — Decisão do autor (em chat; issue #6): o radar produz o corpus e o Decifra classifica.**
+> O Decifra é desenvolvido para dar conta desta tarefa, e o radar é o primeiro caso de uso real dele.
+> Na prática, isso junta as opções A e B da issue #6: o piloto usa o que já existe, e o que faltar é
+> construído **no Decifra**, não contornado aqui. Estado do Decifra conferido em `31f576f`: o codebook
+> multivariável e multirrótulo (R1.1) foi aprovado pelo autor em 2026-09-13 (§15 da especificação de
+> 2026-09-13; o cabeçalho dela e o `ROADMAP.md` ainda diziam "aguardando", corrigido em
+> decifra-text-as-data#5), e os passos 1, 2 e 4 já
+> estão no `main` (contrato `variables:`/`multi_label`/`max_labels`, validação multirrótulo); **falta o
+> passo 3** (extração, estimativa e banco consumirem as variáveis) e os seguintes (API e interface).
+> Consequências para este plano:
+> - **WP4** passa a entregar o **corpus do Decifra**: um documento por solução, com os metadados em
+>   texto, mais um CSV com `id_solucao` e o texto;
+> - **WP5** passa a ser: regras de triagem aqui; conversor `config/codebook.yml` → YAML `variables:` do
+>   Decifra; execução e validação humana no Decifra; importação dos resultados de volta;
+> - requisitos do radar abertos como issue no `decifra-text-as-data`.
+> O texto abaixo é o desenho original do WP5, mantido como histórico.
+
 1. **Regras** (baratas) para os casos óbvios: org na lista semente → (a); `language:pt` + "pt-BR"
    → (b); fork sem commits próprios → fora.
 2. **LLM contra o codebook** para o resto: lê descrição e README e devolve escopo, área de problema
@@ -215,6 +234,11 @@ dos casos próximos. Sem export: casar por nome contra uma lista coletada à mã
 declarado no relatório.
 
 ## 11. WP8 — Piloto e entrega
+
+> **2026-09-26 — Teste com o catálogo do BBSIA (ideia do autor).** As soluções já cadastradas no BBSIA
+> que tenham link para GitHub ou Hugging Face formam um segundo gabarito (`config/seeds.yml`,
+> `gabarito_bbsia`): medem o recall da descoberta e servem de gabarito externo para `area_problema`.
+> Depende do export do catálogo (#2). Se entra no WP8 é decisão do autor (issue #6).
 
 1. **Piloto**: uma fonte de cada (um recorte do GitHub e um do HF), ~30 soluções, planilha completa
    no formato do formulário. Mandar à Eunice e **ajustar campos e codebook com o retorno dela antes

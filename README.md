@@ -46,8 +46,9 @@ O piloto começa por **A** e **B**. O tipo **C** exige um critério mais preciso
                          ▼
               2. ENRIQUECIMENTO → descrição, README, licença, atividade
                          ▼
-              3. CLASSIFICAÇÃO → tipo A/B/C, área do problema, resumo
-                         │        (regras + LLM, conferido por amostra humana)
+              3. CLASSIFICAÇÃO → brasileira? pt-BR? é IA? tipo, área
+                         │        (regras do radar + Decifra, conferido
+                         │         por amostra humana no próprio Decifra)
                          ▼
               4. MATURIDADE → TRL provável + sinais de manutenção
                          ▼
@@ -57,6 +58,10 @@ O piloto começa por **A** e **B**. O tipo **C** exige um critério mais preciso
 ```
 
 Antes de rodar tudo, um **piloto com cerca de 30 soluções** vai para a coordenação do BBSIA, para ajustar os campos e o critério.
+
+## O radar e o Decifra
+
+O radar é **a parte que produz o corpus**: encontra as soluções, junta o que se sabe de cada uma e escreve um documento por solução. A **classificação** fica com o [Decifra](https://github.com/mancano-tales/decifra-text-as-data), ferramenta do mesmo autor que transforma texto em dados categóricos com um modelo de linguagem guiado por um livro de códigos explícito e **validado contra codificação humana**. O que o Decifra ainda não faz para este caso (por exemplo, várias perguntas por documento e mais de uma área por solução) é desenvolvido no próprio Decifra, que ganha com isso seu primeiro uso real. Decisão de 26/09/2026 ([issue #6](../../issues/6)).
 
 ## A verificar (issue #2)
 
