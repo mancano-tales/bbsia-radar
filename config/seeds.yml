@@ -49,8 +49,15 @@ gabarito:
       - { plataforma: github, url: "https://github.com/antrologos/Transcritorio", papel: codigo }
     esperado: { e_ia: sim, brasileira: sim, ptbr: sim, tipo_artefato: aplicacao }
     fonte: "awesome-open-source-research-tools (tag brazil): app local de transcrição e diarização de entrevistas em português brasileiro."
-    verificado: { existe: true, vinculo: null, em: "2026-09-26", como: "git ls-remote; descrição da lista do autor" }
-    nota: "Provavelmente o transcritor com Whisper citado pelo autor na conversa com o BBSIA; confirmar na issue #4."
+    verificado: { existe: true, vinculo: true, em: "2026-09-26", como: "git ls-remote; confirmado pelo autor em chat" }
+    nota: "É o transcritor citado pelo autor na conversa com o BBSIA (confirmado em 2026-09-26). Usa o Whisper e o modelo brasileiro Tagarela (ver entrada abaixo)."
+  - id_solucao: tagarela
+    nome: "Tagarela"
+    artefatos: []          # link a conferir: provavelmente um modelo no Hugging Face
+    esperado: { e_ia: sim, brasileira: incerto, ptbr: sim, tipo_artefato: modelo }
+    fonte: "Autor, 2026-09-26: modelo de transcrição para português brasileiro usado pelo Transcritório."
+    verificado: { existe: null, vinculo: null }
+    nota: "Nome e link a conferir (precisa-rede); a documentação do Transcritório deve citar o repositório exato."
   - id_solucao: lfnovo-open-notebook
     nome: "Open Notebook"
     artefatos:
@@ -95,6 +102,16 @@ gabarito:
     esperado: { e_ia: sim, brasileira: sim, ptbr: sim, tipo_artefato: modelo }
     fonte: "Pesquisa web de 2026-09-26 (subagente; artigo arXiv 2411.07854)."
     verificado: { existe: true, vinculo: null, em: "2026-09-26", como: "git ls-remote" }
+
+# ------------------------------------------------------------------------------
+# 2b. Gabarito do catálogo do BBSIA / BBSIA catalogue test set (ideia do autor, 2026-09-26)
+#     Soluções JÁ cadastradas no BBSIA que tenham link para GitHub ou Hugging Face.
+#     Dois usos: (1) recall — o radar as encontra sozinho?; (2) validade externa —
+#     a área atribuída pelo BBSIA serve de gabarito para `area_problema`.
+#     Na saída final elas saem como `ja_no_bbsia: sim`. Depende do export (#2).
+#     O autor não cadastrou nenhuma solução à mão (informado em 2026-09-26).
+# ------------------------------------------------------------------------------
+gabarito_bbsia: []
 
 # ------------------------------------------------------------------------------
 # 3. Contas e organizações a varrer / Accounts to crawl

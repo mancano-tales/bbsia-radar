@@ -185,6 +185,12 @@ documentação e de testes, dono (usuário ou org) e a `location` dele.
 
 ## 8. WP5 — Classificação e validação
 
+> **2026-09-26 — Integração com o Decifra em discussão (issue #6).** Análise: a classificação e a
+> validação são o problema do Decifra; coleta, enriquecimento, TRL por metadados, deduplicação e entrega
+> não são. O Decifra hoje classifica uma variável por codebook. Opções A (Decifra como está, uma
+> variável por execução, CSV de ida e volta; recomendada), B (multivariável no Decifra antes) e C (sem
+> Decifra; não recomendada). **Decisão do autor pendente**, a registrar aqui.
+
 1. **Regras** (baratas) para os casos óbvios: org na lista semente → (a); `language:pt` + "pt-BR"
    → (b); fork sem commits próprios → fora.
 2. **LLM contra o codebook** para o resto: lê descrição e README e devolve escopo, área de problema
@@ -217,6 +223,11 @@ dos casos próximos. Sem export: casar por nome contra uma lista coletada à mã
 declarado no relatório.
 
 ## 11. WP8 — Piloto e entrega
+
+> **2026-09-26 — Teste com o catálogo do BBSIA (ideia do autor).** As soluções já cadastradas no BBSIA
+> que tenham link para GitHub ou Hugging Face formam um segundo gabarito (`config/seeds.yml`,
+> `gabarito_bbsia`): medem o recall da descoberta e servem de gabarito externo para `area_problema`.
+> Depende do export do catálogo (#2). Se entra no WP8 é decisão do autor (issue #6).
 
 1. **Piloto**: uma fonte de cada (um recorte do GitHub e um do HF), ~30 soluções, planilha completa
    no formato do formulário. Mandar à Eunice e **ajustar campos e codebook com o retorno dela antes

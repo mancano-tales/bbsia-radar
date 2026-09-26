@@ -15,9 +15,10 @@
 - [ ] **Autor: ativar o hook de pre-commit no clone local** — `git config core.hooksPath hooks`.
   - Criado: 2026-09-26 11:03 por Claude Opus 5.5
   - Issue: #1
-- [ ] **Autor: revisar o codebook v0.1.0 e as sementes** — decisões `proposta` dos casos-limite, limiar de kappa (0,70), tamanho da amostra (100); confirmar se o Transcritório é o transcritor citado e passar as outras soluções já cadastradas à mão.
+- [ ] **Autor: revisar o codebook v0.1.0 e as sementes** — decisões `proposta` dos casos-limite, limiar de kappa (0,70), tamanho da amostra (100); decidir a integração com o Decifra (issue #6: opções A, B ou C) e se o teste com o catálogo do BBSIA entra no piloto.
   - Criado: 2026-09-26 11:45 por Claude Opus 5.5
-  - Issues: #3, #4 · PR `claude/3-codebook`
+  - Progresso 2026-09-26 (Claude Opus 5.5): autor confirmou o Transcritório (usa Whisper e o modelo Tagarela) e informou que não cadastrou nada à mão no BBSIA.
+  - Issues: #3, #4, #6 · PR #5
 - [ ] **WP2 — Escrever o codebook** (`config/codebook.yml`): tipos A (brasileira), B (adaptada ao pt-BR), C (interesse público), fora; sinais observáveis; unidade = solução, não repositório.
   - Criado: 2026-09-26 11:03 por Claude Opus 5.5
   - Progresso 2026-09-26 11:45 (Claude Opus 5.5): v0.1.0 em `config/codebook.yml`, aguardando revisão do autor.
