@@ -1,5 +1,16 @@
 # NEWS — bbsia-radar
 
+## 2026-09-26 — PR #5 mergeado por agente, com autorização do autor
+
+O autor pediu em chat que o agente mergeasse o PR #5 (codebook v0.1.0 e sementes), já revisado pelo Copilot, com os 8 achados corrigidos. O merge foi feito pelo agente (`1ce0bc0`), com o SHA da cabeça travado em `3f590ac`. A regra "mergear PR exige o autor" continua valendo: aqui o autor exigiu, no chat, que o agente fizesse. Na mesma instrução, o agente mergeou também o PR #5 do `decifra-text-as-data` (só documentação do R1.1), entendendo "o PR5" como os dois PRs de número 5 revisados; se a intenção era só este, aquele merge pode ser revertido. O PR #7 foi atualizado com o `main` e continua aguardando o autor.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-26
+- **Agente**: Claude Code / Claude Opus 5.5 / Claude Code on the web
+- **Issue**: #1, #3, #4
+- **Mensagem do Commit**: "docs(news): registra o merge do PR #5 autorizado pelo autor"
+- **Arquivos afetados**: `NEWS.md`
+
 ## 2026-09-26 — O radar produz o corpus, o Decifra classifica
 
 **Decisão do autor** (issue #6): o `bbsia-radar` é a parte que produz o corpus: descoberta, enriquecimento, um documento por solução, regras de triagem, TRL por metadados, deduplicação e entrega. A classificação e a validação humana ficam com o Decifra. E o Decifra passa a ser desenvolvido para dar conta desta tarefa: o que faltar é construído lá, não contornado aqui. O radar vira o primeiro caso de uso real do Decifra.
