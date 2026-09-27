@@ -2,7 +2,7 @@
 tipo: Plano
 titulo: "Piloto do bbsia-radar: soluções de IA brasileiras no GitHub e no Hugging Face para o BBSIA"
 issue: 1
-status: ATIVO # aprovado pelo autor em 2026-09-26; WP0 aberto (issue #2 e perguntas à coordenação)
+status: ATIVO # aprovado pelo autor em 2026-09-26; WP0a concluído documentalmente; execução do piloto segue pendente
 criado: "2026-09-26 09:15"
 concluido: null
 agentes:
@@ -11,7 +11,7 @@ agentes:
   auditor: null
 autor_humano: "Tales Mançano"
 tarefas:
-  - { desc: "WP0a — Verificar site e formulário do BBSIA com agente que tenha acesso à rede (issue #2)", status: pendente, data: null }
+  - { desc: "WP0a — Verificar site e formulário do BBSIA com fontes (issue #2)", status: concluido, data: "2026-09-26" }
   - { desc: "WP0b — Perguntas à coordenação do BBSIA (Eunice Liu), depois do piloto ou do WP0a", status: pendente, data: null }
   - { desc: "WP1 — Repositório mancano-tales/bbsia-radar (privado) com governança: AGENTS.md, README, TODO, plano, tools, hooks", status: concluido, data: "2026-09-26 11:03" }
   - { desc: "WP2 — Codebook: o que conta como solução 'brasileira', 'adaptada ao pt-BR' e 'de interesse público adaptável' (issue #3; config/codebook.yml v0.1.0, em revisão pelo autor)", status: em_revisao, data: "2026-09-26 11:45" }
@@ -57,21 +57,21 @@ a maturidade vira **coluna**, não filtro.
 
 ### 1.1 O que foi verificado e o que não foi
 
-A pesquisa desta sessão foi por busca na web. **O site do BBSIA, o espelho
-`banco-ia-gov.vercel.app`, os domínios gov.br e o Hugging Face estão bloqueados pela rede do
-contêiner de nuvem** (e o GitHub respondeu 403 sem token). Por isso:
+Pesquisa documental no site público e no formulário, sem envio de dados, em 2026-09-26 (issue #2).
+As fontes primárias consultadas estão ligadas em cada item e detalhadas no comentário de resultado
+da issue.
 
-| Item | Situação |
+| Item | Evidência e limite |
 |---|---|
-| Quem mantém, objetivo, organização por problema | confirmado por notícias (Enap, gestgov, Convergência Digital) |
-| Tamanho do catálogo | um resumo de busca fala em 529 soluções mapeadas; **não conferido** no site |
-| Campos exatos do formulário | **não verificado** |
-| Se o formulário usa a escala TRL | **não verificado** (a conversa com a Eunice indica que sim) |
-| API, exportação em CSV/JSON, envio em lote | **não encontrado** |
-| Termos de uso e licença dos dados do catálogo | **não encontrado** |
+| Formulário | A página pública lista dados de contato/instituição, localização, solução, estágio, uso, abertura/reuso, links e consentimento; os campos de escolha e os obrigatórios foram inspecionados sem submissão. Ver [formulário](https://bancobrasileiro.ia.br/contribuir). |
+| Maturidade | Há estágios descritivos de pesquisa/PoC até uso em produção, mas não campo numérico TRL 1–9. “Todos os TRLs” permanece como orientação verbal da coordenação; TRL no radar é estimativa própria. |
+| Catálogo | Busca por problema, título, órgão e tags; filtros por público (usar ou desenvolver/integrar), tipo (aplicação, código/biblioteca, API, agente, modelo, pipeline, guia/metodologia) e área (Saúde, Educação, Segurança Pública, Meio Ambiente, Gestão Pública, Administração/Processos, Outro). A página mostrava 20 publicadas; `/numeros` mostrava 154 no total, sendo 20 publicadas e 134 em análise. Ver [catálogo](https://bancobrasileiro.ia.br/catalogo). |
+| API/exportação/importação | Nenhuma documentação ou interface pública de exportação/importação foi encontrada; `sitemap.xml` e `robots.txt` não estavam disponíveis. A inspeção de chamadas de rede não foi concluída. Logo, não se conclui que inexista endpoint ou exportação administrativa/restrita. |
+| Termos, privacidade, licença | O [aviso de privacidade](https://bancobrasileiro.ia.br/privacidade) prevê publicação/reuso das informações das soluções e mantém contatos fora das páginas públicas. Não foi encontrada licença específica do catálogo nem termo geral nas páginas consultadas; decisão sobre licença deste projeto (#8) segue com o autor. |
+| Contagem | Na consulta direta de 2026-09-26, home e `/numeros` exibiam 541 mapeadas (351 curadas + 190 integradas), 313 disponíveis e 228 em curadoria. A seção de catálogo indicava 154 no total: 20 publicadas e 134 em análise. Os 190 projetos CNJ/Sinapses são apresentados separadamente; não somar como registros do catálogo curado. Resultados de busca indexados podem estar desatualizados. |
+| `Roger-Quinelato/BBSIA` | Documentação/código descrevem indexação local de PDFs e JSON curado em RAG; não foi observada chamada à base de produção ou API do BBSIA. A ausência de evidência no repositório acessível não exclui sistemas privados. Ver [repositório](https://github.com/Roger-Quinelato/BBSIA). |
 
-Há um repositório de terceiros, `Roger-Quinelato/BBSIA` (RAG sobre o catálogo, MIT). Não é oficial,
-mas pode mostrar como o catálogo é lido. Vale olhar no WP0.
+**Consequência para WP7:** contagens agregadas não permitem deduplicação registro a registro. Antes do piloto, será preciso obter uma lista pública/exportação autorizada ou decidir com o autor um método alternativo e explicitar a limitação. Não iniciar scraping do BBSIA com base nesta pesquisa.
 
 ## 2. Resultado esperado
 
@@ -85,24 +85,17 @@ mas pode mostrar como o catálogo é lido. Vale olhar no WP0.
 
 ## 3. WP0 — Verificar o BBSIA e perguntar à coordenação
 
-**WP0a (issue #2)**: um agente com acesso à rede abre o site e o formulário do BBSIA e responde aqui, com fonte, o que a tabela do §1.1 deixou em aberto. Isso reescreve o `README.md` e o §5 deste plano.
+**WP0a (issue #2)**: concluído como pesquisa documental em 2026-09-26. As respostas aos sete itens e as fontes estão no comentário de resultado da issue, no `README.md` (“O que verificamos no BBSIA”) e no §1.1. Permanecem não comprovadas a existência de API/exportação pública, a inspeção das chamadas de rede e uma licença específica do catálogo. A investigação não autoriza scraping nem contato com a coordenação.
 
-**WP0b**: decisão do autor de 2026-09-26: o repositório fica privado e a coordenação vê o projeto **quando houver um piloto para mostrar**. As perguntas abaixo vão junto com o piloto (ou antes, se o WP0a não responder o essencial):
+**WP0b**: decisão do autor de 2026-09-26: o repositório fica privado e a coordenação vê o projeto **quando houver um piloto para mostrar**. A pesquisa documental não encontrou API/exportação pública nem licença específica do catálogo; essas lacunas ficam para confirmar quando o piloto estiver pronto, sem contatar a coordenação agora:
 
-1. **Formulário**: pode mandar a lista de campos (ou um export em branco) e quais são obrigatórios?
-   Em especial: o campo de TRL (escala 1–9?), área/problema, órgão/instituição, licença, link.
-2. **Envio em lote**: existe API ou importação por planilha? Se não, a equipe prefere receber uma
-   planilha no formato dos campos e importar do lado dela?
-3. **Catálogo atual**: dá para receber um export (nome + URL) para deduplicar? Sem ele, a
-   deduplicação (WP7) é por nome, com mais erro.
-4. **Quem aparece como proponente**: cadastramos em nome de terceiros (o dono do repositório não
-   pediu para entrar)? A equipe avisa os autores? Isso define se coletamos contato. **Recomendação:
-   não coletar e-mail nem dado pessoal além do nome público do repositório/organização** (LGPD).
-5. **Escopo (c)**: "de interesse público que poderia ser adaptado" inclui projetos estrangeiros sem
+1. **Envio/deduplicação**: existe API, importação por planilha ou export público/autorizado (nome + URL)? Sem uma lista registro a registro, não deduplicar usando apenas contagens agregadas.
+2. **Termos/licença**: que licença ou termos se aplicam aos dados públicos do catálogo e às informações submetidas? O aviso de privacidade, sozinho, não define licença de reutilização.
+3. **Proponente**: cadastramos em nome de terceiros (o dono do repositório não pediu para entrar)? A equipe avisa os autores? A recomendação de minimização permanece: não coletar e-mail nem dado pessoal além do nome público do dono do repositório/organização.
+4. **Escopo (c)**: "de interesse público que poderia ser adaptado" inclui projetos estrangeiros sem
    nenhum vínculo com o Brasil? Isso muda o volume em uma ordem de grandeza. Recomendação: só entram
    no piloto os escopos (a) e (b); o (c) vem depois, com critério escrito.
-6. **Onde mora o repositório**: na conta do autor, numa organização do BBSIA/LIIA, ou numa
-   organização a criar? Licença preferida?
+5. **Momento de apresentação**: decisão vigente: mostrar o projeto à coordenação somente quando houver piloto, salvo se o autor decidir diferente.
 
 ## 4. WP1 — Repositório do projeto (feito em 2026-09-26)
 
@@ -136,6 +129,13 @@ mas pode mostrar como o catálogo é lido. Vale olhar no WP0.
 > **2026-09-26 11:45 — v0.1.0 escrita** em [`config/codebook.yml`](../../config/codebook.yml) (issue #3), que passa a ser a referência; a tabela abaixo é o rascunho original. Mudanças em relação a ela: os tipos A, B e C viraram **três marcações independentes** (um modelo pode ser brasileiro e adaptado ao pt-BR); entrou um filtro de entrada `e_ia` (o que conta como IA); as exclusões ganharam `reupload_modelo` (quantizações e cópias no Hugging Face) e `dados_pessoais`; 8 casos-limite têm decisão proposta, 2 dependem do BBSIA. Sementes e gabarito de recall em [`config/seeds.yml`](../../config/seeds.yml) (issue #4).
 
 Escrito **antes** da coleta, porque é ele que decide o que entra. Rascunho:
+
+> **Referência observada no BBSIA (issue #2, 2026-09-26):** o formulário oferece estágios
+> descritivos (pesquisa/PoC, desenvolvimento/protótipo, em teste e em produção), não uma escala
+> numérica TRL 1–9. O catálogo público usa áreas e tipos próprios e busca orientada ao problema;
+> consultar o comentário da issue #2 e o `README.md` para os valores observados. Isso serve de
+> comparação para o mapeamento, mas não altera automaticamente o codebook. Os casos-limite pendentes
+> da issue #9 continuam reservados ao autor.
 
 | Escopo | Critério | Sinais observáveis |
 |---|---|---|

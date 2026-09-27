@@ -2,7 +2,7 @@
 
 **Radar de soluções de inteligência artificial brasileiras que ainda não estão no Banco Brasileiro de Soluções de IA.**
 
-> ⚠️ **Concepção provisória (2026-09-26).** Este texto foi escrito antes de conseguirmos abrir o site e o formulário do BBSIA. O que está marcado como *a verificar* depende da [issue #2](../../issues/2). Vai mudar.
+> **Verificação documental (2026-09-26; issue #2).** O site e o formulário foram consultados sem enviar dados. As respostas e os limites da evidência estão registrados abaixo e na issue. Contagens são retratos da data, não dados exportados.
 
 ---
 
@@ -63,13 +63,49 @@ Antes de rodar tudo, um **piloto com cerca de 30 soluções** vai para a coorden
 
 O radar é **a parte que produz o corpus**: encontra as soluções, junta o que se sabe de cada uma e escreve um documento por solução. A **classificação** fica com o [Decifra](https://github.com/mancano-tales/decifra-text-as-data), ferramenta do mesmo autor que transforma texto em dados categóricos com um modelo de linguagem guiado por um livro de códigos explícito e **validado contra codificação humana**. O que o Decifra ainda não faz para este caso (por exemplo, várias perguntas por documento e mais de uma área por solução) é desenvolvido no próprio Decifra, que ganha com isso seu primeiro uso real. Decisão de 26/09/2026 ([issue #6](../../issues/6)).
 
-## A verificar (issue #2)
+## O que verificamos no BBSIA (issue #2)
 
-- Quais campos o formulário do BBSIA pede, e quais são obrigatórios.
-- Se o formulário usa a escala TRL, e como.
-- Se existe API ou importação por planilha (para não cadastrar uma a uma, à mão).
-- Se o catálogo atual pode ser exportado (para a deduplicação).
-- Termos de uso dos dados do catálogo.
+1. **Formulário:** pede identificação de contato e instituição, localização, descrição e tipo da solução,
+   área, estágio de desenvolvimento, uso por outras organizações, abertura/reutilização, links e
+   disposição para compartilhar conhecimento ou código. Há campos opcionais sobre tecnologia,
+   financiamento, soberania, dados e resultados; e consentimento de privacidade. Os menus incluem
+   nível de governo, UF, tecnologia, tipo de ativo, área, uso, estágio e abertura. Não preenchemos nem
+   enviamos o formulário. [Formulário](https://bancobrasileiro.ia.br/contribuir).
+2. **Maturidade:** o formulário apresenta estágios descritivos — de pesquisa/PoC a uso em produção —,
+   não uma seleção numérica de TRL 1–9. “Todos os TRLs” continua sendo o escopo conversado com a
+   coordenação; a coluna TRL do radar será uma estimativa própria, claramente identificada.
+3. **Catálogo:** organiza as soluções pelo problema que resolvem e permite busca por problema, título,
+   órgão e tags. Os filtros são público (“quero usar” ou “quero desenvolver/integrar”), tipo
+   (aplicação, código/biblioteca, API, agente, modelo, pipeline e guia/metodologia) e área (Saúde,
+   Educação, Segurança Pública, Meio Ambiente, Gestão Pública, Administração/Processos e Outro).
+   Na consulta, a página indicava 20 publicadas; a página de números mostrava 154 no catálogo,
+   divididas em 20 publicadas e 134 em análise. [Catálogo](https://bancobrasileiro.ia.br/catalogo).
+4. **API e exportação:** não encontramos documentação nem botão público de exportação CSV/JSON ou
+   importação em lote nas páginas públicas consultadas. `sitemap.xml` e `robots.txt` não estavam
+   disponíveis no site na consulta; a inspeção das chamadas de rede não foi concluída. Portanto,
+   **não está confirmado** que não exista endpoint, exportação interna ou acesso restrito. O aviso de
+   privacidade menciona exportações administrativas, o que não equivale a download público.
+5. **Termos, privacidade e licença:** o [aviso de privacidade](https://bancobrasileiro.ia.br/privacidade)
+   diz que informações sobre as soluções podem ser publicadas e reutilizadas e que contatos não são
+   públicos. Não encontramos termo de uso ou licença específica do catálogo nas páginas consultadas.
+   Isso não decide a licença deste repositório (#8).
+6. **Contagens em 2026-09-26:** a home e a página “Números do banco” mostravam 541 soluções mapeadas
+   (351 curadas e 190 integradas), 313 disponíveis e 228 em curadoria. A seção de catálogo mostrava
+   154 no total (20 publicadas, 134 em análise); os números variam com a atualização e resultados
+   indexados podem estar defasados.
+   Os 190 projetos do Judiciário (CNJ/Sinapses) aparecem em seção própria e têm origem distinta; não
+   os somamos ao catálogo curado. [Números do banco](https://bancobrasileiro.ia.br/numeros) ·
+   [Judiciário](https://bancobrasileiro.ia.br/judiciario).
+7. **Repositório `Roger-Quinelato/BBSIA`:** a documentação e o código consultados descrevem um RAG
+   local que indexa PDFs e um JSON curado local de soluções para busca; não encontramos evidência de
+   que ele baixe o banco de produção ou use API do BBSIA. Isso descreve o repositório público
+   consultado, não exclui processos privados ou outros sistemas.
+   [Repositório e documentação](https://github.com/Roger-Quinelato/BBSIA).
+
+**Implicação para o piloto:** a deduplicação depende de uma fonte autorizada e reproduzível para o
+catálogo atual. Até que isso seja esclarecido, o radar não deve tratar contagens agregadas como uma
+lista de registros nem iniciar scraping do site. A pesquisa sobre o BBSIA foi separada da futura
+implementação dos coletores (#10).
 
 ## Estado
 

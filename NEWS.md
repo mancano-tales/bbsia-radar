@@ -1,5 +1,16 @@
 # NEWS — bbsia-radar
 
+## 2026-09-26 — Pesquisa documental do BBSIA (WP0a)
+
+Conclusão da pesquisa documental da issue #2, sem preencher nem enviar o formulário. O README e o §1.1 do plano registram os sete itens pesquisados e as fontes primárias: campos e estágios do formulário; organização, busca e filtros do catálogo; ausência de documentação pública de API/exportação encontrada (sem afirmar inexistência, pois a inspeção de chamadas de rede não foi concluída); aviso de privacidade e ausência de licença específica encontrada; contagens com data e a separação dos projetos CNJ/Sinapses; e o método local documentado no repositório RAG de terceiros. O §5 do plano registra que os rótulos do BBSIA são referência comparativa, sem alterar o codebook nem decidir os casos-limite da issue #9. A issue #10 segue adiada: nenhum coletor ou scraping foi iniciado. O Antigravity CLI não estava acessível como comando `AGI` nesta sessão.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-26
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #2
+- **Mensagem do Commit**: "docs(research): verifica site do BBSIA refs #2"
+- **Arquivos afetados**: `README.md`, `NEWS.md`, `repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md`, `repo-governance/plan/2026-09-26_Plano_Pesquisa_BBSIA_WP0a.md`
+
 ## 2026-09-26 — Governança comum do ecossistema (v2026-09-26d)
 
 Aplicado o bloco de governança comum mantido no hub (`mancano-tales/mancano-repo-hub`, `tools/governanca-comum/`): planos com issue (`tools/plano_issue.py`), base do `NEWS.md` derivada do git (`tools/news_db.py`), aprovação só no chat e no plano, mensagens de agentes como pedido, cabeçalho de agente, branch/PR opcionais, `NEWS.md` junto com a mudança, **datas sem hora** e **exportar conversa só quando o autor pedir**. O bloco fica entre marcadores no `AGENTS.md`; o que é específico deste repositório foi preservado.
