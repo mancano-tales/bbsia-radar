@@ -1,5 +1,28 @@
 # NEWS — bbsia-radar
 
+## 2026-09-27 — Planeja relatórios Quarto e atualiza a descrição do radar
+
+A descrição curta da seção About do GitHub estava vazia e agora explica em português que o radar
+identifica soluções de IA brasileiras ou adaptadas ao português brasileiro e prepara candidatas para
+revisão no BBSIA. O README recebeu a mesma delimitação e informa que os relatórios futuros serão
+gerados em Quarto nos formatos HTML e PDF, com publicação automática no GitHub Pages após a entrada
+de dados revisados e aprovados. A proposta está no plano ligado à issue #17; não implementa o site,
+não inicia coleta e deixa a implantação pública para uma aprovação posterior.
+
+A revisão do TODO moveu para concluído os registros do WP0c, da primeira versão do codebook e do
+conversor/exportador do corpus, entregas que já estavam documentadas no README, no NEWS ou no código.
+Também esclareceu que os coletores existem mas a execução em volume continua pendente. O
+`CHANGELOG.md` foi regenerado pelo script oficial para incluir os commits recentes. A proposta Quarto
+separa resultados curados do cache externo, prevê proveniência e limita o workflow a renderizar dados
+versionados, sem chamar APIs nem classificação por LLM.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #17
+- **Mensagem do Commit**: `docs(report): planeja site Quarto do radar refs #17`
+- **Arquivos afetados**: `README.md`, `TODO.md`, `NEWS.md`, `CHANGELOG.md`, `repo-governance/plan/README.md`, `repo-governance/plan/2026-09-27_Plano_Website_Quarto.md`
+
 ## 2026-09-27 — Mantém a raiz local de cache fora da issue pública
 
 O plano agora pede que os termos GitHub e a conta HF sejam confirmados na issue #14, mas que a raiz

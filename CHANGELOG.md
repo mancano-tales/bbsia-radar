@@ -16,6 +16,7 @@ Arquivo DERIVADO do `git log`. Não edite à mão — a fonte editorial é o `NE
 
 ## Changed
 
+- **`[96673df]` 2026-09-27** — docs: protege caminho local do cache refs #14
 - **`[d3e09e6]` 2026-09-27** — docs: registra integracao dos controles refs #14
 - **`[2fde87e]` 2026-09-27** — docs(plan): ativa coleta exploratoria refs #14
 - **`[23a2c66]` 2026-09-27** — docs(plan): propõe coleta exploratória limitada refs #1 #10 #12

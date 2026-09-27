@@ -1,6 +1,6 @@
 # bbsia-radar
 
-**Radar de soluções de inteligência artificial brasileiras que ainda não estão no Banco Brasileiro de Soluções de IA.**
+**Radar que encontra e documenta soluções de IA brasileiras, adaptadas ao português brasileiro ou de interesse público que possam ser adaptadas, ainda ausentes do Banco Brasileiro de Soluções de IA (BBSIA). Busca projetos no GitHub e no Hugging Face e prepara candidatas para revisão humana.**
 
 > **Verificação documental (2026-09-26; issue #2).** O site e o formulário foram consultados sem enviar dados. As respostas e os limites da evidência estão registrados abaixo e na issue. Contagens são retratos da data, não dados exportados.
 
@@ -161,6 +161,10 @@ decifra_codebook <- codebook_para_decifra()
 ```
 
 Os coletores usam apenas as APIs oficiais: [GitHub REST](https://docs.github.com/en/rest) e [Hugging Face Hub](https://huggingface.co/docs/hub/api). O corpus exportado por padrão fica na pasta externa `bbsia-radar/exports/`, não no git, e contém um texto citável por solução; a função não classifica automaticamente e não envia nada ao BBSIA. A dimensão de interesse público permanece fora do YAML enquanto estiver marcada como não avaliável no codebook. Os testes com fixtures executam sem rede: `Rscript -e "testthat::test_dir('tests/testthat')"`.
+
+## Relatórios e site público (planejado)
+
+Depois que houver execuções revisadas, o diretório `report/` poderá gerar um relatório em Quarto com a mesma edição em HTML e PDF. Ele apresentará os resultados aprovados, a data e a cobertura de cada rodada, links para as fontes e os limites da análise. Os dados publicados serão versões pequenas, revisadas e documentadas em `data/`; o cache bruto continuará fora do repositório. Um workflow do GitHub Actions poderá renderizar o Quarto e atualizar o GitHub Pages quando uma nova versão revisada dos dados entrar na branch principal. Este plano ainda não implementa o site nem inicia a coleta.
 
 ## Estrutura
 
