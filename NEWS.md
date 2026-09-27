@@ -1,5 +1,19 @@
 # NEWS — bbsia-radar
 
+## 2026-09-27 — Mantém a raiz local de cache fora da issue pública
+
+O plano agora pede que os termos GitHub e a conta HF sejam confirmados na issue #14, mas que a raiz
+local de cache seja confirmada no chat privado do autor. A issue registra apenas que a raiz existe,
+é gravável e fica fora do checkout; seu caminho absoluto pode conter dado pessoal e não deve ser
+publicado. Nenhuma chamada de coleta foi feita.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #14
+- **Mensagem do Commit**: `docs: protege caminho local do cache refs #14`
+- **Arquivos afetados**: `CHANGELOG.md`, `NEWS.md`, `repo-governance/plan/2026-09-27_Plano_Coleta_Exploratoria.md`
+
 ## 2026-09-27 — Integra os controles da coleta exploratória
 
 A PR #16 integrou os controles exploratórios na `main` pelo commit `c1835b1`. A revisão estática por

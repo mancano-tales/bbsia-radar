@@ -204,9 +204,11 @@ Não conceder diretórios adicionais, não pedir ao agente para executar os cole
    estão disponíveis. `MANCANO_BBSIA_RADAR_ROOT` ainda está vazio; não há cache configurado. Outra
    sessão Codex reportou uma biblioteca R sem os pacotes do projeto. As chamadas públicas GitHub e
    Hugging Face são anônimas; nenhum token é necessário ou lido pelos coletores.
-6. **Pendente — fixar a consulta e executar a amostra.** O autor ainda precisa confirmar os dois
-   termos GitHub, a conta HF e a raiz de cache exata. Até isso estar registrado na issue #14, não fazer
-   consultas de candidatos. Usar apenas os limites acima.
+6. **Pendente — fixar a consulta e executar a amostra.** O autor ainda precisa confirmar na issue #14
+   até dois termos GitHub e a conta HF. A raiz local de cache precisa ser confirmada no chat privado do
+   autor como existente, gravável e externa ao checkout; não publicar seu caminho absoluto pessoal na
+   issue. Até os parâmetros estarem confirmados, não fazer consultas de candidatos. Usar apenas os
+   limites acima.
 7. **Pendente — revisar e decidir.** Avaliar relevância, duplicatas entre plataformas, campos ausentes, erros e
    ruído. O autor decide se a próxima rodada amplia consultas e tamanho. Coleta ampliada, uso de dados
    dos módulos do BBSIA e deduplicação registro a registro ficam fora desta aprovação inicial.
