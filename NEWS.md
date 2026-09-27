@@ -1,5 +1,19 @@
 # NEWS — bbsia-radar
 
+## 2026-09-27 — Abre PR para incluir sementes brasileiras curadas
+
+A branch `codex/14-brazil-list` e o PR #20 foram publicados para revisão, com o commit `17297e3`.
+A issue #14 foi atualizada com o estado do PR, os termos e a conta aprovados, os três itens
+brasileiros da lista global e o próximo passo. A amostra de candidatos continua sem execução; o
+merge do PR fica com o autor.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #14
+- **Mensagem do Commit**: `docs: registra PR de sementes brasileiras refs #14`
+- **Arquivos afetados**: `CHANGELOG.md`, `NEWS.md`
+
 ## 2026-09-27 — Inclui sementes brasileiras da lista global do autor
 
 A coleta exploratória agora pode consultar individualmente pela API oficial do GitHub os três
