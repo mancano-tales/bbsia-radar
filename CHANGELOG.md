@@ -19,6 +19,7 @@ Arquivo DERIVADO do `git log`. Não edite à mão — a fonte editorial é o `NE
 
 ## Changed
 
+- **`[c0b6f94]` 2026-09-27** — docs(changelog): sincroniza changelog apos integracao refs #14
 - **`[b2636ed]` 2026-09-27** — docs(plan): registra lacuna de cobertura hf refs #14
 - **`[fc19155]` 2026-09-27** — docs(plan): registra primeira amostra exploratoria refs #14
 - **`[cfa17cf]` 2026-09-27** — docs: registra PR de sementes brasileiras refs #14

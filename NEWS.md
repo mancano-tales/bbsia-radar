@@ -1,5 +1,15 @@
 # NEWS — bbsia-radar
 
+## 2026-09-27 — Corrige assunto de commit no NEWS
+
+A auditoria com tools/news_db.py identificou acentos no metadado que não existem no assunto real do commit. O campo foi alinhado ao Git e o CHANGELOG foi regenerado para incluir o commit anterior de sincronização.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #14
+- **Mensagem do Commit**: `fix(news): corrige assunto declarado do changelog refs #14`
+- **Arquivos afetados**: `CHANGELOG.md`, `NEWS.md`
 ## 2026-09-27 — Sincroniza o changelog após integração
 
 Depois do merge 5983f13, o renderizador foi executado novamente sobre o histórico integrado. O CHANGELOG gerado passou a incluir os commits GitLab e as mudanças de documentação dos dois lados da integração, totalizando 38 entradas.
@@ -8,7 +18,7 @@ Depois do merge 5983f13, o renderizador foi executado novamente sobre o históri
 - **Data**: 2026-09-27
 - **Agente**: Codex / GPT-6 / desktop
 - **Issue**: #14
-- **Mensagem do Commit**: `docs(changelog): sincroniza changelog após integração refs #14`
+- **Mensagem do Commit**: `docs(changelog): sincroniza changelog apos integracao refs #14`
 - **Arquivos afetados**: `CHANGELOG.md`, `NEWS.md`
 ## 2026-09-27 — Integra sementes curadas e cobertura GitLab
 
