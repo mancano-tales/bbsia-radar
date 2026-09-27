@@ -1,5 +1,23 @@
 # NEWS — bbsia-radar
 
+## 2026-09-27 — Propõe proteção contra caminhos absolutos
+
+O autor estabeleceu que caminhos absolutos de máquina não devem ser publicados. A inspeção confirmou
+que o hook local atual cobre só parte das linhas adicionadas e possui exclusões e isenção. No
+GitHub.com, um status check pode bloquear o merge, mas só depois de a branch pública receber o push;
+os hooks de pre-receive documentados pelo GitHub são para GitHub Enterprise Server. O plano em
+proposta apresenta alternativas e aguarda decisão do autor sobre a garantia necessária. Não houve
+mudança em código nem nas regras remotas do repositório. A tentativa de criar uma issue dedicada foi
+recusada pela integração GitHub (`403 Resource not accessible by integration`) e o `gh` local está
+sem autenticação válida; a proposta deve ser levada à issue relacionada #1 pelo autor.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #1 (relacionada; proposta aguardando aprovação)
+- **Mensagem do Commit**: `docs(security): propoe bloqueio de caminhos absolutos refs #1`
+- **Arquivos afetados**: `CHANGELOG.md`, `NEWS.md`, `TODO.md`, `repo-governance/plan/README.md`, `repo-governance/plan/2026-09-27_Plano_Protecao_Caminhos_Absolutos.md`
+
 ## 2026-09-27 — Planeja relatórios Quarto e atualiza a descrição do radar
 
 A descrição curta da seção About do GitHub estava vazia e agora explica em português que o radar

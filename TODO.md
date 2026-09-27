@@ -30,6 +30,11 @@
   - Issue: #4 · Plano §6
 
 ## Prospectivo
+- [ ] **Proteção contra publicação de caminhos absolutos** — decidir e aplicar uma barreira para impedir que conteúdo Git com caminho absoluto de máquina alcance o repositório público; confirmar se o requisito é bloquear merges ou garantir que qualquer ref pública só receba conteúdo validado por um fluxo privado.
+  - Criado: 2026-09-27 10:53 por Codex / GPT-6 / desktop
+  - Progresso 2026-09-27: o `hooks/pre-commit` atual examina só linhas adicionadas ao stage, ignora `hooks/` e `tools/` e aceita uma isenção. Um Actions pode bloquear o merge, mas roda após a branch pública receber o push. A documentação de pre-receive refere-se ao GitHub Enterprise Server; não foi identificado hook de conteúdo equivalente configurável no GitHub.com. A integração GitHub recusou criação de issue com `403 Resource not accessible by integration`; `gh` local está sem autenticação válida. A proposta está em `repo-governance/plan/2026-09-27_Plano_Protecao_Caminhos_Absolutos.md`, em rascunho; levar à conversa da issue #1 e aguardar aprovação do autor antes de executar.
+  - Issue relacionada: #1
+
 - [ ] **WP3–WP4 — ampliar coletores e enriquecimento após a amostra exploratória** — as funções de descoberta e enriquecimento já existem; a execução em volume depende da revisão dos resultados da issue #14 e dos limites acordados no plano do piloto.
   - Criado: 2026-09-26 11:03 por Claude Opus 5.5
   - Progresso 2026-09-27: a primeira implementação dos coletores foi integrada pela PR #13; a PR #16 acrescentou limites para uma rodada pequena. A execução real ainda não começou.
