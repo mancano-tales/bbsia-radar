@@ -1,40 +1,20 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# pre-commit — verificações de governança do bbsia-radar
-#
-# (pt) Recusa o commit quando:
-#   1. há arquivos no stage e o NEWS.md não está entre eles (co-commit obrigatório);
-#   2. uma linha adicionada contém caminho absoluto de máquina.
-# (en) Rejects the commit when NEWS.md is not staged alongside other files, or
-#      when an added line contains a machine-specific absolute path.
-#
-# Ativar uma vez por clone / enable once per clone:
-#   git config core.hooksPath hooks
-# Linhas com o marcador `nolint: abs-path` são aceitas (para documentar padrões).
+# pre-commit — governança do bbsia-radar
+# Exige NEWS.md junto com mudanças e bloqueia caminhos absolutos em linhas novas.
+# Ative no clone com: git config core.hooksPath hooks
 # ==============================================================================
-
+set -u
+set -o pipefail
 staged=$(git diff --cached --name-only --diff-filter=ACMR)
 [ -z "$staged" ] && exit 0
-
 falhou=0
-
-# --- 1. NEWS.md no mesmo commit / NEWS.md in the same commit ---
 if ! printf '%s\n' "$staged" | grep -qx 'NEWS.md'; then
-  echo "pre-commit: NEWS.md precisa entrar no mesmo commit (AGENTS.md, REGRA 3)." >&2
+  echo "pre-commit: NEWS.md precisa entrar no mesmo commit (regra do AGENTS.md)." >&2
   falhou=1
 fi
-
-# --- 2. Caminhos absolutos / absolute paths ---
-# (pt) tools/ e hooks/ ficam de fora: vêm do template e descrevem esses padrões.
-# (en) tools/ and hooks/ are skipped: they come from the template and describe
-#      these very patterns.
-padrao='[A-Za-z]:[\\/]+Users[\\/]|/home/[a-z_][a-z0-9_-]*/|/Users/[A-Za-z]'
-achados=$(git diff --cached -U0 --diff-filter=ACMR -- . ':(exclude)tools/*' ':(exclude)hooks/*' \
-  | grep -E '^\+[^+]' | grep -Ev 'nolint: abs-path' | grep -E "$padrao")
-if [ -n "$achados" ]; then
-  echo "pre-commit: caminho absoluto em linha adicionada (use caminho relativo, here::here() ou variável de ambiente):" >&2
-  printf '%s\n' "$achados" >&2
+if ! git diff --cached --no-ext-diff --no-color --unified=0 --diff-filter=ACMR -- \
+  | bash tools/check-absolute-paths.sh; then
   falhou=1
 fi
-
-exit $falhou
+exit "$falhou"
