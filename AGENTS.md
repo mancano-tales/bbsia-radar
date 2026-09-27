@@ -66,7 +66,7 @@ Radar de soluções de IA **brasileiras**, **adaptadas ao português brasileiro*
 
 - **Status**: `ATIVO`, natureza `projeto`. **Público** (decisão do autor, 2026-09-26): tudo o que entra aqui é visível a qualquer um, então nada de rascunho de mensagem pessoal, token ou dado não público. Transferir para uma organização do BBSIA/LIIA ou convidar colaboradores é decisão do autor.
 - **Plano vigente**: [`repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md`](repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md) (issue #1).
-- **Concepção provisória**: o `README.md` e o plano foram escritos sem acesso ao site do BBSIA. Formulário, uso da escala TRL, API/envio em lote e termos de uso **não foram verificados** (issue #2): não trate nada disso como fato antes de a issue #2 fechar.
+- **Pesquisa do BBSIA**: a verificação documental inicial foi concluída na issue #2 e está registrada no `README.md` e no plano §1.1/§5; consulte as fontes e os limites antes de usar os achados. Não se confirmou uma API/exportação pública nem a licença do catálogo, e a leitura ampliada pré-coleta continua no WP0c do plano. Não trate ausência de documentação pública como prova de inexistência de endpoint ou de permissão para reutilizar registros.
 
 ### O radar produz o corpus, o Decifra classifica (issue #6)
 
@@ -80,6 +80,7 @@ Radar de soluções de IA **brasileiras**, **adaptadas ao português brasileiro*
 
 - R 4.4+ com tidyverse (`gh`, `httr2`, `purrr`, `dplyr`, `tidyr`, `stringdist`; `targets` se o pipeline crescer) para coleta, corpus e entrega. A classificação roda no Decifra (Python). Python aqui só se faltar uma biblioteca de verdade (ex.: `huggingface_hub`), justificado na issue.
 - Estilo tidyverse, com **comentários explicativos extensos em português e inglês**. Funções pequenas em `R/`, com testes em `tests/`. Scripts numerados em `scripts/` só chamam funções.
+- **Agentes Gemini (Antigravity CLI `agy`)**: para descobrir o CLI, selecionar modelos, fazer pesquisa web, delegar subtarefas e revisar evidências, consulte [`repo-governance/agentes-gemini.md`](repo-governance/agentes-gemini.md). A disponibilidade de modelos e ferramentas varia por sessão; valide com `agy --help`, `agy models` e `agy agents`. Use Flash 3.8 para exploração inicial e Pro como revisão independente, sempre conferindo as fontes primárias. Não use `--dangerously-skip-permissions`.
 
 ### Coordenação por issues (além do bloco comum)
 
