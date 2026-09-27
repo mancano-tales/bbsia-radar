@@ -18,9 +18,10 @@
   - Atualização 2026-09-27 17:27: a amostra exploratória já foi coletada nas três fontes, mas não foi incorporada ao site porque ainda depende do Decifra e de revisão humana. A PR #18 descreve GitHub, Hugging Face e GitLab.com e mantém vazias as páginas públicas de candidatos. O deploy continua protegido pela variável de aprovação.
   - Plano ativo: `repo-governance/plan/2026-09-27_Plano_Website_Quarto.md` · Issue: #17
 
-- [ ] **Issue #14 — amostra exploratória limitada** — registrar os termos GitHub, a conta HF e a raiz de cache aprovados; depois executar a rodada limitada prevista no plano.
+- [ ] **Issue #14 — analisar e revisar a amostra exploratória** — coleta concluída nas APIs GitHub, Hugging Face e GitLab.com; concluir Decifra, TRL, revisão humana e comparação com o BBSIA antes de publicar.
   - Criado: 2026-09-27 09:30 por Codex / GPT-6 / desktop
   - Progresso 2026-09-27: os controles de orçamento e validação offline foram integrados pela PR #16 em `main` (`c1835b1`); a suíte offline passou. Nenhuma coleta real foi feita. A rodada aguarda termos GitHub, conta HF e raiz de cache aprovados pelo autor.
+  - Atualização 2026-09-27 20:02: 104 URLs únicas (GitHub 101, GitLab 1, HF 2), dez documentos selecionados, nove lidos e 17/25 tentativas reservadas; BERTimbau no GitHub ficou parcial (100/134). A amostra segue fora do Git e aguarda classificação e revisão.
   - Plano ativo: `repo-governance/plan/2026-09-27_Plano_Coleta_Exploratoria.md` · Issue: #14
 
 - [ ] **Decifra: requisitos do caso de uso bbsia-radar** — terminar o R1.1 (passo 3 em diante) e os outros itens da issue aberta no `decifra-text-as-data`; desenvolvido lá.

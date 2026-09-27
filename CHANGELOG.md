@@ -6,6 +6,8 @@ Arquivo DERIVADO do `git log`. Não edite à mão — a fonte editorial é o `NE
 
 ## Added
 
+- **`[17297e3]` 2026-09-27** — feat(collectors): inclui sementes brasileiras da lista curada refs #14
+- **`[4fa2bb4]` 2026-09-27** — feat(security): reduz risco de caminhos absolutos refs #1
 - **`[262fd5d]` 2026-09-27** — feat(report): cria site Quarto e deploy protegido refs #17
 - **`[f3fdf23]` 2026-09-27** — feat(collectors): limita amostra exploratoria refs #14
 - **`[2ea74ec]` 2026-09-27** — feat(collectors): implement discovery and Decifra corpus refs #10
@@ -19,7 +21,9 @@ Arquivo DERIVADO do `git log`. Não edite à mão — a fonte editorial é o `NE
 ## Changed
 
 - **`[0518433]` 2026-09-27** — docs(report): align Quarto pages with GitLab sample refs #17
+- **`[cfa17cf]` 2026-09-27** — docs: registra PR de sementes brasileiras refs #14
 - **`[ec99f4a]` 2026-09-27** — docs(report): entrega PR Quarto para revisao refs #17
+- **`[ab2f779]` 2026-09-27** — docs(cache): configura raiz local para coleta exploratoria refs #14
 - **`[4a8a8fb]` 2026-09-27** — docs(security): propoe protecao contra caminhos absolutos refs #1
 - **`[2609d81]` 2026-09-27** — docs(report): planeja site Quarto do radar refs #17
 - **`[96673df]` 2026-09-27** — docs: protege caminho local do cache refs #14

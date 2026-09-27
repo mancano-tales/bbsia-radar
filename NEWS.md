@@ -1,5 +1,19 @@
 # NEWS — bbsia-radar
 
+## 2026-09-27 — Atualiza o status da amostra exploratória
+
+O TODO e o índice de planos registram a coleta ampliada da issue #14: 104 URLs únicas (101 GitHub,
+1 GitLab e 2 Hugging Face), dez documentos selecionados, nove lidos e 17 de 25 tentativas
+reservadas. A busca GitHub de BERTimbau foi parcial (100 de 134). A amostra segue fora do repositório
+e do relatório público enquanto aguarda classificação no Decifra, estimativa de TRL, revisão humana
+e comparação com o BBSIA.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #17
+- **Mensagem do Commit**: docs(report): synchronize exploratory status refs #17
+- **Arquivos afetados**: CHANGELOG.md, NEWS.md, TODO.md, repo-governance/plan/README.md
 ## 2026-09-27 — Executa a primeira amostra pública das APIs
 
 A primeira execução dos coletores usou os termos GitHub aprovados `Transcritorio` e `BERTimbau`, a
