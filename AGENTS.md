@@ -60,7 +60,7 @@ _(regras próprias deste repositório; prevalecem sobre o bloco acima em caso de
 
 ### O que é
 
-Radar de soluções de IA **brasileiras**, **adaptadas ao português brasileiro** ou **de interesse público adaptáveis**, publicadas no GitHub e no Hugging Face, que **ainda não estão** no [Banco Brasileiro de Soluções de IA (BBSIA)](https://bancobrasileiro.ia.br/). O BBSIA é mantido pelo LIIA/Enap com Ibict e CIIA.
+Radar de soluções de IA **brasileiras**, **adaptadas ao português brasileiro** ou **de interesse público adaptáveis**, publicadas no GitHub, Hugging Face ou GitLab.com, que **ainda não estão** no [Banco Brasileiro de Soluções de IA (BBSIA)](https://bancobrasileiro.ia.br/). O BBSIA é mantido pelo LIIA/Enap com Ibict e CIIA.
 
 **Saída:** planilha de candidatos no formato do formulário do BBSIA, com estimativa de maturidade (TRL), mais um relatório do método. Maturidade é coluna, não filtro (combinado com a coordenação: "todos os TRLs").
 
@@ -95,7 +95,7 @@ Radar de soluções de IA **brasileiras**, **adaptadas ao português brasileiro*
 ### Regras do domínio
 
 - **Segredos**: `GITHUB_PAT` e `HF_TOKEN` só em variável de ambiente (`.Renviron` local, no `.gitignore`).
-- **Coleta responsável**: só APIs oficiais (GitHub REST/GraphQL, Hugging Face Hub). Respeite o rate limit e guarde toda resposta em cache em disco. `User-Agent` identifica o projeto; sem raspar HTML quando há API.
+- **Coleta responsável**: só APIs oficiais (GitHub REST/GraphQL, Hugging Face Hub e GitLab REST API v4 no GitLab.com). Respeite o rate limit e guarde toda resposta em cache em disco. `User-Agent` identifica o projeto; sem raspar HTML quando há API.
 - **LGPD**: só metadados públicos de repositórios e organizações; **nunca e-mail** nem dado pessoal além do nome público do dono.
 - **Dados**: o cache bruto das APIs fica fora do git (`.data-source` + `MANCANO_BBSIA_RADAR_ROOT`, resolvedor em `mancano-repo-hub/tools/data-source/`). Em `data/` entram só saídas pequenas e revisadas.
 - **Nada é enviado ao BBSIA** (formulário, API, e-mail) sem o autor no momento.

@@ -1,5 +1,26 @@
 # NEWS — bbsia-radar
 
+## 2026-09-27 — Integra GitLab e executa amostra exploratória
+
+O autor aprovou no chat a inclusão do GitLab.com como terceira fonte e a amostra limitada. A rodada
+consultou GitHub/GitLab por `Transcritorio` e `BERTimbau` e modelos HF da conta `neuralmind`;
+encontrou 104 URLs únicas (GitHub 101, GitLab 1, HF 2), selecionou dez documentos, leu nove e
+reservou 17/25 tentativas. A busca GitHub de BERTimbau foi parcial (100 de 134). Não houve erros
+HTTP, 14 registros vieram sem descrição e o escaneamento dos arquivos exportados não encontrou
+e-mails. O cache e o relatório exploratório continuam fora do git. A amostra ainda não passou pelo
+Decifra, revisão humana, comparação com o BBSIA ou aprovação para publicação; nada foi enviado ao
+BBSIA e o Pages não foi ativado. Após revisão GPT-Sol, o coletor passou a fixar o README GitLab pelo
+commit anunciado no HEAD, impor o teto de 256 KiB antes do cache, filtrar cabeçalhos e expirar erros
+transitórios. A suíte offline final passou com 183 testes, sem falhas ou avisos de teste. A issue #14 não pôde ser atualizada porque a
+API retornou 403 e o `gh` local não tem autenticação válida.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #14
+- **Mensagem do Commit**: feat(collectors): add GitLab discovery refs #14
+- **Arquivos afetados**: AGENTS.md, DESCRIPTION, NEWS.md, README.md, R/cache.R, R/coletar_github.R, R/coletar_gitlab.R, R/enriquecer_documentos.R, R/montar_corpus.R, TODO.md, repo-governance/agentes-gemini.md, repo-governance/plan/README.md, repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md, repo-governance/plan/2026-09-27_Plano_Coleta_Exploratoria.md, repo-governance/plan/2026-09-27_Plano_GitLab_Radar.md, tests/fixtures/gitlab_projects.json, tests/testthat/test-cache.R, tests/testthat/test-collectors.R, tests/testthat/test-gitlab.R, CHANGELOG.md
+
 ## 2026-09-27 — Aprova e implementa mitigação contra caminhos absolutos
 
 O autor aprovou no chat a opção A: reduzir a chance de publicar caminhos absolutos sem criar um fluxo privado nem prometer garantia literal. Foi adicionado um scanner compartilhado, conectado aos hooks pre-commit e pre-push e a um workflow de verificação de pull requests. O scanner informa somente arquivo relativo e linha, sem copiar o conteúdo detectado. Os hooks estão ativados neste clone, com LF garantido para o shell; o workflow ainda precisa ser marcado como status check obrigatório nas configurações do GitHub para bloquear merges. A autenticação do gh está inválida e a API está inacessível nesta sessão; por isso, o anúncio na issue #1 e a configuração remota ficam pendentes. Nenhum histórico foi reescrito.

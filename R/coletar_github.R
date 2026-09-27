@@ -142,9 +142,7 @@ bind_github_items <- function(pages) {
 }
 
 github_seed_terms <- function(seeds) {
-  list_names <- purrr::map_chr(seeds$listas %||% list(), ~ .x$nome)
-  repo_names <- purrr::map_chr(seeds$gabarito %||% list(), ~ sub(".*/", "", .x$artefatos[[1]]$url))
-  unique(c(list_names, repo_names))
+  radar_seed_search_terms(seeds)
 }
 
 coletar_github <- function(seeds_path = "config/seeds.yml",

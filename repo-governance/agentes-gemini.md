@@ -155,9 +155,9 @@ seção de coordenação deste `AGENTS.md` e a governança do hub.
 - Não conceda diretórios extras sem necessidade e não use `--dangerously-skip-permissions`. Se uma
   alteração de arquivo for explicitamente autorizada, limite-a aos arquivos citados na tarefa e
   revise `git diff` antes de aceitar o resultado.
-- A pesquisa do agente não substitui os coletores oficiais do radar: coleta de repositórios continua
-  usando as APIs oficiais do GitHub e Hugging Face, com rate limits e cache externo conforme este
-  `AGENTS.md`.
+- A pesquisa do agente não substitui os coletores oficiais do radar: coleta de repositórios e modelos
+  continua usando as APIs oficiais do GitHub, Hugging Face e GitLab.com, com rate limits e cache
+  externo conforme este `AGENTS.md`.
 - Em uma sessão Codex restrita, o Antigravity CLI pode falhar ao acessar o perfil/configuração local
   e reportar que não há login. No teste deste projeto, a execução pelo shell restrito também mostrou
   `Access is denied`; uma execução autorizada fora da sandbox conseguiu usar o CLI. Não altere arquivos

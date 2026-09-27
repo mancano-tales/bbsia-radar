@@ -12,9 +12,13 @@
   - Plano ativo: repo-governance/plan/2026-09-27_Plano_Protecao_Caminhos_Absolutos.md · Issue: #1
 
 
-- [ ] **Issue #14 — amostra exploratória limitada** — registrar os termos GitHub, a conta HF e a raiz de cache aprovados; depois executar a rodada limitada prevista no plano.
+- [ ] **Issue #14 — analisar e revisar a amostra exploratória limitada** — coleta inicial concluída nas APIs GitHub, Hugging Face e GitLab.com; concluir o fluxo Decifra, estimar TRL, validar manualmente e comparar com o BBSIA antes de publicar qualquer resultado.
   - Criado: 2026-09-27 09:30 por Codex / GPT-6 / desktop
   - Progresso 2026-09-27: os controles de orçamento e validação offline foram integrados pela PR #16 em `main` (`c1835b1`); a suíte offline passou. Nenhuma coleta real foi feita. A rodada aguarda termos GitHub, conta HF e raiz de cache aprovados pelo autor.
+  - Progresso 2026-09-27 16:15: o autor aprovou no chat GitHub/GitLab `Transcritorio` e `BERTimbau`, HF `neuralmind`, até 25 tentativas reservadas e dez documentos; inclusão GitLab implementada na branch `codex/14-gitlab-radar`, suíte offline com 166 testes aprovada e cache externo validado. A coleta exploratória limitada foi iniciada.
+  - Atualização 2026-09-27 17:27: amostra coletada: 104 URLs únicas (GitHub 101, GitLab 1, HF 2), dez documentos selecionados e 17/25 tentativas reservadas. A busca BERTimbau do GitHub ficou parcial (100/134); a suíte offline atual passou com 181 testes após revisão de segurança/cache. Dados e relatório ficam fora do git. Decifra, TRL, revisão humana, comparação com o BBSIA e publicação continuam pendentes.
+  - Atualização 2026-09-27 19:48: revisão final confirmou a correção de expiração HTTP-date no cache; suíte offline passou com 183 testes, zero falhas e zero avisos de teste.
+  - Coordenação: a issue #14 não pôde ser atualizada nesta sessão (API de integração retornou 403 e gh sem autenticação); o autor deve copiar este anúncio e o resultado à issue após revisar a PR.
   - Plano ativo: `repo-governance/plan/2026-09-27_Plano_Coleta_Exploratoria.md` · Issue: #14
 
 - [ ] **Decifra: requisitos do caso de uso bbsia-radar** — terminar o R1.1 (passo 3 em diante) e os outros itens da issue aberta no `decifra-text-as-data`; desenvolvido lá.
@@ -35,11 +39,11 @@
 ## Prospectivo
 - [ ] **WP3–WP4 — ampliar coletores e enriquecimento após a amostra exploratória** — as funções de descoberta e enriquecimento já existem; a execução em volume depende da revisão dos resultados da issue #14 e dos limites acordados no plano do piloto.
   - Criado: 2026-09-26 11:03 por Claude Opus 5.5
-  - Progresso 2026-09-27: a primeira implementação dos coletores foi integrada pela PR #13; a PR #16 acrescentou limites para uma rodada pequena. A execução real ainda não começou.
+  - Progresso 2026-09-27: a primeira implementação dos coletores foi integrada pela PR #13; a PR #16 acrescentou limites para uma rodada pequena. A amostra limitada já foi coletada; ampliação depende da revisão dos resultados.
   - Plano §6–§7
-- [ ] **Website e relatório público em Quarto (HTML + PDF)** — depois que a primeira rodada gerar dados revisados, montar o relatório em `report/` e automatizar a publicação no GitHub Pages a partir das saídas aprovadas.
+- [ ] **Website e relatório público em Quarto (HTML + PDF)** — o site está em implementação na PR #18; depois que os dados da amostra passarem por classificação e revisão humana, automatizar a publicação no GitHub Pages a partir das saídas aprovadas.
   - Criado: 2026-09-27 10:52 por Codex / GPT-6 / desktop
-  - Plano proposto: `repo-governance/plan/2026-09-27_Plano_Website_Quarto.md` · Issue: #17 (aguarda aprovação do autor)
+  - Plano aprovado no chat em 2026-09-27 e em implementação: `repo-governance/plan/2026-09-27_Plano_Website_Quarto.md` · Issue: #17 · PR: #18
 - [ ] **WP5 — Classificação e validação humana** (regras + LLM contra o codebook, método do `decifra-text-as-data`; amostra codificada pelo autor, kappa no relatório).
   - Criado: 2026-09-26 11:03 por Claude Opus 5.5
   - Plano §8

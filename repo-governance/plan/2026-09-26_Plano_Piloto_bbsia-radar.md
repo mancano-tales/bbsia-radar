@@ -17,7 +17,7 @@ tarefas:
   - { desc: "Guia operacional do Antigravity CLI para pesquisa e revisão de agentes Gemini (autorizado pelo autor no chat; issue #1)", status: concluido, data: "2026-09-27" }
   - { desc: "WP0c — Leitura ampliada e inspeção pública pequena do BBSIA (issue #1; revisão de escopo na #12)", status: concluido, data: "2026-09-27" }
   - { desc: "WP2 — Codebook: o que conta como solução 'brasileira', 'adaptada ao pt-BR' e 'de interesse público adaptável' (issue #9; v0.1.1 com dois casos pendentes)", status: em_revisao, data: "2026-09-27" }
-  - { desc: "WP3 — Descoberta: coletores GitHub e Hugging Face + sementes curadas (listas awesome, orgs conhecidas)", status: pendente, data: null }
+  - { desc: "WP3 — Descoberta: coletores GitHub, Hugging Face e GitLab.com + sementes curadas (listas awesome, orgs conhecidas)", status: pendente, data: null }
   - { desc: "WP4 — Enriquecimento: metadados, README/model card, sinais de manutenção", status: pendente, data: null }
   - { desc: "WP5 — Classificação (regras + LLM contra o codebook) e validação humana por amostra", status: pendente, data: null }
   - { desc: "WP6 — Maturidade estimada (TRL provável) a partir de metadados", status: pendente, data: null }
@@ -86,7 +86,7 @@ Os módulos não são intercambiáveis:
 | Formulário e privacidade | A contribuição pede e-mail institucional e nome, além de organização/localização, problema, solução, tipo, estágio, abertura, soberania, dados, links e resultados. O aviso diz que dados de contato não são públicos e recomenda não inserir dados pessoais de terceiros, segredos, credenciais ou bases completas. | Formulário permaneceu intocado. O radar nunca coleta e-mail; dados de contato da submissão humana não fazem parte da coleta automatizada de metadados públicos. Não enviar candidatos ou preencher em nome de terceiros. |
 
 **Escopo vigente por decisão do autor (2026-09-27):** manter o corpus como soluções de IA que passem pelo
-codebook, descobertas por APIs oficiais do GitHub e Hugging Face. Excluir a seção do Judiciário/CNJ/Sinapses
+codebook, descobertas por APIs oficiais do GitHub, Hugging Face e GitLab.com. Excluir a seção do Judiciário/CNJ/Sinapses
 de descoberta, contexto, validação e deduplicação. Recursos reutilizáveis, fontes de dados e modelos não
 passam a ser soluções por aparecerem no mesmo site; uma possível função contextual ou como sementes será
 submetida ao autor na issue #12. A decisão não altera o codebook.

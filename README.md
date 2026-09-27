@@ -1,6 +1,6 @@
 # bbsia-radar
 
-**Radar que encontra e documenta soluções de IA brasileiras, adaptadas ao português brasileiro ou de interesse público que possam ser adaptadas, ainda ausentes do Banco Brasileiro de Soluções de IA (BBSIA). Busca projetos no GitHub e no Hugging Face e prepara candidatas para revisão humana.**
+**Radar que encontra e documenta soluções de IA brasileiras, adaptadas ao português brasileiro ou de interesse público que possam ser adaptadas, ainda ausentes do Banco Brasileiro de Soluções de IA (BBSIA). Busca projetos no GitHub, Hugging Face e GitLab.com e prepara candidatas para revisão humana.**
 
 > **Verificação documental (2026-09-26; issue #2).** O site e o formulário foram consultados sem enviar dados. As respostas e os limites da evidência estão registrados abaixo e na issue. Contagens são retratos da data, não dados exportados.
 
@@ -10,11 +10,11 @@
 
 O [Banco Brasileiro de Soluções de IA (BBSIA)](https://bancobrasileiro.ia.br/) reúne soluções de IA úteis ao setor público (ministérios, prefeituras, universidades, institutos de pesquisa) e as organiza **pelo problema que resolvem**, não pela tecnologia usada. É mantido pelo Laboratório de Inovação em Inteligência Artificial (LIIA) da Enap, com o Ibict e o CIIA. O objetivo é que uma solução criada num lugar possa ser reaproveitada em outro.
 
-Hoje, uma solução entra no banco quando alguém preenche o formulário à mão. Mas muita coisa relevante já está publicada, aberta, em plataformas como o **GitHub** (código) e o **Hugging Face** (modelos e bases de dados de IA): transcritores para o português, modelos de linguagem treinados em português brasileiro, softwares livres de pesquisa, ferramentas feitas por universidades e órgãos públicos. Essas soluções ficam dispersas, e quem precisa delas no setor público muitas vezes não sabe que existem.
+Hoje, uma solução entra no banco quando alguém preenche o formulário à mão. Mas muita coisa relevante já está publicada, aberta, em plataformas como o **GitHub** e o **GitLab.com** (código) e o **Hugging Face** (modelos e bases de dados de IA): transcritores para o português, modelos de linguagem treinados em português brasileiro, softwares livres de pesquisa, ferramentas feitas por universidades e órgãos públicos. Essas soluções ficam dispersas, e quem precisa delas no setor público muitas vezes não sabe que existem.
 
 ## A proposta
 
-Usar as interfaces oficiais (APIs) do GitHub e do Hugging Face para **encontrar, descrever e organizar** essas soluções, e entregar ao BBSIA uma lista de candidatos pronta para revisão, no formato do formulário. A ideia foi combinada com a coordenação do BBSIA (Eunice Liu, Enap) em 26/09/2026.
+Usar as interfaces oficiais (APIs) do GitHub, do Hugging Face e do GitLab.com para **encontrar, descrever e organizar** essas soluções, e entregar ao BBSIA uma lista de candidatos pronta para revisão, no formato do formulário. A ideia foi combinada com a coordenação do BBSIA (Eunice Liu, Enap) em 26/09/2026.
 
 Três tipos de solução interessam:
 
@@ -37,11 +37,10 @@ O piloto começa por **A** e **B**. O tipo **C** exige um critério mais preciso
 ## Como vai funcionar
 
 ```
-  sementes curadas          GitHub API             Hugging Face API
- (listas, orgs conhecidas)  (tópicos, texto,       (modelos, datasets e
-          │                  local do autor)        spaces em português)
-          └──────────────┬──────────┴───────────────────┘
-                         ▼
+  sementes curadas       GitHub API       Hugging Face API      GitLab.com API
+ (listas e soluções)  (código e texto)  (modelos e datasets)  (projetos públicos)
+          └──────────────────┬──────────────────────────────┘
+                             ▼
               1. DESCOBERTA  → lista bruta de candidatos
                          ▼
               2. ENRIQUECIMENTO → descrição, README, licença, atividade
@@ -130,7 +129,8 @@ projeto, mas não amplia automaticamente a unidade de análise do radar nem auto
 | [Contribuir](https://bancobrasileiro.ia.br/contribuir) e [aviso de privacidade](https://bancobrasileiro.ia.br/privacidade) | O formulário pede e-mail institucional e nome; cargo e telefone são apresentados como opcionais, além de órgão, localização, problema, descrição, tipo de ativo, maturidade, abertura, soberania, dados, links, resultados e disposição para compartilhar. O aviso diz que informações da solução podem ser públicas, mas contatos não; dados pessoais de contato ficam restritos à coordenação. | Formulário não foi preenchido nem enviado. O radar nunca coleta e-mail; campos de contato são uma diferença explícita entre a submissão humana e a descoberta automatizada por metadados públicos. |
 
 **Escopo vigente por decisão do autor (2026-09-27):** o radar procura soluções que satisfaçam o
-codebook em GitHub/Hugging Face. A seção do Judiciário/CNJ/Sinapses está excluída: não será fonte de
+codebook em GitHub, Hugging Face e GitLab.com. A descoberta inicial no GitLab usa somente a API
+oficial do GitLab.com e não cobre instâncias self-managed. A seção do Judiciário/CNJ/Sinapses está excluída: não será fonte de
 descoberta, deduplicação, validação ou contexto do projeto. Recursos reutilizáveis, fontes de dados e
 modelos permanecem categorias diferentes de soluções; podem informar contexto ou sementes somente
 depois da decisão de escopo registrada na issue #12. Seus links e licenças continuam pertencendo às
@@ -148,23 +148,40 @@ As funções de API e cache dependem de pacotes R descritos em [`DESCRIPTION`](D
 source("R/cache.R")
 source("R/coletar_github.R")
 source("R/coletar_hf.R")
+if (file.exists("R/coletar_gitlab.R")) source("R/coletar_gitlab.R")
+source("R/enriquecer_documentos.R")
 source("R/montar_corpus.R")
 source("R/codebook_para_decifra.R")
 
-# Uma coleta é uma ação explícita de rede. Prefira primeiro limitar e revisar
-# as consultas; todas as respostas brutas permanecem no cache externo.
-github <- coletar_readme_github(coletar_github())
-hf <- coletar_readme_hf(coletar_hf())
-corpus <- montar_corpus(github, hf)
+# A rodada exploratória autorizada consulta apenas termos das sementes e
+# mantém as respostas brutas no cache externo. O teto total é 25 tentativas
+# e dez documentos entre as três fontes.
+budget <- radar_novo_orcamento()
+github <- coletar_github(search_terms = c("Transcritorio", "BERTimbau"), budget = budget)
+hf <- coletar_hf(account = "neuralmind", budget = budget)
+sources <- list(github = github, huggingface = hf)
+if (exists("coletar_gitlab", mode = "function")) {
+  gitlab <- coletar_gitlab(search_terms = c("Transcritorio", "BERTimbau"), budget = budget)
+  sources$gitlab <- gitlab
+}
+documents <- coletar_readmes_exploratorios(dplyr::bind_rows(sources), budget = budget)$documents
+corpus_inputs <- list(
+  github = dplyr::filter(documents, platform == "github"),
+  huggingface = dplyr::filter(documents, platform == "huggingface")
+)
+if ("gitlab" %in% names(formals(montar_corpus))) {
+  corpus_inputs$gitlab <- dplyr::filter(documents, platform == "gitlab")
+}
+corpus <- do.call(montar_corpus, corpus_inputs)
 salvar_corpus_decifra(corpus)
 decifra_codebook <- codebook_para_decifra()
 ```
 
-Os coletores usam apenas as APIs oficiais: [GitHub REST](https://docs.github.com/en/rest) e [Hugging Face Hub](https://huggingface.co/docs/hub/api). O corpus exportado por padrão fica na pasta externa `bbsia-radar/exports/`, não no git, e contém um texto citável por solução; a função não classifica automaticamente e não envia nada ao BBSIA. A dimensão de interesse público permanece fora do YAML enquanto estiver marcada como não avaliável no codebook. Os testes com fixtures executam sem rede: `Rscript -e "testthat::test_dir('tests/testthat')"`.
+Os coletores usam apenas as APIs oficiais: [GitHub REST](https://docs.github.com/en/rest), [Hugging Face Hub](https://huggingface.co/docs/hub/api) e [GitLab REST API v4](https://docs.gitlab.com/api/). O corpus exportado por padrão fica na pasta externa `bbsia-radar/exports/`, não no git, e contém um texto citável por solução; a função não classifica automaticamente e não envia nada ao BBSIA. A dimensão de interesse público permanece fora do YAML enquanto estiver marcada como não avaliável no codebook. Os testes com fixtures executam sem rede: `Rscript -e "testthat::test_dir('tests/testthat')"`.
 
-## Relatórios e site público (planejado)
+## Relatórios e site público
 
-Depois que houver execuções revisadas, o diretório `report/` poderá gerar um relatório em Quarto com a mesma edição em HTML e PDF. Ele apresentará os resultados aprovados, a data e a cobertura de cada rodada, links para as fontes e os limites da análise. Os dados publicados serão versões pequenas, revisadas e documentadas em `data/`; o cache bruto continuará fora do repositório. Um workflow do GitHub Actions poderá renderizar o Quarto e atualizar o GitHub Pages quando uma nova versão revisada dos dados entrar na branch principal. Este plano ainda não implementa o site nem inicia a coleta.
+O site Quarto em `report/` gera HTML e PDF a partir do mesmo conteúdo. O workflow do GitHub Actions está preparado para renderizar o site e atualizar o Pages quando dados revisados entrarem em `data/relatorios/`; por enquanto, essa mudança apenas recompila as páginas informativas, porque o leitor e o esquema dos dados ainda precisam ser implementados. A publicação continua desativada até o autor inspecionar o primeiro artefato e habilitar a aprovação. Uma amostra exploratória já foi coletada nas três plataformas, mas ainda não passou pelo Decifra nem por revisão humana e, por isso, não aparece como lista pública de candidatos. O relatório apresentará cobertura, data da rodada, fontes e limites depois da validação. O cache bruto e os READMEs continuam fora do Git.
 
 ## Estrutura
 
