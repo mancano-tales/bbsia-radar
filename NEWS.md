@@ -1,5 +1,15 @@
 # NEWS — bbsia-radar
 
+## 2026-09-27 — Primeiro esqueleto dos coletores e corpus Decifra
+
+Adicionadas funções R para consultas paginadas às APIs oficiais do GitHub e do Hugging Face, cache JSON fora do git sob `MANCANO_BBSIA_RADAR_ROOT`, montagem de documentos citáveis por solução e conversão de `config/codebook.yml` ao formato R1.1 do Decifra. Os testes usam fixtures locais, sem rede, e verificam allow-list de campos (sem e-mail), paginação, fatiamento das buscas GitHub e limites multirrótulo da área. O escopo exclui explicitamente páginas e registros de CNJ/Sinapses. A execução de coleta real em volume permanece sob revisão; nada é enviado ao BBSIA.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #10
+- **Mensagem do Commit**: `feat(collectors): implement discovery and Decifra corpus refs #10`
+- **Arquivos afetados**: `.data-source`, `DESCRIPTION`, `NAMESPACE`, `NEWS.md`, `README.md`, `R/cache.R`, `R/codebook_para_decifra.R`, `R/coletar_github.R`, `R/coletar_hf.R`, `R/montar_corpus.R`, `tests/fixtures/github_search.json`, `tests/fixtures/hf_models.json`, `tests/fixtures/seeds_minimal.yml`, `tests/testthat.R`, `tests/testthat/helper-load.R`, `tests/testthat/test-cache.R`, `tests/testthat/test-collectors.R`, `tests/testthat/test-corpus-codebook.R`
 ## 2026-09-27 — Documenta uso do Antigravity CLI para agentes Gemini
 
 O `AGENTS.md` agora aponta para um guia operacional que registra o executável `agy`, as opções e

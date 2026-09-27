@@ -1,0 +1,7 @@
+export(coletar_github)
+export(coletar_hf)
+export(coletar_readme_github)
+export(coletar_readme_hf)
+export(montar_corpus)
+export(salvar_corpus_decifra)
+export(codebook_para_decifra)
