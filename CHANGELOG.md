@@ -6,6 +6,7 @@ Arquivo DERIVADO do `git log`. Não edite à mão — a fonte editorial é o `NE
 
 ## Added
 
+- **`[f3fdf23]` 2026-09-27** — feat(collectors): limita amostra exploratoria refs #14
 - **`[2ea74ec]` 2026-09-27** — feat(collectors): implement discovery and Decifra corpus refs #10
 - **`[241e112]` 2026-09-26** — feat(config): codebook v0.1.0 e sementes curadas
 

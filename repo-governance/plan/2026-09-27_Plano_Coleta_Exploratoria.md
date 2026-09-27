@@ -29,9 +29,10 @@ submissão ao BBSIA.
   `94bad301563c153e4be64cba3cc9b99e2b52203c`; a issue #10 foi fechada. A implementação dos
   coletores está disponível, mas ainda precisa de limites explícitos para uma amostra pequena.
 - A documentação aprovada foi integrada pela PR #15 no commit `fa7c5e5462808ee6ead0ae977809ecab7cefc5d1`.
-- A implementação dos limites está na branch `codex/14-guardrails-coleta`; a suíte offline cobre
-  orçamento compartilhado, paginação, seleção determinística, cache externo, respostas vazias e
-  bloqueios de itens privados.
+- A implementação dos limites foi integrada pela PR #16 em `main` no commit
+  `c1835b1d6d126420bb85636dae9b28eafa9e1bb3`; a suíte offline cobre orçamento compartilhado,
+  paginação, seleção determinística, cache externo, respostas vazias, erros HTTP e bloqueios de itens
+  privados.
   Nenhuma consulta de candidatos foi executada.
 - A issue #12 continua sem decisão sobre o uso dos módulos adjacentes do BBSIA como contexto ou
   sementes.
@@ -41,8 +42,8 @@ submissão ao BBSIA.
 - O autor aprovou este plano no chat em 2026-09-27, limitado nesta primeira rodada às sementes atuais
   de `config/seeds.yml`; módulos adjacentes do BBSIA ficam fora. A aprovação está registrada aqui;
   a issue #12 continua aberta para decisões futuras sobre esses módulos.
-- A issue #14 foi criada e recebeu o rótulo `em-andamento`. O plano aprovado e os controles
-  exploratórios estão na branch `codex/14-guardrails-coleta`, aguardando revisão por PR.
+- A issue #14 permanece aberta para registrar e aprovar os parâmetros concretos antes de qualquer
+  consulta real de candidatos.
 
 ## Escopo proposto para a primeira rodada
 
@@ -190,17 +191,19 @@ Não conceder diretórios adicionais, não pedir ao agente para executar os cole
    aberta na issue #12.
 3. **Concluído — ativar o plano e abrir sua issue.** Plano `EM EXECUÇÃO`, issue #14 aberta e rotulada
    `em-andamento`; esta aprovação e o escopo estão registrados neste arquivo.
-4. **Concluído — preparar controles e verificar sem rede.** `radar_novo_orcamento()` impõe o teto
+4. **Concluído — integrar controles e verificar sem rede.** `radar_novo_orcamento()` impõe o teto
    global de 23 tentativas reservadas e dez documentos; busca GitHub exige até dois termos-semente e
    solicita uma página cada; HF exige uma conta-semente e lista somente uma página de `models`; o
    enriquecimento escolhe até dez URLs em ordem canônica. GitHub restringe a busca a `is:public` e
    todas as chamadas são anônimas; HF não envia token. Busca GitHub e listagem HF verificam marcações
    `private` antes do cache. Uma listagem HF vazia é registrada como inconclusiva quanto à existência
    da conta e não troca a conta-semente. Retentativas automáticas foram removidas e a raiz externa de
-   cache é validada antes da rede. A suíte `testthat` offline passou em 2026-09-27.
-5. **Pendente — checar o ambiente local.** Confirmar R/pacotes e raiz de cache existente, gravável e
-   externa ao repo. As chamadas públicas GitHub e Hugging Face são anônimas; nenhum token é necessário
-   ou lido pelos coletores.
+   cache é validada antes da rede. A suíte `testthat` offline passou em 2026-09-27, e a PR #16 foi
+   integrada no commit `c1835b1`.
+5. **Parcial — checar o ambiente local.** Neste checkout, R 4.6.0 e todos os pacotes necessários
+   estão disponíveis. `MANCANO_BBSIA_RADAR_ROOT` ainda está vazio; não há cache configurado. Outra
+   sessão Codex reportou uma biblioteca R sem os pacotes do projeto. As chamadas públicas GitHub e
+   Hugging Face são anônimas; nenhum token é necessário ou lido pelos coletores.
 6. **Pendente — fixar a consulta e executar a amostra.** O autor ainda precisa confirmar os dois
    termos GitHub, a conta HF e a raiz de cache exata. Até isso estar registrado na issue #14, não fazer
    consultas de candidatos. Usar apenas os limites acima.

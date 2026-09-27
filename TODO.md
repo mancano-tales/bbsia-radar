@@ -8,7 +8,7 @@
 
 - [ ] **Issue #14 — controles e amostra exploratória** — implementar orçamento global e validações offline; depois registrar os termos GitHub, a conta HF e a raiz de cache antes de qualquer chamada de descoberta.
   - Criado: 2026-09-27 09:30 por Codex / GPT-6 / desktop
-  - Progresso 2026-09-27 09:58: PR #15 integrada; guardrails e fixtures offline implementados na `codex/14-guardrails-coleta`; suíte `testthat` passou. Sem coleta real.
+  - Progresso 2026-09-27: PR #15 integrou o plano e PR #16 integrou os guardrails em `main` (`c1835b1`); suíte offline passou. Neste checkout R/pacotes estão disponíveis, mas `MANCANO_BBSIA_RADAR_ROOT` está vazio. Sem coleta real; aguardando termos GitHub, conta HF e raiz de cache aprovados pelo autor.
   - Plano ativo: `repo-governance/plan/2026-09-27_Plano_Coleta_Exploratoria.md` · Issue: #14
 
 - [ ] **Decifra: requisitos do caso de uso bbsia-radar** — terminar o R1.1 (passo 3 em diante) e os outros itens da issue aberta no `decifra-text-as-data`; desenvolvido lá.

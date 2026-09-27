@@ -1,5 +1,21 @@
 # NEWS — bbsia-radar
 
+## 2026-09-27 — Integra os controles da coleta exploratória
+
+A PR #16 integrou os controles exploratórios na `main` pelo commit `c1835b1`. A revisão estática por
+outra sessão Codex não encontrou bloqueios, e os testes offline passaram. A issue #14 permanece
+aberta: nenhum candidato foi coletado. Neste checkout R 4.6.0 e os pacotes exigidos estão disponíveis,
+mas `MANCANO_BBSIA_RADAR_ROOT` não está configurado. Outra sessão Codex reportou uma biblioteca R sem
+os pacotes do projeto. Antes da rodada, o autor precisa escolher até dois termos-semente GitHub, uma
+conta-semente HF e uma raiz de cache existente, gravável e externa ao repo; não são necessários tokens.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #14
+- **Mensagem do Commit**: `docs: registra integracao dos controles refs #14`
+- **Arquivos afetados**: `CHANGELOG.md`, `NEWS.md`, `TODO.md`, `repo-governance/plan/2026-09-27_Plano_Coleta_Exploratoria.md`
+
 ## 2026-09-27 — Limita a amostra e o orçamento dos coletores
 
 Os coletores agora exigem um orçamento compartilhado de até 23 tentativas HTTP reservadas e no
