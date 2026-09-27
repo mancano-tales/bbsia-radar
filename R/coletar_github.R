@@ -2,16 +2,18 @@
 #
 # (pt) Este módulo usa somente a API REST oficial. O modo exploratório exige
 #      até dois termos explícitos das sementes, solicita uma página por termo,
-#      não enumera contas e registra contagens e resultados incompletos. Cada
-#      resposta bruta é cacheada antes da transformação e usa orçamento
-#      compartilhado com HF e README; chamadas sem credenciais e sem
-#      retentativa automática.
+#      não enumera contas e registra contagens e resultados incompletos. Uma
+#      lista curada pode acrescentar apenas soluções já marcadas como brasileiras
+#      no gabarito, consultadas individualmente. Cada resposta bruta é cacheada
+#      antes da transformação e usa orçamento compartilhado com HF e README.
+#      Chamadas são anônimas e não têm retentativa automática.
 # (en) This module uses only the official REST API. Exploratory mode requires
 #      up to two explicit seed terms, requests one page per term, never crawls
 #      accounts, and records result counts and incomplete responses. Raw
 #      responses are cached before transformation and share a request budget
-#      with HF and README enrichment; requests are anonymous and automatic
-#      retries are disabled.
+#      with HF and README enrichment. A curated list may add only solutions
+#      already tagged as Brazilian in the gold set, fetched individually.
+#      Requests are anonymous and automatic retries are disabled.
 
 github_request <- function(path, query = list(), root = Sys.getenv("MANCANO_BBSIA_RADAR_ROOT", ""),
                            request_fn = NULL, budget, public_only = FALSE) {
@@ -39,7 +41,13 @@ github_request <- function(path, query = list(), root = Sys.getenv("MANCANO_BBSI
         payload <- httr2::resp_body_json(response, simplifyVector = FALSE)
       }
     }
-    if (isTRUE(public_only)) github_validar_itens_publicos(payload)
+    if (isTRUE(public_only) && is.null(payload$.radar_http_status)) {
+      repo_metadata <- grepl("^GET /repos/[^/]+/[^/]+$", path)
+      expected_repo <- if (repo_metadata) sub("^GET /repos/", "", path) else NULL
+      github_validar_itens_publicos(
+        payload, require_explicit_repo = repo_metadata, expected_repo = expected_repo
+      )
+    }
     payload
   }, root = root)
   if (is.list(payload) && !is.null(payload$.radar_http_status)) {
@@ -90,8 +98,25 @@ github_search_window <- function(term, start_date, end_date, root, request_fn = 
   result
 }
 
-github_validar_itens_publicos <- function(payload) {
+github_validar_itens_publicos <- function(payload, require_explicit_repo = FALSE,
+                                          expected_repo = NULL) {
   items <- payload$items %||% list()
+  # A repository endpoint returns one object rather than a Search envelope.
+  # Require its visibility flag explicitly so an incomplete response can never
+  # be treated as public merely because the field is absent.
+  # (pt) O endpoint de um repositório retorna um objeto, não o envelope de
+  #      busca. Exigimos o campo de visibilidade para não presumir que uma
+  #      resposta incompleta seja pública.
+  if (isTRUE(require_explicit_repo) &&
+      (is.null(payload$full_name) || is.null(payload$private) ||
+       !identical(payload$private, FALSE))) {
+    stop("GitHub não confirmou que o repositório-semente é público; a resposta não será cacheada.",
+         call. = FALSE)
+  }
+  if (!is.null(expected_repo) &&
+      !identical(tolower(payload$full_name), tolower(expected_repo))) {
+    stop("GitHub retornou outro repositório-semente; a resposta não será cacheada.", call. = FALSE)
+  }
   if (is.list(items) && length(items) &&
       any(purrr::map_lgl(items, ~ isTRUE(.x$private)))) {
     stop("GitHub Search retornou um repositório privado; a resposta não será cacheada.", call. = FALSE)
@@ -145,18 +170,96 @@ github_seed_terms <- function(seeds) {
   radar_seed_search_terms(seeds)
 }
 
+github_sementes_lista_brasileiras <- function(seeds, list_name) {
+  # Only solutions explicitly tagged as Brazilian in the author's curated
+  # list are included. The list itself is global, so we deliberately do not
+  # expand this to its other entries or crawl its repository.
+  # (pt) A lista é global. Selecionamos apenas as soluções que já têm a
+  #      marcação brasileira registrada no gabarito, sem percorrer as demais.
+  known_lists <- purrr::map_chr(seeds$listas %||% list(), ~ .x$nome)
+  if (length(list_name) != 1L || is.na(list_name) || !(list_name %in% known_lists)) {
+    stop("A lista precisa corresponder a um nome já registrado em config/seeds.yml.", call. = FALSE)
+  }
+  entries <- seeds$gabarito %||% list()
+  selected <- purrr::keep(entries, function(entry) {
+    source <- entry$fonte %||% ""
+    startsWith(source, paste0(list_name, " (tag brazil):"))
+  })
+  rows <- purrr::map_dfr(selected, function(entry) {
+    github_artifacts <- purrr::keep(entry$artefatos %||% list(),
+                                    ~ identical(.x$plataforma, "github"))
+    if (!length(github_artifacts)) return(tibble::tibble())
+    purrr::map_dfr(github_artifacts, function(artifact) {
+      url <- sub("/$", "", trimws(artifact$url %||% ""))
+      match <- regmatches(url, regexec(
+        "^https://github\\.com/([A-Za-z0-9_.-]+)/([A-Za-z0-9_.-]+)$",
+        url, perl = TRUE
+      ))[[1]]
+      if (length(match) != 3L) {
+        stop("A semente brasileira precisa usar uma URL canônica de repositório GitHub.",
+             call. = FALSE)
+      }
+      tibble::tibble(
+        solution_id = as.character(entry$id_solucao),
+        seed_source = as.character(entry$fonte),
+        url = url,
+        full_name = paste(match[[2]], match[[3]], sep = "/")
+      )
+    })
+  })
+  if (!nrow(rows)) {
+    stop("A lista não tem soluções GitHub brasileiras marcadas no gabarito.", call. = FALSE)
+  }
+  dplyr::distinct(rows, url, .keep_all = TRUE)
+}
+
+github_coletar_sementes_lista <- function(seeds, list_name, root, request_fn, budget) {
+  # Known seed repositories use the official single-repository REST endpoint.
+  # This makes list inclusion deterministic without searching or crawling all
+  # entries in the global list. The response is visibility-checked before
+  # cache, normalized through the same field allow-list, and contains no email.
+  # (pt) Consultamos somente os repositórios brasileiros já selecionados,
+  #      usando a API oficial e o mesmo cache, orçamento e allow-list da busca.
+  candidates <- github_sementes_lista_brasileiras(seeds, list_name)
+  rows <- lapply(seq_len(nrow(candidates)), function(i) {
+    candidate <- candidates[i, , drop = FALSE]
+    payload <- github_request(
+      paste0("GET /repos/", candidate$full_name),
+      list(), root, request_fn, budget, public_only = TRUE
+    )
+    item <- bind_github_items(list(list(payload)))
+    item$solution_id <- candidate$solution_id
+    item$seed_source <- candidate$seed_source
+    item
+  })
+  dplyr::bind_rows(rows)
+}
+
 coletar_github <- function(seeds_path = "config/seeds.yml",
                            root = Sys.getenv("MANCANO_BBSIA_RADAR_ROOT", ""),
                            request_fn = NULL, search_terms, budget,
-                           since = "2010-01-01", until = as.character(Sys.Date())) {
+                           since = "2010-01-01", until = as.character(Sys.Date()),
+                           include_curated_list = NULL) {
   radar_validar_orcamento(budget)
   radar_validate_cache_root(root)
   seeds <- yaml::yaml.load(readr::read_file(seeds_path, locale = readr::locale(encoding = "UTF-8")))
   terms <- github_validar_termos(search_terms, seeds)
+  curated_candidates <- if (is.null(include_curated_list)) {
+    NULL
+  } else {
+    if (length(include_curated_list) != 1L || is.na(include_curated_list)) {
+      stop("include_curated_list aceita um único nome de lista.", call. = FALSE)
+    }
+    github_sementes_lista_brasileiras(seeds, include_curated_list)
+  }
   since_date <- as.Date(since)
   until_date <- as.Date(until)
   if (is.na(since_date) || is.na(until_date) || since_date > until_date) {
     stop("since/until precisam ser datas válidas em ordem crescente.", call. = FALSE)
+  }
+  required_github_requests <- length(terms) + nrow(curated_candidates %||% tibble::tibble())
+  if (budget$tentativas_reservadas + required_github_requests > budget$max_tentativas) {
+    stop("O orçamento não comporta as buscas e sementes curadas solicitadas.", call. = FALSE)
   }
   summaries <- vector("list", length(terms))
   searched <- purrr::map2_dfr(terms, seq_along(terms), function(term, i) {
@@ -165,14 +268,25 @@ coletar_github <- function(seeds_path = "config/seeds.yml",
     summaries[[i]] <<- attr(page, "search_summary")
     page
   })
-  result <- searched |>
+  curated <- if (is.null(include_curated_list)) {
+    bind_github_items(list(list()))
+  } else {
+    github_coletar_sementes_lista(
+      seeds, include_curated_list, root, request_fn, budget
+    )
+  }
+  result <- dplyr::bind_rows(curated, searched) |>
     dplyr::filter(!is.na(url), nzchar(url)) |>
     dplyr::distinct(url, .keep_all = TRUE)
   result <- aplicar_ids_sementes(result, seeds)
   attr(result, "radar_metadata") <- list(
     provider = "github",
-    coverage = "uma página por termo; resultados além da página não foram consultados",
+    coverage = paste(
+      "uma página por termo; resultados além da página não foram consultados;",
+      "sementes explícitas da lista curada consultadas individualmente"
+    ),
     searches = dplyr::bind_rows(summaries),
+    curated_list = include_curated_list,
     budget = radar_resumo_orcamento(budget)
   )
   result

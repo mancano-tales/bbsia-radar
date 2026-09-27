@@ -28,12 +28,17 @@ submissão ao BBSIA.
 - O PR #13, da issue #10, foi integrado durante a preparação desta proposta no merge
   `94bad301563c153e4be64cba3cc9b99e2b52203c`; a issue #10 foi fechada. A implementação dos
   coletores está disponível. Os limites explícitos para a amostra foram integrados pela PR #16 e
-  GitLab está sendo incluído na branch `codex/14-gitlab-radar`.
+  GitLab foi implementado no commit `1eb2f16` da branch `codex/14-gitlab-radar`; a integração com `main` está sendo concluída para revisão.
 - A documentação aprovada foi integrada pela PR #15 no commit `fa7c5e5462808ee6ead0ae977809ecab7cefc5d1`.
 - A implementação dos limites foi integrada pela PR #16 em `main` no commit
   `c1835b1d6d126420bb85636dae9b28eafa9e1bb3`; a suíte offline cobre orçamento compartilhado,
   paginação, seleção determinística, cache externo, respostas vazias, erros HTTP e bloqueios de itens
-  privados. A suíte da branch com a integração GitLab passou depois das correções da revisão.
+  privados. Após integrar a implementação GitLab às mudanças da PR #20, a suíte offline passou com 212 testes, sem falhas nem avisos de teste.
+- A PR #20 integrou três soluções brasileiras da lista curada e registrou uma rodada distinta
+  apenas com GitHub/HF: 103 candidatos GitHub, dois modelos HF, dez documentos selecionados
+  (todos GitHub) e 16/23 tentativas. Nenhum model card HF foi lido, então a cobertura documental
+  dessa fonte ainda não foi avaliada nessa rodada. A execução GitLab documentada neste plano é
+  a rodada ampliada posterior; seus números não devem ser somados aos da rodada anterior.
 - A issue #12 continua sem decisão sobre o uso dos módulos adjacentes do BBSIA como contexto ou
   sementes.
 - Antes desta implementação, os coletores do PR #13 podiam percorrer vários termos, páginas e contas;
@@ -42,14 +47,18 @@ submissão ao BBSIA.
 - O autor aprovou este plano no chat em 2026-09-27, limitado nesta primeira rodada às sementes atuais
   de `config/seeds.yml`; módulos adjacentes do BBSIA ficam fora. A aprovação está registrada aqui;
   a issue #12 continua aberta para decisões futuras sobre esses módulos.
-- O autor aprovou no chat em 2026-09-27 os termos e a conta-semente desta amostra; os detalhes foram
-  registrados também no plano GitLab associado. A issue #14 está sem atualização nesta sessão porque
-  a integração de escrita retornou 403 e o gh local não tem autenticação válida.
+- A PR #20 atualizou a issue #14 com a rodada GitHub/HF anterior. O marco da rodada GitLab não
+  pôde ser publicado nesta sessão porque a integração retornou 403 e o `gh` local não tem
+  autenticação válida. Os parâmetros aprovados para GitLab e HF estão detalhados neste plano e no
+  plano GitLab associado.
 - A pedido do autor no chat, a raiz externa foi definida como `%USERPROFILE%/AppData/Local/Mancano`,
   criada e verificada como gravável. `MANCANO_BBSIA_RADAR_ROOT` está configurada no `.Renviron`
   local, ignorado pelo Git; `.data-source` acrescenta `bbsia-radar/api`. O resolvedor
   `radar_validate_cache_root()` confirmou que fica fora do checkout e pode ser escrita. O caminho
   absoluto da máquina não é publicado.
+- A rodada GitLab foi executada com as buscas por termos aprovados, sem a opção adicional de
+  buscar individualmente a lista curada introduzida pela PR #20; os três registros dessa lista
+  pertencem à rodada GitHub/HF separada acima.
 - Recorte aprovado no chat: GitHub e GitLab usam os termos-semente `Transcritorio` e `BERTimbau`;
   Hugging Face consulta modelos da conta-semente `neuralmind`. Nenhuma grafia alternativa é inferida.
 
@@ -240,9 +249,7 @@ Não conceder diretórios adicionais, não pedir ao agente para executar os cole
    e um README do GitHub não existia. Foram reservadas 17/25 tentativas, sem erro HTTP. Quatorze
    registros não tinham descrição (11 GitHub, 1 GitLab e 2 HF), dois foram associados a sementes e
    o escaneamento dos arquivos exportados não encontrou e-mails. Saídas e documentos ficaram só no
-   cache externo, e a tabela/candidatos não foi publicada. O código da rodada ainda estava sem
-   commit; as mudanças posteriores ao review corrigem cache/tamanho do README GitLab sem alterar as
-   consultas ou os registros da amostra.
+   cache externo, e a tabela/candidatos não foi publicada. O coletor foi publicado no commit `1eb2f16`; a integração atual também preserva a busca opcional de sementes curadas da PR #20. A revisão do código não alterou as consultas nem os registros já coletados. A suíte offline combinada passou com 212 testes.
 7. **Pendente — revisar e decidir.** Avaliar relevância, duplicatas entre plataformas, campos ausentes, erros e
    ruído; classificação no Decifra, TRL, comparação registro a registro com o BBSIA e validação humana
    ainda não foram feitos. O autor decide se a próxima rodada amplia consultas e tamanho. Coleta

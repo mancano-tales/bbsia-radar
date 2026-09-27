@@ -6,6 +6,7 @@ Arquivo DERIVADO do `git log`. Não edite à mão — a fonte editorial é o `NE
 
 ## Added
 
+- **`[17297e3]` 2026-09-27** — feat(collectors): inclui sementes brasileiras da lista curada refs #14
 - **`[4fa2bb4]` 2026-09-27** — feat(security): reduz risco de caminhos absolutos refs #1
 - **`[f3fdf23]` 2026-09-27** — feat(collectors): limita amostra exploratoria refs #14
 - **`[2ea74ec]` 2026-09-27** — feat(collectors): implement discovery and Decifra corpus refs #10
@@ -17,6 +18,8 @@ Arquivo DERIVADO do `git log`. Não edite à mão — a fonte editorial é o `NE
 
 ## Changed
 
+- **`[fc19155]` 2026-09-27** — docs(plan): registra primeira amostra exploratoria refs #14
+- **`[cfa17cf]` 2026-09-27** — docs: registra PR de sementes brasileiras refs #14
 - **`[ab2f779]` 2026-09-27** — docs(cache): configura raiz local para coleta exploratoria refs #14
 - **`[4a8a8fb]` 2026-09-27** — docs(security): propoe protecao contra caminhos absolutos refs #1
 - **`[2609d81]` 2026-09-27** — docs(report): planeja site Quarto do radar refs #17
