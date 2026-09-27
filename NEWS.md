@@ -1,5 +1,25 @@
 # NEWS — bbsia-radar
 
+## 2026-09-27 — Verifica carga pública do catálogo e fixa escopo pré-coleta
+
+Por decisão do autor, Judiciário/CNJ/Sinapses fica fora do radar — inclusive como referência,
+deduplicação ou contexto. O README e o plano atualizam WP0c e §5 para distinguir o catálogo dos
+módulos de recursos reutilizáveis, fontes de dados e modelos; a decisão de usar estes últimos como
+contexto/sementes fica para revisão na issue #12. Uma inspeção pequena de somente leitura (GET da
+página do catálogo e dez bundles referenciados) retornou HTTP 200; o HTML inicial contém 20 links de
+fichas e os bundles não revelaram chamada de leitura do catálogo. Foi observada apenas a rota
+`/api/metrica`, usada por POST analítico, que não foi chamada. Isso não prova inexistência de APIs
+server-side ou exportações restritas, nem concede licença. Não houve coleta em massa, submissão de
+formulário, e-mail ou POST. Issue #8 fechada após a decisão de Apache-2.0/CC BY 4.0; #9 permanece
+aberta pelos dois casos-limite pendentes; #10 continua aberta até a implementação dos coletores.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #1, #10
+- **Mensagem do Commit**: "docs(research): testa rotas publicas e ajusta escopo refs #1 #10"
+- **Arquivos afetados**: `README.md`, `NEWS.md`, `repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md`
+
 ## 2026-09-26 — Distingue módulos e proveniências do BBSIA antes da coleta
 
 Leitura ampliada das páginas públicas do BBSIA, incluindo catálogo de soluções, projetos do

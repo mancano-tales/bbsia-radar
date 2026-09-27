@@ -80,11 +80,14 @@ O radar é **a parte que produz o corpus**: encontra as soluções, junta o que 
    Educação, Segurança Pública, Meio Ambiente, Gestão Pública, Administração/Processos e Outro).
    Na consulta, a página indicava 20 publicadas; a página de números mostrava 154 no catálogo,
    divididas em 20 publicadas e 134 em análise. [Catálogo](https://bancobrasileiro.ia.br/catalogo).
-4. **API e exportação:** não encontramos documentação nem botão público de exportação CSV/JSON ou
-   importação em lote nas páginas públicas consultadas. `sitemap.xml` e `robots.txt` não estavam
-   disponíveis no site na consulta; a inspeção das chamadas de rede não foi concluída. Portanto,
-   **não está confirmado** que não exista endpoint, exportação interna ou acesso restrito. O aviso de
-   privacidade menciona exportações administrativas, o que não equivale a download público.
+4. **API e exportação:** em 2026-09-27 fizemos uma inspeção pequena e somente de leitura da página
+   pública do catálogo e dos dez bundles JavaScript que ela referenciava (GET, todos HTTP 200). O
+   HTML inicial contém os links/identificadores das 20 fichas publicadas; nos bundles não apareceu
+   uma chamada de leitura de catálogo nem rota pública de dados. Apareceu `/api/metrica`, usado por
+   um `POST` de evento analítico; não o chamamos. Isso sugere que a listagem pública é renderizada
+   pelo servidor, mas **não prova** que inexista API, exportação administrativa/restrita ou uma rota
+   interna do servidor. Não encontramos documentação ou interface pública de exportação CSV/JSON ou
+   importação em lote. A consulta não baixou nem guardou fichas em massa.
 5. **Termos, privacidade e licença:** o [aviso de privacidade](https://bancobrasileiro.ia.br/privacidade)
    diz que informações sobre as soluções podem ser publicadas e reutilizadas e que contatos não são
    públicos. Não encontramos termo de uso ou licença específica do catálogo nas páginas consultadas.
@@ -95,9 +98,7 @@ O radar é **a parte que produz o corpus**: encontra as soluções, junta o que 
    (351 curadas e 190 integradas), 313 disponíveis e 228 em curadoria. A seção de catálogo mostrava
    154 no total (20 publicadas, 134 em análise); os números variam com a atualização e resultados
    indexados podem estar defasados.
-   Os 190 projetos do Judiciário (CNJ/Sinapses) aparecem em seção própria e têm origem distinta; não
-   os somamos ao catálogo curado. [Números do banco](https://bancobrasileiro.ia.br/numeros) ·
-   [Judiciário](https://bancobrasileiro.ia.br/judiciario).
+   [Números do banco](https://bancobrasileiro.ia.br/numeros).
 7. **Repositório `Roger-Quinelato/BBSIA`:** a documentação e o código consultados descrevem um RAG
    local que indexa PDFs e um JSON curado local de soluções para busca; não encontramos evidência de
    que ele baixe o banco de produção ou use API do BBSIA. Isso descreve o repositório público
@@ -110,11 +111,12 @@ comercial; “não comercial” exigiria CC BY-NC e não foi escolhido. Veja [`L
 O conteúdo de terceiros e o catálogo do BBSIA não ficam automaticamente cobertos por essas licenças.
 
 **Implicação para o piloto:** a deduplicação depende de uma fonte autorizada e reproduzível para o
-catálogo atual. Até que isso seja esclarecido, o radar não deve tratar contagens agregadas como uma
-lista de registros nem iniciar scraping do site. A pesquisa sobre o BBSIA foi separada da futura
-implementação dos coletores (#10).
+catálogo atual. Os identificadores que aparecem no HTML público não são uma autorização para copiar
+ou reutilizar as fichas. Até esclarecer acesso e termos, não tratar contagens como registros nem fazer
+coleta em massa. A inspeção técnica pequena foi autorizada como pesquisa e não inicia a implementação
+dos coletores (#10).
 
-### Seções adjacentes consultadas (WP0c, 2026-09-26)
+### Seções adjacentes consultadas (WP0c, 2026-09-26/27)
 
 O site reúne módulos com finalidades e proveniências diferentes. Esta leitura amplia o contexto do
 projeto, mas não amplia automaticamente a unidade de análise do radar nem autoriza copiar os dados.
@@ -122,17 +124,17 @@ projeto, mas não amplia automaticamente a unidade de análise do radar nem auto
 | Seção | O que a página declara | Relação com o radar e limite |
 |---|---|---|
 | [Soluções de IA](https://bancobrasileiro.ia.br/catalogo) | Catálogo organizado pelo problema; busca por problema, título, órgão e tags; filtros por público, tipo e área. A listagem aberta mostrou 20 soluções, com estados como Ativo e Em revisão, além de alguns itens marcados Sem IA. Fichas podem detalhar origem, tipo, IA generativa, modalidades, soberania, supervisão, impacto e risco. | É o módulo mais próximo do alvo do radar, mas sua ficha pode ser autodeclarada e incluir ideias, soluções em revisão ou itens sem IA. Preservar proveniência e status; a triagem do codebook continua necessária. |
-| [Judiciário (CNJ/Sinapses)](https://bancobrasileiro.ia.br/judiciario) | A página consultada listava 190 projetos e declara expressamente que os dados vêm do CNJ/Sinapses, são apenas normalizados para apresentação, não foram validados pelo BBSIA, não integram sua base e podem ficar em cache por até 24 horas. | Fonte independente potencial para identificar duplicatas e contexto, caso o autor aprove; não somar às contagens do catálogo BBSIA nem atribuir validação do BBSIA. Correções são encaminhadas ao CNJ. |
 | [Recursos reutilizáveis](https://bancobrasileiro.ia.br/fundacao) | Reúne bases, APIs, software público e repositórios, agrupados por esforço: instalar/usar (21), conectar (12), desenvolver (10) e estudar (8), 51 itens no total na consulta. Há recursos brasileiros e estrangeiros, de IA e não IA, com links externos. | É uma vitrine ampla de ativos reusáveis, não um catálogo homogêneo de soluções de IA. Pode servir para contexto ou sementes futuras, após decisão de escopo. |
 | [Dados para IA / prontidão](https://bancobrasileiro.ia.br/prontidao) | 52 fichas sobre fontes públicas brasileiras, com método/data declarados e dimensões como forma de acesso, autenticação, licença, granularidade, cadência e restrições. N1 indica ingestão direta; N2 exige engenharia/autenticação/limite técnico; N3 requer acesso mediado. O rótulo parcial restringe a avaliação ao regime mais acessível. | Descreve bases de dados de terceiros, não soluções do radar nem a base cadastral do BBSIA. Endpoints que aparecem nessas fichas são das fontes de dados citadas e não provam a existência de API para consultar o catálogo BBSIA. |
 | [Modelos abertos](https://bancobrasileiro.ia.br/modelos) | 13 modelos na consulta, com filtros por tarefa, ambiente de execução e grau de abertura. A página distingue “Open source” de “Pesos abertos” e orienta consultar a licença de cada modelo. | Alguns modelos podem ser componentes ou candidatos a solução, mas disponibilizar pesos não basta para presumir código aberto, origem brasileira, licença de reutilização ou aderência ao formulário. Registrar cada licença na fonte original. |
 | [Contribuir](https://bancobrasileiro.ia.br/contribuir) e [aviso de privacidade](https://bancobrasileiro.ia.br/privacidade) | O formulário pede e-mail institucional e nome; cargo e telefone são apresentados como opcionais, além de órgão, localização, problema, descrição, tipo de ativo, maturidade, abertura, soberania, dados, links, resultados e disposição para compartilhar. O aviso diz que informações da solução podem ser públicas, mas contatos não; dados pessoais de contato ficam restritos à coordenação. | Formulário não foi preenchido nem enviado. O radar nunca coleta e-mail; campos de contato são uma diferença explícita entre a submissão humana e a descoberta automatizada por metadados públicos. |
 
-**Decisão de escopo ainda necessária:** recomendação provisória é manter a unidade do radar como uma solução de IA
-(ou recurso que satisfaça o codebook aprovado) descoberta em GitHub/Hugging Face. Usar os módulos adjacentes
-apenas como contexto e possíveis fontes de comparação, sem integrá-los à coleta até o autor definir se quer
-um auxiliar de deduplicação ou uma extensão do escopo. Em especial, dados de prontidão e modelos não viram
-“solução” por estarem no mesmo site; links e licenças seguem pertencendo às fontes originais.
+**Escopo vigente por decisão do autor (2026-09-27):** o radar procura soluções que satisfaçam o
+codebook em GitHub/Hugging Face. A seção do Judiciário/CNJ/Sinapses está excluída: não será fonte de
+descoberta, deduplicação, validação ou contexto do projeto. Recursos reutilizáveis, fontes de dados e
+modelos permanecem categorias diferentes de soluções; podem informar contexto ou sementes somente
+depois da decisão de escopo registrada na issue #12. Seus links e licenças continuam pertencendo às
+fontes originais. A exclusão não altera automaticamente o codebook.
 
 ## Estado
 
