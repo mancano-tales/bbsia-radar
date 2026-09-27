@@ -11,8 +11,9 @@
   - Progresso 2026-09-27: PR #19 integrado. Gemini Pro e GPT-Sol revisaram o diff antes das correções e confirmaram falhas no scanner de URI/literais escapados, no contexto de URLs, em linhas +++ de hunks e em diffs de merge; esta branch aplica as correções. As revisões finais independentes de Gemini Pro e GPT-Sol, já após as últimas correções, não encontraram achados acionáveis; os fixtures direcionados e o scanner sobre o diff completo passaram.
   - Progresso 2026-09-27: a tentativa inicial de comentar pela integração GitHub retornou HTTP 403; depois da autorização OAuth do autor, o gh CLI autenticou e publicou a atualização na issue #1.
   - Progresso 2026-09-27: a revisão posterior também encontrou e motivou correções para o primeiro push sem base remota, URI file: com ou sem host e links web relativos ao esquema.
-  - Progresso 2026-09-27: commits 6216a8f e 060500c estão publicados; PR #21 aberto para main. O CodeRabbit retornou PASS; o workflow de caminhos absolutos ainda não aparece nas verificações do PR. Nenhum merge foi feito.
-  - Próximo passo: o autor revisa e mergeia o PR #21; depois, confirmar a execução do workflow e exigir o status check nas regras do repositório.
+  - Progresso 2026-09-27: conflito do PR #21 resolvido ao integrar main pelo merge 5257e2a; GitHub informa MERGEABLE/CLEAN. O workflow Verificar caminhos absolutos passou. CodeRabbit PASS, com revisão manual requerida; nenhum merge do PR foi feito.
+  - Progresso 2026-09-27: `news_db.py` encontrou 36 entradas, zero sem commit identificável e 34/36 mensagens declaradas coincidentes. Duas divergências são históricas, em entradas das issues #8 e #1; o verificador compara cada declaração com o conteúdo no commit que criou a entrada, então corrigir o texto atual não altera esse resultado sem mudar a ferramenta ou reescrever histórico.
+  - Próximo passo: o autor revisa e mergeia o PR #21; depois, tornar o status check aprovado obrigatório nas regras do repositório.
   - Plano ativo: repo-governance/plan/2026-09-27_Plano_Protecao_Caminhos_Absolutos.md · Issue: #1
 
 

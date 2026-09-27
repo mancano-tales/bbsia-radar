@@ -1,5 +1,16 @@
 # NEWS — bbsia-radar
 
+## 2026-09-27 — Resolve conflito e valida workflow do PR #21
+
+O merge `5257e2a` integrou `main` à branch do PR #21 e preservou as entradas recentes dos dois lados de `NEWS.md`. O GitHub agora informa o PR como `MERGEABLE` e `CLEAN`. O workflow `Verificar caminhos absolutos` passou; o CodeRabbit marcou PASS, mas solicitou revisão manual para este repositório OSS. `news_db.py` encontrou 36 entradas, nenhuma sem commit identificável e 34/36 mensagens declaradas coincidentes. As duas divergências são anteriores a esta branch (licenças/validação da issue #8 e proposta de proteção); o verificador lê o texto no commit que criou cada entrada. O histórico não foi reescrito.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #1
+- **Mensagem do Commit**: docs(plan): registra resolucao de conflito e validacao refs #1
+- **Arquivos afetados**: NEWS.md, TODO.md, repo-governance/plan/2026-09-27_Plano_Protecao_Caminhos_Absolutos.md
+
 ## 2026-09-27 — Executa a primeira amostra pública das APIs
 
 A primeira execução dos coletores usou os termos GitHub aprovados `Transcritorio` e `BERTimbau`, a
