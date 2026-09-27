@@ -1,5 +1,24 @@
 # NEWS — bbsia-radar
 
+## 2026-09-26 — Distingue módulos e proveniências do BBSIA antes da coleta
+
+Leitura ampliada das páginas públicas do BBSIA, incluindo catálogo de soluções, projetos do
+Judiciário, recursos reutilizáveis, prontidão de dados, modelos, formulário e aviso de privacidade.
+O inventário do README e do §1.1 do plano separa os 190 registros CNJ/Sinapses (fornecidos pelo CNJ,
+sem validação pelo BBSIA e fora da base do banco) das soluções curadas, recursos reutilizáveis,
+fontes de dados e modelos. Endpoints das fichas de prontidão pertencem às fontes externas e não
+confirmam API do catálogo. Formulário intocado; o radar continua sem coletar e-mail. A recomendação
+é manter o corpus no escopo do codebook e tratar as outras seções como contexto ou referência
+auxiliar somente após decisão explícita do autor. Inspeção de chamadas de rede e fonte autorizada
+para deduplicação registro a registro continuam pendentes. Nenhuma coleta ou scraping foi iniciado.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-26
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #1, #10
+- **Mensagem do Commit**: "docs(research): distingue módulos do BBSIA refs #1 #10"
+- **Arquivos afetados**: `README.md`, `NEWS.md`, `repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md`
+
 ## 2026-09-26 — Planeja leitura ampliada do BBSIA antes da coleta
 
 O autor pediu aprofundar a leitura documental do BBSIA antes de iniciar qualquer coletor. A busca

@@ -71,6 +71,24 @@ da issue.
 | Contagem | Na consulta direta de 2026-09-26, home e `/numeros` exibiam 541 mapeadas (351 curadas + 190 integradas), 313 disponíveis e 228 em curadoria. A seção de catálogo indicava 154 no total: 20 publicadas e 134 em análise. Os 190 projetos CNJ/Sinapses são apresentados separadamente; não somar como registros do catálogo curado. Resultados de busca indexados podem estar desatualizados. |
 | `Roger-Quinelato/BBSIA` | Documentação/código descrevem indexação local de PDFs e JSON curado em RAG; não foi observada chamada à base de produção ou API do BBSIA. A ausência de evidência no repositório acessível não exclui sistemas privados. Ver [repositório](https://github.com/Roger-Quinelato/BBSIA). |
 
+**Leitura ampliada do site (WP0c; consulta direta em 2026-09-26):** além de `/catalogo`, foram
+consultados `/judiciario`, `/fundacao`, `/prontidao`, `/modelos`, `/contribuir` e `/privacidade`.
+Os módulos não são intercambiáveis:
+
+| Módulo | Evidência pública observada | Proveniência e implicação |
+|---|---|---|
+| Catálogo de soluções | 20 itens publicados na listagem; busca por problema/título/órgão/tags, filtros por público, tipo e área. Exemplos de ficha mostram origem declarada, tipo de ativo, uso de IA, modalidade, soberania, supervisão, impacto e risco. | É a comparação primária para o radar, mas pode incluir registros em revisão, autodeclarados e itens marcados sem IA. Registrar status e URL da ficha; não tratar aprovação ou validação como implícita. |
+| Projetos do Judiciário | `/judiciario` lista 190 projetos e informa consulta ao CNJ em 26/09/2026. | A própria página atribui os dados ao CNJ/Sinapses, diz que o BBSIA apenas normaliza a apresentação, que não validou o conteúdo e que ele não integra a base BBSIA; cache temporário de até 24 horas. Uma possível fonte externa de comparação, sujeita à decisão do autor e aos termos do CNJ. |
+| Recursos reutilizáveis | 51 itens em quatro grupos de esforço (21 instalar/usar, 12 conectar, 10 desenvolver, 8 estudar), incluindo software, APIs, dados e recursos internacionais; nem todos são IA. | Vitrine de recursos amplos, com URLs externas e proveniência heterogênea; contexto/sementes opcionais, não linha automaticamente incluída no corpus. |
+| Dados para IA / prontidão | 52 fichas com método e data de verificação, forma de acesso, autenticação, licença, granularidade, cadência, restrição legal e limites técnicos. Régua N1 (direto), N2 (engenharia) e N3 (mediado), com marca “parcial”. | Descreve fontes de dados governamentais e não governamentais. Endpoints documentados são das fontes de dados; não constituem prova de API/exportação para o cadastro de soluções BBSIA. |
+| Modelos abertos | 13 modelos; filtros de finalidade, ambiente e abertura; distinção explícita entre “Open source” e “Pesos abertos”, com orientação para verificar a licença de cada modelo. | Recurso potencialmente relacionado ao radar, mas pesos disponíveis não provam open source, origem brasileira nem enquadramento como solução. A licença é individual e deve ser lida na fonte original. |
+| Formulário e privacidade | A contribuição pede e-mail institucional e nome, além de organização/localização, problema, solução, tipo, estágio, abertura, soberania, dados, links e resultados. O aviso diz que dados de contato não são públicos e recomenda não inserir dados pessoais de terceiros, segredos, credenciais ou bases completas. | Formulário permaneceu intocado. O radar nunca coleta e-mail; dados de contato da submissão humana não fazem parte da coleta automatizada de metadados públicos. Não enviar candidatos ou preencher em nome de terceiros. |
+
+**Decisão de escopo proposta, ainda não tomada:** manter o corpus principal como soluções de IA (ou recursos
+que passem pelo codebook aprovado), descobertos por APIs oficiais do GitHub e HF. Tratar Judiciário, recursos,
+dados e modelos do site como contexto e potenciais referências externas; só usar como fonte auxiliar de
+deduplicação ou ampliar o corpus com autorização explícita do autor. A recomendação não altera o codebook.
+
 **Consequência para WP7:** contagens agregadas não permitem deduplicação registro a registro. Antes do piloto, será preciso obter uma lista pública/exportação autorizada ou decidir com o autor um método alternativo e explicitar a limitação. Não iniciar scraping do BBSIA com base nesta pesquisa.
 
 ## 2. Resultado esperado
@@ -106,6 +124,16 @@ Entregáveis da leitura ampliada:
 3. Uma matriz que compare os objetos do BBSIA ao escopo do radar e ao codebook: solução de IA, software reutilizável, API, modelo ou fonte de dados não são categorias intercambiáveis. Propor ao autor se o radar fica restrito a soluções de IA ou se algum dos novos módulos entra como fonte auxiliar, sem alterar o codebook automaticamente.
 4. Uma matriz de dependências pré-coleta: acesso autorizado ao catálogo registro a registro para deduplicação; licença/termos para reutilização; endpoints e documentação oficiais; limites de uso; e campos mínimos compatíveis com o formulário. Distinguir existência documentada de API, chamadas observadas no navegador e exportação administrativa/restrita.
 5. Revisão do README, deste plano e das issues relacionadas quando a pesquisa fechar, com fontes primárias e data; lacunas ficam como perguntas ao autor ou para o momento do piloto, sem contato com o BBSIA agora.
+
+**Marco documental observado em 2026-09-26:** foram lidas as páginas públicas principais e fichas
+representativas do catálogo, prontidão de dados e Judiciário, além do aviso de privacidade e do
+formulário (sem submissão). O inventário de alto nível e as diferenças de proveniência estão
+registrados no README e no §1.1. A leitura confirma que a seção CNJ/Sinapses lista 190 projetos,
+mas declara que os registros são fornecidos pelo CNJ, normalizados somente para apresentação,
+não validados pelo BBSIA e não integrantes da base BBSIA. “Prontidão” lista fontes de dados de
+terceiros — seus endpoints não indicam API do catálogo BBSIA. Ainda falta inspeção técnica das
+chamadas de rede do site, confirmação de termos/export registro a registro e a decisão do autor
+sobre uso auxiliar de módulos adjacentes; por isso WP0c segue aberto, sem coleta.
 
 **Porta de saída para WP3/WP4:** iniciar coletores só após o autor encerrar a etapa documental e confirmar o escopo. Na implementação posterior, priorizar APIs oficiais do GitHub e do Hugging Face, usar agentes Antigravity como apoio à pesquisa/planejamento apenas quando a CLI estiver disponível, validar as descobertas contra documentação primária, armazenar respostas no cache externo configurado e manter testes offline com fixtures. Nenhum coletor de HTML do BBSIA será iniciado por inferência de que exista um endpoint.
 
@@ -146,8 +174,11 @@ Escrito **antes** da coleta, porque é ele que decide o que entra. Rascunho:
 > descritivos (pesquisa/PoC, desenvolvimento/protótipo, em teste e em produção), não uma escala
 > numérica TRL 1–9. O catálogo público usa áreas e tipos próprios e busca orientada ao problema;
 > consultar o comentário da issue #2 e o `README.md` para os valores observados. Isso serve de
-> comparação para o mapeamento, mas não altera automaticamente o codebook. Os casos-limite pendentes
-> da issue #9 continuam reservados ao autor.
+> comparação para o mapeamento, mas não altera automaticamente o codebook. O site também separa
+> projetos CNJ/Sinapses, recursos reutilizáveis, fontes de dados e modelos; esses módulos têm
+> proveniência, direitos, finalidade e status próprios, e não devem ser achatados como “soluções”.
+> Ver §1.1 e README para o inventário da consulta ampliada. Os dois casos-limite pendentes da issue #9
+> continuam reservados ao autor; nenhum módulo novo entra no codebook por inferência.
 
 | Escopo | Critério | Sinais observáveis |
 |---|---|---|

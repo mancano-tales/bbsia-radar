@@ -114,6 +114,26 @@ catálogo atual. Até que isso seja esclarecido, o radar não deve tratar contag
 lista de registros nem iniciar scraping do site. A pesquisa sobre o BBSIA foi separada da futura
 implementação dos coletores (#10).
 
+### Seções adjacentes consultadas (WP0c, 2026-09-26)
+
+O site reúne módulos com finalidades e proveniências diferentes. Esta leitura amplia o contexto do
+projeto, mas não amplia automaticamente a unidade de análise do radar nem autoriza copiar os dados.
+
+| Seção | O que a página declara | Relação com o radar e limite |
+|---|---|---|
+| [Soluções de IA](https://bancobrasileiro.ia.br/catalogo) | Catálogo organizado pelo problema; busca por problema, título, órgão e tags; filtros por público, tipo e área. A listagem aberta mostrou 20 soluções, com estados como Ativo e Em revisão, além de alguns itens marcados Sem IA. Fichas podem detalhar origem, tipo, IA generativa, modalidades, soberania, supervisão, impacto e risco. | É o módulo mais próximo do alvo do radar, mas sua ficha pode ser autodeclarada e incluir ideias, soluções em revisão ou itens sem IA. Preservar proveniência e status; a triagem do codebook continua necessária. |
+| [Judiciário (CNJ/Sinapses)](https://bancobrasileiro.ia.br/judiciario) | A página consultada listava 190 projetos e declara expressamente que os dados vêm do CNJ/Sinapses, são apenas normalizados para apresentação, não foram validados pelo BBSIA, não integram sua base e podem ficar em cache por até 24 horas. | Fonte independente potencial para identificar duplicatas e contexto, caso o autor aprove; não somar às contagens do catálogo BBSIA nem atribuir validação do BBSIA. Correções são encaminhadas ao CNJ. |
+| [Recursos reutilizáveis](https://bancobrasileiro.ia.br/fundacao) | Reúne bases, APIs, software público e repositórios, agrupados por esforço: instalar/usar (21), conectar (12), desenvolver (10) e estudar (8), 51 itens no total na consulta. Há recursos brasileiros e estrangeiros, de IA e não IA, com links externos. | É uma vitrine ampla de ativos reusáveis, não um catálogo homogêneo de soluções de IA. Pode servir para contexto ou sementes futuras, após decisão de escopo. |
+| [Dados para IA / prontidão](https://bancobrasileiro.ia.br/prontidao) | 52 fichas sobre fontes públicas brasileiras, com método/data declarados e dimensões como forma de acesso, autenticação, licença, granularidade, cadência e restrições. N1 indica ingestão direta; N2 exige engenharia/autenticação/limite técnico; N3 requer acesso mediado. O rótulo parcial restringe a avaliação ao regime mais acessível. | Descreve bases de dados de terceiros, não soluções do radar nem a base cadastral do BBSIA. Endpoints que aparecem nessas fichas são das fontes de dados citadas e não provam a existência de API para consultar o catálogo BBSIA. |
+| [Modelos abertos](https://bancobrasileiro.ia.br/modelos) | 13 modelos na consulta, com filtros por tarefa, ambiente de execução e grau de abertura. A página distingue “Open source” de “Pesos abertos” e orienta consultar a licença de cada modelo. | Alguns modelos podem ser componentes ou candidatos a solução, mas disponibilizar pesos não basta para presumir código aberto, origem brasileira, licença de reutilização ou aderência ao formulário. Registrar cada licença na fonte original. |
+| [Contribuir](https://bancobrasileiro.ia.br/contribuir) e [aviso de privacidade](https://bancobrasileiro.ia.br/privacidade) | O formulário pede e-mail institucional e nome; cargo e telefone são apresentados como opcionais, além de órgão, localização, problema, descrição, tipo de ativo, maturidade, abertura, soberania, dados, links, resultados e disposição para compartilhar. O aviso diz que informações da solução podem ser públicas, mas contatos não; dados pessoais de contato ficam restritos à coordenação. | Formulário não foi preenchido nem enviado. O radar nunca coleta e-mail; campos de contato são uma diferença explícita entre a submissão humana e a descoberta automatizada por metadados públicos. |
+
+**Decisão de escopo ainda necessária:** recomendação provisória é manter a unidade do radar como uma solução de IA
+(ou recurso que satisfaça o codebook aprovado) descoberta em GitHub/Hugging Face. Usar os módulos adjacentes
+apenas como contexto e possíveis fontes de comparação, sem integrá-los à coleta até o autor definir se quer
+um auxiliar de deduplicação ou uma extensão do escopo. Em especial, dados de prontidão e modelos não viram
+“solução” por estarem no mesmo site; links e licenças seguem pertencendo às fontes originais.
+
 ## Estado
 
 Repositório **público** e em fase inicial: governança e plano prontos, nenhum código ainda. Plano vigente: [`repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md`](repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md) ([issue #1](../../issues/1)).
