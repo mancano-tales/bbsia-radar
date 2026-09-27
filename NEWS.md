@@ -1,5 +1,25 @@
 # NEWS — bbsia-radar
 
+## 2026-09-27 — Ativa o plano de coleta exploratória
+
+O autor aprovou no chat o plano de coleta limitada e o recorte inicial somente com sementes de
+`config/seeds.yml`; módulos adjacentes do BBSIA ficam fora desta rodada e a questão futura permanece
+na issue #12. O plano passou a `EM EXECUÇÃO`, recebeu a issue #14 e documenta parâmetros e limites das
+APIs oficiais, com apoio de pesquisa do Antigravity Flash e revisão Pro em esforço baixo. Tentativas
+dos modelos em esforço alto expiraram ou não produziram resposta útil; os links oficiais foram
+conferidos separadamente. A integração GitHub do Codex recusou operações de escrita com `403
+Resource not accessible by integration`; o `gh` local conseguiu criar a issue e publicar os registros
+de coordenação. A permissão exata da instalação do conector não é visível nesta sessão. Nenhuma coleta
+de candidatos foi iniciada. O próximo passo é implementar controles e fixtures offline antes de pedir
+os parâmetros exatos da amostra.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #12, #14
+- **Mensagem do Commit**: `docs(plan): ativa coleta exploratoria refs #14`
+- **Arquivos afetados**: `CHANGELOG.md`, `NEWS.md`, `TODO.md`, `repo-governance/plan/README.md`, `repo-governance/plan/2026-09-27_Plano_Coleta_Exploratoria.md`
+
 ## 2026-09-27 — Propõe coleta exploratória limitada por APIs oficiais
 
 Registrada uma proposta de próximos passos para uma amostra pequena do GitHub e Hugging Face. O

@@ -1,16 +1,19 @@
 ---
 tipo: Plano
 titulo: "Coleta exploratória limitada nas APIs do GitHub e Hugging Face"
-issue: null
-status: PROPOSTO # aguardando aprovação do autor; ainda não é plano ativo
-criado: "2026-09-27"
+issue: 14
+status: EM EXECUÇÃO # aprovado pelo autor no chat em 2026-09-27
+criado: "2026-09-27 08:40"
 concluido: null
 autor_humano: "Tales Mançano"
+aprovacao_autor: "2026-09-27 no chat: aprovou o plano e o recorte da primeira rodada somente com sementes de config/seeds.yml; módulos adjacentes do BBSIA ficam fora desta coleta."
 planos_relacionados: ["repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md"]
 issues_relacionadas: [1, 10, 12]
 ---
 
-# Proposta: coleta exploratória limitada
+# Plano: coleta exploratória limitada
+
+> **Issue: #14.**
 
 ## Objetivo
 
@@ -31,6 +34,11 @@ submissão ao BBSIA.
   coletor HF percorre as contas-semente e três tipos de artefato, embora aceite limite de páginas por
   consulta. Ainda não há um orçamento global de requisições da rodada. Portanto, os coletores não
   devem ser executados em suas configurações completas como se fossem uma amostra pequena.
+- O autor aprovou este plano no chat em 2026-09-27, limitado nesta primeira rodada às sementes atuais
+  de `config/seeds.yml`; módulos adjacentes do BBSIA ficam fora. A aprovação está registrada aqui;
+  a issue #12 continua aberta para decisões futuras sobre esses módulos.
+- A issue #14 foi criada e recebeu o rótulo `em-andamento`. Esta branch contém a documentação e o
+  plano ativado; a implementação dos limites seguirá em branch própria da issue #14.
 
 ## Escopo proposto para a primeira rodada
 
@@ -43,18 +51,50 @@ submissão ao BBSIA.
    resultados; não seguir paginação nem subdividir automaticamente consultas grandes nesta rodada.
 3. Consultar apenas `models` no Hugging Face, para uma conta já listada em `config/seeds.yml`, com
    uma página de até 100 resultados. Confirmar primeiro que a conta existe pela própria resposta da
-   API; se não existir, interromper e escolher outra semente já registrada antes de repetir.
+   API; se não existir, interromper. Não escolher outra conta automaticamente: qualquer substituição
+   precisa ser registrada na issue #14 antes de repetir.
 4. Enriquecer no máximo dez candidatos com README/model card. A seleção dos dez deve ser registrada
    no relatório local; não buscar todos os documentos retornados.
-5. Limite esperado: até três páginas de descoberta (duas do GitHub e uma do HF) e dez documentos de
-   enriquecimento. Retentativas de rede seguem os limites e o backoff dos clientes; erro de
-   autenticação, `403`, `429` persistente ou ausência de cache externo interrompe a execução.
+5. Orçamento máximo explícito: duas requisições de busca do GitHub, uma listagem de modelos do HF e
+   até dez leituras de README/model card. Cada tentativa HTTP, inclusive respostas `404`, consome o
+   orçamento; a rodada não fará retentativas automáticas. Redirecionamentos terão teto documentado e
+   contabilizado. Erro de autenticação, `403`, `429`, resposta incompleta ou ausência de cache externo
+   interrompe a execução ou marca a amostra como parcial, sem ampliar a consulta.
 
-Antes da primeira requisição, os coletores precisam oferecer parâmetros explícitos para termos,
-tipo de artefato, conta, inclusão de varredura por contas e máximo de páginas. O código deve falhar
-fechado se o limite for excedido; truncar a saída depois de uma coleta sem limites não conta como
-controle. Implementar os controles na branch da issue deste plano, após conferir o código integrado,
-com fixtures e testes offline.
+Antes da primeira requisição, os coletores precisam validar os termos exatos (até dois), a conta HF
+(exatamente uma), o tipo `models`, uma página, o limite de documentos e o orçamento HTTP global.
+Varredura de contas fica desabilitada e não deve haver consulta de positivos conhecidos fora das
+buscas selecionadas. A validação da raiz de cache (existente, gravável e fora do checkout) acontece
+antes de qualquer chamada de rede. Resposta do GitHub com `incomplete_results=true` ou mais de 1.000
+resultados na busca de uma página deve ser registrada como cobertura parcial, sem subdividir a
+consulta automaticamente. Truncar a saída depois de uma coleta sem limites não conta como controle.
+Implementar os controles na branch da issue #14, com fixtures e testes offline.
+
+## Documentação oficial verificada
+
+O Antigravity ajudou a localizar e conferir parâmetros da documentação oficial; a confirmação e as
+regras desta coleta ficam ancoradas nas fontes primárias abaixo. A saída dos modelos é apoio de
+pesquisa, não uma fonte normativa.
+
+- **GitHub Search Repositories**: `per_page` aceita até 100; o endpoint limita cada consulta a 1.000
+  resultados e retorna `total_count` e `incomplete_results`. A amostra usa `page=1`, registra `q`,
+  ordenação e contagens e não segue páginas nem divide automaticamente resultados incompletos.
+  [Documentação REST oficial](https://docs.github.com/en/rest/search/search#search-repositories).
+- **GitHub Search rate limit**: autenticação reduz o limite de busca em relação a chamadas sem
+  autenticação, mas não remove o limite. A rodada mantém seu próprio orçamento bem abaixo do teto e
+  interrompe em `403` ou `429`.
+  [Limites de taxa REST](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api).
+- **Hugging Face Models API**: o endpoint oficial aceita filtro de autor e limite; a referência do
+  cliente `HfApi.list_models` documenta `author` e `limit`, e alerta que sem limite pode percorrer
+  todos os resultados. A coleta usará uma chamada direta a `/api/models?author=…&limit=100` e não
+  seguirá o `Link` `next`; isso define uma amostra de uma página, não cobertura total da conta.
+  [Referência oficial de `list_models`](https://huggingface.co/docs/huggingface_hub/main/en/package_reference/hf_api#huggingface_hub.HfApi.list_models),
+  [API do Hub](https://huggingface.co/docs/hub/api) e [paginação](https://huggingface.co/docs/hub/api#pagination).
+- **Resultado do Antigravity em 2026-09-27**: `gemini-3.8-flash-high` terminou sem texto útil em modo
+  JSON e expirou no modo texto; `gemini-3.1-pro-high` também expirou. As tentativas `gemini-3.8-flash-low`
+  e `gemini-3.1-pro-low` retornaram parâmetros e uma revisão independente, respectivamente. Os links
+  oficiais foram verificados separadamente. Não foi solicitado que os agentes executassem comandos,
+  coletassem candidatos ou editassem arquivos.
 
 ## Cache, resultados e privacidade
 
@@ -105,22 +145,21 @@ Não conceder diretórios adicionais, não pedir ao agente para executar os cole
 
 ## Etapas e portas
 
-1. **Sincronizar e revisar o PR #13 integrado.** Atualizar esta branch a partir da `main` que já
-   contém o merge e confirmar quais controles faltam no código integrado antes de editar.
-2. **Aprovar o escopo.** O autor aprova este plano no chat e registra a decisão da issue #12. Para a
-   primeira coleta, recomenda-se manter fora os módulos adjacentes do BBSIA e usar somente
-   `config/seeds.yml`; qualquer opção diferente altera a seleção de fontes e precisa estar escrita
-   aqui antes da coleta.
-3. **Abrir a issue do plano.** Após a aprovação, mudar o status para `ATIVO` e executar
-   `python tools/plano_issue.py criar repo-governance/plan/2026-09-27_Plano_Coleta_Exploratoria.md`.
-   A issue #1 registra o plano-piloto; a issue própria resume estado, responsável e próximo passo.
-4. **Preparar controles e verificar sem rede.** Implementar limites nos coletores e cobri-los com
-   fixtures. Rodar os testes offline antes de configurar as chamadas.
-5. **Checar o ambiente sem expor segredos.** Confirmar que R/pacotes estão prontos, a raiz de cache
-   está fora do repo e credenciais públicas opcionais estão disponíveis sem exibir seus valores.
-6. **Executar a amostra aprovada.** Usar apenas os termos/conta definidos na issue e os limites
-   acima. Se o limite não puder ser imposto antes da requisição, não iniciar a coleta.
-7. **Revisar e decidir.** Avaliar relevância, duplicatas entre plataformas, campos ausentes, erros e
+1. **Concluído — sincronizar e revisar o PR #13 integrado.** A branch foi baseada na `main` que
+   contém o merge `94bad301`; os coletores atuais permitem varreduras maiores que a amostra aprovada.
+2. **Concluído — aprovar o recorte inicial.** O autor aprovou no chat apenas sementes de
+   `config/seeds.yml`; módulos adjacentes do BBSIA ficam fora desta rodada. A decisão futura continua
+   aberta na issue #12.
+3. **Concluído — ativar o plano e abrir sua issue.** Plano `EM EXECUÇÃO`, issue #14 aberta e rotulada
+   `em-andamento`; esta aprovação e o escopo estão registrados neste arquivo.
+4. **Em execução — preparar controles e verificar sem rede.** Implementar limites nos coletores e
+   cobri-los com fixtures; rodar a suíte offline antes de qualquer chamada às APIs.
+5. **Pendente — checar o ambiente sem expor segredos.** Confirmar R/pacotes, raiz de cache existente,
+   gravável e externa ao repo; verificar credenciais sem exibir valores.
+6. **Pendente — fixar a consulta e executar a amostra.** O autor ainda precisa confirmar os dois
+   termos GitHub, a conta HF e a raiz de cache exata. Até isso estar registrado na issue #14, não fazer
+   consultas de candidatos. Usar apenas os limites acima.
+7. **Pendente — revisar e decidir.** Avaliar relevância, duplicatas entre plataformas, campos ausentes, erros e
    ruído. O autor decide se a próxima rodada amplia consultas e tamanho. Coleta ampliada, uso de dados
    dos módulos do BBSIA e deduplicação registro a registro ficam fora desta aprovação inicial.
 
@@ -132,5 +171,8 @@ fundamentada para ampliar, ajustar ou parar. Nenhum registro é enviado ao BBSIA
 
 ## Aprovação do autor
 
-**Aguardando aprovação no chat.** Até isso ser registrado, este arquivo permanece `PROPOSTO`, não
-recebe issue própria e nenhuma chamada de coleta dos candidatos é iniciada.
+**Aprovado por Tales Mançano no chat em 2026-09-27:** plano e recorte da primeira rodada com as
+sementes existentes em `config/seeds.yml`; módulos adjacentes do BBSIA fora desta coleta. A questão
+de uso futuro desses módulos pode permanecer aberta na issue #12. A coleta de candidatos começa
+somente depois dos controles, verificações offline e cache externo descritos nas etapas 4 e 5, e da
+confirmação na issue #14 dos termos GitHub, da conta HF e da raiz de cache que serão usados.
