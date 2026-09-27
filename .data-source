@@ -1,0 +1,3 @@
+# Shared data-source marker. The local resolver supplies the physical root.
+root_env: MANCANO_BBSIA_RADAR_ROOT
+cache_subdir: bbsia-radar/api

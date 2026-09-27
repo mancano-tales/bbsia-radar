@@ -5,9 +5,9 @@
 Registrada uma proposta de próximos passos para uma amostra pequena do GitHub e Hugging Face. O
 plano exige controles de consulta/paginação antes de qualquer coleta real, limita o enriquecimento a
 dez candidatos e mantém cache e resultados fora do git. Propõe usar apenas as sementes atuais,
-registrar a integração do PR #13 (`94bad301`) e aguardar a decisão do autor na issue #12, e especifica um uso restrito do
-Antigravity (`agy`) para consultar documentação oficial. O plano está em `PROPOSTO`: nenhuma coleta
-foi iniciada e a issue de plano será criada somente após aprovação.
+registrar a integração do PR #13 (`94bad301`), aguardar a decisão do autor na issue #12 e especificar
+um uso restrito do Antigravity (`agy`) para consultar documentação oficial. O plano está em `PROPOSTO`:
+nenhuma coleta foi iniciada e a issue de plano será criada somente após aprovação.
 
 **Metadados de Execução**:
 - **Data**: 2026-09-27
@@ -16,6 +16,16 @@ foi iniciada e a issue de plano será criada somente após aprovação.
 - **Mensagem do Commit**: `docs(plan): propõe coleta exploratória limitada refs #1 #10 #12`
 - **Arquivos afetados**: `repo-governance/plan/2026-09-27_Plano_Coleta_Exploratoria.md`, `NEWS.md`, `TODO.md`
 
+## 2026-09-27 — Primeiro esqueleto dos coletores e corpus Decifra
+
+Adicionadas funções R para consultas paginadas às APIs oficiais do GitHub e do Hugging Face, cache JSON fora do git sob `MANCANO_BBSIA_RADAR_ROOT`, montagem de documentos citáveis por solução e conversão de `config/codebook.yml` ao formato R1.1 do Decifra. Os testes usam fixtures locais, sem rede, e verificam allow-list de campos (sem e-mail), paginação, fatiamento das buscas GitHub e limites multirrótulo da área. O escopo exclui explicitamente páginas e registros de CNJ/Sinapses. A execução de coleta real em volume permanece sob revisão; nada é enviado ao BBSIA.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #10
+- **Mensagem do Commit**: `feat(collectors): implement discovery and Decifra corpus refs #10`
+- **Arquivos afetados**: `.data-source`, `DESCRIPTION`, `NAMESPACE`, `NEWS.md`, `README.md`, `R/cache.R`, `R/codebook_para_decifra.R`, `R/coletar_github.R`, `R/coletar_hf.R`, `R/montar_corpus.R`, `tests/fixtures/github_search.json`, `tests/fixtures/hf_models.json`, `tests/fixtures/seeds_minimal.yml`, `tests/testthat.R`, `tests/testthat/helper-load.R`, `tests/testthat/test-cache.R`, `tests/testthat/test-collectors.R`, `tests/testthat/test-corpus-codebook.R`
 ## 2026-09-27 — Documenta uso do Antigravity CLI para agentes Gemini
 
 O `AGENTS.md` agora aponta para um guia operacional que registra o executável `agy`, as opções e
