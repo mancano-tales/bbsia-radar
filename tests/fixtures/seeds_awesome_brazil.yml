@@ -1,0 +1,27 @@
+listas:
+  - nome: awesome-open-source-research-tools
+gabarito:
+  - id_solucao: antrologos-transcritorio
+    nome: Transcritório
+    artefatos:
+      - plataforma: github
+        url: https://github.com/antrologos/Transcritorio
+    fonte: "awesome-open-source-research-tools (tag brazil): app de transcrição."
+  - id_solucao: lfnovo-open-notebook
+    nome: Open Notebook
+    artefatos:
+      - plataforma: github
+        url: https://github.com/lfnovo/open-notebook
+    fonte: "awesome-open-source-research-tools (tag brazil): caderno de pesquisa."
+  - id_solucao: luizpf42-qualilab
+    nome: QualiLab
+    artefatos:
+      - plataforma: github
+        url: https://github.com/LuizPF42/QualiLab
+    fonte: "awesome-open-source-research-tools (tag brazil): ferramenta qualitativa."
+  - id_solucao: global-tool
+    nome: Global Tool
+    artefatos:
+      - plataforma: github
+        url: https://github.com/example/global-tool
+    fonte: "awesome-open-source-research-tools: ferramenta sem tag brazil."
