@@ -11,16 +11,16 @@
   - Progresso 2026-09-27: PR #19 integrado. Gemini Pro e GPT-Sol revisaram o diff antes das correções e confirmaram falhas no scanner de URI/literais escapados, no contexto de URLs, em linhas +++ de hunks e em diffs de merge; esta branch aplica as correções. As revisões finais independentes de Gemini Pro e GPT-Sol, já após as últimas correções, não encontraram achados acionáveis; os fixtures direcionados e o scanner sobre o diff completo passaram.
   - Progresso 2026-09-27: a tentativa inicial de comentar pela integração GitHub retornou HTTP 403; depois da autorização OAuth do autor, o gh CLI autenticou e publicou a atualização na issue #1.
   - Progresso 2026-09-27: a revisão posterior também encontrou e motivou correções para o primeiro push sem base remota, URI file: com ou sem host e links web relativos ao esquema.
-  - Progresso 2026-09-27: conflito do PR #21 resolvido ao integrar main pelo merge 5257e2a; GitHub informa MERGEABLE/CLEAN. O workflow Verificar caminhos absolutos passou. CodeRabbit PASS, com revisão manual requerida; nenhum merge do PR foi feito.
+  - Progresso 2026-09-27: após o merge 5257e2a, main avançou ao commit b2636ed. A branch está integrando essa atualização e resolvendo o segundo conflito concorrente em NEWS.md; o workflow já passou na versão anterior e será conferido após o novo push. CodeRabbit PASS, com revisão manual requerida; nenhum merge do PR foi feito.
   - Progresso 2026-09-27: `news_db.py` encontrou 36 entradas, zero sem commit identificável e 34/36 mensagens declaradas coincidentes. Duas divergências são históricas, em entradas das issues #8 e #1; o verificador compara cada declaração com o conteúdo no commit que criou a entrada, então corrigir o texto atual não altera esse resultado sem mudar a ferramenta ou reescrever histórico.
-  - Próximo passo: o autor revisa e mergeia o PR #21; depois, tornar o status check aprovado obrigatório nas regras do repositório.
+  - Próximo passo: confirmar que o PR #21 voltou a MERGEABLE e que o workflow passou após esta atualização; o autor revisa e mergeia; depois, tornar o status check aprovado obrigatório nas regras do repositório.
   - Plano ativo: repo-governance/plan/2026-09-27_Plano_Protecao_Caminhos_Absolutos.md · Issue: #1
 
 
 - [ ] **Issue #14 — amostra exploratória limitada** — revisar a qualidade/falsos positivos da amostra concluída e decidir se devemos ajustar, ampliar ou parar.
   - Criado: 2026-09-27 09:30 por Codex / GPT-6 / desktop
   - Progresso 2026-09-27: a PR #20 foi integrada no merge `3075b4b` e a primeira amostra pública foi executada com `Transcritorio`, `BERTimbau`, `neuralmind` e os três itens brasileiros priorizados. Resultado agregado: 103 candidatos GitHub, 2 HF, 10 documentos (1 sem texto) e 16/23 tentativas reservadas; a busca `BERTimbau` foi parcial (134 no total, 100 na página). Dados brutos permanecem no cache externo.
-  - Próximo passo: revisar localmente relevância e falsos positivos. Não ampliar consultas até documentar essa leitura. A integração GitHub recusou o comentário de progresso com `403 Resource not accessible by integration`; o resumo vivo da issue ainda precisa ser atualizado por uma sessão com permissão de escrita.
+  - Próximo passo: revisar localmente relevância e falsos positivos. Os dez documentos selecionados eram todos GitHub; nenhum model card HF entrou, embora a API tenha retornado dois modelos. Antes de outra consulta, decidir se o limite de dez deve reservar pelo menos um documento HF (recomendado) ou manter a seleção canônica atual. O resumo vivo da issue e o comentário de progresso já foram atualizados via `gh`.
   - Plano ativo: `repo-governance/plan/2026-09-27_Plano_Coleta_Exploratoria.md` · Issue: #14
 
 - [ ] **Decifra: requisitos do caso de uso bbsia-radar** — terminar o R1.1 (passo 3 em diante) e os outros itens da issue aberta no `decifra-text-as-data`; desenvolvido lá.

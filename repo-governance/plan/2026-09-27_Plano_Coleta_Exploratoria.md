@@ -130,7 +130,8 @@ foram integrados à `main`; a inclusão das sementes brasileiras entrou pela PR 
 - Hugging Face `neuralmind`: 2 modelos retornados e nenhum indicador de página seguinte.
 - Resultado deduplicado: 103 candidatos do GitHub e 2 do Hugging Face. Dez documentos foram
   selecionados para enriquecimento, incluindo os três documentos prioritários da lista brasileira;
-  um dos dez estava sem texto de README/model card.
+  um dos dez estava sem texto de README/model card. Os dez documentos selecionados eram do GitHub;
+  nenhum model card do Hugging Face entrou no enriquecimento.
 - Foram reservadas 16 de até 23 tentativas HTTP. A execução usou namespace novo na raiz externa de
   cache; respostas brutas, documentos, URLs dos candidatos e exportações ficaram fora do Git.
 - A allow-list dos metadados não inclui e-mail. Uma verificação simples de padrões de e-mail nos
@@ -139,10 +140,14 @@ foram integrados à `main`; a inclusão das sementes brasileiras entrou pela PR 
 - Nenhum token foi enviado, nenhuma página HTML foi raspada e nada foi submetido ao BBSIA.
 
 **Leitura e próximo passo:** a coleta confirma que os endpoints e o orçamento funcionam para uma
-amostra pequena, mas não valida a precisão dos candidatos. Revisar localmente relevância e falsos
-positivos, registrar a qualidade agregada e só então decidir se o próximo passo é refinar o termo
-`BERTimbau`, escolher outra busca derivada de sementes aprovadas ou parar. A cobertura da busca parcial
-não deve ser descrita como exaustiva.
+amostra pequena, mas não valida a precisão dos candidatos. A regra atual prioriza três URLs curadas e
+depois preenche o teto pelos URLs canônicos; nesta rodada os sete espaços restantes também ficaram
+com GitHub. Assim, testamos a descoberta HF, mas não a leitura de model cards. Antes de uma segunda
+chamada, decidir se a seleção deve reservar ao menos um dos dez documentos para Hugging Face
+(recomendado, mantendo três prioridades brasileiras e o mesmo teto) ou se a seleção atual deve ser
+mantida. Em paralelo, revisar localmente relevância e falsos positivos; os README/model cards não
+substituem a classificação do Decifra. A busca `BERTimbau` continua parcial e não deve ser descrita
+como exaustiva.
 
 ## Documentação oficial verificada
 

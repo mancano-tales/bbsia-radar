@@ -1,5 +1,16 @@
 # NEWS — bbsia-radar
 
+## 2026-09-27 — Resolve segundo conflito de NEWS após avanço de main
+
+O commit b2636ed de main acrescentou uma entrada de cobertura HF ao topo do NEWS.md enquanto o PR #21 era atualizado. A branch integrou essa atualização, preservando as entradas dos dois lados em ordem cronológica e sem reescrever histórico. O conflito estava restrito a NEWS.md; o estado e os checks do PR serão conferidos após o push.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #1
+- **Mensagem do Commit**: merge: integra main e resolve segundo conflito de NEWS refs #1
+- **Arquivos afetados**: CHANGELOG.md, NEWS.md, TODO.md, repo-governance/plan/2026-09-27_Plano_Coleta_Exploratoria.md, repo-governance/plan/2026-09-27_Plano_Protecao_Caminhos_Absolutos.md
+
 ## 2026-09-27 — Resolve conflito e valida workflow do PR #21
 
 O merge `5257e2a` integrou `main` à branch do PR #21 e preservou as entradas recentes dos dois lados de `NEWS.md`. O GitHub agora informa o PR como `MERGEABLE` e `CLEAN`. O workflow `Verificar caminhos absolutos` passou; o CodeRabbit marcou PASS, mas solicitou revisão manual para este repositório OSS. `news_db.py` encontrou 36 entradas, nenhuma sem commit identificável e 34/36 mensagens declaradas coincidentes. As duas divergências são anteriores a esta branch (licenças/validação da issue #8 e proposta de proteção); o verificador lê o texto no commit que criou cada entrada. O histórico não foi reescrito.
@@ -10,6 +21,24 @@ O merge `5257e2a` integrou `main` à branch do PR #21 e preservou as entradas re
 - **Issue**: #1
 - **Mensagem do Commit**: docs(plan): registra resolucao de conflito e validacao refs #1
 - **Arquivos afetados**: NEWS.md, TODO.md, repo-governance/plan/2026-09-27_Plano_Protecao_Caminhos_Absolutos.md
+
+## 2026-09-27 — Identifica lacuna de cobertura de model cards
+
+Na revisão dos dez documentos selecionados na amostra, todos eram do GitHub; os dois modelos
+retornados pela API do Hugging Face não tiveram seus model cards enriquecidos. O seletor prioriza
+três URLs curadas e depois preenche o teto de dez pela ordem canônica, sem reservar cobertura por
+plataforma. Isso confirma a descoberta HF, mas não testa a leitura de model cards nem a qualidade dos
+metadados de documento dessa fonte. O plano registra a recomendação de reservar ao menos um espaço
+para HF antes de outra chamada, mantendo o teto total e as três prioridades; a decisão fica para o
+autor na issue #14. A leitura preliminar dos READMEs também mostra uma mistura de aplicações e
+artefatos de pesquisa, que ainda não foram classificados pelo Decifra.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #14
+- **Mensagem do Commit**: `docs(plan): registra lacuna de cobertura hf refs #14`
+- **Arquivos afetados**: `CHANGELOG.md`, `NEWS.md`, `TODO.md`, `repo-governance/plan/2026-09-27_Plano_Coleta_Exploratoria.md`
 
 ## 2026-09-27 — Executa a primeira amostra pública das APIs
 
