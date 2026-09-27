@@ -28,17 +28,21 @@ submissão ao BBSIA.
 - O PR #13, da issue #10, foi integrado durante a preparação desta proposta no merge
   `94bad301563c153e4be64cba3cc9b99e2b52203c`; a issue #10 foi fechada. A implementação dos
   coletores está disponível, mas ainda precisa de limites explícitos para uma amostra pequena.
+- A documentação aprovada foi integrada pela PR #15 no commit `fa7c5e5462808ee6ead0ae977809ecab7cefc5d1`.
+- A implementação dos limites está na branch `codex/14-guardrails-coleta`; a suíte offline cobre
+  orçamento compartilhado, paginação, seleção determinística, cache externo, respostas vazias e
+  bloqueios de itens privados.
+  Nenhuma consulta de candidatos foi executada.
 - A issue #12 continua sem decisão sobre o uso dos módulos adjacentes do BBSIA como contexto ou
   sementes.
-- O PR #13 implementa consultas GitHub que podem percorrer termos, páginas e contas-semente; o
-  coletor HF percorre as contas-semente e três tipos de artefato, embora aceite limite de páginas por
-  consulta. Ainda não há um orçamento global de requisições da rodada. Portanto, os coletores não
-  devem ser executados em suas configurações completas como se fossem uma amostra pequena.
+- Antes desta implementação, os coletores do PR #13 podiam percorrer vários termos, páginas e contas;
+  a listagem HF cobria três tipos de artefato, sem orçamento global. A branch atual substitui esse
+  caminho exploratório por chamadas explicitamente limitadas e compartilhadas por orçamento.
 - O autor aprovou este plano no chat em 2026-09-27, limitado nesta primeira rodada às sementes atuais
   de `config/seeds.yml`; módulos adjacentes do BBSIA ficam fora. A aprovação está registrada aqui;
   a issue #12 continua aberta para decisões futuras sobre esses módulos.
-- A issue #14 foi criada e recebeu o rótulo `em-andamento`. Esta branch contém a documentação e o
-  plano ativado; a implementação dos limites seguirá em branch própria da issue #14.
+- A issue #14 foi criada e recebeu o rótulo `em-andamento`. O plano aprovado e os controles
+  exploratórios estão na branch `codex/14-guardrails-coleta`, aguardando revisão por PR.
 
 ## Escopo proposto para a primeira rodada
 
@@ -50,9 +54,10 @@ submissão ao BBSIA.
    nas sementes, uma página por termo e sem varredura de contas. Cada página tem teto de 100
    resultados; não seguir paginação nem subdividir automaticamente consultas grandes nesta rodada.
 3. Consultar apenas `models` no Hugging Face, para uma conta já listada em `config/seeds.yml`, com
-   uma página de até 100 resultados. Confirmar primeiro que a conta existe pela própria resposta da
-   API; se não existir, interromper. Não escolher outra conta automaticamente: qualquer substituição
-   precisa ser registrada na issue #14 antes de repetir.
+   uma página de até 100 resultados. A própria resposta confirma a conta se retornar modelos; se vier
+   vazia, registrar que o endpoint não distingue uma conta sem modelos de uma conta não resolvida e
+   não escolher outra conta automaticamente. Qualquer substituição precisa ser registrada na issue
+   #14 antes de repetir.
 4. Enriquecer no máximo dez candidatos com README/model card. A seleção dos dez deve ser registrada
    no relatório local; não buscar todos os documentos retornados.
 5. Orçamento máximo explícito: duas requisições de busca do GitHub, uma listagem de modelos do HF e
@@ -61,14 +66,43 @@ submissão ao BBSIA.
    contabilizado. Erro de autenticação, `403`, `429`, resposta incompleta ou ausência de cache externo
    interrompe a execução ou marca a amostra como parcial, sem ampliar a consulta.
 
-Antes da primeira requisição, os coletores precisam validar os termos exatos (até dois), a conta HF
-(exatamente uma), o tipo `models`, uma página, o limite de documentos e o orçamento HTTP global.
-Varredura de contas fica desabilitada e não deve haver consulta de positivos conhecidos fora das
-buscas selecionadas. A validação da raiz de cache (existente, gravável e fora do checkout) acontece
-antes de qualquer chamada de rede. Resposta do GitHub com `incomplete_results=true` ou mais de 1.000
-resultados na busca de uma página deve ser registrada como cobertura parcial, sem subdividir a
-consulta automaticamente. Truncar a saída depois de uma coleta sem limites não conta como controle.
-Implementar os controles na branch da issue #14, com fixtures e testes offline.
+Antes da primeira requisição, os coletores validam os termos exatos (até dois), a conta HF (exatamente
+uma), o tipo `models`, uma página, o limite de documentos e o orçamento HTTP global. Varredura de
+contas fica desabilitada e não há consulta de positivos conhecidos fora das buscas selecionadas. A
+validação da raiz de cache (existente, gravável e fora do checkout) acontece antes de qualquer chamada
+de rede. Resposta do GitHub com `incomplete_results=true` ou mais resultados que os retornados na
+página é registrada como cobertura parcial, sem subdividir a consulta. O orçamento compartilhado
+permite até 23 tentativas reservadas: duas buscas GitHub, uma listagem HF e dez documentos com margem
+de uma redireção para cada leitura HF. Não há retentativas automáticas; erros de status encerram a
+chamada e a tentativa continua contabilizada.
+
+Exemplo de uso depois de registrar os parâmetros exatos na issue #14 (placeholders não são consultas
+aprovadas):
+
+```r
+budget <- radar_novo_orcamento()
+github <- coletar_github(
+  search_terms = "<termo-semente-aprovado>",
+  budget = budget
+)
+huggingface <- coletar_hf(
+  account = "<conta-semente-aprovada>",
+  budget = budget
+)
+enriquecimento <- coletar_readmes_exploratorios(
+  dplyr::bind_rows(github, huggingface),
+  budget = budget
+)
+```
+
+A busca GitHub inclui o qualificador `is:public`, não envia `GITHUB_PAT` em nenhuma chamada e verifica
+a resposta antes de cacheá-la; a listagem HF não envia `HF_TOKEN` e também rejeita antes do cache
+qualquer item marcado como privado. A seleção
+de documentos ordena URLs canônicas, remove duplicatas sem distinguir maiúsculas/minúsculas, escolhe
+no máximo dez e devolve `selected_urls`, contagens de candidatos distintos/selecionados/excluídos
+pelo teto e o resumo do orçamento. As respostas de busca incluem `total_count`, `incomplete_results`,
+página, tamanho e ordenação para registrar a cobertura observada. A implementação e os fixtures
+offline ficam na branch `codex/14-guardrails-coleta`.
 
 ## Documentação oficial verificada
 
@@ -80,9 +114,13 @@ pesquisa, não uma fonte normativa.
   resultados e retorna `total_count` e `incomplete_results`. A amostra usa `page=1`, registra `q`,
   ordenação e contagens e não segue páginas nem divide automaticamente resultados incompletos.
   [Documentação REST oficial](https://docs.github.com/en/rest/search/search#search-repositories).
-- **GitHub Search rate limit**: autenticação reduz o limite de busca em relação a chamadas sem
-  autenticação, mas não remove o limite. A rodada mantém seu próprio orçamento bem abaixo do teto e
-  interrompe em `403` ou `429`.
+- **Visibilidade pública GitHub**: o qualificador `is:public` é suportado pela busca; além dele, o
+  coletor verifica o campo `private` antes de gravar cache. Todas as chamadas exploratórias GitHub
+  são anônimas para impedir que um token local amplie os dados visíveis a um README privado.
+  [Qualificadores oficiais de visibilidade](https://docs.github.com/en/search-github/searching-on-github/searching-for-repositories#search-by-repository-visibility).
+- **GitHub Search rate limit**: buscas têm limite separado e mais restrito que os demais endpoints;
+  chamadas anônimas só podem buscar recursos públicos. A rodada fará no máximo duas buscas e para em
+  `403` ou `429`.
   [Limites de taxa REST](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api).
 - **Hugging Face Models API**: o endpoint oficial aceita filtro de autor e limite; a referência do
   cliente `HfApi.list_models` documenta `author` e `limit`, e alerta que sem limite pode percorrer
@@ -152,10 +190,17 @@ Não conceder diretórios adicionais, não pedir ao agente para executar os cole
    aberta na issue #12.
 3. **Concluído — ativar o plano e abrir sua issue.** Plano `EM EXECUÇÃO`, issue #14 aberta e rotulada
    `em-andamento`; esta aprovação e o escopo estão registrados neste arquivo.
-4. **Em execução — preparar controles e verificar sem rede.** Implementar limites nos coletores e
-   cobri-los com fixtures; rodar a suíte offline antes de qualquer chamada às APIs.
-5. **Pendente — checar o ambiente sem expor segredos.** Confirmar R/pacotes, raiz de cache existente,
-   gravável e externa ao repo; verificar credenciais sem exibir valores.
+4. **Concluído — preparar controles e verificar sem rede.** `radar_novo_orcamento()` impõe o teto
+   global de 23 tentativas reservadas e dez documentos; busca GitHub exige até dois termos-semente e
+   solicita uma página cada; HF exige uma conta-semente e lista somente uma página de `models`; o
+   enriquecimento escolhe até dez URLs em ordem canônica. GitHub restringe a busca a `is:public` e
+   todas as chamadas são anônimas; HF não envia token. Busca GitHub e listagem HF verificam marcações
+   `private` antes do cache. Uma listagem HF vazia é registrada como inconclusiva quanto à existência
+   da conta e não troca a conta-semente. Retentativas automáticas foram removidas e a raiz externa de
+   cache é validada antes da rede. A suíte `testthat` offline passou em 2026-09-27.
+5. **Pendente — checar o ambiente local.** Confirmar R/pacotes e raiz de cache existente, gravável e
+   externa ao repo. As chamadas públicas GitHub e Hugging Face são anônimas; nenhum token é necessário
+   ou lido pelos coletores.
 6. **Pendente — fixar a consulta e executar a amostra.** O autor ainda precisa confirmar os dois
    termos GitHub, a conta HF e a raiz de cache exata. Até isso estar registrado na issue #14, não fazer
    consultas de candidatos. Usar apenas os limites acima.
