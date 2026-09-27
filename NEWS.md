@@ -1,5 +1,41 @@
 # NEWS — bbsia-radar
 
+## 2026-09-27 — Ativa o plano de coleta exploratória
+
+O autor aprovou no chat o plano de coleta limitada e o recorte inicial somente com sementes de
+`config/seeds.yml`; módulos adjacentes do BBSIA ficam fora desta rodada e a questão futura permanece
+na issue #12. O plano passou a `EM EXECUÇÃO`, recebeu a issue #14 e documenta parâmetros e limites das
+APIs oficiais, com apoio de pesquisa do Antigravity Flash e revisão Pro em esforço baixo. Tentativas
+dos modelos em esforço alto expiraram ou não produziram resposta útil; os links oficiais foram
+conferidos separadamente. A integração GitHub do Codex recusou operações de escrita com `403
+Resource not accessible by integration`; o `gh` local conseguiu criar a issue e publicar os registros
+de coordenação. A permissão exata da instalação do conector não é visível nesta sessão. Nenhuma coleta
+de candidatos foi iniciada. O próximo passo é implementar controles e fixtures offline antes de pedir
+os parâmetros exatos da amostra.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #12, #14
+- **Mensagem do Commit**: `docs(plan): ativa coleta exploratoria refs #14`
+- **Arquivos afetados**: `CHANGELOG.md`, `NEWS.md`, `TODO.md`, `repo-governance/plan/README.md`, `repo-governance/plan/2026-09-27_Plano_Coleta_Exploratoria.md`
+
+## 2026-09-27 — Propõe coleta exploratória limitada por APIs oficiais
+
+Registrada uma proposta de próximos passos para uma amostra pequena do GitHub e Hugging Face. O
+plano exige controles de consulta/paginação antes de qualquer coleta real, limita o enriquecimento a
+dez candidatos e mantém cache e resultados fora do git. Propõe usar apenas as sementes atuais,
+registrar a integração do PR #13 (`94bad301`), aguardar a decisão do autor na issue #12 e especificar
+um uso restrito do Antigravity (`agy`) para consultar documentação oficial. O plano está em `PROPOSTO`:
+nenhuma coleta foi iniciada e a issue de plano será criada somente após aprovação.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #1, #10, #12
+- **Mensagem do Commit**: `docs(plan): propõe coleta exploratória limitada refs #1 #10 #12`
+- **Arquivos afetados**: `repo-governance/plan/2026-09-27_Plano_Coleta_Exploratoria.md`, `NEWS.md`, `TODO.md`
+
 ## 2026-09-27 — Primeiro esqueleto dos coletores e corpus Decifra
 
 Adicionadas funções R para consultas paginadas às APIs oficiais do GitHub e do Hugging Face, cache JSON fora do git sob `MANCANO_BBSIA_RADAR_ROOT`, montagem de documentos citáveis por solução e conversão de `config/codebook.yml` ao formato R1.1 do Decifra. Os testes usam fixtures locais, sem rede, e verificam allow-list de campos (sem e-mail), paginação, fatiamento das buscas GitHub e limites multirrótulo da área. O escopo exclui explicitamente páginas e registros de CNJ/Sinapses. A execução de coleta real em volume permanece sob revisão; nada é enviado ao BBSIA.

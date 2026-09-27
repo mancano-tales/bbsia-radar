@@ -6,6 +6,10 @@
 
 ## Pendente
 
+- [ ] **Issue #14 — controles e amostra exploratória** — implementar orçamento global e validações offline; depois registrar os termos GitHub, a conta HF e a raiz de cache antes de qualquer chamada de descoberta.
+  - Criado: 2026-09-27 09:30 por Codex / GPT-6 / desktop
+  - Plano ativo: `repo-governance/plan/2026-09-27_Plano_Coleta_Exploratoria.md` · Issue: #14
+
 - [ ] **Decifra: requisitos do caso de uso bbsia-radar** — terminar o R1.1 (passo 3 em diante) e os outros itens da issue aberta no `decifra-text-as-data`; desenvolvido lá.
   - Criado: 2026-09-26 12:29 por Claude Opus 5.5 (decisão de Tales Mançano: o radar produz o corpus, o Decifra classifica)
   - Issue: #6 (aqui) e a issue correspondente no Decifra
@@ -32,7 +36,6 @@
   - Issue: #4 · Plano §6
 
 ## Prospectivo
-
 - [ ] **WP0c — Leitura ampliada da documentação pública do BBSIA antes dos coletores** — inventariar catálogo, recursos reutilizáveis, fontes de dados, modelos, Judiciário e fichas de prontidão; registrar campos, proveniência, termos e limites; mapear quais objetos cabem no escopo do radar. Sem scraping nem contato com a coordenação nesta etapa.
   - Criado: 2026-09-26 23:37 por Codex
   - Issue: #1 · Plano §3 WP0c
@@ -53,6 +56,11 @@
   - Criado: 2026-09-26 11:03 por Claude Opus 5.5
 
 ## Concluído
+
+- [x] **Autor: aprovar o plano de coleta exploratória limitada** — aprovado no chat o plano e o recorte inicial somente com sementes de `config/seeds.yml`; módulos adjacentes do BBSIA ficam fora desta rodada. A issue #12 segue aberta para decisão futura.
+  - Criado: 2026-09-27 08:40 por Codex / GPT-6 / desktop
+  - Concluído: 2026-09-27 09:24 por Codex / GPT-6 / desktop (aprovação de Tales Mançano no chat)
+  - Plano: `repo-governance/plan/2026-09-27_Plano_Coleta_Exploratoria.md` · Issues: #12, #14
 
 - [x] **Documentar execução do Antigravity CLI `agy` para pesquisa e revisão Gemini** — `AGENTS.md` aponta para o guia com comandos, modelos observados, ferramentas web e de delegação, limites e revisão Flash 3.8/Pro.
   - Criado: 2026-09-27 00:01 por Codex / GPT-6 / desktop (pedido do autor no chat)
