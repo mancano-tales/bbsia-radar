@@ -1,5 +1,16 @@
 # NEWS — bbsia-radar
 
+## 2026-09-27 — Confirma PR sem conflitos e workflow aprovado
+
+Após o push do merge `ee32b88`, o GitHub confirmou o PR #21 como `CLEAN` e `MERGEABLE`; o workflow `Verificar caminhos absolutos` passou. O CodeRabbit segue em PASS, com revisão manual necessária para este repositório OSS. `news_db.py` encontrou 39 entradas, zero sem commit identificável e 37/39 mensagens declaradas coincidentes. As duas divergências restantes são históricas (issues #8 e #1), registradas nos commits originais e não introduzidas por esta branch. O PR não foi mergeado.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #1
+- **Mensagem do Commit**: docs(plan): confirma PR limpo e workflow refs #1
+- **Arquivos afetados**: NEWS.md, TODO.md, repo-governance/plan/2026-09-27_Plano_Protecao_Caminhos_Absolutos.md
+
 ## 2026-09-27 — Resolve segundo conflito de NEWS após avanço de main
 
 O commit b2636ed de main acrescentou uma entrada de cobertura HF ao topo do NEWS.md enquanto o PR #21 era atualizado. A branch integrou essa atualização, preservando as entradas dos dois lados em ordem cronológica e sem reescrever histórico. O conflito estava restrito a NEWS.md; o estado e os checks do PR serão conferidos após o push.
