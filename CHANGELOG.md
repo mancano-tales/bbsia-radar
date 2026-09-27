@@ -6,16 +6,19 @@ Arquivo DERIVADO do `git log`. Não edite à mão — a fonte editorial é o `NE
 
 ## Added
 
+- **`[262fd5d]` 2026-09-27** — feat(report): cria site Quarto e deploy protegido refs #17
 - **`[f3fdf23]` 2026-09-27** — feat(collectors): limita amostra exploratoria refs #14
 - **`[2ea74ec]` 2026-09-27** — feat(collectors): implement discovery and Decifra corpus refs #10
 - **`[241e112]` 2026-09-26** — feat(config): codebook v0.1.0 e sementes curadas
 
 ## Fixed
 
+- **`[f42fb2a]` 2026-09-27** — fix(report): aplica revisões da PR Quarto refs #17
 - **`[3f590ac]` 2026-09-26** — fix(config): correcoes da revisao do codebook e das sementes
 
 ## Changed
 
+- **`[4a8a8fb]` 2026-09-27** — docs(security): propoe protecao contra caminhos absolutos refs #1
 - **`[2609d81]` 2026-09-27** — docs(report): planeja site Quarto do radar refs #17
 - **`[96673df]` 2026-09-27** — docs: protege caminho local do cache refs #14
 - **`[d3e09e6]` 2026-09-27** — docs: registra integracao dos controles refs #14

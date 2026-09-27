@@ -1,5 +1,27 @@
 # NEWS — bbsia-radar
 
+## 2026-09-27 — Entrega o site Quarto para revisão do autor
+
+A implementação está na PR #18 (`codex/17-website-quarto`), pronta para revisão do autor. Gemini 3.1
+Pro High e GPT-6-Sol revisaram o diff em sequência e não encontraram bloqueios; as observações do
+GPT-6-Sol foram incorporadas no commit `f42fb2a`. O build da PR passou e a reexecução manual do
+workflow no commit final passou no run [#36329907257](https://github.com/mancano-tales/bbsia-radar/actions/runs/36329907257),
+incluindo render HTML/PDF, link de download e upload do artefato. O job de deploy foi ignorado, como
+esperado fora da `main` e com a variável de aprovação ainda ausente.
+
+O PDF final foi revisto visualmente. O navegador da sessão bloqueou a abertura do HTML local por
+`file:`, então a inspeção visual do site ainda precisa ser feita antes da primeira publicação. O
+HTML passou pela conferência estática de hierarquia e do link. Não há dados reais ou candidatos de
+exemplo. A issue #17 permanece aberta para integração após a primeira amostra e para aprovação
+explícita antes de ativar a publicação.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #17
+- **Mensagem do Commit**: `docs(report): entrega PR Quarto para revisão refs #17`
+- **Arquivos afetados**: `CHANGELOG.md`, `NEWS.md`, `TODO.md`, `repo-governance/plan/README.md`, `repo-governance/plan/2026-09-27_Plano_Website_Quarto.md`
+
 ## 2026-09-27 — Incorpora revisões da PR Quarto
 
 A PR #18 foi revisada sequencialmente por Gemini 3.1 Pro High e GPT-6-Sol; ambos não encontraram

@@ -8,7 +8,7 @@
 
 - [ ] **Website e relatório público em Quarto (HTML + PDF)** — integrar o leitor após a primeira amostra real e, depois da aprovação do autor, publicar no GitHub Pages.
   - Criado: 2026-09-27 10:52 por Codex / GPT-6 / desktop
-  - Progresso 2026-09-27: o esqueleto está na PR #18, com CI aprovado. Gemini 3.1 Pro High e GPT-6-Sol não encontraram bloqueios; foram aplicadas as correções de data de geração, hierarquia de título e checagem do href do PDF. A inspeção visual do HTML continua pendente; a do PDF foi feita. Nenhuma amostra real foi coletada, e a primeira publicação depende de aprovação explícita do autor.
+  - Progresso 2026-09-27: PR #18 pronta para revisão do autor. Gemini 3.1 Pro High e GPT-6-Sol não encontraram bloqueios; as sugestões foram incorporadas. O CI da PR e a reexecução manual no commit final `f42fb2a` passaram. A inspeção visual do HTML continua pendente; a do PDF foi feita. Nenhuma amostra real foi coletada, e a primeira publicação depende de aprovação explícita do autor.
   - Plano ativo: `repo-governance/plan/2026-09-27_Plano_Website_Quarto.md` · Issue: #17
 
 - [ ] **Issue #14 — amostra exploratória limitada** — registrar os termos GitHub, a conta HF e a raiz de cache aprovados; depois executar a rodada limitada prevista no plano.

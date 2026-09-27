@@ -2,7 +2,7 @@
 tipo: Plano
 titulo: "Relatórios públicos do bbsia-radar em site Quarto (HTML e PDF)"
 issue: 17
-status: EM EXECUÇÃO
+status: ATIVO
 criado: "2026-09-27 10:52"
 concluido: null
 autor_humano: "Tales Mançano"
@@ -66,8 +66,10 @@ Suas observações acionáveis foram incorporadas: a data exibida agora correspo
 relatório e é distinguida da data da coleta; a página inicial mantém um único `h1`; e o CI confere o
 `href="relatorio.pdf"` além da presença do arquivo no artefato.
 
-O build do GitHub Actions da PR #18 passou: gerou e conferiu as três páginas HTML, o PDF e o link; o
-deploy foi ignorado pela condição de aprovação ausente. O PDF foi inspecionado visualmente após a
+O primeiro build da PR passou. Depois das correções, a execução manual do mesmo workflow na branch
+final `f42fb2a` também passou (run [#36329907257](https://github.com/mancano-tales/bbsia-radar/actions/runs/36329907257)):
+gerou e conferiu as três páginas HTML, o PDF e o link. O deploy foi ignorado porque a execução não
+era da `main` e a condição de aprovação permanece fechada. O PDF foi inspecionado visualmente após a
 renderização local. A inspeção visual manual do HTML ainda está pendente: o navegador disponível
 bloqueou URLs locais `file:` e não foi possível abrir a página nesse fluxo. O HTML gerado teve sua
 estrutura, título principal, link e recursos conferidos estaticamente; isso não substitui a revisão
