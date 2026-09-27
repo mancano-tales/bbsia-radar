@@ -11,7 +11,8 @@
   - Progresso 2026-09-27: PR #19 integrado. Gemini Pro e GPT-Sol revisaram o diff antes das correções e confirmaram falhas no scanner de URI/literais escapados, no contexto de URLs, em linhas +++ de hunks e em diffs de merge; esta branch aplica as correções. As revisões finais independentes de Gemini Pro e GPT-Sol, já após as últimas correções, não encontraram achados acionáveis; os fixtures direcionados e o scanner sobre o diff completo passaram.
   - Bloqueio remoto: comentário na issue #1 pela integração GitHub retornou HTTP 403 (Resource not accessible by integration); status check obrigatório ainda não configurado.
   - Progresso 2026-09-27: a revisão posterior também encontrou e motivou correções para o primeiro push sem base remota, URI file: com ou sem host e links web relativos ao esquema.
-  - Próximo passo: o autor deve levar o anúncio à issue #1 e reautenticar o gh para configurar e exigir o status check no GitHub. Esta sessão não conseguiu acessar a API.
+  - Progresso 2026-09-27: commit 6216a8f enviado para codex/1-revisao-caminhos-absolutos. Abrir PR pela API falhou com HTTP 403 (Resource not accessible by integration); gh auth status informa token inválido. A página de comparação abriu no Chrome, mas a automação expirou antes de enviar o formulário. Nenhum PR foi criado.
+  - Próximo passo: o autor pode abrir o PR em https://github.com/mancano-tales/bbsia-radar/compare/main...codex/1-revisao-caminhos-absolutos?expand=1, comentar o estado na issue #1 e, com a autenticação GitHub restabelecida, exigir o status check nas regras do repositório.
   - Plano ativo: repo-governance/plan/2026-09-27_Plano_Protecao_Caminhos_Absolutos.md · Issue: #1
 
 

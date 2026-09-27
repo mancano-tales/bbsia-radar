@@ -1,5 +1,16 @@
 # NEWS — bbsia-radar
 
+## 2026-09-27 — Envia correções e registra bloqueio de abertura do PR
+
+O commit 6216a8f foi enviado para a branch codex/1-revisao-caminhos-absolutos. A criação do pull request pela integração GitHub retornou HTTP 403 (Resource not accessible by integration), e `gh auth status` confirmou token inválido. A comparação da branch abriu numa sessão autenticada do Chrome, mas a automação da página expirou antes de preencher e enviar o formulário; nenhum PR foi criado. [Abrir a comparação com main](https://github.com/mancano-tales/bbsia-radar/compare/main...codex/1-revisao-caminhos-absolutos?expand=1). Permanecem pendentes o PR, o comentário de estado na issue #1 e a exigência do status check no GitHub.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #1
+- **Mensagem do Commit**: docs(plan): registra bloqueio de abertura do PR refs #1
+- **Arquivos afetados**: NEWS.md, TODO.md, repo-governance/plan/2026-09-27_Plano_Protecao_Caminhos_Absolutos.md
+
 ## 2026-09-27 — Corrige casos de borda da proteção contra caminhos absolutos
 
 Após o merge do PR #19, revisões prévias independentes por Gemini Pro e GPT-Sol identificaram omissões de caminhos Windows em URI e literais escapados, perda de contexto na busca por raízes Unix, tratamento incorreto de linhas +++ dentro de hunks e ausência dos diffs de primeiro pai de commits de merge. O scanner, o pre-push e o workflow foram corrigidos. As revisões posteriores também apontaram o fallback do primeiro push sem base remota, variantes de URI file: com e sem host e URLs relativas ao esquema que poderiam ser confundidas com UNC; esses casos foram tratados. Verificações direcionadas cobriram URIs Windows/Unix/UNC, escapes, aspas, linhas +++ em hunks, URLs comuns, 1.500 URLs após um token file: e uma linha de 50.000 caracteres; o scanner também passou sobre o diff completo e git diff --check. As revisões finais independentes de Gemini Pro e GPT-Sol não encontraram achados acionáveis. O status check obrigatório no GitHub continua pendente.
