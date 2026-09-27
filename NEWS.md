@@ -1,5 +1,15 @@
 # NEWS — bbsia-radar
 
+## 2026-09-27 — Sincroniza o changelog após integração
+
+Depois do merge 5983f13, o renderizador foi executado novamente sobre o histórico integrado. O CHANGELOG gerado passou a incluir os commits GitLab e as mudanças de documentação dos dois lados da integração, totalizando 38 entradas.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #14
+- **Mensagem do Commit**: `docs(changelog): sincroniza changelog após integração refs #14`
+- **Arquivos afetados**: `CHANGELOG.md`, `NEWS.md`
 ## 2026-09-27 — Integra sementes curadas e cobertura GitLab
 
 A branch `codex/14-gitlab-radar` foi integrada às mudanças recentes de `main`, preservando a consulta opcional de sementes brasileiras da PR #20 e a seleção de documentos com cobertura das plataformas disponíveis, incluindo GitLab. O orçamento da rodada ampliada segue limitado a 25 tentativas e dez documentos. As estatísticas das rodadas GitHub/HF e GitHub/GitLab/HF permanecem separadas; esta integração não executou nova coleta nem publicou candidatos. A suíte offline combinada passou com 212 testes, sem falhas ou avisos.

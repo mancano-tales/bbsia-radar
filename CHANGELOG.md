@@ -6,6 +6,7 @@ Arquivo DERIVADO do `git log`. Não edite à mão — a fonte editorial é o `NE
 
 ## Added
 
+- **`[1eb2f16]` 2026-09-27** — feat(collectors): add GitLab discovery refs #14
 - **`[17297e3]` 2026-09-27** — feat(collectors): inclui sementes brasileiras da lista curada refs #14
 - **`[4fa2bb4]` 2026-09-27** — feat(security): reduz risco de caminhos absolutos refs #1
 - **`[f3fdf23]` 2026-09-27** — feat(collectors): limita amostra exploratoria refs #14
@@ -18,6 +19,7 @@ Arquivo DERIVADO do `git log`. Não edite à mão — a fonte editorial é o `NE
 
 ## Changed
 
+- **`[b2636ed]` 2026-09-27** — docs(plan): registra lacuna de cobertura hf refs #14
 - **`[fc19155]` 2026-09-27** — docs(plan): registra primeira amostra exploratoria refs #14
 - **`[cfa17cf]` 2026-09-27** — docs: registra PR de sementes brasileiras refs #14
 - **`[ab2f779]` 2026-09-27** — docs(cache): configura raiz local para coleta exploratoria refs #14
