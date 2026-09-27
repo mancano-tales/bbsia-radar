@@ -21,7 +21,7 @@
 - [ ] **Autor: ativar o hook de pre-commit no clone local** — `git config core.hooksPath hooks`.
   - Criado: 2026-09-26 11:03 por Claude Opus 5.5
   - Issue: #1
-- [ ] **Autor: revisar o codebook v0.1.0 e as sementes** — decisões `proposta` dos casos-limite, limiar de kappa (0,70), tamanho da amostra (100); revisar a divisão radar × Decifra registrada no plano §8 (decidida em 2026-09-26, issue #6) e decidir se o teste com o catálogo do BBSIA entra no piloto.
+- [ ] **Autor: acompanhar codebook v0.1.1 e as sementes** — seis casos-limite e protocolo inicial aprovados em chat (issue #9); dois casos ainda dependem de alinhamento com o BBSIA. Revisar a divisão radar × Decifra registrada no plano §8 (decidida em 2026-09-26, issue #6) e decidir se o teste com o catálogo do BBSIA entra no piloto.
   - Criado: 2026-09-26 11:45 por Claude Opus 5.5
   - Progresso 2026-09-26 (Claude Opus 5.5): autor confirmou o Transcritório (usa Whisper e o modelo Tagarela) e informou que não cadastrou nada à mão no BBSIA.
   - Issues: #3, #4, #6 · PR #5
@@ -48,7 +48,7 @@
 - [ ] **WP8 — Piloto de ~30 soluções e apresentação à Eunice Liu**, junto com as perguntas do plano §3 (rascunho de mensagem no §13).
   - Criado: 2026-09-26 11:03 por Claude Opus 5.5
   - Plano §11
-- [ ] **Autor: licença do repositório** — urgente, porque o repositório já é público (sem licença, ninguém pode reusar legalmente) (MIT ou Apache-2.0 para o código; CC BY 4.0 para a planilha de candidatos, se o BBSIA concordar).
+- [x] **Licenças do projeto** — Apache-2.0 para o código e CC BY 4.0 para materiais originais do projeto; não cobre dados de terceiros ou do BBSIA (issues #8).
   - Criado: 2026-09-26 11:03 por Claude Opus 5.5
 
 ## Concluído

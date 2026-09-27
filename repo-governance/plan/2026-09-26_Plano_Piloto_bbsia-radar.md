@@ -67,7 +67,7 @@ da issue.
 | Maturidade | Há estágios descritivos de pesquisa/PoC até uso em produção, mas não campo numérico TRL 1–9. “Todos os TRLs” permanece como orientação verbal da coordenação; TRL no radar é estimativa própria. |
 | Catálogo | Busca por problema, título, órgão e tags; filtros por público (usar ou desenvolver/integrar), tipo (aplicação, código/biblioteca, API, agente, modelo, pipeline, guia/metodologia) e área (Saúde, Educação, Segurança Pública, Meio Ambiente, Gestão Pública, Administração/Processos, Outro). A página mostrava 20 publicadas; `/numeros` mostrava 154 no total, sendo 20 publicadas e 134 em análise. Ver [catálogo](https://bancobrasileiro.ia.br/catalogo). |
 | API/exportação/importação | Nenhuma documentação ou interface pública de exportação/importação foi encontrada; `sitemap.xml` e `robots.txt` não estavam disponíveis. A inspeção de chamadas de rede não foi concluída. Logo, não se conclui que inexista endpoint ou exportação administrativa/restrita. |
-| Termos, privacidade, licença | O [aviso de privacidade](https://bancobrasileiro.ia.br/privacidade) prevê publicação/reuso das informações das soluções e mantém contatos fora das páginas públicas. Não foi encontrada licença específica do catálogo nem termo geral nas páginas consultadas; decisão sobre licença deste projeto (#8) segue com o autor. |
+| Termos, privacidade, licença | O [aviso de privacidade](https://bancobrasileiro.ia.br/privacidade) prevê publicação/reuso das informações das soluções e mantém contatos fora das páginas públicas. Não foi encontrada licença específica do catálogo nem termo geral nas páginas consultadas. Isso não concede ao radar direitos sobre dados do BBSIA; consulte WP0b antes de reutilizá-los. A licença deste projeto está decidida no §13. |
 | Contagem | Na consulta direta de 2026-09-26, home e `/numeros` exibiam 541 mapeadas (351 curadas + 190 integradas), 313 disponíveis e 228 em curadoria. A seção de catálogo indicava 154 no total: 20 publicadas e 134 em análise. Os 190 projetos CNJ/Sinapses são apresentados separadamente; não somar como registros do catálogo curado. Resultados de busca indexados podem estar desatualizados. |
 | `Roger-Quinelato/BBSIA` | Documentação/código descrevem indexação local de PDFs e JSON curado em RAG; não foi observada chamada à base de produção ou API do BBSIA. A ausência de evidência no repositório acessível não exclui sistemas privados. Ver [repositório](https://github.com/Roger-Quinelato/BBSIA). |
 
@@ -103,7 +103,7 @@ da issue.
 - **Dono e visibilidade**: `mancano-tales/bbsia-radar`, **público** por decisão do autor em 2026-09-26. Transferir para uma organização do BBSIA/LIIA é decisão do autor, depois de apresentar à coordenação.
 - **Natureza**: `projeto`. Linha no catálogo do `README.md` do `mancano-repo-hub`.
 - **Governança**: `AGENTS.md` (com a coordenação por issues), `CLAUDE.md` → `@AGENTS.md`, `README.md` para humanos, `NEWS.md`, `TODO.md`, `repo-governance/` (planos e llm-reviews), `tools/` (trava git, export de conversas, changelog), `hooks/pre-commit` (NEWS.md e caminhos absolutos).
-- **Licença**: a decidir pelo autor (ver `TODO.md`).
+- **Licença**: código sob Apache-2.0 (`LICENSE`); codebook, sementes, documentação e dados originais do projeto sob CC BY 4.0 (`LICENSE-DATA.md`). Conteúdo de terceiros conserva seus próprios termos.
 - **Estrutura proposta**:
 
   ```
@@ -126,7 +126,7 @@ da issue.
 
 ## 5. WP2 — Codebook: o que é "brasileira"
 
-> **2026-09-26 11:45 — v0.1.0 escrita** em [`config/codebook.yml`](../../config/codebook.yml) (issue #3), que passa a ser a referência; a tabela abaixo é o rascunho original. Mudanças em relação a ela: os tipos A, B e C viraram **três marcações independentes** (um modelo pode ser brasileiro e adaptado ao pt-BR); entrou um filtro de entrada `e_ia` (o que conta como IA); as exclusões ganharam `reupload_modelo` (quantizações e cópias no Hugging Face) e `dados_pessoais`; 8 casos-limite têm decisão proposta, 2 dependem do BBSIA. Sementes e gabarito de recall em [`config/seeds.yml`](../../config/seeds.yml) (issue #4).
+> **2026-09-26 — v0.1.1** em [`config/codebook.yml`](../../config/codebook.yml): o autor aprovou seis casos-limite e o protocolo inicial de validação (issue #9); dois casos seguem dependentes de alinhamento com o BBSIA. As métricas de reprodutibilidade humana são separadas do desempenho da máquina contra os rótulos humanos adjudicados. A amostra vem dos candidatos e não depende de uma exportação do catálogo. A v0.1.0 introduziu marcações A/B/C independentes, o filtro `e_ia` e exclusões para reuploads e dados pessoais. Sementes em [`config/seeds.yml`](../../config/seeds.yml) (issue #4).
 
 Escrito **antes** da coleta, porque é ele que decide o que entra. Rascunho:
 
@@ -208,9 +208,10 @@ documentação e de testes, dono (usuário ou org) e a `location` dele.
    (vocabulário do BBSIA, quando tivermos) e um resumo de 1–2 frases **em forma de problema**, que é
    como o BBSIA organiza o catálogo. É exatamente o que o `decifra-text-as-data` faz; usar como
    biblioteca ou copiar o método. Decidir no WP1.
-3. **Validação humana**: o autor (e, se possível, alguém da equipe do BBSIA) codifica uma amostra
-   aleatória estratificada por fonte, e comparamos com a máquina (concordância e kappa). O número
-   entra no relatório. Sem essa validação, a planilha não vai para o BBSIA.
+3. **Validação humana (desenho inicial substituído pela decisão do autor no §13, issue #9)**:
+   a amostra é tirada do próprio corpus de candidatos, não do catálogo do BBSIA. A dupla codificação
+   humana mede reprodutibilidade do codebook; a avaliação do classificador contra os rótulos humanos
+   adjudicados é outra métrica. O protocolo aprovado e seus limiares constam em `config/codebook.yml`.
 
 ## 9. WP6 — Maturidade (TRL provável)
 
@@ -264,7 +265,9 @@ declarado no relatório.
 2. Quando mandar as perguntas do §3 à coordenação: com o piloto, ou antes, se o WP0a não bastar.
 3. Licença do repositório.
 4. R puro ou R + Python (recomendação: R, e Python só se o `huggingface_hub` fizer falta).
-5. **Visibilidade (2026-09-26, no chat, depois da decisão 1):** "bbsia vai ser público mesmo". O repositório é **público** desde já, e a regra "privado até o piloto" (§3 WP0b e §4) está aposentada. A coordenação continua vendo o projeto com o piloto. Com isso, a licença (item 3) deixa de ser "antes de tornar público" e passa a ser urgente.
+5. **Visibilidade (2026-09-26, no chat, depois da decisão 1):** "bbsia vai ser público mesmo". O repositório é **público** desde já, e a regra "privado até o piloto" (§3 WP0b e §4) está aposentada. A coordenação continua vendo o projeto com o piloto.
+6. **Licenças (2026-09-26, confirmação do autor no chat; issue #8):** código sob Apache-2.0; materiais originais do projeto (incluindo `config/codebook.yml`, `config/seeds.yml` e futuras tabelas revisadas) sob CC BY 4.0, com atribuição. CC BY permite uso comercial; a opção não comercial seria BY-NC e não foi escolhida. Isso não licencia dados coletados de terceiros nem resolve os termos de reutilização do catálogo do BBSIA.
+7. **Validação e casos-limite (2026-09-26, aprovação do autor no chat; issue #9):** protocolo inicial de amostra de até 100 candidatos, dupla codificação cega de 30 se houver segundo codificador e kappa humano mínimo de 0,70 em `brasileira`, `ptbr` e `e_ia`. A concordância humana mede consistência do codebook; o desempenho do classificador será avaliado separadamente contra rótulos humanos adjudicados, com precisão, recall, F1 e kappa. Se não houver segundo codificador, relatar a limitação, não inventar kappa humano. Seis casos-limite estão aprovados; API comercial fechada e pacote de dados sem IA permanecem pendentes da coordenação do BBSIA.
 
 ### Rascunho de mensagem para a Eunice
 

@@ -1,5 +1,23 @@
 # NEWS — bbsia-radar
 
+## 2026-09-26 — Licenças e validação aprovadas pelo autor
+
+Por confirmação do autor no chat (issues #8 e #9), o código passa a usar Apache-2.0 e os materiais
+originais do projeto CC BY 4.0, com atribuição. CC BY permite uso comercial; não foi escolhida a
+variante BY-NC. Esta licença não cobre dados de terceiros nem concede direitos sobre registros do
+BBSIA. O codebook sobe para v0.1.1: seis casos-limite foram aprovados, enquanto API comercial fechada
+e pacote de dados sem IA continuam pendentes da coordenação. O protocolo usa até 100 candidatos e
+dupla codificação cega de 30, se houver segunda pessoa. Kappa entre pessoas avalia reprodutibilidade
+do codebook; desempenho automático é medido à parte contra rótulos humanos adjudicados. A amostra
+vem dos candidatos e não depende de baixar o catálogo do BBSIA.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-26
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #8, #9
+- **Mensagem do Commit**: "docs(license): registra licenças e validação aprovadas refs #8 #9"
+- **Arquivos afetados**: `LICENSE`, `LICENSE-DATA.md`, `README.md`, `TODO.md`, `NEWS.md`, `config/codebook.yml`, `repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md`
+
 ## 2026-09-26 — Push imediato e integração da atualização remota
 
 Por instrução do autor, o `AGENTS.md` específico deste repositório agora também pede push logo após cada commit para reduzir divergências entre sessões locais e remotas; se o remoto avançar, a orientação é buscar, integrar por merge e enviar sem force-push. Integramos a atualização remota que torna explícito que o repositório é público e preservamos sua entrada de histórico; o plano-piloto foi alinhado para não repetir o status anterior de privado.

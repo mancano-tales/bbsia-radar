@@ -30,7 +30,7 @@ O piloto começa por **A** e **B**. O tipo **C** exige um critério mais preciso
 
 - **Todas as maturidades entram.** Combinado com o BBSIA ("todos os TRLs"): uma prova de conceito também pode ser útil. Mas cada solução leva uma **estimativa de maturidade** (a escala TRL, de 1 = ideia a 9 = em operação) e indicadores de manutenção (se ainda é atualizada, quantas pessoas contribuem). Isso responde a um problema real: muito projeto aberto para cedo ou deixa de ser mantido.
 - **Critério escrito antes da coleta.** O que conta como "brasileira" ou "adaptada ao pt-BR" fica definido num livro de códigos (*codebook*) antes de qualquer busca em volume.
-- **A máquina sugere, pessoas conferem.** A classificação automática (regras + modelo de linguagem) é comparada com a classificação humana de uma amostra. A taxa de acerto sai no relatório. Sem essa conferência, nada é enviado ao BBSIA.
+- **A máquina sugere, pessoas conferem.** A amostra inicial tem até 100 candidatos. Quando houver uma segunda pessoa, 30 serão codificados às cegas por ambas para medir consistência humana (kappa ≥ 0,70 em `brasileira`, `ptbr` e `e_ia`). Isso não exige baixar a base do BBSIA: a amostra vem dos candidatos. O desempenho da máquina será medido à parte contra rótulos humanos adjudicados, com precisão, recall, F1 e kappa. Sem validação, nada é enviado ao BBSIA.
 - **Sem repetir o que já está no banco.** Os candidatos são comparados com o catálogo atual.
 - **Coleta responsável.** Só APIs oficiais, respeitando os limites de uso; só dados públicos dos repositórios; **nenhum e-mail ou dado pessoal** (LGPD).
 
@@ -88,7 +88,9 @@ O radar é **a parte que produz o corpus**: encontra as soluções, junta o que 
 5. **Termos, privacidade e licença:** o [aviso de privacidade](https://bancobrasileiro.ia.br/privacidade)
    diz que informações sobre as soluções podem ser publicadas e reutilizadas e que contatos não são
    públicos. Não encontramos termo de uso ou licença específica do catálogo nas páginas consultadas.
-   Isso não decide a licença deste repositório (#8).
+   Isso não concede ao radar direitos sobre registros do BBSIA. As licenças escolhidas para o código
+   e para os materiais originais deste projeto estão separadas em [`LICENSE`](LICENSE) e
+   [`LICENSE-DATA.md`](LICENSE-DATA.md); direitos sobre conteúdo externo continuam com seus titulares.
 6. **Contagens em 2026-09-26:** a home e a página “Números do banco” mostravam 541 soluções mapeadas
    (351 curadas e 190 integradas), 313 disponíveis e 228 em curadoria. A seção de catálogo mostrava
    154 no total (20 publicadas, 134 em análise); os números variam com a atualização e resultados
@@ -101,6 +103,11 @@ O radar é **a parte que produz o corpus**: encontra as soluções, junta o que 
    que ele baixe o banco de produção ou use API do BBSIA. Isso descreve o repositório público
    consultado, não exclui processos privados ou outros sistemas.
    [Repositório e documentação](https://github.com/Roger-Quinelato/BBSIA).
+
+**Licença do projeto:** o código está sob Apache-2.0. O codebook, as sementes, a documentação e as
+tabelas originais revisadas do projeto estão sob CC BY 4.0, que exige atribuição mas permite uso
+comercial; “não comercial” exigiria CC BY-NC e não foi escolhido. Veja [`LICENSE-DATA.md`](LICENSE-DATA.md).
+O conteúdo de terceiros e o catálogo do BBSIA não ficam automaticamente cobertos por essas licenças.
 
 **Implicação para o piloto:** a deduplicação depende de uma fonte autorizada e reproduzível para o
 catálogo atual. Até que isso seja esclarecido, o radar não deve tratar contagens agregadas como uma
