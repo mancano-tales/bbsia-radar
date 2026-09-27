@@ -1,5 +1,31 @@
 # NEWS — bbsia-radar
 
+## 2026-09-27 — Limita a amostra e o orçamento dos coletores
+
+Os coletores agora exigem um orçamento compartilhado de até 23 tentativas HTTP reservadas e no
+máximo dez README/model cards. GitHub aceita até dois termos explícitos das sementes e solicita uma
+ página por termo, sem varrer contas; registra `total_count`, `incomplete_results`, ordenação e
+cobertura parcial. As chamadas GitHub são anônimas, usam `is:public` na busca e rejeitam um item
+privado antes do cache. Hugging Face consulta uma página pública de `models` para uma conta-semente
+selecionada, sem enviar `HF_TOKEN`, seguir `Link` nem consultar positivos conhecidos; também rejeita
+itens marcados como privados antes do cache. Uma lista HF vazia não permite inferir se a conta existe
+sem modelos, e isso é sinalizado nos metadados. Leituras de documentos são selecionadas por URL em
+ordem estável, e o retorno informa
+candidatos distintos, selecionados e excluídos pelo limite. Retentativas automáticas foram removidas,
+a raiz de cache existente/gravável e
+externa ao checkout é verificada antes da rede, e respostas 404 contam no orçamento. A suíte offline
+passou com fixtures para limites, erro HTTP, cache (incluindo preservação de HTTP 403 do HF sem nova
+tentativa) e resultados vazios. Avisos do ambiente R sobre
+locale `C.UTF-8` e a versão de build do testthat não impediram os testes. Nenhuma coleta de candidatos
+foi iniciada; os parâmetros exatos e a raiz de cache ainda precisam ser registrados pelo autor.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #14
+- **Mensagem do Commit**: `feat(collectors): limita amostra exploratoria refs #14`
+- **Arquivos afetados**: `CHANGELOG.md`, `DESCRIPTION`, `NEWS.md`, `NAMESPACE`, `R/cache.R`, `R/coletar_github.R`, `R/coletar_hf.R`, `R/enriquecer_documentos.R`, `R/montar_corpus.R`, `TODO.md`, `repo-governance/plan/2026-09-27_Plano_Coleta_Exploratoria.md`, `tests/testthat/test-collectors.R`
+
 ## 2026-09-27 — Ativa o plano de coleta exploratória
 
 O autor aprovou no chat o plano de coleta limitada e o recorte inicial somente com sementes de

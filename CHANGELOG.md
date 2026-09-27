@@ -15,6 +15,7 @@ Arquivo DERIVADO do `git log`. Não edite à mão — a fonte editorial é o `NE
 
 ## Changed
 
+- **`[2fde87e]` 2026-09-27** — docs(plan): ativa coleta exploratoria refs #14
 - **`[23a2c66]` 2026-09-27** — docs(plan): propõe coleta exploratória limitada refs #1 #10 #12
 - **`[207a863]` 2026-09-27** — docs(agents): documenta uso do Antigravity refs #1
 - **`[721076d]` 2026-09-27** — docs(research): testa rotas publicas e ajusta escopo refs #1 #10

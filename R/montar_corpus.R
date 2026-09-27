@@ -20,7 +20,10 @@ aplicar_ids_sementes <- function(artifacts, seeds) {
   # Seed metadata is the only automatic cross-platform identity link. All
   # undiscovered relationships remain provisional instead of being guessed
   # from similar names or owners.
-  if (!nrow(artifacts)) return(artifacts)
+  if (!nrow(artifacts)) {
+    artifacts$solution_id <- character()
+    return(artifacts)
+  }
   artifacts$solution_id <- artifacts$url
   for (solution in seeds$gabarito %||% list()) {
     urls <- purrr::map_chr(solution$artefatos %||% list(), ~ normalizar_url_artefato(.x$url))

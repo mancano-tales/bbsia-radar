@@ -1,34 +1,49 @@
 # Hugging Face Hub public API / API pública do Hugging Face Hub.
 #
-# (pt) A API do Hub oferece listagens públicas para modelos, datasets e Spaces.
-#      Usamos os parâmetros oficiais de busca/autor e seguimos o cabeçalho Link
-#      de paginação. O token é lido apenas de HF_TOKEN, nunca é incluído na chave
-#      do cache nem no objeto bruto persistido. Campos são selecionados por
-#      allow-list; e-mail e qualquer campo pessoal ficam fora do resultado.
-# (en) The Hub API provides public listings for models, datasets, and Spaces.
-#      We use its documented author/search parameters and follow Link pagination.
-#      A token is read only from HF_TOKEN and is never part of the cache key or
-#      persisted response. An explicit field allow-list excludes email and other
-#      personal fields from the resulting corpus.
+# (pt) O modo exploratório consulta uma única página de `models` para uma conta
+#      explicitamente selecionada das sementes. Não segue `Link`, não consulta
+#      positivos conhecidos, não envia HF_TOKEN e não repete requisições.
+#      Campos de saída usam allow-list sem e-mail ou dados pessoais.
+# (en) Exploratory mode requests one `models` page for one explicitly selected
+#      seed account. It does not follow `Link`, query known positives, or retry.
+#      It never sends HF_TOKEN; output fields are allow-listed and exclude
+#      email and other personal data.
 
-hf_api_page <- function(kind, query, root, request_fn = NULL) {
+hf_api_page <- function(kind, query, root, request_fn = NULL, budget, reserved_attempts = 1L) {
+  radar_validar_orcamento(budget)
+  radar_validate_cache_root(root)
   key <- list(provider = "huggingface", kind = kind, query = query)
-  radar_cached(key, function() {
-    if (!is.null(request_fn)) return(request_fn(kind, query))
-    request <- httr2::request(paste0("https://huggingface.co/api/", kind)) |>
-      httr2::req_user_agent("bbsia-radar/0.1.0 (public research; contact: project repository)")
-    request <- do.call(httr2::req_url_query, c(list(request), query)) |>
-      httr2::req_retry(
-        max_tries = 5, retry_on_failure = TRUE,
-        is_transient = function(response) httr2::resp_status(response) %in% c(429, 500, 502, 503, 504)
-      )
-    token <- Sys.getenv("HF_TOKEN", unset = "")
-    if (nzchar(token)) request <- httr2::req_headers(request, Authorization = paste("Bearer", token))
-    response <- httr2::req_perform(request)
-    httr2::resp_check_status(response)
-    list(.radar_items = httr2::resp_body_json(response, simplifyVector = FALSE),
-         .radar_next = hf_link_next(httr2::resp_header(response, "link")))
+  payload <- radar_cached(key, function() {
+    radar_reservar_requisicao(budget, "huggingface", kind, reserved_attempts)
+    if (!is.null(request_fn)) {
+      payload <- request_fn(kind, query)
+    } else {
+      request <- httr2::request(paste0("https://huggingface.co/api/", kind)) |>
+        httr2::req_user_agent("bbsia-radar/0.1.0 (public research; see repository)") |>
+        httr2::req_options(followlocation = FALSE) |>
+        httr2::req_error(is_error = function(response) FALSE)
+      request <- do.call(httr2::req_url_query, c(list(request), query)) |>
+        httr2::req_timeout(30)
+      # These queries discover public seed models only, so never attach
+      # HF_TOKEN; authenticated listing could include private models.
+      response <- httr2::req_perform(request)
+      status <- httr2::resp_status(response)
+      if (is.na(status) || status < 200L || status >= 300L) {
+        body <- tryCatch(httr2::resp_body_json(response, simplifyVector = FALSE),
+                         error = function(error) httr2::resp_body_string(response))
+        payload <- list(.radar_http_status = status, .radar_http_body = body)
+      } else {
+        payload <- list(.radar_items = httr2::resp_body_json(response, simplifyVector = FALSE),
+                        .radar_next = hf_link_next(httr2::resp_header(response, "link")))
+      }
+    }
+    hf_validar_itens_publicos(payload)
+    payload
   }, root = root)
+  if (is.list(payload) && !is.null(payload$.radar_http_status)) {
+    radar_verificar_status_http(payload$.radar_http_status, "Hugging Face", kind)
+  }
+  payload
 }
 
 hf_link_next <- function(link) {
@@ -39,88 +54,99 @@ hf_link_next <- function(link) {
   sub("^<([^>]+)>.*$", "\\1", next_part[[1]])
 }
 
-hf_collect_query <- function(kind, query, root, request_fn = NULL, max_pages = Inf) {
-  collected <- list()
-  next_url <- NULL
-  page <- 1L
-  repeat {
-    payload <- if (is.null(next_url)) {
-      hf_api_page(kind, query, root, request_fn)
-    } else if (!is.null(request_fn)) {
-      # Fixtures can expose a `next` element instead of an HTTP Link header.
-      request_fn(kind, list(url = next_url, page = page))
-    } else {
-      key <- list(provider = "huggingface", url = next_url)
-      radar_cached(key, function() {
-        req <- httr2::request(next_url) |>
-          httr2::req_user_agent("bbsia-radar/0.1.0 (public research)") |>
-          httr2::req_retry(
-            max_tries = 5, retry_on_failure = TRUE,
-            is_transient = function(response) httr2::resp_status(response) %in% c(429, 500, 502, 503, 504)
-          )
-        token <- Sys.getenv("HF_TOKEN", unset = "")
-        if (nzchar(token)) req <- httr2::req_headers(req, Authorization = paste("Bearer", token))
-        resp <- httr2::req_perform(req)
-        httr2::resp_check_status(resp)
-        list(.radar_items = httr2::resp_body_json(resp, simplifyVector = FALSE),
-             .radar_next = hf_link_next(httr2::resp_header(resp, "link")))
-      }, root = root)
-    }
-    # Keep the Link header beside the cached JSON page. The wrapper survives
-    # JSON serialization; plain injected fixture arrays remain supported too.
-    if (is.list(payload) && !is.null(payload$.radar_items)) {
-      items <- payload$.radar_items
-      next_url <- payload$.radar_next
-    } else if (is.list(payload) && !is.null(payload$items)) {
-      # The `items` wrapper is convenient for deterministic fixtures; real
-      # responses use the `.radar_items` wrapper above or a plain JSON array.
-      items <- payload$items
-      next_url <- payload[["next"]] %||% NULL
-    } else {
-      items <- payload
-      next_url <- NULL
-    }
-    collected[[length(collected) + 1L]] <- items
-    if (is.null(next_url) || page >= max_pages) break
-    page <- page + 1L
+hf_collect_query <- function(kind, query, root, request_fn = NULL, max_pages = 1L, budget) {
+  if (length(max_pages) != 1L || is.na(max_pages) || max_pages != 1L) {
+    stop("A amostra exploratória aceita exatamente uma página do Hugging Face.", call. = FALSE)
   }
-  unlist(collected, recursive = FALSE)
+  payload <- hf_api_page(kind, query, root, request_fn, budget)
+  if (is.list(payload) && !is.null(payload$.radar_items)) {
+    items <- payload$.radar_items
+    next_url <- payload$.radar_next
+  } else if (is.list(payload) && !is.null(payload$items)) {
+    # The `items` wrapper is convenient for deterministic fixtures; real
+    # responses use the `.radar_items` wrapper above or a plain JSON array.
+    items <- payload$items
+    next_url <- payload[["next"]] %||% NULL
+  } else {
+    items <- payload
+    next_url <- NULL
+  }
+  result <- unlist(list(items), recursive = FALSE)
+  attr(result, "pagination_summary") <- list(pages_requested = 1L, has_next_page = !is.null(next_url))
+  result
+}
+
+hf_validar_itens_publicos <- function(payload) {
+  # Error wrappers carry an HTTP status/body rather than model records.
+  # Preserve the original status so 403/429 are reported and cached correctly.
+  if (is.list(payload) && !is.null(payload$.radar_http_status)) return(invisible(payload))
+  items <- payload$.radar_items %||% payload$items %||% payload
+  if (is.list(items) && (!is.null(items$id) || !is.null(items$repo_id))) items <- list(items)
+  if (is.list(items) && length(items) &&
+      any(purrr::map_lgl(items, ~ isTRUE(.x$private)))) {
+    stop("A listagem do Hugging Face retornou um modelo privado; a resposta não será cacheada.",
+         call. = FALSE)
+  }
+  invisible(payload)
 }
 
 hf_seed_accounts <- function(seeds) {
   purrr::map_chr(seeds$contas$huggingface %||% list(), ~ .x$conta)
 }
 
-coletar_readme_hf <- function(repositories, root = Sys.getenv("MANCANO_BBSIA_RADAR_ROOT", ""), request_fn = NULL) {
+coletar_readme_hf <- function(repositories,
+                              root = Sys.getenv("MANCANO_BBSIA_RADAR_ROOT", ""),
+                              request_fn = NULL, budget) {
   required <- c("id", "kind")
   if (!all(required %in% names(repositories))) stop("repositories precisa de id e kind.", call. = FALSE)
+  if (nrow(repositories) > 10L) stop("Selecione no máximo dez documentos antes do enriquecimento.", call. = FALSE)
+  if (anyNA(repositories$kind) || any(repositories$kind != "models")) {
+    stop("O modo exploratório só enriquece model cards de modelos.", call. = FALSE)
+  }
+  radar_validar_orcamento(budget)
+  radar_validate_cache_root(root)
+  radar_reservar_documentos(budget, "huggingface", repositories$id)
   repositories |>
     dplyr::mutate(readme = purrr::map2_chr(id, kind, function(repo_id, kind) {
       if (is.na(repo_id) || !nzchar(repo_id)) return(NA_character_)
       key <- list(provider = "huggingface", file = "README.md", kind = kind, id = repo_id, revision = "main")
-      radar_cached(key, function() {
+      payload <- radar_cached(key, function() {
+        radar_reservar_requisicao(budget, "huggingface", paste0(kind, "/", repo_id, "/README.md"), 2L)
         if (!is.null(request_fn)) return(request_fn(repo_id, kind, "README.md"))
         repo_prefix <- if (identical(kind, "models")) "" else paste0(kind, "/")
         url <- paste0("https://huggingface.co/", repo_prefix, repo_id, "/raw/main/README.md")
         req <- httr2::request(url) |>
           httr2::req_user_agent("bbsia-radar/0.1.0 (public research)") |>
           httr2::req_error(is_error = function(response) FALSE) |>
-          httr2::req_retry(
-            max_tries = 5, retry_on_failure = TRUE,
-            is_transient = function(response) httr2::resp_status(response) %in% c(429, 500, 502, 503, 504)
-          )
-        token <- Sys.getenv("HF_TOKEN", unset = "")
-        if (nzchar(token)) req <- httr2::req_headers(req, Authorization = paste("Bearer", token))
+          httr2::req_options(maxredirs = 1) |>
+          httr2::req_timeout(30)
+        # Model cards are public in this run; do not send HF_TOKEN across a
+        # redirect to the content CDN.
         response <- httr2::req_perform(req)
-        if (httr2::resp_status(response) == 404L) return(NA_character_)
-        httr2::resp_check_status(response)
+        status <- httr2::resp_status(response)
+        if (is.na(status) || status < 200L || status >= 300L) {
+          return(list(.radar_http_status = status,
+                      .radar_http_body = httr2::resp_body_string(response, encoding = "UTF-8")))
+        }
         httr2::resp_body_string(response, encoding = "UTF-8")
       }, root = root)
+      if (is.list(payload) && !is.null(payload$.radar_http_status)) {
+        if (identical(as.integer(payload$.radar_http_status), 404L)) return(NA_character_)
+        radar_verificar_status_http(payload$.radar_http_status, "Hugging Face", "README.md")
+      }
+      payload
     }))
 }
 
 hf_normalize_items <- function(items, kind) {
-  if (!length(items)) return(tibble::tibble())
+  if (!length(items)) {
+    return(tibble::tibble(
+      platform = character(), kind = character(), id = character(), full_name = character(),
+      name = character(), description = character(), url = character(), owner = character(),
+      language = character(), stars = integer(), updated_at = character(), topics = list(),
+      readme = character()
+    ))
+  }
   # A direct lookup (`/api/models/{id}`) returns one object, while list/search
   # endpoints return an array of objects. Normalize both wire shapes here.
   if (!is.null(items$id) || !is.null(items$repo_id)) items <- list(items)
@@ -144,35 +170,39 @@ hf_normalize_items <- function(items, kind) {
   })
 }
 
-coletar_hf <- function(seeds_path = "config/seeds.yml", root = Sys.getenv("MANCANO_BBSIA_RADAR_ROOT", ""), request_fn = NULL, max_pages = Inf) {
+coletar_hf <- function(seeds_path = "config/seeds.yml",
+                       root = Sys.getenv("MANCANO_BBSIA_RADAR_ROOT", ""),
+                       request_fn = NULL, account, budget, max_pages = 1L) {
+  radar_validar_orcamento(budget)
+  radar_validate_cache_root(root)
+  if (length(max_pages) != 1L || is.na(max_pages) || max_pages != 1L) {
+    stop("A amostra exploratória aceita exatamente uma página do Hugging Face.", call. = FALSE)
+  }
   seeds <- yaml::yaml.load(readr::read_file(seeds_path, locale = readr::locale(encoding = "UTF-8")))
   accounts <- hf_seed_accounts(seeds)
-  known <- purrr::map_chr(seeds$gabarito %||% list(), function(solution) {
-    urls <- purrr::map_chr(solution$artefatos %||% list(), ~ .x$url)
-    hf <- urls[grepl("huggingface.co/", urls, fixed = TRUE)]
-    if (length(hf)) sub("^https://huggingface.co/", "", hf[[1]]) else NA_character_
-  })
-  known <- stats::na.omit(known)
-  kinds <- c("models", "datasets", "spaces")
-  results <- list()
-  for (kind in kinds) {
-    for (account in accounts) {
-      items <- hf_collect_query(kind, list(author = account, limit = 100, full = "true"), root, request_fn, max_pages)
-      results[[length(results) + 1L]] <- hf_normalize_items(items, kind)
-    }
-    # Known-positive IDs are requested explicitly too: this makes recall
-    # fixtures visible even if their owner is no longer in the curated list.
-    matching <- known[grepl("/", known, fixed = TRUE)]
-    for (repo_id in matching) {
-      if (kind == "models") {
-        item <- hf_api_page(paste0("models/", repo_id), list(), root, request_fn)
-        body <- if (!is.null(item$.radar_items)) item$.radar_items else item
-        results[[length(results) + 1L]] <- hf_normalize_items(body, kind)
-      }
-    }
+  if (length(account) != 1L || is.na(account) || !nzchar(account) || !(account %in% accounts)) {
+    stop("Escolha exatamente uma conta Hugging Face já listada em config/seeds.yml.", call. = FALSE)
   }
-  result <- dplyr::bind_rows(results) |>
+  items <- hf_collect_query("models", list(author = account, limit = 100), root,
+                            request_fn, max_pages = 1L, budget)
+  pagination <- attr(items, "pagination_summary")
+  result <- hf_normalize_items(items, "models") |>
     dplyr::filter(!is.na(url), nzchar(url)) |>
     dplyr::distinct(url, .keep_all = TRUE)
-  aplicar_ids_sementes(result, seeds)
+  result <- aplicar_ids_sementes(result, seeds)
+  attr(result, "radar_metadata") <- list(
+    provider = "huggingface",
+    account = account,
+    kind = "models",
+    limit = 100L,
+    pagination = pagination,
+    account_check = if (length(items)) {
+      "A API retornou modelos para a conta-semente."
+    } else {
+      "A lista veio vazia; não permite distinguir conta sem modelos de conta não resolvida."
+    },
+    coverage = "uma página; não representa cobertura total da conta",
+    budget = radar_resumo_orcamento(budget)
+  )
+  result
 }
