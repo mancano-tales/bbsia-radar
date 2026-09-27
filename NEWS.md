@@ -1,5 +1,24 @@
 # NEWS — bbsia-radar
 
+## 2026-09-27 — Executa a primeira amostra pública das APIs
+
+A primeira execução dos coletores usou os termos GitHub aprovados `Transcritorio` e `BERTimbau`, a
+conta Hugging Face `neuralmind` e os três itens brasileiros priorizados da lista global do autor.
+Retornou 103 candidatos GitHub e 2 modelos HF; dez documentos foram selecionados, três deles
+prioritários. A busca `BERTimbau` registrou 134 resultados totais e apenas os 100 da primeira página,
+portanto a cobertura é parcial. Foram reservadas 16 de até 23 tentativas. Cache bruto e exportações
+ficaram em namespace externo ao repositório. Uma checagem de padrão de e-mail nos dez textos não
+encontrou correspondências; nenhum e-mail foi coletado intencionalmente, nenhum token foi enviado e
+nada foi submetido ao BBSIA. A issue #14 permanece aberta para revisar relevância e falsos positivos
+antes de qualquer expansão.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #14
+- **Mensagem do Commit**: `docs(plan): registra primeira amostra exploratoria refs #14`
+- **Arquivos afetados**: `CHANGELOG.md`, `NEWS.md`, `TODO.md`, `repo-governance/plan/2026-09-27_Plano_Coleta_Exploratoria.md`
+
 ## 2026-09-27 — Restabelece autenticação e abre PR para revisão
 
 Após a autorização OAuth do autor, `gh auth status` confirmou a conta `mancano-tales`. A atualização foi publicada na issue #1 e o PR #21 foi aberto para `main`, sem merge. O CodeRabbit retornou PASS, com revisão manual indicada para este repositório OSS; o workflow de caminhos absolutos ainda não consta nas verificações do PR. O status check obrigatório segue pendente. [PR #21](https://github.com/mancano-tales/bbsia-radar/pull/21).
@@ -32,6 +51,37 @@ Após o merge do PR #19, revisões prévias independentes por Gemini Pro e GPT-S
 - **Issue**: #1
 - **Mensagem do Commit**: fix(security): corrige detector e inclui diffs de merge refs #1
 - **Arquivos afetados**: .github/workflows/absolute-paths.yml, AGENTS.md, NEWS.md, TODO.md, hooks/pre-push, repo-governance/plan/2026-09-27_Plano_Protecao_Caminhos_Absolutos.md, tools/check-absolute-paths.sh
+
+## 2026-09-27 — Abre PR para incluir sementes brasileiras curadas
+
+A branch `codex/14-brazil-list` e o PR #20 foram publicados para revisão, com o commit `17297e3`.
+A issue #14 foi atualizada com o estado do PR, os termos e a conta aprovados, os três itens
+brasileiros da lista global e o próximo passo. A amostra de candidatos continua sem execução; o
+merge do PR fica com o autor.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #14
+- **Mensagem do Commit**: `docs: registra PR de sementes brasileiras refs #14`
+- **Arquivos afetados**: `CHANGELOG.md`, `NEWS.md`
+
+## 2026-09-27 — Inclui sementes brasileiras da lista global do autor
+
+A coleta exploratória agora pode consultar individualmente pela API oficial do GitHub os três
+repositórios já marcados com tag `brazil` no gabarito da lista global
+`awesome-open-source-research-tools`: Transcritório, Open Notebook e QualiLab. A resposta de cada
+repositório precisa confirmar `private: false` antes de entrar no cache, e a allow-list continua sem
+campo de e-mail. Os três READMEs ficam prioritários entre os dez documentos do orçamento. O plano
+registra os termos GitHub `Transcritorio` e `BERTimbau`, a conta HF `neuralmind` e o teto revisado de
+23 tentativas; essa composição está documentada, mas a amostra ainda não foi executada.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #14
+- **Mensagem do Commit**: `feat(collectors): inclui sementes brasileiras da lista curada refs #14`
+- **Arquivos afetados**: `NEWS.md`, `README.md`, `R/coletar_github.R`, `R/enriquecer_documentos.R`, `repo-governance/plan/2026-09-27_Plano_Coleta_Exploratoria.md`, `tests/fixtures/seeds_awesome_brazil.yml`, `tests/testthat/test-collectors.R`
 
 ## 2026-09-27 — Aprova e implementa mitigação contra caminhos absolutos
 

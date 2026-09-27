@@ -27,13 +27,13 @@ submissão ao BBSIA.
 - O PR #11 está integrado em `main`.
 - O PR #13, da issue #10, foi integrado durante a preparação desta proposta no merge
   `94bad301563c153e4be64cba3cc9b99e2b52203c`; a issue #10 foi fechada. A implementação dos
-  coletores está disponível, mas ainda precisa de limites explícitos para uma amostra pequena.
+  coletores foi posteriormente limitada pela PR #16 para permitir uma primeira amostra pequena.
 - A documentação aprovada foi integrada pela PR #15 no commit `fa7c5e5462808ee6ead0ae977809ecab7cefc5d1`.
 - A implementação dos limites foi integrada pela PR #16 em `main` no commit
   `c1835b1d6d126420bb85636dae9b28eafa9e1bb3`; a suíte offline cobre orçamento compartilhado,
   paginação, seleção determinística, cache externo, respostas vazias, erros HTTP e bloqueios de itens
-  privados.
-  Nenhuma consulta de candidatos foi executada.
+  privados. A inclusão dos três itens brasileiros da lista global foi integrada pela PR #20 no merge
+  `3075b4bf10df3d83591ad1586a17683762989d38`.
 - A issue #12 continua sem decisão sobre o uso dos módulos adjacentes do BBSIA como contexto ou
   sementes.
 - Antes desta implementação, os coletores do PR #13 podiam percorrer vários termos, páginas e contas;
@@ -42,23 +42,25 @@ submissão ao BBSIA.
 - O autor aprovou este plano no chat em 2026-09-27, limitado nesta primeira rodada às sementes atuais
   de `config/seeds.yml`; módulos adjacentes do BBSIA ficam fora. A aprovação está registrada aqui;
   a issue #12 continua aberta para decisões futuras sobre esses módulos.
-- A issue #14 permanece aberta para registrar e aprovar os parâmetros concretos antes de qualquer
-  consulta real de candidatos.
+- A issue #14 permanece aberta para revisar a qualidade da primeira amostra e decidir se vale ampliar
+  ou ajustar as consultas. Nenhuma ampliação automática será feita.
 - A pedido do autor no chat, a raiz externa foi definida como `%USERPROFILE%/AppData/Local/Mancano`,
   criada e verificada como gravável. `MANCANO_BBSIA_RADAR_ROOT` está configurada no `.Renviron`
   local, ignorado pelo Git; `.data-source` acrescenta `bbsia-radar/api`. O resolvedor
   `radar_validate_cache_root()` confirmou que fica fora do checkout e pode ser escrita. O caminho
   absoluto da máquina não é publicado.
-- Sugestões ainda aguardando aprovação do autor: GitHub `Transcritório` e `BERTimbau`; conta de
-  modelos do Hugging Face `neuralmind`. São itens já presentes em `config/seeds.yml`, com perfis
-  distintos (aplicação e modelo). Nenhuma chamada às APIs foi feita.
+- O autor aprovou no chat os termos de busca GitHub `Transcritorio` (slug do repositório
+  Transcritório) e `BERTimbau`, e a conta de modelos HF `neuralmind`. Também autorizou incluir as
+  soluções da lista global do autor que já estão marcadas como brasileiras no gabarito:
+  Transcritório, Open Notebook e QualiLab. Os três registros já existem em `config/seeds.yml`.
+  A amostra aprovada foi executada em 2026-09-27; os totais e limites estão resumidos abaixo.
 
-## Escopo proposto para a primeira rodada
+## Escopo aprovado e executado na primeira rodada
 
-1. Usar somente sementes já mantidas em `config/seeds.yml`; não consultar módulos do BBSIA para
-   descobrir ou ampliar sementes nesta rodada. Judiciário/CNJ/Sinapses, catálogo, recursos,
-   prontidão e modelos do BBSIA ficam fora da coleta. Esta restrição vale para o primeiro teste e
-   não decide sozinha o uso futuro desses módulos na issue #12.
+1. Usar as sementes já mantidas em `config/seeds.yml`. A lista
+   `awesome-open-source-research-tools` é global; desta fonte, incluir somente os três itens que já
+   têm a marca `brazil` no campo `fonte`: Transcritório, Open Notebook e QualiLab. Não percorrer a
+   lista inteira nem consultar módulos do BBSIA para ampliar esta amostra.
 2. Pesquisar o GitHub com no máximo dois termos escolhidos entre os nomes/artefatos já registrados
    nas sementes, uma página por termo e sem varredura de contas. Cada página tem teto de 100
    resultados; não seguir paginação nem subdividir automaticamente consultas grandes nesta rodada.
@@ -67,51 +69,80 @@ submissão ao BBSIA.
    vazia, registrar que o endpoint não distingue uma conta sem modelos de uma conta não resolvida e
    não escolher outra conta automaticamente. Qualquer substituição precisa ser registrada na issue
    #14 antes de repetir.
-4. Enriquecer no máximo dez candidatos com README/model card. A seleção dos dez deve ser registrada
-   no relatório local; não buscar todos os documentos retornados.
-5. Orçamento máximo explícito: duas requisições de busca do GitHub, uma listagem de modelos do HF e
-   até dez leituras de README/model card. Cada tentativa HTTP, inclusive respostas `404`, consome o
-   orçamento; a rodada não fará retentativas automáticas. Redirecionamentos terão teto documentado e
-   contabilizado. Erro de autenticação, `403`, `429`, resposta incompleta ou ausência de cache externo
-   interrompe a execução ou marca a amostra como parcial, sem ampliar a consulta.
+4. Consultar individualmente, pela API oficial GitHub `GET /repos/{owner}/{repo}`, os três
+   repositórios aprovados da lista. Exigir `private: false` explicitamente antes de cachear a
+   resposta. Essas consultas são positivos conhecidos para calibrar a descoberta, não uma varredura
+   de contas.
+5. Enriquecer no máximo dez candidatos com README/model card. Priorizar os três URLs da lista
+   brasileira para que façam parte da amostra; escolher os demais em ordem canônica e registrar os
+   dez URLs selecionados no relatório local.
+6. O teto global permanece em 23 tentativas HTTP: duas buscas GitHub + uma listagem HF + três
+   consultas de metadados dos repositórios curados + três leituras GitHub dos READMEs prioritários +
+   até sete outros documentos, assumindo no pior caso duas tentativas para cada README de modelo HF
+   por causa de redirecionamento. Essa composição cobre o limite sem retentativas automáticas.
+   Respostas `404` também consomem uma tentativa. `403`, `429`, resposta incompleta ou ausência de
+   cache externo interrompe a execução ou marca a amostra como parcial, sem ampliar a consulta.
 
-Antes da primeira requisição, os coletores validam os termos exatos (até dois), a conta HF (exatamente
-uma), o tipo `models`, uma página, o limite de documentos e o orçamento HTTP global. Varredura de
-contas fica desabilitada e não há consulta de positivos conhecidos fora das buscas selecionadas. A
-validação da raiz de cache (existente, gravável e fora do checkout) acontece antes de qualquer chamada
-de rede. Resposta do GitHub com `incomplete_results=true` ou mais resultados que os retornados na
-página é registrada como cobertura parcial, sem subdividir a consulta. O orçamento compartilhado
-permite até 23 tentativas reservadas: duas buscas GitHub, uma listagem HF e dez documentos com margem
-de uma redireção para cada leitura HF. Não há retentativas automáticas; erros de status encerram a
-chamada e a tentativa continua contabilizada.
+Antes da primeira requisição, os coletores validam os dois termos aprovados (`Transcritorio` e
+`BERTimbau`), a lista curada aprovada (`awesome-open-source-research-tools`), a conta HF aprovada
+(`neuralmind`), o tipo `models`, uma página, a seleção de documentos prioritários e o orçamento HTTP
+global. Não há varredura de contas. A validação da raiz de cache (existente, gravável e fora do
+checkout) acontece antes de qualquer chamada de rede. Resposta do GitHub com
+`incomplete_results=true` ou mais resultados que os retornados na página é registrada como cobertura
+parcial, sem subdividir a consulta. O orçamento compartilhado cobre as duas buscas, a lista HF, os
+três metadados e até dez documentos conforme a composição acima. Não há retentativas automáticas;
+erros de status encerram a chamada e a tentativa continua contabilizada.
 
-Exemplo de uso depois de registrar os parâmetros exatos na issue #14 (placeholders não são consultas
-aprovadas):
+Comando reproduzível usado na execução de 2026-09-27 com os parâmetros aprovados pelo autor:
 
 ```r
 budget <- radar_novo_orcamento()
 github <- coletar_github(
-  search_terms = "<termo-semente-aprovado>",
+  search_terms = c("Transcritorio", "BERTimbau"),
+  include_curated_list = "awesome-open-source-research-tools",
   budget = budget
 )
 huggingface <- coletar_hf(
-  account = "<conta-semente-aprovada>",
+  account = "neuralmind",
   budget = budget
 )
 enriquecimento <- coletar_readmes_exploratorios(
   dplyr::bind_rows(github, huggingface),
+  priority_urls = dplyr::filter(github, !is.na(seed_source)) |>
+    dplyr::pull(url),
   budget = budget
 )
 ```
 
-A busca GitHub inclui o qualificador `is:public`, não envia `GITHUB_PAT` em nenhuma chamada e verifica
-a resposta antes de cacheá-la; a listagem HF não envia `HF_TOKEN` e também rejeita antes do cache
-qualquer item marcado como privado. A seleção
-de documentos ordena URLs canônicas, remove duplicatas sem distinguir maiúsculas/minúsculas, escolhe
-no máximo dez e devolve `selected_urls`, contagens de candidatos distintos/selecionados/excluídos
-pelo teto e o resumo do orçamento. As respostas de busca incluem `total_count`, `incomplete_results`,
-página, tamanho e ordenação para registrar a cobertura observada. A implementação e os fixtures
-offline ficam na branch `codex/14-guardrails-coleta`.
+A busca GitHub inclui `is:public`, não envia `GITHUB_PAT` e valida a visibilidade antes do cache; a
+listagem HF não envia `HF_TOKEN` e rejeita itens marcados como privados. Os metadados diretos dos
+repositórios curados exigem confirmação explícita de visibilidade pública. A seleção prioriza os três
+READMEs brasileiros e ordena os demais por URL canônica, sem diferenciar maiúsculas/minúsculas.
+Retorna `selected_urls`, a contagem priorizada e os candidatos excluídos pelo teto. As respostas de
+busca registram total, incompletude, página, tamanho e ordenação. Os controles e fixtures offline
+foram integrados à `main`; a inclusão das sementes brasileiras entrou pela PR #20, merge `3075b4b`.
+
+### Resultado agregado da amostra (2026-09-27)
+
+- GitHub `Transcritorio`: 1 resultado total e 1 retornado na página; a busca não foi marcada parcial.
+- GitHub `BERTimbau`: 134 resultados totais e 100 retornados na primeira página. A amostra é parcial;
+  não houve paginação nem divisão automática da busca.
+- Hugging Face `neuralmind`: 2 modelos retornados e nenhum indicador de página seguinte.
+- Resultado deduplicado: 103 candidatos do GitHub e 2 do Hugging Face. Dez documentos foram
+  selecionados para enriquecimento, incluindo os três documentos prioritários da lista brasileira;
+  um dos dez estava sem texto de README/model card.
+- Foram reservadas 16 de até 23 tentativas HTTP. A execução usou namespace novo na raiz externa de
+  cache; respostas brutas, documentos, URLs dos candidatos e exportações ficaram fora do Git.
+- A allow-list dos metadados não inclui e-mail. Uma verificação simples de padrões de e-mail nos
+  textos dos dez documentos encontrou zero correspondências; isso é uma checagem adicional, não uma
+  prova geral sobre o conteúdo das fontes.
+- Nenhum token foi enviado, nenhuma página HTML foi raspada e nada foi submetido ao BBSIA.
+
+**Leitura e próximo passo:** a coleta confirma que os endpoints e o orçamento funcionam para uma
+amostra pequena, mas não valida a precisão dos candidatos. Revisar localmente relevância e falsos
+positivos, registrar a qualidade agregada e só então decidir se o próximo passo é refinar o termo
+`BERTimbau`, escolher outra busca derivada de sementes aprovadas ou parar. A cobertura da busca parcial
+não deve ser descrita como exaustiva.
 
 ## Documentação oficial verificada
 
@@ -127,6 +158,10 @@ pesquisa, não uma fonte normativa.
   coletor verifica o campo `private` antes de gravar cache. Todas as chamadas exploratórias GitHub
   são anônimas para impedir que um token local amplie os dados visíveis a um README privado.
   [Qualificadores oficiais de visibilidade](https://docs.github.com/en/search-github/searching-on-github/searching-for-repositories#search-by-repository-visibility).
+- **Get a repository**: a API REST oficial expõe `GET /repos/{owner}/{repo}`, inclui a marca
+  `private` no objeto do repositório e permite chamadas sem autenticação para recursos públicos.
+  A coleta exige `private: false` e confirma o nome completo antes de guardar a resposta no cache.
+  [Referência oficial de repositórios](https://docs.github.com/en/rest/repos/repos#get-a-repository).
 - **GitHub Search rate limit**: buscas têm limite separado e mais restrito que os demais endpoints;
   chamadas anônimas só podem buscar recursos públicos. A rodada fará no máximo duas buscas e para em
   `403` ou `429`.
@@ -215,13 +250,16 @@ Não conceder diretórios adicionais, não pedir ao agente para executar os cole
    `radar_validate_cache_root()` confirmou que a raiz está fora do checkout. A API usa a subpasta
    indicada em `.data-source`. Chamadas públicas GitHub e Hugging Face são anônimas; nenhum token é
    necessário ou lido pelos coletores.
-6. **Pendente — aprovar a consulta e executar a amostra.** Foram sugeridos ao autor, na issue #14,
-   os termos GitHub `Transcritório` e `BERTimbau`, além da conta-semente HF `neuralmind`. Aguardar a
-   aprovação ou substituição explícita dos três valores antes de qualquer consulta de candidatos.
-   Usar apenas os limites acima e não publicar o caminho absoluto pessoal do cache.
-7. **Pendente — revisar e decidir.** Avaliar relevância, duplicatas entre plataformas, campos ausentes, erros e
-   ruído. O autor decide se a próxima rodada amplia consultas e tamanho. Coleta ampliada, uso de dados
-   dos módulos do BBSIA e deduplicação registro a registro ficam fora desta aprovação inicial.
+6. **Concluído — incluir as sementes brasileiras aprovadas.** A PR #20 foi integrada em `main` pelo
+   merge `3075b4b`; as chamadas individuais exigem confirmação explícita de visibilidade pública e os
+   três documentos foram priorizados dentro do limite de dez.
+7. **Concluído — executar a primeira amostra aprovada.** A execução de 2026-09-27 respeitou as duas
+   consultas GitHub, uma página HF, os dez documentos e o orçamento máximo de 23 tentativas. Os dados
+   brutos permaneceram no cache externo e os resultados agregados foram registrados neste plano.
+8. **Em execução — revisar qualidade e recomendar continuação.** Inspecionar os resultados somente
+   na raiz local, sem publicar candidatos ou textos brutos; medir relevância/falsos positivos e trazer
+   uma recomendação para a issue #14. Qualquer consulta além da amostra precisa preservar o orçamento
+   e ser registrada antes da execução.
 
 ## Critério de conclusão
 
@@ -231,8 +269,7 @@ fundamentada para ampliar, ajustar ou parar. Nenhum registro é enviado ao BBSIA
 
 ## Aprovação do autor
 
-**Aprovado por Tales Mançano no chat em 2026-09-27:** plano e recorte da primeira rodada com as
-sementes existentes em `config/seeds.yml`; módulos adjacentes do BBSIA fora desta coleta. A questão
-de uso futuro desses módulos pode permanecer aberta na issue #12. A coleta de candidatos começa
-somente depois dos controles, verificações offline e cache externo descritos nas etapas 4 e 5, e da
-confirmação na issue #14 dos termos GitHub, da conta HF e da raiz de cache que serão usados.
+**Aprovado por Tales Mançano no chat em 2026-09-27:** termos GitHub `Transcritorio` e `BERTimbau`,
+conta HF `neuralmind` e inclusão somente das três soluções com tag `brazil` em
+`awesome-open-source-research-tools` (Transcritório, Open Notebook e QualiLab). A execução acontece
+após a integração dos controles e dos testes offline e usa a raiz de cache externa já validada.
