@@ -1,5 +1,36 @@
 # NEWS — bbsia-radar
 
+## 2026-09-27 — Abre PR para incluir sementes brasileiras curadas
+
+A branch `codex/14-brazil-list` e o PR #20 foram publicados para revisão, com o commit `17297e3`.
+A issue #14 foi atualizada com o estado do PR, os termos e a conta aprovados, os três itens
+brasileiros da lista global e o próximo passo. A amostra de candidatos continua sem execução; o
+merge do PR fica com o autor.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #14
+- **Mensagem do Commit**: `docs: registra PR de sementes brasileiras refs #14`
+- **Arquivos afetados**: `CHANGELOG.md`, `NEWS.md`
+
+## 2026-09-27 — Inclui sementes brasileiras da lista global do autor
+
+A coleta exploratória agora pode consultar individualmente pela API oficial do GitHub os três
+repositórios já marcados com tag `brazil` no gabarito da lista global
+`awesome-open-source-research-tools`: Transcritório, Open Notebook e QualiLab. A resposta de cada
+repositório precisa confirmar `private: false` antes de entrar no cache, e a allow-list continua sem
+campo de e-mail. Os três READMEs ficam prioritários entre os dez documentos do orçamento. O plano
+registra os termos GitHub `Transcritorio` e `BERTimbau`, a conta HF `neuralmind` e o teto revisado de
+23 tentativas; essa composição está documentada, mas a amostra ainda não foi executada.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #14
+- **Mensagem do Commit**: `feat(collectors): inclui sementes brasileiras da lista curada refs #14`
+- **Arquivos afetados**: `NEWS.md`, `README.md`, `R/coletar_github.R`, `R/enriquecer_documentos.R`, `repo-governance/plan/2026-09-27_Plano_Coleta_Exploratoria.md`, `tests/fixtures/seeds_awesome_brazil.yml`, `tests/testthat/test-collectors.R`
+
 ## 2026-09-27 — Aprova e implementa mitigação contra caminhos absolutos
 
 O autor aprovou no chat a opção A: reduzir a chance de publicar caminhos absolutos sem criar um fluxo privado nem prometer garantia literal. Foi adicionado um scanner compartilhado, conectado aos hooks pre-commit e pre-push e a um workflow de verificação de pull requests. O scanner informa somente arquivo relativo e linha, sem copiar o conteúdo detectado. Os hooks estão ativados neste clone, com LF garantido para o shell; o workflow ainda precisa ser marcado como status check obrigatório nas configurações do GitHub para bloquear merges. A autenticação do gh está inválida e a API está inacessível nesta sessão; por isso, o anúncio na issue #1 e a configuração remota ficam pendentes. Nenhum histórico foi reescrito.

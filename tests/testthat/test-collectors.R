@@ -62,6 +62,140 @@ test_that("GitHub rejects a private search result before it reaches the cache", 
   expect_length(list.files(file.path(root, "bbsia-radar", "api"), pattern = "json$"), 0L)
 })
 
+test_that("curated global list contributes only its Brazilian GitHub gold seeds", {
+  fixture <- testthat::test_path("..", "fixtures", "seeds_awesome_brazil.yml")
+  seeds <- yaml::yaml.load(readr::read_file(fixture))
+  candidates <- github_sementes_lista_brasileiras(
+    seeds, "awesome-open-source-research-tools"
+  )
+  expect_equal(
+    candidates$solution_id,
+    c("antrologos-transcritorio", "lfnovo-open-notebook", "luizpf42-qualilab")
+  )
+  expect_false("global-tool" %in% candidates$solution_id)
+  expect_error(github_sementes_lista_brasileiras(seeds, "unknown-list"), "config/seeds.yml")
+})
+
+test_that("author-approved GitHub query terms include solution names and repository slugs", {
+  fixture <- testthat::test_path("..", "..", "config", "seeds.yml")
+  seeds <- yaml::yaml.load(readr::read_file(fixture))
+  expect_equal(
+    github_validar_termos(c("Transcritorio", "BERTimbau"), seeds),
+    c("Transcritorio", "BERTimbau")
+  )
+})
+
+test_that("curated-list scope and request budget are validated before GitHub calls", {
+  root <- tempfile("radar-cache-"); dir.create(root)
+  fixture <- testthat::test_path("..", "fixtures", "seeds_awesome_brazil.yml")
+  calls <- 0L
+  fake <- function(path, query) {
+    calls <<- calls + 1L
+    list(total_count = 0L, incomplete_results = FALSE, items = list())
+  }
+  expect_error(coletar_github(
+    fixture, root, request_fn = fake, search_terms = "Transcritorio",
+    include_curated_list = "unknown-list", budget = radar_novo_orcamento()
+  ), "config/seeds.yml")
+  expect_equal(calls, 0L)
+
+  expect_error(coletar_github(
+    fixture, root, request_fn = fake, search_terms = "Transcritorio",
+    include_curated_list = "awesome-open-source-research-tools",
+    budget = radar_novo_orcamento(max_tentativas = 3L)
+  ), "comporta")
+  expect_equal(calls, 0L)
+})
+
+test_that("curated-list GitHub metadata uses official endpoint, cache and field allow-list", {
+  root <- tempfile("radar-cache-"); dir.create(root)
+  fixture <- testthat::test_path("..", "fixtures", "seeds_awesome_brazil.yml")
+  seed_urls <- c(
+    "https://github.com/antrologos/Transcritorio",
+    "https://github.com/lfnovo/open-notebook",
+    "https://github.com/LuizPF42/QualiLab"
+  )
+  paths <- character()
+  fake <- function(path, query) {
+    paths <<- c(paths, path)
+    if (path == "GET /search/repositories") {
+      return(list(total_count = 0L, incomplete_results = FALSE, items = list()))
+    }
+    index <- match(tolower(sub("^GET /repos/", "", path)), tolower(sub("^https://github.com/", "", seed_urls)))
+    repo <- sub("^https://github.com/", "", seed_urls[[index]])
+    list(
+      id = as.integer(index), full_name = repo, name = sub(".*/", "", repo),
+      html_url = seed_urls[[index]], private = FALSE,
+      owner = list(login = sub("/.*", "", repo)), description = "fixture contato test@example.org",
+      stargazers_count = 3L, email = "must-not-be-read@example.org"
+    )
+  }
+  output <- coletar_github(
+    fixture, root, request_fn = fake, search_terms = "Transcritorio",
+    include_curated_list = "awesome-open-source-research-tools",
+    budget = radar_novo_orcamento(), since = "2020-01-01", until = "2020-12-31"
+  )
+  expect_equal(nrow(output), 3L)
+  expect_equal(sort(output$solution_id), sort(c(
+    "antrologos-transcritorio", "lfnovo-open-notebook", "luizpf42-qualilab"
+  )))
+  expect_true(all(grepl("tag brazil", output$seed_source, fixed = TRUE)))
+  expect_false("email" %in% names(output))
+  expect_false(any(grepl("@", unlist(output), fixed = TRUE)))
+  expect_equal(length(paths), 4L)
+  expect_true(all(grepl("^GET /repos/", paths[-1])))
+
+  # Cache hits satisfy a repeat run without calling the fake transport again.
+  calls_after_first_run <- length(paths)
+  cached <- coletar_github(
+    fixture, root, request_fn = fake, search_terms = "Transcritorio",
+    include_curated_list = "awesome-open-source-research-tools",
+    budget = radar_novo_orcamento(), since = "2020-01-01", until = "2020-12-31"
+  )
+  expect_equal(length(paths), calls_after_first_run)
+  expect_equal(cached$solution_id, output$solution_id)
+})
+
+test_that("GitHub refuses curated metadata without explicit public visibility before caching", {
+  root <- tempfile("radar-cache-"); dir.create(root)
+  fixture <- testthat::test_path("..", "fixtures", "seeds_awesome_brazil.yml")
+  calls <- character()
+  expect_error(coletar_github(
+    fixture, root, request_fn = function(path, query) {
+      calls <<- c(calls, path)
+      if (path == "GET /search/repositories") {
+        return(list(total_count = 0L, incomplete_results = FALSE, items = list()))
+      }
+      list(full_name = "antrologos/Transcritorio", private = TRUE)
+    },
+    search_terms = "Transcritorio",
+    include_curated_list = "awesome-open-source-research-tools",
+    budget = radar_novo_orcamento()
+  ), "cacheada")
+  cache_files <- list.files(
+    file.path(root, "bbsia-radar", "api"), pattern = "json$", full.names = TRUE
+  )
+  expect_length(cache_files, 1L)
+  expect_match(calls[[2]], "^GET /repos/")
+
+  missing_visibility <- function(path, query) {
+    calls <<- c(calls, path)
+    if (path == "GET /search/repositories") {
+      return(list(total_count = 0L, incomplete_results = FALSE, items = list()))
+    }
+    list(full_name = "antrologos/Transcritorio")
+  }
+  expect_error(coletar_github(
+    fixture, root, request_fn = missing_visibility, search_terms = "Transcritorio",
+    include_curated_list = "awesome-open-source-research-tools",
+    budget = radar_novo_orcamento()
+  ), "cacheada")
+  cache_files <- list.files(
+    file.path(root, "bbsia-radar", "api"), pattern = "json$", full.names = TRUE
+  )
+  expect_length(cache_files, 1L)
+})
+
 test_that("GitHub public requests never inherit a local personal access token", {
   previous <- Sys.getenv("GITHUB_PAT", unset = NA_character_)
   on.exit(if (is.na(previous)) Sys.unsetenv("GITHUB_PAT") else Sys.setenv(GITHUB_PAT = previous))
@@ -176,6 +310,15 @@ test_that("HTTP errors consume budget once and 404 remains a missing README", {
   ), "HTTP 403")
   expect_equal(calls_403, 1L)
   expect_equal(budget_403$tentativas_reservadas, 1L)
+  budget_repo_404 <- radar_novo_orcamento()
+  expect_error(github_request(
+    "GET /repos/example/missing", root = root, budget = budget_repo_404,
+    public_only = TRUE,
+    request_fn = function(path, query) {
+      list(.radar_http_status = 404L, .radar_http_body = list(message = "Not Found"))
+    }
+  ), "HTTP 404")
+  expect_equal(budget_repo_404$tentativas_reservadas, 1L)
   expect_error(radar_verificar_status_http(302L, "Hugging Face", "README.md"), "HTTP 302")
 })
 
@@ -294,9 +437,45 @@ test_that("combined README enrichment selects at most ten URLs deterministically
   expect_length(result$selected_urls, 10L)
   expect_equal(result$selected_urls, sort(result$selected_urls))
   expect_equal(nrow(result$documents), 10L)
-  expect_equal(result$selection, list(eligible_distinct = 12L, selected = 10L, excluded_by_limit = 2L))
+  expect_equal(result$selection, list(
+    eligible_distinct = 12L, selected = 10L, excluded_by_limit = 2L,
+    prioritized_selected = 0L
+  ))
   expect_equal(github_calls, 6L)
   expect_equal(hf_calls, 4L)
   expect_equal(budget$tentativas_reservadas, 14L)
   expect_equal(result$budget$documentos_selecionados, 10L)
+})
+
+test_that("README enrichment includes prioritized curated solutions inside the ten-document limit", {
+  root <- tempfile("radar-cache-"); dir.create(root)
+  budget <- radar_novo_orcamento()
+  curated_urls <- c(
+    "https://github.com/antrologos/Transcritorio",
+    "https://github.com/lfnovo/open-notebook",
+    "https://github.com/LuizPF42/QualiLab"
+  )
+  repositories <- tibble::tibble(
+    platform = c(rep("github", 3), rep("huggingface", 9)),
+    url = c(curated_urls, paste0("https://huggingface.co/org/model", 1:9)),
+    full_name = c(
+      "antrologos/Transcritorio", "lfnovo/open-notebook", "LuizPF42/QualiLab",
+      rep(NA_character_, 9)
+    ),
+    id = c(rep(NA_character_, 3), paste0("org/model", 1:9)),
+    kind = c(rep(NA_character_, 3), rep("models", 9))
+  )
+  result <- coletar_readmes_exploratorios(
+    repositories, root,
+    request_github_fn = function(path, query) {
+      list(content = jsonlite::base64_enc(charToRaw("README")))
+    },
+    request_hf_fn = function(repo_id, kind, file) paste("Card", repo_id),
+    priority_urls = curated_urls,
+    budget = budget
+  )
+  expect_equal(nrow(result$documents), 10L)
+  expect_setequal(result$selected_urls[1:3], curated_urls)
+  expect_equal(result$selection$prioritized_selected, 3L)
+  expect_true(all(curated_urls %in% result$selected_urls))
 })
