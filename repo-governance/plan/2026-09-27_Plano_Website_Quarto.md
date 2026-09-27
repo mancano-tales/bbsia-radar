@@ -34,9 +34,10 @@ inventados. Após a aprovação explícita da primeira publicação pelo autor, 
 revisados poderão acionar automaticamente a renderização e o deploy no GitHub Pages.
 
 O autor aprovou no chat em 2026-09-27 a implementação do esqueleto, do estado sem dados e da
-automação protegida por uma condição de aprovação. A amostra real ainda será necessária para fechar o
-esquema final da tabela pública. A revisão de plano ocorre primeiro com Gemini 3.1 Pro e depois com
-GPT-6-Sol; a implementação seguirá em branch e será entregue em PR.
+automação protegida por uma condição de aprovação. A primeira amostra real foi coletada; o esquema
+final da tabela pública depende da classificação no Decifra e da revisão humana desses resultados.
+A revisão de plano ocorre primeiro com Gemini 3.1 Pro e depois com GPT-6-Sol; a implementação segue
+em branch e será entregue em PR.
 
 ## Revisão do plano
 
@@ -78,10 +79,13 @@ visual em navegador antes de ativar a publicação.
 ## Diagnóstico do repositório em 2026-09-27
 
 - O `README.md` e a descrição About do GitHub explicam o radar em português. Esta entrega acrescenta
-  páginas Quarto e workflow de renderização; ainda não há amostra nem resultados públicos.
-- O primeiro conjunto de coletores e o exportador do corpus já existem. A coleta exploratória da
-  issue #14 ainda aguarda parâmetros e aprovação; os resultados do Decifra e a revisão humana ainda
-  não formam uma base pública de relatório.
+  páginas Quarto e workflow de renderização; uma amostra foi coletada, mas não há resultados públicos.
+- A coleta exploratória da issue #14 foi executada com GitHub/GitLab `Transcritorio` e `BERTimbau`
+  e HF `neuralmind`: 104 URLs únicas (101 GitHub, 1 GitLab e 2 HF); dez documentos selecionados,
+  nove lidos e 17/25 tentativas reservadas. A consulta de BERTimbau ao GitHub foi parcial (100 de
+  134). Esses agregados ainda não representam uma lista de soluções validadas: Decifra, TRL,
+  comparação com o BBSIA e revisão humana seguem pendentes. A issue #14 não pôde receber atualização
+  nesta sessão por bloqueio 403 de escrita.
 - A política do repositório permite em `data/` somente saídas pequenas e revisadas. O cache bruto
   das APIs permanece fora do Git. Conteúdo de terceiros não recebe automaticamente a licença dos
   arquivos do projeto, e nada do catálogo BBSIA deve ser publicado sem resolver a proveniência e os
@@ -112,8 +116,7 @@ visual em navegador antes de ativar a publicação.
    não existir uma rodada pública, a página de relatório exibirá um estado vazio em vez de dados de
    exemplo.
 4. **Build separado da coleta.** O workflow de publicação apenas instala as dependências de render,
-   lê arquivos públicos versionados e gera o site e o PDF. Ele não chama GitHub/Hugging Face, não
-   acessa o cache externo, não executa classificação por LLM e não precisa de `GITHUB_PAT` ou
+   Quando o leitor for implementado, o workflow apenas instalará dependências de render e lerá arquivos públicos versionados; ele não chamará as APIs do GitHub, Hugging Face ou GitLab nem acessará o cache externo, não executa classificação por LLM e não precisa de `GITHUB_PAT` ou
    `HF_TOKEN`. A publicação não altera nem envia dados ao BBSIA.
 5. **Atualização automática com controle de entrada.** Mudanças em `data/relatorios/**` (ou nos
    arquivos Quarto/workflow) na branch principal iniciam o build; manter também um disparo manual
@@ -136,7 +139,8 @@ como pipeline de dados enquanto essa etapa estiver pendente.
 ### WP1 — contrato público e rastreabilidade
 
 - Usar os campos de saída já aprovados do radar e do Decifra; definir um formato tabular estável,
-  identificadores e representação de valores ausentes depois da primeira amostra real.
+  identificadores e representação de valores ausentes depois que a amostra coletada passar pelo
+  Decifra e pela revisão humana.
 - Definir em cada rodada sua data, codebook, commit do Decifra, número de itens descobertos,
   removidos, revisados e publicados, mais observações de cobertura e de execução.
 - Revisar licença, atribuição e minimização de dados antes de marcar uma coluna como publicável.
@@ -160,9 +164,10 @@ como pipeline de dados enquanto essa etapa estiver pendente.
 - Fixar a versão de Quarto. Para o PDF LaTeX, instalar TinyTeX no CI com o comando oficial
   `quarto install tinytex` antes de renderizar. Instalar R/pacotes e adicionar `renv.lock` e cache
   somente se a renderização usar chunks R; não criar dependências R artificiais para o esqueleto.
-- Enquanto não houver amostra real, renderizar e validar o estado vazio, sem criar linhas fictícias.
-  Depois que o contrato for derivado de dados reais, usar fixtures sintéticos apenas para exercitar
-  esse contrato, sem publicá-las nem fazer chamadas de rede.
+- Enquanto não houver uma rodada pública aprovada, renderizar e validar o estado sem dados públicos,
+  sem criar linhas fictícias. Depois que o contrato for derivado da amostra real e passar por revisão,
+  usar fixtures sintéticos apenas para exercitar esse contrato, sem publicá-las nem fazer chamadas de
+  rede.
 - Se o render depender de pacotes R, travar suas versões em `renv.lock` e usar cache com chave ligada
   ao lockfile e à versão do R; o cache é otimização, não fonte da verdade das dependências.
 - Verificar links locais, presença dos arquivos esperados, coerência entre totais do CSV e relatório,
@@ -189,8 +194,8 @@ como pipeline de dados enquanto essa etapa estiver pendente.
 
 - O conteúdo do site e do PDF é em português, identifica claramente o radar e apresenta data,
   proveniência, método, limitações e links para as fontes públicas.
-- Antes da primeira rodada, HTML e PDF são gerados em português e mostram claramente que ainda não há
-  dados públicos; nenhuma solução fictícia é apresentada como resultado.
+- Antes da primeira rodada pública, HTML e PDF são gerados em português e mostram claramente que
+  ainda não há dados publicados; nenhuma solução fictícia é apresentada como resultado.
 - Quando o contrato público estiver fechado e o leitor implementado, HTML e PDF são gerados dos
   mesmos arquivos curados e exibem as mesmas soluções e estatísticas da rodada.
 - Após o autor ativar a publicação inicial, um commit de nova versão pública revisada inicia build e
@@ -204,9 +209,10 @@ como pipeline de dados enquanto essa etapa estiver pendente.
 
 ## Dependências e limites
 
-- A amostra exploratória da issue #14, a classificação no Decifra, o esquema final dos resultados e
-  a validação humana ainda não foram concluídos. A estrutura inicial não precisa do esquema; fechar
-  os nomes/tipos exatos das colunas somente depois da primeira amostra real, sem publicar fixtures.
+- A amostra exploratória da issue #14 foi coletada. Classificação no Decifra, esquema final dos
+  resultados e validação humana ainda não foram concluídos. A estrutura inicial não precisa do
+  esquema; fechar os nomes/tipos exatos das colunas depois que a amostra passar por revisão, sem
+  publicar fixtures.
 - O deploy automático só pode publicar arquivos curados e aceitos pelo autor. Dados e arquivos
   produzidos fora do Git não chegam ao Pages até serem preparados e versionados em uma mudança
   revisada.

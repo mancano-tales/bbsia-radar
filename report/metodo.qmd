@@ -10,8 +10,8 @@ pronta para uso.
 
 ## Etapas
 
-1. **Descoberta:** consulta as APIs oficiais do GitHub e do Hugging Face, a partir
-   de buscas e sementes mantidas no repositório.
+1. **Descoberta:** consulta as APIs oficiais do GitHub, do Hugging Face e do
+   GitLab.com, a partir de buscas e sementes mantidas no repositório.
 2. **Enriquecimento:** registra metadados públicos e reúne o README ou model card
    para que as alegações possam ser examinadas junto da fonte.
 3. **Classificação:** envia o corpus ao Decifra, que aplica o codebook do radar
@@ -24,10 +24,13 @@ pronta para uso.
 
 ## Fontes e privacidade
 
-O radar usa as APIs oficiais do GitHub e do Hugging Face e respeita seus limites
-de uso. O cache bruto e os arquivos de trabalho ficam fora do repositório. A
-coleta se limita a metadados públicos e ao nome público do responsável; não
-coleta e-mail nem credenciais.
+O radar usa as APIs oficiais do GitHub, do Hugging Face e do GitLab.com e respeita
+seus limites de uso. A descoberta inicial do GitLab cobre somente projetos
+públicos no GitLab.com, uma página por consulta; não cobre instâncias self-managed
+nem examina o conteúdo do código. O README GitLab é lido somente na raiz, após
+verificação HEAD do tamanho e com teto de 256 KiB. O cache bruto e os arquivos de
+trabalho ficam fora do repositório. A coleta se limita a metadados e documentos
+públicos; não coleta e-mail nem credenciais.
 
 ## Publicação e proveniência
 
@@ -43,11 +46,13 @@ republicação.
 
 ## Limites
 
-- A descoberta em GitHub e Hugging Face não representa todas as soluções de IA
-  existentes.
+- A descoberta em GitHub, Hugging Face e GitLab.com não representa todas as
+  soluções de IA existentes. Consultas parciais e de uma página podem omitir
+  projetos; ausência nos resultados não prova inexistência.
 - Metadados e documentos podem estar incompletos, desatualizados ou incorretos.
 - Uma classificação automatizada é uma indicação apoiada por evidências, não
   uma decisão oficial do BBSIA.
 - A estimativa de TRL é do radar e não substitui avaliação de implantação,
   segurança, desempenho ou adequação institucional.
-- Sem uma rodada publicada, não há contagens nem conclusões empíricas a apresentar.
+- A amostra exploratória já foi coletada, mas suas contagens e candidatos ainda não foram publicados:
+  isso depende da classificação no Decifra e da revisão humana.

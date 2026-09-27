@@ -1,5 +1,20 @@
 # NEWS — bbsia-radar
 
+## 2026-09-27 — Atualiza o relatório Quarto para a amostra e o GitLab
+
+O README e as páginas do site agora descrevem GitHub, Hugging Face e GitLab.com. Registram que a
+amostra exploratória já foi coletada, mas segue fora do site até passar pelo Decifra e por revisão
+humana; o relatório público continua sem linhas de candidatos ou contagens da amostra. O plano e o
+TODO explicam que os dados revisados serão renderizados em HTML e PDF e que a publicação no Pages
+continua protegida pela aprovação explícita do autor.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #17
+- **Mensagem do Commit**: docs(report): align Quarto pages with GitLab sample refs #17
+- **Arquivos afetados**: NEWS.md, README.md, TODO.md, report/index.qmd, report/metodo.qmd, report/relatorio.qmd, repo-governance/plan/README.md, repo-governance/plan/2026-09-27_Plano_Website_Quarto.md, CHANGELOG.md
+
 ## 2026-09-27 — Entrega o site Quarto para revisão do autor
 
 A implementação está na PR #18 (`codex/17-website-quarto`), pronta para revisão do autor. Gemini 3.1

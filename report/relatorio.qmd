@@ -30,10 +30,11 @@ format:
 ::: {.callout-note}
 ### Nenhuma rodada foi publicada ainda
 
-Os resultados reais dependem da coleta, da classificação no Decifra e de uma
-revisão humana. Não incluímos registros de exemplo. O relatório será atualizado
-quando uma saída curada e aprovada for preparada em `data/relatorios/` e entrar
-no repositório.
+Uma amostra exploratória foi coletada, mas ainda depende da classificação no
+Decifra e de revisão humana. Não incluímos seus candidatos como registros
+públicos nem usamos linhas de exemplo. O relatório será atualizado quando uma
+saída curada e aprovada for preparada em `data/relatorios/` e entrar no
+repositório.
 :::
 
 A data no cabeçalho indica quando o relatório foi gerado. Quando houver uma
@@ -43,7 +44,7 @@ como proveniência dos resultados.
 ## Escopo
 
 O radar procura soluções de IA brasileiras, adaptadas ao português brasileiro ou
-de interesse público adaptáveis, disponíveis no GitHub e no Hugging Face. As
+de interesse público adaptáveis, disponíveis no GitHub, Hugging Face e GitLab.com. As
 categorias de inclusão e suas evidências são definidas no
 [codebook do projeto](https://github.com/mancano-tales/bbsia-radar/blob/main/config/codebook.yml).
 
@@ -69,4 +70,5 @@ metadados, do material disponível e da revisão das evidências. Ausência de u
 projeto na lista não prova que a solução não exista. O relatório não atesta
 segurança, eficácia, licença de uso ou adequação para adoção institucional.
 
-Não há neste momento soluções, contagens ou conclusões empíricas publicados.
+Uma amostra exploratória já existe, mas não há soluções, contagens ou conclusões empíricas publicadas
+até que a classificação no Decifra e a revisão humana sejam concluídas.

@@ -6,9 +6,10 @@
 
 ## Pendente
 
-- [ ] **Website e relatório público em Quarto (HTML + PDF)** — integrar o leitor após a primeira amostra real e, depois da aprovação do autor, publicar no GitHub Pages.
+- [ ] **Website e relatório público em Quarto (HTML + PDF)** — integrar o leitor após classificação e revisão humana da amostra coletada; publicar no GitHub Pages só depois da inspeção e aprovação explícita do autor.
   - Criado: 2026-09-27 10:52 por Codex / GPT-6 / desktop
   - Progresso 2026-09-27: PR #18 pronta para revisão do autor. Gemini 3.1 Pro High e GPT-6-Sol não encontraram bloqueios; as sugestões foram incorporadas. O CI da PR e a reexecução manual no commit final `f42fb2a` passaram. A inspeção visual do HTML continua pendente; a do PDF foi feita. Nenhuma amostra real foi coletada, e a primeira publicação depende de aprovação explícita do autor.
+  - Atualização 2026-09-27 17:27: a amostra exploratória já foi coletada nas três fontes, mas não foi incorporada ao site porque ainda depende do Decifra e de revisão humana. A PR #18 descreve GitHub, Hugging Face e GitLab.com e mantém vazias as páginas públicas de candidatos. O deploy continua protegido pela variável de aprovação.
   - Plano ativo: `repo-governance/plan/2026-09-27_Plano_Website_Quarto.md` · Issue: #17
 
 - [ ] **Issue #14 — amostra exploratória limitada** — registrar os termos GitHub, a conta HF e a raiz de cache aprovados; depois executar a rodada limitada prevista no plano.
