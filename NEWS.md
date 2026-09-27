@@ -1,5 +1,100 @@
 # NEWS — bbsia-radar
 
+## 2026-09-27 — Documenta uso do Antigravity CLI para agentes Gemini
+
+O `AGENTS.md` agora aponta para um guia operacional que registra o executável `agy`, as opções e
+subcomandos da CLI, o inventário de modelos consultado nesta máquina e as ferramentas web,
+delegação, arquivos, terminal e MCP declaradas pelo agente de teste. A preferência do autor ficou
+registrada: Flash 3.8 na exploração inicial e Pro na revisão independente, com confirmação em fontes
+primárias. O guia diferencia busca/leitura de páginas públicas de um navegador Edge interativo e
+documenta que a listagem `agy agents` não retornou agentes nomeados. Uma pesquisa de teste sobre a
+agenda de Lula em 25/09/2026 acertou as alegações centrais após checagem independente, mas os links
+de redirecionamento e datas de publicação imprecisas reforçam a necessidade de revisar as fontes.
+O `gh` desta sessão não tem token válido; a intenção e o resultado ficam registrados localmente
+para o autor levar à issue #1.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #1
+- **Mensagem do Commit**: "docs(agents): documenta uso do Antigravity refs #1"
+- **Arquivos afetados**: `AGENTS.md`, `repo-governance/agentes-gemini.md`, `NEWS.md`, `TODO.md`, `repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md`
+
+## 2026-09-27 — Verifica carga pública do catálogo e fixa escopo pré-coleta
+
+Por decisão do autor, Judiciário/CNJ/Sinapses fica fora do radar — inclusive como referência,
+deduplicação ou contexto. O README e o plano atualizam WP0c e §5 para distinguir o catálogo dos
+módulos de recursos reutilizáveis, fontes de dados e modelos; a decisão de usar estes últimos como
+contexto/sementes fica para revisão na issue #12. Uma inspeção pequena de somente leitura (GET da
+página do catálogo e dez bundles referenciados) retornou HTTP 200; o HTML inicial contém 20 links de
+fichas e os bundles não revelaram chamada de leitura do catálogo. Foi observada apenas a rota
+`/api/metrica`, usada por POST analítico, que não foi chamada. Isso não prova inexistência de APIs
+server-side ou exportações restritas, nem concede licença. Não houve coleta em massa, submissão de
+formulário, e-mail ou POST. Issue #8 fechada após a decisão de Apache-2.0/CC BY 4.0; #9 permanece
+aberta pelos dois casos-limite pendentes; #10 continua aberta até a implementação dos coletores.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #1, #10
+- **Mensagem do Commit**: "docs(research): testa rotas publicas e ajusta escopo refs #1 #10"
+- **Arquivos afetados**: `README.md`, `NEWS.md`, `repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md`
+
+## 2026-09-26 — Distingue módulos e proveniências do BBSIA antes da coleta
+
+Leitura ampliada das páginas públicas do BBSIA, incluindo catálogo de soluções, projetos do
+Judiciário, recursos reutilizáveis, prontidão de dados, modelos, formulário e aviso de privacidade.
+O inventário do README e do §1.1 do plano separa os 190 registros CNJ/Sinapses (fornecidos pelo CNJ,
+sem validação pelo BBSIA e fora da base do banco) das soluções curadas, recursos reutilizáveis,
+fontes de dados e modelos. Endpoints das fichas de prontidão pertencem às fontes externas e não
+confirmam API do catálogo. Formulário intocado; o radar continua sem coletar e-mail. A recomendação
+é manter o corpus no escopo do codebook e tratar as outras seções como contexto ou referência
+auxiliar somente após decisão explícita do autor. Inspeção de chamadas de rede e fonte autorizada
+para deduplicação registro a registro continuam pendentes. Nenhuma coleta ou scraping foi iniciado.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-26
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #1, #10
+- **Mensagem do Commit**: "docs(research): distingue módulos do BBSIA refs #1 #10"
+- **Arquivos afetados**: `README.md`, `NEWS.md`, `repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md`
+
+## 2026-09-26 — Planeja leitura ampliada do BBSIA antes da coleta
+
+O autor pediu aprofundar a leitura documental do BBSIA antes de iniciar qualquer coletor. A busca
+nas páginas oficiais revelou módulos além do catálogo de soluções, incluindo recursos reutilizáveis,
+fontes de dados, modelos e fichas de prontidão. O plano §3 agora cria o WP0c para inventariar essas
+áreas, distinguir registros do BBSIA de conteúdo federado/de terceiros, mapear os limites legais e
+técnicos e propor o escopo ao autor. Nenhum scraping ou coleta foi iniciado. A busca também retornou
+contagens indexadas inferiores às já observadas ao vivo; elas não foram tratadas como atualização
+confirmada. O comando `AGI` não está disponível no PATH desta sessão, portanto não foi possível
+invocar agentes Antigravity; essa participação fica planejada para quando a CLI estiver acessível.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-26
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #1, #10
+- **Mensagem do Commit**: "docs(plan): planeja leitura ampliada do BBSIA refs #1 #10"
+- **Arquivos afetados**: `AGENTS.md`, `TODO.md`, `NEWS.md`, `repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md`
+
+## 2026-09-26 — Licenças e validação aprovadas pelo autor
+
+Por confirmação do autor no chat (issues #8 e #9), o código passa a usar Apache-2.0 e os materiais
+originais do projeto CC BY 4.0, com atribuição. CC BY permite uso comercial; não foi escolhida a
+variante BY-NC. Esta licença não cobre dados de terceiros nem concede direitos sobre registros do
+BBSIA. O codebook sobe para v0.1.1: seis casos-limite foram aprovados, enquanto API comercial fechada
+e pacote de dados sem IA continuam pendentes da coordenação. O protocolo usa até 100 candidatos e
+dupla codificação cega de 30, se houver segunda pessoa. Kappa entre pessoas avalia reprodutibilidade
+do codebook; desempenho automático é medido à parte contra rótulos humanos adjudicados. A amostra
+vem dos candidatos e não depende de baixar o catálogo do BBSIA.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-26
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #8, #9
+- **Mensagem do Commit**: "docs(license): registra licenças e validação aprovadas refs #8 #9"
+- **Arquivos afetados**: `LICENSE`, `LICENSE-DATA.md`, `README.md`, `TODO.md`, `NEWS.md`, `config/codebook.yml`, `repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md`
+
 ## 2026-09-26 — Push imediato e integração da atualização remota
 
 Por instrução do autor, o `AGENTS.md` específico deste repositório agora também pede push logo após cada commit para reduzir divergências entre sessões locais e remotas; se o remoto avançar, a orientação é buscar, integrar por merge e enviar sem force-push. Integramos a atualização remota que torna explícito que o repositório é público e preservamos sua entrada de histórico; o plano-piloto foi alinhado para não repetir o status anterior de privado.

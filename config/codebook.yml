@@ -19,7 +19,7 @@
 #   depende_bbsia   -> depende da coordenação do BBSIA (issue #2 / plano §3).
 # ==============================================================================
 
-versao: "0.1.0"
+versao: "0.1.1"
 data: "2026-09-26"
 status: rascunho          # rascunho | em_validacao | estavel
 issue: 3
@@ -240,25 +240,25 @@ proveniencia:
 casos_limite:
   - caso: "Brasileiro que mora e trabalha no exterior, projeto pessoal."
     decisao: "brasileira = incerto; sim se o projeto tem foco no Brasil (dados, idioma, problema)."
-    decisao_status: proposta
+    decisao_status: autor
   - caso: "Empresa estrangeira com filial ou equipe no Brasil."
     decisao: "brasileira = sim só se o projeto foi feito pela equipe brasileira e isso está declarado."
-    decisao_status: proposta
+    decisao_status: autor
   - caso: "Fork de projeto estrangeiro com adaptação ao pt-BR (tradução, ajuste, dados)."
     decisao: "Não é exclusão `fork_sem_mudanca`; ptbr = sim; brasileira segue as regras do autor do fork."
-    decisao_status: proposta
+    decisao_status: autor
   - caso: "Projeto de Portugal que também é usado ou avaliado em pt-BR."
     decisao: "brasileira = nao; ptbr = sim se houver avaliação explícita em pt-BR."
-    decisao_status: proposta
+    decisao_status: autor
   - caso: "TCC, dissertação ou projeto acadêmico encerrado, com código publicado."
     decisao: "Entra se passar nos critérios; TRL 1-3 e ativo = nao, mas não é excluído (todos os TRLs)."
-    decisao_status: proposta
+    decisao_status: autor
   - caso: "Produto comercial fechado com só uma API ou SDK público (ex.: cliente de API de um LLM brasileiro)."
     decisao: "Entra como solução se a API é pública e documentada; a planilha marca que o núcleo é fechado."
     decisao_status: depende_bbsia
   - caso: "Solução de órgão público já cadastrada no BBSIA com outro nome."
     decisao: "Deduplicação (WP7) casa por URL e por nome; em dúvida, marcar `possivel_duplicata` e não enviar."
-    decisao_status: proposta
+    decisao_status: autor
   - caso: "Pacote de acesso a dados públicos brasileiros sem modelo (ex.: ecossistema de pacotes R de dados oficiais)."
     decisao: "e_ia = nao, fora do radar; pode ir para a lista de sementes como fonte de dados para soluções de IA."
     decisao_status: depende_bbsia
@@ -271,20 +271,26 @@ validacao:
     Aleatória, estratificada por fonte (GitHub, Hugging Face, sementes) e pela
     marcação automática (sim/incerto/nao). Tamanho inicial: 100 soluções, ou
     todas, se houver menos.
-  codificadores: "O autor; se possível, uma segunda pessoa (idealmente da equipe do BBSIA) em 30 soluções da amostra."
+  codificadores: "O autor codifica a amostra; uma segunda pessoa, se possível, codifica às cegas 30 unidades para medir reprodutibilidade humana."
   cego: "Quem codifica não vê a marcação da máquina."
   metricas: >
-    Concordância percentual e kappa de Cohen por dimensão de rótulo único
+    Concordância percentual e kappa de Cohen entre dois codificadores humanos
+    nas 30 unidades duplamente codificadas, por dimensão de rótulo único
     (`e_ia`, `brasileira`, `ptbr`, `tipo_artefato`). Para `area_problema`
     (multirrótulo): kappa de Cohen na área principal (a primeira listada) e,
     para cada área do vocabulário, kappa da marcação binária presente/ausente.
   limiar: >
-    Kappa >= 0.70 em `brasileira`, `ptbr` e `e_ia` para usar a classificação
-    automática sem revisão. Abaixo disso, revisar o codebook e o prompt, subir
-    `versao` e recodificar. `area_problema` e `tipo_artefato` ficam sem limiar
+    Kappa humano >= 0.70 em `brasileira`, `ptbr` e `e_ia` para considerar
+    suficientemente reproduzível a aplicação do codebook. Separadamente, medir
+    a classificação automática contra a codificação humana adjudicada na amostra
+    completa, reportando precisão, recall, F1 e kappa por dimensão; não dispensar
+    revisão automática apenas com base no kappa entre humanos. Abaixo do limiar
+    humano, revisar o codebook, subir `versao` e recodificar. `area_problema` e `tipo_artefato` ficam sem limiar
     (exploratórias) enquanto o vocabulário for provisório (issue #2): até lá,
-    toda classificação dessas colunas passa por revisão humana. Limiares
-    propostos; decisão do autor.
+    toda classificação dessas colunas passa por revisão humana. Protocolo
+    aprovado pelo autor; a amostra vem do próprio corpus de candidatos e não
+    depende de baixar a base do BBSIA. Essa base só é necessária para medir
+    cobertura/deduplicação no nível de registros.
   desempate: "Divergência entre humanos: o autor decide e o caso vira exemplo neste arquivo."
 
 # ------------------------------------------------------------------------------

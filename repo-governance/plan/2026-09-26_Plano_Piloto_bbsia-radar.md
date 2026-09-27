@@ -14,7 +14,9 @@ tarefas:
   - { desc: "WP0a — Verificar site e formulário do BBSIA com fontes (issue #2)", status: concluido, data: "2026-09-26" }
   - { desc: "WP0b — Perguntas à coordenação do BBSIA (Eunice Liu), depois do piloto ou do WP0a", status: pendente, data: null }
   - { desc: "WP1 — Repositório público mancano-tales/bbsia-radar com governança: AGENTS.md, README, TODO, plano, tools, hooks", status: concluido, data: "2026-09-26 11:03" }
-  - { desc: "WP2 — Codebook: o que conta como solução 'brasileira', 'adaptada ao pt-BR' e 'de interesse público adaptável' (issue #3; config/codebook.yml v0.1.0, em revisão pelo autor)", status: em_revisao, data: "2026-09-26 11:45" }
+  - { desc: "Guia operacional do Antigravity CLI para pesquisa e revisão de agentes Gemini (autorizado pelo autor no chat; issue #1)", status: concluido, data: "2026-09-27" }
+  - { desc: "WP0c — Leitura ampliada e inspeção pública pequena do BBSIA (issue #1; revisão de escopo na #12)", status: concluido, data: "2026-09-27" }
+  - { desc: "WP2 — Codebook: o que conta como solução 'brasileira', 'adaptada ao pt-BR' e 'de interesse público adaptável' (issue #9; v0.1.1 com dois casos pendentes)", status: em_revisao, data: "2026-09-27" }
   - { desc: "WP3 — Descoberta: coletores GitHub e Hugging Face + sementes curadas (listas awesome, orgs conhecidas)", status: pendente, data: null }
   - { desc: "WP4 — Enriquecimento: metadados, README/model card, sinais de manutenção", status: pendente, data: null }
   - { desc: "WP5 — Classificação (regras + LLM contra o codebook) e validação humana por amostra", status: pendente, data: null }
@@ -66,10 +68,28 @@ da issue.
 | Formulário | A página pública lista dados de contato/instituição, localização, solução, estágio, uso, abertura/reuso, links e consentimento; os campos de escolha e os obrigatórios foram inspecionados sem submissão. Ver [formulário](https://bancobrasileiro.ia.br/contribuir). |
 | Maturidade | Há estágios descritivos de pesquisa/PoC até uso em produção, mas não campo numérico TRL 1–9. “Todos os TRLs” permanece como orientação verbal da coordenação; TRL no radar é estimativa própria. |
 | Catálogo | Busca por problema, título, órgão e tags; filtros por público (usar ou desenvolver/integrar), tipo (aplicação, código/biblioteca, API, agente, modelo, pipeline, guia/metodologia) e área (Saúde, Educação, Segurança Pública, Meio Ambiente, Gestão Pública, Administração/Processos, Outro). A página mostrava 20 publicadas; `/numeros` mostrava 154 no total, sendo 20 publicadas e 134 em análise. Ver [catálogo](https://bancobrasileiro.ia.br/catalogo). |
-| API/exportação/importação | Nenhuma documentação ou interface pública de exportação/importação foi encontrada; `sitemap.xml` e `robots.txt` não estavam disponíveis. A inspeção de chamadas de rede não foi concluída. Logo, não se conclui que inexista endpoint ou exportação administrativa/restrita. |
-| Termos, privacidade, licença | O [aviso de privacidade](https://bancobrasileiro.ia.br/privacidade) prevê publicação/reuso das informações das soluções e mantém contatos fora das páginas públicas. Não foi encontrada licença específica do catálogo nem termo geral nas páginas consultadas; decisão sobre licença deste projeto (#8) segue com o autor. |
-| Contagem | Na consulta direta de 2026-09-26, home e `/numeros` exibiam 541 mapeadas (351 curadas + 190 integradas), 313 disponíveis e 228 em curadoria. A seção de catálogo indicava 154 no total: 20 publicadas e 134 em análise. Os 190 projetos CNJ/Sinapses são apresentados separadamente; não somar como registros do catálogo curado. Resultados de busca indexados podem estar desatualizados. |
+| API/exportação/importação | Em 2026-09-27, GET da página `/catalogo` e dos dez bundles que ela referencia retornaram HTTP 200. O HTML inicial contém 20 links/identificadores de fichas públicas; nos bundles não apareceu chamada de leitura do catálogo. A única rota de API observada foi `/api/metrica`, usada por um POST analítico; não foi chamada. Evidência compatível com listagem renderizada no servidor, mas não prova que não exista API, exportação administrativa/restrita ou rota interna. Sem botão/documentação pública de CSV/JSON ou importação em lote. |
+| Termos, privacidade, licença | O [aviso de privacidade](https://bancobrasileiro.ia.br/privacidade) prevê publicação/reuso das informações das soluções e mantém contatos fora das páginas públicas. Não foi encontrada licença específica do catálogo nem termo geral nas páginas consultadas. Isso não concede ao radar direitos sobre dados do BBSIA; consulte WP0b antes de reutilizá-los. A licença deste projeto está decidida no §13. |
+| Contagem | Na consulta direta de 2026-09-26, home e `/numeros` exibiam 541 mapeadas (351 curadas + 190 integradas), 313 disponíveis e 228 em curadoria. A página aberta do catálogo indicava 20 publicadas e `/numeros` mostrava 154 no total, sendo 20 publicadas e 134 em análise. Os valores são instantâneos e resultados de busca indexados podem estar desatualizados. |
 | `Roger-Quinelato/BBSIA` | Documentação/código descrevem indexação local de PDFs e JSON curado em RAG; não foi observada chamada à base de produção ou API do BBSIA. A ausência de evidência no repositório acessível não exclui sistemas privados. Ver [repositório](https://github.com/Roger-Quinelato/BBSIA). |
+
+**Leitura ampliada do site (WP0c; consulta direta em 2026-09-26):** além de `/catalogo`, foram
+consultados `/judiciario`, `/fundacao`, `/prontidao`, `/modelos`, `/contribuir` e `/privacidade`.
+Os módulos não são intercambiáveis:
+
+| Módulo | Evidência pública observada | Proveniência e implicação |
+|---|---|---|
+| Catálogo de soluções | 20 itens publicados na listagem; busca por problema/título/órgão/tags, filtros por público, tipo e área. Exemplos de ficha mostram origem declarada, tipo de ativo, uso de IA, modalidade, soberania, supervisão, impacto e risco. | É a comparação primária para o radar, mas pode incluir registros em revisão, autodeclarados e itens marcados sem IA. Registrar status e URL da ficha; não tratar aprovação ou validação como implícita. |
+| Recursos reutilizáveis | 51 itens em quatro grupos de esforço (21 instalar/usar, 12 conectar, 10 desenvolver, 8 estudar), incluindo software, APIs, dados e recursos internacionais; nem todos são IA. | Vitrine de recursos amplos, com URLs externas e proveniência heterogênea; contexto/sementes opcionais, não linha automaticamente incluída no corpus. |
+| Dados para IA / prontidão | 52 fichas com método e data de verificação, forma de acesso, autenticação, licença, granularidade, cadência, restrição legal e limites técnicos. Régua N1 (direto), N2 (engenharia) e N3 (mediado), com marca “parcial”. | Descreve fontes de dados governamentais e não governamentais. Endpoints documentados são das fontes de dados; não constituem prova de API/exportação para o cadastro de soluções BBSIA. |
+| Modelos abertos | 13 modelos; filtros de finalidade, ambiente e abertura; distinção explícita entre “Open source” e “Pesos abertos”, com orientação para verificar a licença de cada modelo. | Recurso potencialmente relacionado ao radar, mas pesos disponíveis não provam open source, origem brasileira nem enquadramento como solução. A licença é individual e deve ser lida na fonte original. |
+| Formulário e privacidade | A contribuição pede e-mail institucional e nome, além de organização/localização, problema, solução, tipo, estágio, abertura, soberania, dados, links e resultados. O aviso diz que dados de contato não são públicos e recomenda não inserir dados pessoais de terceiros, segredos, credenciais ou bases completas. | Formulário permaneceu intocado. O radar nunca coleta e-mail; dados de contato da submissão humana não fazem parte da coleta automatizada de metadados públicos. Não enviar candidatos ou preencher em nome de terceiros. |
+
+**Escopo vigente por decisão do autor (2026-09-27):** manter o corpus como soluções de IA que passem pelo
+codebook, descobertas por APIs oficiais do GitHub e Hugging Face. Excluir a seção do Judiciário/CNJ/Sinapses
+de descoberta, contexto, validação e deduplicação. Recursos reutilizáveis, fontes de dados e modelos não
+passam a ser soluções por aparecerem no mesmo site; uma possível função contextual ou como sementes será
+submetida ao autor na issue #12. A decisão não altera o codebook.
 
 **Consequência para WP7:** contagens agregadas não permitem deduplicação registro a registro. Antes do piloto, será preciso obter uma lista pública/exportação autorizada ou decidir com o autor um método alternativo e explicitar a limitação. Não iniciar scraping do BBSIA com base nesta pesquisa.
 
@@ -97,13 +117,38 @@ da issue.
    no piloto os escopos (a) e (b); o (c) vem depois, com critério escrito.
 5. **Momento de apresentação**: decisão vigente: mostrar o projeto à coordenação somente quando houver piloto, salvo se o autor decidir diferente.
 
+**WP0c — Leitura ampliada do BBSIA antes da coleta (issue-mãe #1).** A verificação de sete itens da issue #2 está concluída. A navegação pública aponta para recursos reutilizáveis, fontes de dados, modelos e páginas individuais de prontidão, além do catálogo. O autor autorizou inspeção técnica pequena, somente de leitura, de páginas e rotas públicas; continuam fora de escopo chamadas em massa, POSTs, submissão de formulário e contato com a coordenação. A seção do Judiciário/CNJ/Sinapses foi excluída por decisão do autor em 2026-09-27.
+
+Entregáveis da leitura ampliada:
+
+1. Um inventário do catálogo de soluções/ideias, recursos reutilizáveis, fontes de dados, modelos e fichas de prontidão, distinguindo o que integra o catálogo de soluções do que é conteúdo federado ou de terceiro. Não inventariar nem usar a seção excluída do Judiciário.
+2. Para cada módulo, uma ficha com propósito, campos e filtros, origem/proveniência, status de curadoria, direitos/licença declarados, data da consulta, URL canônica e limites de evidência. Reconfirmar no site ao vivo as contagens e registrar divergências entre páginas atuais e resultados de busca indexados sem misturá-los.
+3. Uma matriz que compare os objetos incluídos do BBSIA ao escopo do radar e ao codebook: solução de IA, software reutilizável, API, modelo ou fonte de dados não são categorias intercambiáveis. Registrar na issue #12 a pergunta ao autor sobre usar recursos, fontes de dados e modelos apenas como contexto/sementes ou deixá-los fora do plano.
+4. Uma matriz de dependências pré-coleta: acesso autorizado ao catálogo registro a registro para deduplicação; licença/termos para reutilização; endpoints e documentação oficiais; limites de uso; e campos mínimos compatíveis com o formulário. Distinguir existência documentada de API, chamadas observadas no navegador e exportação administrativa/restrita.
+5. Revisão do README, deste plano e das issues relacionadas quando a pesquisa fechar, com fontes primárias e data; lacunas ficam como perguntas ao autor ou para o momento do piloto, sem contato com o BBSIA agora.
+
+**Marco documental e teste técnico observado em 2026-09-26/27:** foram lidas as páginas públicas
+incluídas no inventário e fichas representativas de soluções, prontidão de dados e modelos, além do
+aviso de privacidade e do formulário (sem submissão). Em 2026-09-27, uma consulta GET à lista do
+catálogo e aos dez bundles nela referenciados mostrou HTTP 200 e 20 links de ficha no HTML inicial;
+nos bundles, não foi localizada chamada de leitura da lista. A rota `/api/metrica` encontrada é um
+POST de evento analítico e não foi chamada. Essa inspeção pequena não exclui APIs server-side,
+exportações administrativas/restritas nem comprova autorização para reutilização. Não foi feita
+coleta em massa. O autor excluiu Judiciário/CNJ/Sinapses do escopo; a decisão pendente sobre outros
+módulos está na issue #12. WP0c fica documentalmente concluído; acesso/termos registro a registro
+permanecem uma dependência para a deduplicação do WP7.
+
+**Porta de saída para WP3/WP4:** a inspeção pública pequena não equivale a autorização para coletar o catálogo. A implementação dos coletores GitHub/Hugging Face pode seguir após registrar a decisão de escopo da issue #12; priorizar APIs oficiais, apoio Antigravity se a CLI estiver disponível, fontes primárias, cache externo e testes offline com fixtures. Não implementar um coletor HTML do BBSIA nem reutilizar fichas do catálogo sem resolver acesso e termos. Nenhum formulário ou POST do site será enviado.
+
+**Agentes Gemini / Antigravity CLI (autorizado pelo autor no chat em 2026-09-27; issue #1):** o executável local confirmado é `agy`. A referência operacional está em [`../agentes-gemini.md`](../agentes-gemini.md) e registra as opções da CLI, os modelos e ferramentas observados, os limites de acesso web e as salvaguardas. Preferência do autor: Flash 3.8 para exploração inicial e Pro como revisor; toda descoberta deve trazer evidência direta, passar por checagem de fontes primárias e receber validação humana quando relevante. A listagem atual não retornou agentes nomeados, embora a sessão Gemini tenha informado ferramentas de subagentes.
+
 ## 4. WP1 — Repositório do projeto (feito em 2026-09-26)
 
 - **Nome**: `bbsia-radar` (decisão do autor, 2026-09-26). O prefixo identifica o projeto na conta pessoal; "radar" diz o que ele faz e continua fazendo sentido se a coleta virar periódica.
 - **Dono e visibilidade**: `mancano-tales/bbsia-radar`, **público** por decisão do autor em 2026-09-26. Transferir para uma organização do BBSIA/LIIA é decisão do autor, depois de apresentar à coordenação.
 - **Natureza**: `projeto`. Linha no catálogo do `README.md` do `mancano-repo-hub`.
 - **Governança**: `AGENTS.md` (com a coordenação por issues), `CLAUDE.md` → `@AGENTS.md`, `README.md` para humanos, `NEWS.md`, `TODO.md`, `repo-governance/` (planos e llm-reviews), `tools/` (trava git, export de conversas, changelog), `hooks/pre-commit` (NEWS.md e caminhos absolutos).
-- **Licença**: a decidir pelo autor (ver `TODO.md`).
+- **Licença**: código sob Apache-2.0 (`LICENSE`); codebook, sementes, documentação e dados originais do projeto sob CC BY 4.0 (`LICENSE-DATA.md`). Conteúdo de terceiros conserva seus próprios termos.
 - **Estrutura proposta**:
 
   ```
@@ -126,7 +171,7 @@ da issue.
 
 ## 5. WP2 — Codebook: o que é "brasileira"
 
-> **2026-09-26 11:45 — v0.1.0 escrita** em [`config/codebook.yml`](../../config/codebook.yml) (issue #3), que passa a ser a referência; a tabela abaixo é o rascunho original. Mudanças em relação a ela: os tipos A, B e C viraram **três marcações independentes** (um modelo pode ser brasileiro e adaptado ao pt-BR); entrou um filtro de entrada `e_ia` (o que conta como IA); as exclusões ganharam `reupload_modelo` (quantizações e cópias no Hugging Face) e `dados_pessoais`; 8 casos-limite têm decisão proposta, 2 dependem do BBSIA. Sementes e gabarito de recall em [`config/seeds.yml`](../../config/seeds.yml) (issue #4).
+> **2026-09-26 — v0.1.1** em [`config/codebook.yml`](../../config/codebook.yml): o autor aprovou seis casos-limite e o protocolo inicial de validação (issue #9); dois casos seguem dependentes de alinhamento com o BBSIA. As métricas de reprodutibilidade humana são separadas do desempenho da máquina contra os rótulos humanos adjudicados. A amostra vem dos candidatos e não depende de uma exportação do catálogo. A v0.1.0 introduziu marcações A/B/C independentes, o filtro `e_ia` e exclusões para reuploads e dados pessoais. Sementes em [`config/seeds.yml`](../../config/seeds.yml) (issue #4).
 
 Escrito **antes** da coleta, porque é ele que decide o que entra. Rascunho:
 
@@ -134,8 +179,11 @@ Escrito **antes** da coleta, porque é ele que decide o que entra. Rascunho:
 > descritivos (pesquisa/PoC, desenvolvimento/protótipo, em teste e em produção), não uma escala
 > numérica TRL 1–9. O catálogo público usa áreas e tipos próprios e busca orientada ao problema;
 > consultar o comentário da issue #2 e o `README.md` para os valores observados. Isso serve de
-> comparação para o mapeamento, mas não altera automaticamente o codebook. Os casos-limite pendentes
-> da issue #9 continuam reservados ao autor.
+> comparação para o mapeamento, mas não altera automaticamente o codebook. Recursos reutilizáveis,
+> fontes de dados e modelos têm proveniência, direitos, finalidade e status próprios, e não devem
+> ser achatados como “soluções”. O autor excluiu a seção do Judiciário/CNJ/Sinapses deste projeto.
+> Ver §1.1 e README para o inventário da consulta ampliada. Os dois casos-limite pendentes da issue #9
+> continuam reservados ao autor; nenhum módulo novo entra no codebook por inferência.
 
 | Escopo | Critério | Sinais observáveis |
 |---|---|---|
@@ -208,9 +256,10 @@ documentação e de testes, dono (usuário ou org) e a `location` dele.
    (vocabulário do BBSIA, quando tivermos) e um resumo de 1–2 frases **em forma de problema**, que é
    como o BBSIA organiza o catálogo. É exatamente o que o `decifra-text-as-data` faz; usar como
    biblioteca ou copiar o método. Decidir no WP1.
-3. **Validação humana**: o autor (e, se possível, alguém da equipe do BBSIA) codifica uma amostra
-   aleatória estratificada por fonte, e comparamos com a máquina (concordância e kappa). O número
-   entra no relatório. Sem essa validação, a planilha não vai para o BBSIA.
+3. **Validação humana (desenho inicial substituído pela decisão do autor no §13, issue #9)**:
+   a amostra é tirada do próprio corpus de candidatos, não do catálogo do BBSIA. A dupla codificação
+   humana mede reprodutibilidade do codebook; a avaliação do classificador contra os rótulos humanos
+   adjudicados é outra métrica. O protocolo aprovado e seus limiares constam em `config/codebook.yml`.
 
 ## 9. WP6 — Maturidade (TRL provável)
 
@@ -264,7 +313,9 @@ declarado no relatório.
 2. Quando mandar as perguntas do §3 à coordenação: com o piloto, ou antes, se o WP0a não bastar.
 3. Licença do repositório.
 4. R puro ou R + Python (recomendação: R, e Python só se o `huggingface_hub` fizer falta).
-5. **Visibilidade (2026-09-26, no chat, depois da decisão 1):** "bbsia vai ser público mesmo". O repositório é **público** desde já, e a regra "privado até o piloto" (§3 WP0b e §4) está aposentada. A coordenação continua vendo o projeto com o piloto. Com isso, a licença (item 3) deixa de ser "antes de tornar público" e passa a ser urgente.
+5. **Visibilidade (2026-09-26, no chat, depois da decisão 1):** "bbsia vai ser público mesmo". O repositório é **público** desde já, e a regra "privado até o piloto" (§3 WP0b e §4) está aposentada. A coordenação continua vendo o projeto com o piloto.
+6. **Licenças (2026-09-26, confirmação do autor no chat; issue #8):** código sob Apache-2.0; materiais originais do projeto (incluindo `config/codebook.yml`, `config/seeds.yml` e futuras tabelas revisadas) sob CC BY 4.0, com atribuição. CC BY permite uso comercial; a opção não comercial seria BY-NC e não foi escolhida. Isso não licencia dados coletados de terceiros nem resolve os termos de reutilização do catálogo do BBSIA.
+7. **Validação e casos-limite (2026-09-26, aprovação do autor no chat; issue #9):** protocolo inicial de amostra de até 100 candidatos, dupla codificação cega de 30 se houver segundo codificador e kappa humano mínimo de 0,70 em `brasileira`, `ptbr` e `e_ia`. A concordância humana mede consistência do codebook; o desempenho do classificador será avaliado separadamente contra rótulos humanos adjudicados, com precisão, recall, F1 e kappa. Se não houver segundo codificador, relatar a limitação, não inventar kappa humano. Seis casos-limite estão aprovados; API comercial fechada e pacote de dados sem IA permanecem pendentes da coordenação do BBSIA.
 
 ### Rascunho de mensagem para a Eunice
 
