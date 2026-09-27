@@ -1,5 +1,23 @@
 # NEWS — bbsia-radar
 
+## 2026-09-26 — Planeja leitura ampliada do BBSIA antes da coleta
+
+O autor pediu aprofundar a leitura documental do BBSIA antes de iniciar qualquer coletor. A busca
+nas páginas oficiais revelou módulos além do catálogo de soluções, incluindo recursos reutilizáveis,
+fontes de dados, modelos e fichas de prontidão. O plano §3 agora cria o WP0c para inventariar essas
+áreas, distinguir registros do BBSIA de conteúdo federado/de terceiros, mapear os limites legais e
+técnicos e propor o escopo ao autor. Nenhum scraping ou coleta foi iniciado. A busca também retornou
+contagens indexadas inferiores às já observadas ao vivo; elas não foram tratadas como atualização
+confirmada. O comando `AGI` não está disponível no PATH desta sessão, portanto não foi possível
+invocar agentes Antigravity; essa participação fica planejada para quando a CLI estiver acessível.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-26
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #1, #10
+- **Mensagem do Commit**: "docs(plan): planeja leitura ampliada do BBSIA refs #1 #10"
+- **Arquivos afetados**: `AGENTS.md`, `TODO.md`, `NEWS.md`, `repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md`
+
 ## 2026-09-26 — Licenças e validação aprovadas pelo autor
 
 Por confirmação do autor no chat (issues #8 e #9), o código passa a usar Apache-2.0 e os materiais

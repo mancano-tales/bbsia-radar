@@ -97,6 +97,18 @@ da issue.
    no piloto os escopos (a) e (b); o (c) vem depois, com critério escrito.
 5. **Momento de apresentação**: decisão vigente: mostrar o projeto à coordenação somente quando houver piloto, salvo se o autor decidir diferente.
 
+**WP0c — Leitura ampliada do BBSIA antes de qualquer coleta (aprovado pelo autor no chat, 2026-09-26; issue-mãe #1).** A verificação de sete itens da issue #2 está concluída, mas não substitui um inventário documental completo: a navegação pública também aponta para recursos reutilizáveis, fontes de dados, modelos e páginas individuais de prontidão, além do catálogo de soluções. Não começar scraping, chamadas exploratórias em massa, preenchimento de formulário nem contato com a coordenação nesta etapa.
+
+Entregáveis da leitura ampliada:
+
+1. Um inventário de páginas e tipos de registro do BBSIA (soluções/ideias, recursos reutilizáveis, fontes de dados, modelos, projetos do Judiciário e fichas de prontidão), distinguindo o que integra o catálogo de soluções do que é conteúdo federado ou de terceiro.
+2. Para cada módulo, uma ficha com propósito, campos e filtros, origem/proveniência, status de curadoria, direitos/licença declarados, data da consulta, URL canônica e limites de evidência. Reconfirmar no site ao vivo as contagens e registrar divergências entre páginas atuais e resultados de busca indexados sem misturá-los.
+3. Uma matriz que compare os objetos do BBSIA ao escopo do radar e ao codebook: solução de IA, software reutilizável, API, modelo ou fonte de dados não são categorias intercambiáveis. Propor ao autor se o radar fica restrito a soluções de IA ou se algum dos novos módulos entra como fonte auxiliar, sem alterar o codebook automaticamente.
+4. Uma matriz de dependências pré-coleta: acesso autorizado ao catálogo registro a registro para deduplicação; licença/termos para reutilização; endpoints e documentação oficiais; limites de uso; e campos mínimos compatíveis com o formulário. Distinguir existência documentada de API, chamadas observadas no navegador e exportação administrativa/restrita.
+5. Revisão do README, deste plano e das issues relacionadas quando a pesquisa fechar, com fontes primárias e data; lacunas ficam como perguntas ao autor ou para o momento do piloto, sem contato com o BBSIA agora.
+
+**Porta de saída para WP3/WP4:** iniciar coletores só após o autor encerrar a etapa documental e confirmar o escopo. Na implementação posterior, priorizar APIs oficiais do GitHub e do Hugging Face, usar agentes Antigravity como apoio à pesquisa/planejamento apenas quando a CLI estiver disponível, validar as descobertas contra documentação primária, armazenar respostas no cache externo configurado e manter testes offline com fixtures. Nenhum coletor de HTML do BBSIA será iniciado por inferência de que exista um endpoint.
+
 ## 4. WP1 — Repositório do projeto (feito em 2026-09-26)
 
 - **Nome**: `bbsia-radar` (decisão do autor, 2026-09-26). O prefixo identifica o projeto na conta pessoal; "radar" diz o que ele faz e continua fazendo sentido se a coleta virar periódica.

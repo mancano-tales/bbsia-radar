@@ -12,9 +12,6 @@
 - [ ] **Conversor do codebook para o formato do Decifra e exportador do corpus** (WP4/WP5) — `config/codebook.yml` → YAML `variables:`; documento por solução com metadados em texto → CSV `id_solucao,text`.
   - Criado: 2026-09-26 12:29 por Claude Opus 5.5
   - Issue: #6 · Plano §7–§8
-- [ ] **Verificar o site e o formulário do BBSIA** (agente com acesso à rede) — campos e quais são obrigatórios, escala TRL, API ou importação por planilha, export do catálogo, termos de uso, filtros e áreas do catálogo. Com fonte para cada resposta; depois, reescrever o `README.md` (seção "A verificar") e os §1.1 e §5 do plano.
-  - Criado: 2026-09-26 11:03 por Claude Opus 5.5 (a pedido de Tales Mançano)
-  - Issue: #2 · Plano: `repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md` (WP0a)
 - [ ] **Autor: configurar credenciais na máquina** — `GITHUB_PAT` (token fino, só leitura de repositórios públicos) e `HF_TOKEN` (leitura) no `.Renviron` local; nunca no repositório.
   - Criado: 2026-09-26 11:03 por Claude Opus 5.5
   - Issue: #1
@@ -24,7 +21,7 @@
 - [ ] **Autor: acompanhar codebook v0.1.1 e as sementes** — seis casos-limite e protocolo inicial aprovados em chat (issue #9); dois casos ainda dependem de alinhamento com o BBSIA. Revisar a divisão radar × Decifra registrada no plano §8 (decidida em 2026-09-26, issue #6) e decidir se o teste com o catálogo do BBSIA entra no piloto.
   - Criado: 2026-09-26 11:45 por Claude Opus 5.5
   - Progresso 2026-09-26 (Claude Opus 5.5): autor confirmou o Transcritório (usa Whisper e o modelo Tagarela) e informou que não cadastrou nada à mão no BBSIA.
-  - Issues: #3, #4, #6 · PR #5
+  - Issues: #3, #4, #6, #9 · PR #5
 - [ ] **WP2 — Escrever o codebook** (`config/codebook.yml`): tipos A (brasileira), B (adaptada ao pt-BR), C (interesse público), fora; sinais observáveis; unidade = solução, não repositório.
   - Criado: 2026-09-26 11:03 por Claude Opus 5.5
   - Progresso 2026-09-26 11:45 (Claude Opus 5.5): v0.1.0 em `config/codebook.yml`, aguardando revisão do autor.
@@ -35,6 +32,10 @@
   - Issue: #4 · Plano §6
 
 ## Prospectivo
+
+- [ ] **WP0c — Leitura ampliada da documentação pública do BBSIA antes dos coletores** — inventariar catálogo, recursos reutilizáveis, fontes de dados, modelos, Judiciário e fichas de prontidão; registrar campos, proveniência, termos e limites; mapear quais objetos cabem no escopo do radar. Sem scraping nem contato com a coordenação nesta etapa.
+  - Criado: 2026-09-26 23:37 por Codex
+  - Issue: #1 · Plano §3 WP0c
 
 - [ ] **WP3–WP4 — Coletores e enriquecimento** (GitHub e Hugging Face, em R com `gh`/`httr2`, cache em disco). Depende do codebook e das sementes; a coleta em volume roda onde houver rede para o Hugging Face.
   - Criado: 2026-09-26 11:03 por Claude Opus 5.5
@@ -52,6 +53,11 @@
   - Criado: 2026-09-26 11:03 por Claude Opus 5.5
 
 ## Concluído
+
+- [x] **Verificar o site e o formulário do BBSIA** — respostas aos sete itens com fontes publicadas na issue #2; README, §§1.1 e 5 do plano, plano WP0a e NEWS atualizados; inspeção técnica de chamadas de rede permaneceu explicitamente inconclusiva.
+  - Criado: 2026-09-26 11:03 por Claude Opus 5.5 (a pedido de Tales Mançano)
+  - Concluído: 2026-09-26 23:37 por Codex
+  - Issue: #2 · Plano: `repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md` (WP0a)
 
 - [x] **Autor: tornar público ou transferir para uma organização do BBSIA/LIIA** — decidido: **público**, na conta do autor (transferência continua possível depois).
   - Criado: 2026-09-26 11:03 por Claude Opus 5.5
