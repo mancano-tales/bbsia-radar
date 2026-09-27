@@ -1,5 +1,21 @@
 # NEWS — bbsia-radar
 
+## 2026-09-27 — Propõe coleta exploratória limitada por APIs oficiais
+
+Registrada uma proposta de próximos passos para uma amostra pequena do GitHub e Hugging Face. O
+plano exige controles de consulta/paginação antes de qualquer coleta real, limita o enriquecimento a
+dez candidatos e mantém cache e resultados fora do git. Propõe usar apenas as sementes atuais,
+registrar a integração do PR #13 (`94bad301`) e aguardar a decisão do autor na issue #12, e especifica um uso restrito do
+Antigravity (`agy`) para consultar documentação oficial. O plano está em `PROPOSTO`: nenhuma coleta
+foi iniciada e a issue de plano será criada somente após aprovação.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #1, #10, #12
+- **Mensagem do Commit**: `docs(plan): propõe coleta exploratória limitada refs #1 #10 #12`
+- **Arquivos afetados**: `repo-governance/plan/2026-09-27_Plano_Coleta_Exploratoria.md`, `NEWS.md`, `TODO.md`
+
 ## 2026-09-27 — Documenta uso do Antigravity CLI para agentes Gemini
 
 O `AGENTS.md` agora aponta para um guia operacional que registra o executável `agy`, as opções e

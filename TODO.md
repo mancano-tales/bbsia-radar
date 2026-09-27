@@ -33,6 +33,10 @@
 
 ## Prospectivo
 
+- [ ] **Autor: aprovar plano de coleta exploratória limitada** — confirmar o escopo da primeira rodada (recomendação: apenas sementes de `config/seeds.yml`, sem módulos do BBSIA), aprovar os limites e responder à decisão da issue #12. Só então ativar o plano, criar sua issue e implementar controles antes de qualquer coleta.
+  - Criado: 2026-09-27 08:40 por Codex / GPT-6 / desktop
+  - Plano proposto: `repo-governance/plan/2026-09-27_Plano_Coleta_Exploratoria.md` · Issues: #1, #10, #12
+
 - [ ] **WP0c — Leitura ampliada da documentação pública do BBSIA antes dos coletores** — inventariar catálogo, recursos reutilizáveis, fontes de dados, modelos, Judiciário e fichas de prontidão; registrar campos, proveniência, termos e limites; mapear quais objetos cabem no escopo do radar. Sem scraping nem contato com a coordenação nesta etapa.
   - Criado: 2026-09-26 23:37 por Codex
   - Issue: #1 · Plano §3 WP0c
