@@ -41,7 +41,7 @@ Logo abaixo do título do documento, a linha `> **Issue: #N.**`.
 <!-- BEGIN_PLAN_INDEX -->
 | Plano | Issue | Status | Executor | O que é |
 |---|---|---|---|---|
-| `2026-09-27_Plano_Protecao_Caminhos_Absolutos.md` | #1 (relacionada) | PROPOSTO (criado 2026-09-27 10:53) | Codex / GPT-6 / desktop | Definir e aplicar a proteção adequada para impedir caminhos absolutos de máquina no conteúdo Git público. |
+| `2026-09-27_Plano_Protecao_Caminhos_Absolutos.md` | #1 (relacionada) | EM EXECUÇÃO (criado 2026-09-27 10:53) | Codex / GPT-6 / desktop | Reduzir o risco de incluir caminhos absolutos em alterações versionadas, com hooks locais e checagem de PR. |
 | `2026-09-27_Plano_Website_Quarto.md` | #17 | PROPOSTO (criado 2026-09-27 10:52) | Codex / GPT-6 / desktop | Proposta para gerar relatórios revisados do radar como site Quarto em HTML e PDF e publicar atualizações no GitHub Pages. |
 | `2026-09-27_Plano_Coleta_Exploratoria.md` | #14 | EM EXECUÇÃO (criado 2026-09-27 08:40) | Codex / GPT-6 / desktop | Preparar e executar uma amostra limitada do GitHub e Hugging Face usando somente as sementes aprovadas, com orçamento global de requisições, cache externo e documentação oficial. |
 | `2026-09-26_Plano_Piloto_bbsia-radar.md` | #1 | ATIVO (criado 2026-09-26 11:03) | Claude Opus 5.5 (Claude Code on the web; desenho) | Piloto do radar: codebook, coletores GitHub e Hugging Face, classificação validada por amostra humana, TRL provável como coluna, deduplicação contra o BBSIA e ~30 soluções para apresentar à coordenação. WP0a (verificar o site do BBSIA) na issue #2. |

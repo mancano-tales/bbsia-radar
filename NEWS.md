@@ -1,5 +1,16 @@
 # NEWS — bbsia-radar
 
+## 2026-09-27 — Aprova e implementa mitigação contra caminhos absolutos
+
+O autor aprovou no chat a opção A: reduzir a chance de publicar caminhos absolutos sem criar um fluxo privado nem prometer garantia literal. Foi adicionado um scanner compartilhado, conectado aos hooks pre-commit e pre-push e a um workflow de verificação de pull requests. O scanner informa somente arquivo relativo e linha, sem copiar o conteúdo detectado. Os hooks estão ativados neste clone, com LF garantido para o shell; o workflow ainda precisa ser marcado como status check obrigatório nas configurações do GitHub para bloquear merges. A autenticação do gh está inválida e a API está inacessível nesta sessão; por isso, o anúncio na issue #1 e a configuração remota ficam pendentes. Nenhum histórico foi reescrito.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #1
+- **Mensagem do Commit**: feat(security): reduz risco de caminhos absolutos refs #1
+- **Arquivos afetados**: .gitattributes, .github/workflows/absolute-paths.yml, AGENTS.md, NEWS.md, TODO.md, hooks/pre-commit, hooks/pre-push, repo-governance/plan/README.md, repo-governance/plan/2026-09-27_Plano_Protecao_Caminhos_Absolutos.md, tools/check-absolute-paths.sh
+
 ## 2026-09-27 — Configura raiz local de cache exploratório
 
 A pedido do autor, foi definida e preparada uma raiz de cache sob `AppData/Local/Mancano`, fora do

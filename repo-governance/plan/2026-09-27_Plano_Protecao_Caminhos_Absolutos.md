@@ -1,100 +1,73 @@
 ---
 tipo: Plano
-titulo: "Proteger a publicação contra caminhos absolutos de máquina"
+titulo: "Reduzir o risco de publicar caminhos absolutos de máquina"
 issue: 1
-status: PROPOSTO
+status: EM EXECUÇÃO
 criado: "2026-09-27 10:53"
 concluido: null
 autor_humano: "Tales Mançano"
-aprovacao_autor: null
+aprovacao_autor: "Aprovado no chat em 2026-09-27: opção A como mitigação, sem garantia literal"
 agentes:
   orquestrador: "Codex / GPT-6 / desktop"
-  executor: null
+  executor: "Codex / GPT-6 / desktop"
   auditor: null
 tarefas:
-  - { desc: "WP0 — autor definir o limite da garantia e aprovar uma opção", issue: null, status: pendente, data: null }
-  - { desc: "WP1 — alinhar o detector local para cobrir conteúdo versionado sem exceções", issue: null, status: pendente, data: null }
-  - { desc: "WP2 — configurar a verificação e o bloqueio apropriados ao limite aprovado", issue: null, status: pendente, data: null }
-  - { desc: "WP3 — documentar operação, limites e resposta a uma detecção", issue: null, status: pendente, data: null }
+  - { desc: "WP0 — autor escolher a mitigação e aprová-la", issue: null, status: concluido, data: "2026-09-27" }
+  - { desc: "WP1 — ampliar o detector e conectá-lo aos hooks locais", issue: null, status: concluido, data: null }
+  - { desc: "WP2 — adicionar Actions e tornar o status check obrigatório no GitHub", issue: null, status: pendente, data: null }
+  - { desc: "WP3 — documentar operação, limites e resposta à detecção", issue: null, status: concluido, data: null }
 relacionados: ["repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md"]
 news: ["NEWS.md"]
 ---
 
-# Plano: proteção contra caminhos absolutos de máquina
+# Plano: reduzir o risco de publicar caminhos absolutos
 
-> **Issue relacionada: #1.** A proposta ainda precisa ser levada à conversa da issue pelo autor.
+> **Issue relacionada: #1.** A execução está registrada no TODO. A sessão não conseguiu consultar ou comentar a issue porque o token do gh está inválido e a conexão com a API foi bloqueada; o autor deve levar o anúncio a ela.
 
 ## Objetivo
 
-Impedir que caminhos absolutos de máquina entrem no conteúdo público versionado do projeto. A
-implementação não começa até o autor aprovar este plano no chat e escolher o nível de garantia.
+Reduzir a chance de caminhos absolutos de máquina serem incluídos em alterações versionadas. Esta rodada adota verificações locais e um status check em pull requests. A abordagem é uma mitigação contra acidentes, não uma garantia de que toda publicação em qualquer ref ou cópia pública será bloqueada.
 
-## Estado observado
+## Decisão do autor (2026-09-27)
 
-- O repositório é público.
-- `hooks/pre-commit` verifica apenas linhas adicionadas ao stage e deixa de examinar `hooks/` e
-  `tools/`; também aceita uma marca de isenção. O padrão atual reconhece só alguns formatos comuns,
-  portanto não é um detector abrangente nem obrigatório para quem não o instalou.
-- Não há uma verificação de conteúdo do GitHub Actions configurada como bloqueio de merge.
-- Na documentação atual do GitHub, rulesets podem exigir status checks antes de um merge. Isso
-  protege o destino do merge, mas a execução do Actions ocorre depois que a branch já foi enviada ao
-  repositório público.
-- Push rulesets para bloquear caminhos/arquivos são documentados para repositórios internos ou
-  privados no plano Team; não são um filtro de conteúdo textual para este repositório público.
-- O GitHub documenta hooks de pre-receive administrados na instância do GitHub Enterprise Server.
-  Não foi identificado mecanismo equivalente configurável no GitHub.com para rejeitar conteúdo
-  textual antes de qualquer ref pública ser atualizada.
-- A tentativa de criar uma issue dedicada foi recusada pela integração GitHub com `403 Resource not
-  accessible by integration`; o `gh` local informou que a autenticação expirou/é inválida. A issue
-  #1 está aberta e relacionada ao plano do piloto; o autor precisa levar esta proposta até ela.
+No chat, o autor aprovou a opção A: uma proteção simples para diminuir a probabilidade de erro, sem criar um fluxo privado de publicação nem exigir uma garantia literal.
 
-## Decisão do autor necessária
+### Opção A — hooks locais e checagem de PR
 
-O que significa “nunca publicar” para este projeto?
+Um detector compartilhado verifica linhas adicionadas em qualquer arquivo. O pre-commit verifica o conteúdo staged; o pre-push verifica os commits ainda não enviados; o GitHub Actions executa o mesmo detector nos commits de um pull request. Os controles locais só funcionam nos clones em que os hooks estão ativados. Para bloquear o merge, o GitHub precisa exigir o status check e pull requests na branch principal.
 
-### Opção A — bloquear o merge e reduzir acidentes
+Se um push sem hook enviar uma branch pública, o Actions só poderá apontar o problema depois que o push ocorrer. Excluir a branch depois não desfaz a publicação.
 
-Unificar o detector e usá-lo no pre-commit e pre-push local; adicionar uma verificação no Actions e
-exigir seu sucesso antes de integrar na branch principal. Não aceitar isenções nem excluir arquivos
-de governança. Isso reduz erros acidentais e impede merge com detecção, mas **não impede a exposição
-temporária em outras branches públicas**. Não satisfaz uma garantia literal para todo ref público.
+### Opção B — fluxo privado para as refs do repositório principal
 
-### Opção B — garantir o conteúdo Git publicado por um fluxo privado
-
-Manter alterações em uma área privada de preparação; examinar os objetos/commits que serão publicados;
-permitir atualizações de refs públicas somente por um publicador controlado após aprovação do
-detector. Antes de prometer a garantia, verificar que a regra do GitHub cobre criação, atualização e
-exclusão de todas as refs e que não há caminho de escrita alternativo. É mais operacional e exige
-configuração que o conector atual não consegue aplicar. O escopo cobre conteúdo Git do repositório;
-texto digitado diretamente em issue, comentário ou outro campo público exige uma regra humana ou uma
-plataforma sob controle antes da publicação.
+Uma área privada de preparação e um publicador controlado poderiam reduzir ainda mais a exposição nas refs mantidas pelo projeto, mas exigiriam configuração e operação adicionais. Isso também não controlaria cópias e forks públicos. Esta opção não foi escolhida.
 
 ### Opção C — pre-receive no GitHub Enterprise Server
 
-Se o projeto migrar para uma instância administrada de GitHub Enterprise Server, configurar nela um
-hook que examine e rejeite o push antes da atualização das refs. Esse recurso não está disponível
-como hook de conteúdo configurável no GitHub.com.
+Um hook administrado na instância GHES pode rejeitar conteúdo antes da atualização das refs daquela instância. Esta alternativa não se aplica ao GitHub.com usado pelo projeto e não foi escolhida.
 
-**Recomendação:** se “nunca” for requisito literal, escolher a opção B para conteúdo Git e definir
-separadamente como tratar texto público escrito diretamente na interface. A opção A pode ser adotada
-como mitigação inicial, mas deve ser descrita como mitigação, nunca como garantia.
+## Estado observado
 
-## Escopo após aprovação
+- O hook anterior verificava somente linhas adicionadas ao stage, excluía hooks/ e tools/ e aceitava uma isenção.
+- Um workflow de pull request pode verificar conteúdo antes do merge, mas não antes do push para uma branch pública.
+- O GitHub documenta rulesets para proteger branches e tags públicas; push rulesets por caminhos são limitados a repositórios privados ou internos nos planos aplicáveis.
+- A regra que torna um check obrigatório é uma configuração do repositório no GitHub e não pode ser registrada apenas pelo arquivo de workflow.
+- A sessão não pôde acessar a issue nem alterar regras do repositório: gh informou que o token está inválido e a conexão à API foi bloqueada.
 
-1. Refinar o scanner para distinguir caminhos locais de URLs, rotas de API e caminhos relativos;
-   percorrer também `hooks/` e `tools/`; eliminar o mecanismo de isenção; e não imprimir o conteúdo
-   detectado em logs, mostrando apenas arquivo relativo e número da linha.
-2. Conectar o mesmo detector aos hooks locais disponíveis no fluxo aprovado e à verificação remota.
-3. Aplicar a configuração de proteção remota coerente com a opção escolhida. Se for preciso alterar
-   rulesets, permissões ou a arquitetura pública/privada, registrar a configuração e qualquer limite
-   que impeça a garantia.
-4. Atualizar `AGENTS.md`, o guia de contribuição e a mensagem de bloqueio para instruir agentes e
-   pessoas a corrigirem o conteúdo sem copiar o caminho detectado para logs ou comentários públicos.
-5. Fazer uma varredura do conteúdo Git que já está publicado e propor correção de ocorrências antes
-   de afirmar que a regra foi aplicada. Não reescrever histórico público sem autorização específica.
+## Escopo aprovado
+
+1. Usar um scanner comum nos hooks locais e no workflow para linhas adicionadas em diffs textuais de qualquer arquivo. Ele reconhece drives Windows, caminhos UNC e raízes Unix locais comuns (home, Users, root, tmp, workspace e montagens); não pretende reconhecer todo caminho Unix possível nem inspeciona arquivos binários. Não há diretórios excluídos nem marcador de isenção. A saída revela apenas o caminho relativo do arquivo e o número da linha, nunca o conteúdo detectado.
+2. Instalar pre-commit e pre-push em hooks/, manter os arquivos com LF no Windows e ativá-los neste clone.
+3. Adicionar um workflow para pull requests. A configuração remota que exige o check e restringe integração à branch principal a pull requests fica pendente até o acesso ao GitHub estar disponível.
+4. Atualizar as instruções e registrar a execução neste plano, no TODO e no NEWS.
+5. Não reescrever histórico publicado nesta rodada.
+
+## Critério de conclusão
+
+O detector local e o workflow estão no branch de trabalho. O plano só será concluído quando o autor ou uma sessão autenticada anunciar o trabalho na issue #1 e configurar/confirmar o status check obrigatório no GitHub. Essa etapa remota ainda está pendente.
 
 ## Fontes oficiais
 
-- [Regras disponíveis em rulesets](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets) — disponibilidade em repositórios públicos, status checks e limites dos push rulesets.
-- [Criar rulesets para um repositório](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/creating-rulesets-for-a-repository) — regras de branch, atores de bypass e status checks.
-- [Hooks de pre-receive no GitHub Enterprise Server](https://docs.github.com/en/enterprise-server@3.20/admin/enforcing-policies/enforcing-policy-with-pre-receive-hooks) — verificação de conteúdo antes de aceitar um push na instância Enterprise Server.
+- [Regras disponíveis em rulesets](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets) — proteção de branches/tags e disponibilidade dos push rulesets.
+- [Eventos que acionam workflows](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows) — execução dos workflows no evento de push.
+- [Hooks pre-receive no GitHub Enterprise Server](https://docs.github.com/en/enterprise-server%403.20/admin/enforcing-policies/enforcing-policy-with-pre-receive-hooks) — hooks na instância Enterprise Server.
