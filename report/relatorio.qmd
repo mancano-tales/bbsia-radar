@@ -2,7 +2,7 @@
 title: "Relatório público do bbsia-radar"
 subtitle: "Candidatas, evidências, proveniência e limites da análise"
 author: "Projeto bbsia-radar"
-date: last-modified
+date: today
 date-format: "D [de] MMMM [de] YYYY"
 format:
   html:
@@ -35,6 +35,10 @@ revisão humana. Não incluímos registros de exemplo. O relatório será atuali
 quando uma saída curada e aprovada for preparada em `data/relatorios/` e entrar
 no repositório.
 :::
+
+A data no cabeçalho indica quando o relatório foi gerado. Quando houver uma
+rodada pública, a data da coleta e a cobertura serão informadas separadamente
+como proveniência dos resultados.
 
 ## Escopo
 

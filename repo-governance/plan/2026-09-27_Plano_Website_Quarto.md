@@ -17,7 +17,7 @@ tarefas:
   - { desc: "WP3 — renderizar e revisar o site e o PDF em CI", status: em andamento }
   - { desc: "WP4 — preparar publicação do Pages protegida por aprovação", status: em andamento }
 relacionados: ["repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md", "repo-governance/plan/2026-09-27_Plano_Coleta_Exploratoria.md"]
-news: ["2026-09-27 — Cria o site Quarto em estado vazio"]
+news: ["2026-09-27 — Incorpora revisões da PR Quarto", "2026-09-27 — Cria o site Quarto em estado vazio"]
 ---
 
 # Plano: site Quarto para relatórios do radar
@@ -58,10 +58,25 @@ dados por si só. O revisor também recomendou condicionar R/`renv` ao uso efeti
 trechos textuais e atribuição antes de publicar conteúdo de README/model card. Esses pontos foram
 incorporados abaixo. Equivalência dos resultados e filtros continua dependendo da amostra real.
 
+## Revisão da implementação
+
+A PR #18 foi revisada por Gemini 3.1 Pro High, que não encontrou achados bloqueadores. GPT-6-Sol
+revisou o diff de forma independente e também não encontrou bloqueios de segurança ou publicação.
+Suas observações acionáveis foram incorporadas: a data exibida agora corresponde à geração do
+relatório e é distinguida da data da coleta; a página inicial mantém um único `h1`; e o CI confere o
+`href="relatorio.pdf"` além da presença do arquivo no artefato.
+
+O build do GitHub Actions da PR #18 passou: gerou e conferiu as três páginas HTML, o PDF e o link; o
+deploy foi ignorado pela condição de aprovação ausente. O PDF foi inspecionado visualmente após a
+renderização local. A inspeção visual manual do HTML ainda está pendente: o navegador disponível
+bloqueou URLs locais `file:` e não foi possível abrir a página nesse fluxo. O HTML gerado teve sua
+estrutura, título principal, link e recursos conferidos estaticamente; isso não substitui a revisão
+visual em navegador antes de ativar a publicação.
+
 ## Diagnóstico do repositório em 2026-09-27
 
-- O `README.md` e a descrição About do GitHub já explicam o radar em português. O diretório `report/`
-  está reservado para Quarto, mas ainda não tem documentos `.qmd` nem workflow de publicação.
+- O `README.md` e a descrição About do GitHub explicam o radar em português. Esta entrega acrescenta
+  páginas Quarto e workflow de renderização; ainda não há amostra nem resultados públicos.
 - O primeiro conjunto de coletores e o exportador do corpus já existem. A coleta exploratória da
   issue #14 ainda aguarda parâmetros e aprovação; os resultados do Decifra e a revisão humana ainda
   não formam uma base pública de relatório.
@@ -206,6 +221,7 @@ como pipeline de dados enquanto essa etapa estiver pendente.
   formatos adicionais podem ser ligados a uma página HTML de um documento ou site.
 - [Quarto — PDF Basics](https://quarto.org/docs/output-formats/pdf-basics): opções PDF e requisitos
   do fluxo LaTeX padrão.
+- [Quarto — Dates and Date Formatting](https://quarto.org/docs/reference/dates): `today` para registrar a data de geração, separada da data da rodada.
 - [Quarto — PDF Engines](https://quarto.org/docs/output-formats/pdf-engine): instalação e uso de
   TinyTeX (`quarto install tinytex`).
 - [Quarto — Publishing Quarto Manuscripts](https://quarto.org/docs/manuscripts/publishing.html):

@@ -9,7 +9,7 @@ page-layout: full
 PROJETO PÚBLICO · BBSIA-RADAR
 :::
 
-# Encontrar soluções. Mostrar as evidências. Facilitar a revisão.
+## Encontrar soluções. Mostrar as evidências. Facilitar a revisão.
 
 O **bbsia-radar** identifica soluções de inteligência artificial brasileiras,
 adaptadas ao português brasileiro ou de interesse público que possam ser

@@ -48,7 +48,7 @@ jobs:
           test -s report/_site/metodo.html
           test -s report/_site/relatorio.html
           test -s report/_site/relatorio.pdf
-          grep -q 'relatorio.pdf' report/_site/relatorio.html
+          grep -q 'href="relatorio.pdf"' report/_site/relatorio.html
 
       - name: Enviar o site completo como artefato do Pages
         uses: actions/upload-pages-artifact@v4

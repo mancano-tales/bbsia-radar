@@ -36,7 +36,7 @@ body {
     linear-gradient(128deg, #e5f2eb 0%, #f3f7f1 64%, #edf1e8 100%);
 }
 
-.hero-panel h1 {
+.hero-panel h2 {
   max-width: 15ch;
   margin: 0.65rem 0 1rem;
   color: var(--radar-green-dark);

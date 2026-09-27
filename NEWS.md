@@ -1,5 +1,25 @@
 # NEWS — bbsia-radar
 
+## 2026-09-27 — Incorpora revisões da PR Quarto
+
+A PR #18 foi revisada sequencialmente por Gemini 3.1 Pro High e GPT-6-Sol; ambos não encontraram
+bloqueios. Foram incorporadas as observações acionáveis do GPT-6-Sol: `date: today` com explicação
+que separa geração de coleta, apenas um título `h1` na página inicial e verificação do `href` relativo
+do PDF no CI. O job de build da PR passou, e o deploy permaneceu ignorado porque `PAGES_PUBLISH_APPROVED`
+continua ausente.
+
+O PDF foi conferido visualmente. A inspeção visual do HTML ainda está pendente porque o navegador
+bloqueou a URL local `file:`; a estrutura, o título e o link foram conferidos no HTML gerado. O plano
+#17 permanece aberto para integrar os resultados quando existir a primeira amostra real e para a
+aprovação do autor antes da publicação inicial.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #17
+- **Mensagem do Commit**: `fix(report): aplica revisões da PR Quarto refs #17`
+- **Arquivos afetados**: `.github/workflows/publish-report.yml`, `NEWS.md`, `TODO.md`, `repo-governance/plan/2026-09-27_Plano_Website_Quarto.md`, `report/index.qmd`, `report/relatorio.qmd`, `report/styles.css`
+
 ## 2026-09-27 — Cria o site Quarto em estado vazio
 
 O site inicial em `report/` explica em português o que é o radar, descreve método e limites e mostra
