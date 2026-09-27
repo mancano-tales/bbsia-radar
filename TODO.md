@@ -12,9 +12,10 @@
   - Plano ativo: repo-governance/plan/2026-09-27_Plano_Protecao_Caminhos_Absolutos.md · Issue: #1
 
 
-- [ ] **Issue #14 — amostra exploratória limitada** — registrar os termos GitHub, a conta HF e a raiz de cache aprovados; depois executar a rodada limitada prevista no plano.
+- [ ] **Issue #14 — amostra exploratória limitada** — revisar a qualidade/falsos positivos da amostra concluída e decidir se devemos ajustar, ampliar ou parar.
   - Criado: 2026-09-27 09:30 por Codex / GPT-6 / desktop
-  - Progresso 2026-09-27: os controles de orçamento e validação offline foram integrados pela PR #16 em `main` (`c1835b1`); a suíte offline passou. Nenhuma coleta real foi feita. A rodada aguarda termos GitHub, conta HF e raiz de cache aprovados pelo autor.
+  - Progresso 2026-09-27: a PR #20 foi integrada no merge `3075b4b` e a primeira amostra pública foi executada com `Transcritorio`, `BERTimbau`, `neuralmind` e os três itens brasileiros priorizados. Resultado agregado: 103 candidatos GitHub, 2 HF, 10 documentos (1 sem texto) e 16/23 tentativas reservadas; a busca `BERTimbau` foi parcial (134 no total, 100 na página). Dados brutos permanecem no cache externo.
+  - Próximo passo: revisar localmente relevância e falsos positivos. Não ampliar consultas até documentar essa leitura. A integração GitHub recusou o comentário de progresso com `403 Resource not accessible by integration`; o resumo vivo da issue ainda precisa ser atualizado por uma sessão com permissão de escrita.
   - Plano ativo: `repo-governance/plan/2026-09-27_Plano_Coleta_Exploratoria.md` · Issue: #14
 
 - [ ] **Decifra: requisitos do caso de uso bbsia-radar** — terminar o R1.1 (passo 3 em diante) e os outros itens da issue aberta no `decifra-text-as-data`; desenvolvido lá.
@@ -35,7 +36,7 @@
 ## Prospectivo
 - [ ] **WP3–WP4 — ampliar coletores e enriquecimento após a amostra exploratória** — as funções de descoberta e enriquecimento já existem; a execução em volume depende da revisão dos resultados da issue #14 e dos limites acordados no plano do piloto.
   - Criado: 2026-09-26 11:03 por Claude Opus 5.5
-  - Progresso 2026-09-27: a primeira implementação dos coletores foi integrada pela PR #13; a PR #16 acrescentou limites para uma rodada pequena. A execução real ainda não começou.
+  - Progresso 2026-09-27: a PR #13 implementou os coletores, a PR #16 limitou a primeira rodada e a PR #20 acrescentou as três sementes brasileiras aprovadas. A amostra pública pequena já foi executada; ampliar depende da revisão de qualidade registrada no plano da issue #14.
   - Plano §6–§7
 - [ ] **Website e relatório público em Quarto (HTML + PDF)** — depois que a primeira rodada gerar dados revisados, montar o relatório em `report/` e automatizar a publicação no GitHub Pages a partir das saídas aprovadas.
   - Criado: 2026-09-27 10:52 por Codex / GPT-6 / desktop

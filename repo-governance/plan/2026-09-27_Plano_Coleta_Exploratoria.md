@@ -27,13 +27,13 @@ submissão ao BBSIA.
 - O PR #11 está integrado em `main`.
 - O PR #13, da issue #10, foi integrado durante a preparação desta proposta no merge
   `94bad301563c153e4be64cba3cc9b99e2b52203c`; a issue #10 foi fechada. A implementação dos
-  coletores está disponível, mas ainda precisa de limites explícitos para uma amostra pequena.
+  coletores foi posteriormente limitada pela PR #16 para permitir uma primeira amostra pequena.
 - A documentação aprovada foi integrada pela PR #15 no commit `fa7c5e5462808ee6ead0ae977809ecab7cefc5d1`.
 - A implementação dos limites foi integrada pela PR #16 em `main` no commit
   `c1835b1d6d126420bb85636dae9b28eafa9e1bb3`; a suíte offline cobre orçamento compartilhado,
   paginação, seleção determinística, cache externo, respostas vazias, erros HTTP e bloqueios de itens
-  privados.
-  Nenhuma consulta de candidatos foi executada.
+  privados. A inclusão dos três itens brasileiros da lista global foi integrada pela PR #20 no merge
+  `3075b4bf10df3d83591ad1586a17683762989d38`.
 - A issue #12 continua sem decisão sobre o uso dos módulos adjacentes do BBSIA como contexto ou
   sementes.
 - Antes desta implementação, os coletores do PR #13 podiam percorrer vários termos, páginas e contas;
@@ -42,8 +42,8 @@ submissão ao BBSIA.
 - O autor aprovou este plano no chat em 2026-09-27, limitado nesta primeira rodada às sementes atuais
   de `config/seeds.yml`; módulos adjacentes do BBSIA ficam fora. A aprovação está registrada aqui;
   a issue #12 continua aberta para decisões futuras sobre esses módulos.
-- A issue #14 permanece aberta para implementar e revisar a inclusão das soluções brasileiras da
-  lista curada e então executar a primeira amostra com os parâmetros já aprovados no chat.
+- A issue #14 permanece aberta para revisar a qualidade da primeira amostra e decidir se vale ampliar
+  ou ajustar as consultas. Nenhuma ampliação automática será feita.
 - A pedido do autor no chat, a raiz externa foi definida como `%USERPROFILE%/AppData/Local/Mancano`,
   criada e verificada como gravável. `MANCANO_BBSIA_RADAR_ROOT` está configurada no `.Renviron`
   local, ignorado pelo Git; `.data-source` acrescenta `bbsia-radar/api`. O resolvedor
@@ -53,9 +53,9 @@ submissão ao BBSIA.
   Transcritório) e `BERTimbau`, e a conta de modelos HF `neuralmind`. Também autorizou incluir as
   soluções da lista global do autor que já estão marcadas como brasileiras no gabarito:
   Transcritório, Open Notebook e QualiLab. Os três registros já existem em `config/seeds.yml`.
-  Nenhuma chamada de descoberta foi feita até esta revisão.
+  A amostra aprovada foi executada em 2026-09-27; os totais e limites estão resumidos abaixo.
 
-## Escopo proposto para a primeira rodada
+## Escopo aprovado e executado na primeira rodada
 
 1. Usar as sementes já mantidas em `config/seeds.yml`. A lista
    `awesome-open-source-research-tools` é global; desta fonte, incluir somente os três itens que já
@@ -93,7 +93,7 @@ parcial, sem subdividir a consulta. O orçamento compartilhado cobre as duas bus
 três metadados e até dez documentos conforme a composição acima. Não há retentativas automáticas;
 erros de status encerram a chamada e a tentativa continua contabilizada.
 
-Exemplo reproduzível com os parâmetros que o autor aprovou no chat; o exemplo ainda não foi executado:
+Comando reproduzível usado na execução de 2026-09-27 com os parâmetros aprovados pelo autor:
 
 ```r
 budget <- radar_novo_orcamento()
@@ -119,8 +119,30 @@ listagem HF não envia `HF_TOKEN` e rejeita itens marcados como privados. Os met
 repositórios curados exigem confirmação explícita de visibilidade pública. A seleção prioriza os três
 READMEs brasileiros e ordena os demais por URL canônica, sem diferenciar maiúsculas/minúsculas.
 Retorna `selected_urls`, a contagem priorizada e os candidatos excluídos pelo teto. As respostas de
-busca registram total, incompletude, página, tamanho e ordenação. A implementação e os fixtures
-offline estão na branch `codex/14-brazil-list`; nenhum candidato foi coletado nesta etapa.
+busca registram total, incompletude, página, tamanho e ordenação. Os controles e fixtures offline
+foram integrados à `main`; a inclusão das sementes brasileiras entrou pela PR #20, merge `3075b4b`.
+
+### Resultado agregado da amostra (2026-09-27)
+
+- GitHub `Transcritorio`: 1 resultado total e 1 retornado na página; a busca não foi marcada parcial.
+- GitHub `BERTimbau`: 134 resultados totais e 100 retornados na primeira página. A amostra é parcial;
+  não houve paginação nem divisão automática da busca.
+- Hugging Face `neuralmind`: 2 modelos retornados e nenhum indicador de página seguinte.
+- Resultado deduplicado: 103 candidatos do GitHub e 2 do Hugging Face. Dez documentos foram
+  selecionados para enriquecimento, incluindo os três documentos prioritários da lista brasileira;
+  um dos dez estava sem texto de README/model card.
+- Foram reservadas 16 de até 23 tentativas HTTP. A execução usou namespace novo na raiz externa de
+  cache; respostas brutas, documentos, URLs dos candidatos e exportações ficaram fora do Git.
+- A allow-list dos metadados não inclui e-mail. Uma verificação simples de padrões de e-mail nos
+  textos dos dez documentos encontrou zero correspondências; isso é uma checagem adicional, não uma
+  prova geral sobre o conteúdo das fontes.
+- Nenhum token foi enviado, nenhuma página HTML foi raspada e nada foi submetido ao BBSIA.
+
+**Leitura e próximo passo:** a coleta confirma que os endpoints e o orçamento funcionam para uma
+amostra pequena, mas não valida a precisão dos candidatos. Revisar localmente relevância e falsos
+positivos, registrar a qualidade agregada e só então decidir se o próximo passo é refinar o termo
+`BERTimbau`, escolher outra busca derivada de sementes aprovadas ou parar. A cobertura da busca parcial
+não deve ser descrita como exaustiva.
 
 ## Documentação oficial verificada
 
@@ -228,13 +250,16 @@ Não conceder diretórios adicionais, não pedir ao agente para executar os cole
    `radar_validate_cache_root()` confirmou que a raiz está fora do checkout. A API usa a subpasta
    indicada em `.data-source`. Chamadas públicas GitHub e Hugging Face são anônimas; nenhum token é
    necessário ou lido pelos coletores.
-6. **Em execução — implementar e revisar a inclusão da lista brasileira.** A branch
-   `codex/14-brazil-list` usa a API oficial para buscar somente os três repositórios já selecionados e
-   prioriza seus documentos na amostra. Os testes usam fixtures locais e não fazem rede.
-7. **Pendente — executar a primeira amostra aprovada.** Termos, conta e lista foram aprovados no chat.
-   Após a revisão e integração do PR, executar a composição e os limites acima, guardar dados brutos
-   somente no cache externo e registrar no plano as consultas, contagens, falhas e cobertura. Nenhum
-   registro será enviado ao BBSIA. A ampliação da amostra permanece para decisão posterior.
+6. **Concluído — incluir as sementes brasileiras aprovadas.** A PR #20 foi integrada em `main` pelo
+   merge `3075b4b`; as chamadas individuais exigem confirmação explícita de visibilidade pública e os
+   três documentos foram priorizados dentro do limite de dez.
+7. **Concluído — executar a primeira amostra aprovada.** A execução de 2026-09-27 respeitou as duas
+   consultas GitHub, uma página HF, os dez documentos e o orçamento máximo de 23 tentativas. Os dados
+   brutos permaneceram no cache externo e os resultados agregados foram registrados neste plano.
+8. **Em execução — revisar qualidade e recomendar continuação.** Inspecionar os resultados somente
+   na raiz local, sem publicar candidatos ou textos brutos; medir relevância/falsos positivos e trazer
+   uma recomendação para a issue #14. Qualquer consulta além da amostra precisa preservar o orçamento
+   e ser registrada antes da execução.
 
 ## Critério de conclusão
 
