@@ -54,8 +54,8 @@ Um hook administrado na instância GHES pode rejeitar conteúdo antes da atualiz
 - A regra que torna um check obrigatório é uma configuração do repositório no GitHub e não pode ser registrada apenas pelo arquivo de workflow.
 - A sessão não pôde acessar a issue nem alterar regras do repositório: gh informou que o token está inválido e a conexão à API foi bloqueada.
 - O PR #19 foi integrado. Revisões prévias independentes por Gemini Pro e GPT-Sol confirmaram quatro falhas no scanner e nos diffs de merge; as correções estão nesta execução.
-- A tentativa de comentar a issue #1 pela integração GitHub retornou HTTP 403 (Resource not accessible by integration). A configuração remota das regras ainda precisa ser concluída.
-- O commit 6216a8f foi enviado à branch codex/1-revisao-caminhos-absolutos. A criação do PR pela integração GitHub também retornou HTTP 403 (Resource not accessible by integration); `gh auth status` informou token inválido. A automação do formulário no Chrome expirou antes de enviar; portanto, não há PR criado. A comparação está disponível em https://github.com/mancano-tales/bbsia-radar/compare/main...codex/1-revisao-caminhos-absolutos?expand=1.
+- A integração GitHub retornou HTTP 403 na tentativa inicial de comentar a issue #1 e criar o PR. Após autorização OAuth do autor, o `gh` CLI autenticou e a atualização foi publicada na issue #1.
+- Os commits 6216a8f e 060500c estão publicados na branch codex/1-revisao-caminhos-absolutos; o PR #21 está aberto para `main`, sem merge. O CodeRabbit retornou PASS, com revisão manual indicada para este repositório OSS. O workflow de caminhos absolutos ainda não consta nas verificações do PR; a exigência do status check continua pendente.
 - A revisão posterior também encontrou variantes file: com/sem host ainda não cobertas, referências web relativas ao esquema confundidas com UNC e o fallback do pre-push sem diff de merge de primeiro pai. O scanner e o hook agora incluem esses casos.
 - A revisão final do GPT-Sol encontrou um falso positivo quando `file://host` em string era seguido de URL relativa; o limite de autoridade e o parser UNC agora param em aspas e delimitadores.
 - Revisões finais independentes de GPT-Sol e Gemini Pro sobre o diff após essa correção: sem achados acionáveis.
@@ -71,7 +71,7 @@ Um hook administrado na instância GHES pode rejeitar conteúdo antes da atualiz
 
 ## Critério de conclusão
 
-O detector local e o workflow estão no branch de trabalho. O plano só será concluído quando o autor ou uma sessão autenticada anunciar o trabalho na issue #1 e configurar/confirmar o status check obrigatório no GitHub. Essa etapa remota ainda está pendente.
+O detector local e o workflow estão no PR #21. O plano permanece ativo até o autor revisar/mergear o PR e o workflow estar disponível para execução e exigência como status check nas regras do GitHub.
 
 ## Fontes oficiais
 

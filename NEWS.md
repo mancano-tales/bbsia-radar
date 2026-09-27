@@ -1,5 +1,16 @@
 # NEWS — bbsia-radar
 
+## 2026-09-27 — Restabelece autenticação e abre PR para revisão
+
+Após a autorização OAuth do autor, `gh auth status` confirmou a conta `mancano-tales`. A atualização foi publicada na issue #1 e o PR #21 foi aberto para `main`, sem merge. O CodeRabbit retornou PASS, com revisão manual indicada para este repositório OSS; o workflow de caminhos absolutos ainda não consta nas verificações do PR. O status check obrigatório segue pendente. [PR #21](https://github.com/mancano-tales/bbsia-radar/pull/21).
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #1
+- **Mensagem do Commit**: docs(plan): atualiza estado após abertura do PR refs #1
+- **Arquivos afetados**: NEWS.md, TODO.md, repo-governance/plan/2026-09-27_Plano_Protecao_Caminhos_Absolutos.md
+
 ## 2026-09-27 — Envia correções e registra bloqueio de abertura do PR
 
 O commit 6216a8f foi enviado para a branch codex/1-revisao-caminhos-absolutos. A criação do pull request pela integração GitHub retornou HTTP 403 (Resource not accessible by integration), e `gh auth status` confirmou token inválido. A comparação da branch abriu numa sessão autenticada do Chrome, mas a automação da página expirou antes de preencher e enviar o formulário; nenhum PR foi criado. [Abrir a comparação com main](https://github.com/mancano-tales/bbsia-radar/compare/main...codex/1-revisao-caminhos-absolutos?expand=1). Permanecem pendentes o PR, o comentário de estado na issue #1 e a exigência do status check no GitHub.
