@@ -5,6 +5,12 @@
 > **Pendente** = pronto para ser trabalhado. **Prospectivo** = identificado, mas falta decisão ou dependência. **Concluído** = feito.
 
 ## Pendente
+- [ ] **Proteção contra publicação acidental de caminhos absolutos** — manter as verificações locais e a checagem de PR; falta tornar o status check obrigatório no GitHub.
+  - Criado: 2026-09-27 10:53 por Codex / GPT-6 / desktop
+  - Progresso 2026-09-27: a proposta foi aprovada no chat pela opção A, como mitigação simples. O scanner compartilhado, os hooks locais e o workflow de pull request estão no branch codex/1-protecao-caminhos-absolutos, baseado na main remota atualizada.
+  - Próximo passo: o autor deve levar o anúncio à issue #1 e reautenticar o gh para configurar e exigir o status check no GitHub. Esta sessão não conseguiu acessar a API.
+  - Plano ativo: repo-governance/plan/2026-09-27_Plano_Protecao_Caminhos_Absolutos.md · Issue: #1
+
 
 - [ ] **Website e relatório público em Quarto (HTML + PDF)** — integrar o leitor após classificação e revisão humana da amostra coletada; publicar no GitHub Pages só depois da inspeção e aprovação explícita do autor.
   - Criado: 2026-09-27 10:52 por Codex / GPT-6 / desktop
@@ -23,9 +29,6 @@
 - [ ] **Autor: configurar credenciais na máquina** — `GITHUB_PAT` (token fino, só leitura de repositórios públicos) e `HF_TOKEN` (leitura) no `.Renviron` local; nunca no repositório.
   - Criado: 2026-09-26 11:03 por Claude Opus 5.5
   - Issue: #1
-- [ ] **Autor: ativar o hook de pre-commit no clone local** — `git config core.hooksPath hooks`.
-  - Criado: 2026-09-26 11:03 por Claude Opus 5.5
-  - Issue: #1
 - [ ] **Autor: acompanhar codebook v0.1.1 e as sementes** — seis casos-limite e protocolo inicial aprovados em chat (issue #9); dois casos ainda dependem de alinhamento com o BBSIA. Revisar a divisão radar × Decifra registrada no plano §8 (decidida em 2026-09-26, issue #6) e decidir se o teste com o catálogo do BBSIA entra no piloto.
   - Criado: 2026-09-26 11:45 por Claude Opus 5.5
   - Progresso 2026-09-26 (Claude Opus 5.5): autor confirmou o Transcritório (usa Whisper e o modelo Tagarela) e informou que não cadastrou nada à mão no BBSIA.
@@ -36,11 +39,6 @@
   - Issue: #4 · Plano §6
 
 ## Prospectivo
-- [ ] **Proteção contra publicação de caminhos absolutos** — decidir e aplicar uma barreira para impedir que conteúdo Git com caminho absoluto de máquina alcance o repositório público; confirmar se o requisito é bloquear merges ou garantir que qualquer ref pública só receba conteúdo validado por um fluxo privado.
-  - Criado: 2026-09-27 10:53 por Codex / GPT-6 / desktop
-  - Progresso 2026-09-27: o `hooks/pre-commit` atual examina só linhas adicionadas ao stage, ignora `hooks/` e `tools/` e aceita uma isenção. Um Actions pode bloquear o merge, mas roda após a branch pública receber o push. A documentação de pre-receive refere-se ao GitHub Enterprise Server; não foi identificado hook de conteúdo equivalente configurável no GitHub.com. A integração GitHub recusou criação de issue com `403 Resource not accessible by integration`; `gh` local está sem autenticação válida. A proposta está em `repo-governance/plan/2026-09-27_Plano_Protecao_Caminhos_Absolutos.md`, em rascunho; levar à conversa da issue #1 e aguardar aprovação do autor antes de executar.
-  - Issue relacionada: #1
-
 - [ ] **WP3–WP4 — ampliar coletores e enriquecimento após a amostra exploratória** — as funções de descoberta e enriquecimento já existem; a execução em volume depende da revisão dos resultados da issue #14 e dos limites acordados no plano do piloto.
   - Criado: 2026-09-26 11:03 por Claude Opus 5.5
   - Progresso 2026-09-27: a primeira implementação dos coletores foi integrada pela PR #13; a PR #16 acrescentou limites para uma rodada pequena. A execução real ainda não começou.
@@ -58,6 +56,12 @@
   - Criado: 2026-09-26 11:03 por Claude Opus 5.5
 
 ## Concluído
+- [x] **Autor: ativar o hook de pre-commit no clone local** — o diretório hooks está configurado como hooksPath.
+  - Criado: 2026-09-26 11:03 por Claude Opus 5.5
+  - Concluído: 2026-09-27 12:52 por Codex / GPT-6 / desktop
+  - Verificação: a configuração local core.hooksPath já apontava para hooks neste clone.
+  - Issue: #1
+
 
 - [x] **Conversor do codebook para o formato do Decifra e exportador do corpus** (WP4/WP5) — `codebook_para_decifra()` gera o contrato YAML e `salvar_corpus_decifra()` exporta um texto citável por solução em CSV.
   - Criado: 2026-09-26 12:29 por Claude Opus 5.5

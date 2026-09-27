@@ -1,5 +1,24 @@
 # NEWS — bbsia-radar
 
+## 2026-09-27 — Executa a primeira amostra pública das APIs
+
+A primeira execução dos coletores usou os termos GitHub aprovados `Transcritorio` e `BERTimbau`, a
+conta Hugging Face `neuralmind` e os três itens brasileiros priorizados da lista global do autor.
+Retornou 103 candidatos GitHub e 2 modelos HF; dez documentos foram selecionados, três deles
+prioritários. A busca `BERTimbau` registrou 134 resultados totais e apenas os 100 da primeira página,
+portanto a cobertura é parcial. Foram reservadas 16 de até 23 tentativas. Cache bruto e exportações
+ficaram em namespace externo ao repositório. Uma checagem de padrão de e-mail nos dez textos não
+encontrou correspondências; nenhum e-mail foi coletado intencionalmente, nenhum token foi enviado e
+nada foi submetido ao BBSIA. A issue #14 permanece aberta para revisar relevância e falsos positivos
+antes de qualquer expansão.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #14
+- **Mensagem do Commit**: `docs(plan): registra primeira amostra exploratoria refs #14`
+- **Arquivos afetados**: `CHANGELOG.md`, `NEWS.md`, `TODO.md`, `repo-governance/plan/2026-09-27_Plano_Coleta_Exploratoria.md`
+
 ## 2026-09-27 — Atualiza o relatório Quarto para a amostra e o GitLab
 
 O README e as páginas do site agora descrevem GitHub, Hugging Face e GitLab.com. Registram que a
@@ -15,27 +34,47 @@ continua protegida pela aprovação explícita do autor.
 - **Mensagem do Commit**: docs(report): align Quarto pages with GitLab sample refs #17
 - **Arquivos afetados**: NEWS.md, README.md, TODO.md, report/index.qmd, report/metodo.qmd, report/relatorio.qmd, repo-governance/plan/README.md, repo-governance/plan/2026-09-27_Plano_Website_Quarto.md, CHANGELOG.md
 
-## 2026-09-27 — Entrega o site Quarto para revisão do autor
+## 2026-09-27 — Abre PR para incluir sementes brasileiras curadas
 
-A implementação está na PR #18 (`codex/17-website-quarto`), pronta para revisão do autor. Gemini 3.1
-Pro High e GPT-6-Sol revisaram o diff em sequência e não encontraram bloqueios; as observações do
-GPT-6-Sol foram incorporadas no commit `f42fb2a`. O build da PR passou e a reexecução manual do
-workflow no commit final passou no run [#36329907257](https://github.com/mancano-tales/bbsia-radar/actions/runs/36329907257),
-incluindo render HTML/PDF, link de download e upload do artefato. O job de deploy foi ignorado, como
-esperado fora da `main` e com a variável de aprovação ainda ausente.
-
-O PDF final foi revisto visualmente. O navegador da sessão bloqueou a abertura do HTML local por
-`file:`, então a inspeção visual do site ainda precisa ser feita antes da primeira publicação. O
-HTML passou pela conferência estática de hierarquia e do link. Não há dados reais ou candidatos de
-exemplo. A issue #17 permanece aberta para integração após a primeira amostra e para aprovação
-explícita antes de ativar a publicação.
+A branch `codex/14-brazil-list` e o PR #20 foram publicados para revisão, com o commit `17297e3`.
+A issue #14 foi atualizada com o estado do PR, os termos e a conta aprovados, os três itens
+brasileiros da lista global e o próximo passo. A amostra de candidatos continua sem execução; o
+merge do PR fica com o autor.
 
 **Metadados de Execução**:
 - **Data**: 2026-09-27
 - **Agente**: Codex / GPT-6 / desktop
-- **Issue**: #17
-- **Mensagem do Commit**: `docs(report): entrega PR Quarto para revisão refs #17`
-- **Arquivos afetados**: `CHANGELOG.md`, `NEWS.md`, `TODO.md`, `repo-governance/plan/README.md`, `repo-governance/plan/2026-09-27_Plano_Website_Quarto.md`
+- **Issue**: #14
+- **Mensagem do Commit**: `docs: registra PR de sementes brasileiras refs #14`
+- **Arquivos afetados**: `CHANGELOG.md`, `NEWS.md`
+
+## 2026-09-27 — Inclui sementes brasileiras da lista global do autor
+
+A coleta exploratória agora pode consultar individualmente pela API oficial do GitHub os três
+repositórios já marcados com tag `brazil` no gabarito da lista global
+`awesome-open-source-research-tools`: Transcritório, Open Notebook e QualiLab. A resposta de cada
+repositório precisa confirmar `private: false` antes de entrar no cache, e a allow-list continua sem
+campo de e-mail. Os três READMEs ficam prioritários entre os dez documentos do orçamento. O plano
+registra os termos GitHub `Transcritorio` e `BERTimbau`, a conta HF `neuralmind` e o teto revisado de
+23 tentativas; essa composição está documentada, mas a amostra ainda não foi executada.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #14
+- **Mensagem do Commit**: `feat(collectors): inclui sementes brasileiras da lista curada refs #14`
+- **Arquivos afetados**: `NEWS.md`, `README.md`, `R/coletar_github.R`, `R/enriquecer_documentos.R`, `repo-governance/plan/2026-09-27_Plano_Coleta_Exploratoria.md`, `tests/fixtures/seeds_awesome_brazil.yml`, `tests/testthat/test-collectors.R`
+
+## 2026-09-27 — Aprova e implementa mitigação contra caminhos absolutos
+
+O autor aprovou no chat a opção A: reduzir a chance de publicar caminhos absolutos sem criar um fluxo privado nem prometer garantia literal. Foi adicionado um scanner compartilhado, conectado aos hooks pre-commit e pre-push e a um workflow de verificação de pull requests. O scanner informa somente arquivo relativo e linha, sem copiar o conteúdo detectado. Os hooks estão ativados neste clone, com LF garantido para o shell; o workflow ainda precisa ser marcado como status check obrigatório nas configurações do GitHub para bloquear merges. A autenticação do gh está inválida e a API está inacessível nesta sessão; por isso, o anúncio na issue #1 e a configuração remota ficam pendentes. Nenhum histórico foi reescrito.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #1
+- **Mensagem do Commit**: feat(security): reduz risco de caminhos absolutos refs #1
+- **Arquivos afetados**: .gitattributes, .github/workflows/absolute-paths.yml, AGENTS.md, NEWS.md, TODO.md, hooks/pre-commit, hooks/pre-push, repo-governance/plan/README.md, repo-governance/plan/2026-09-27_Plano_Protecao_Caminhos_Absolutos.md, tools/check-absolute-paths.sh
 
 ## 2026-09-27 — Incorpora revisões da PR Quarto
 
@@ -56,6 +95,23 @@ aprovação do autor antes da publicação inicial.
 - **Issue**: #17
 - **Mensagem do Commit**: `fix(report): aplica revisões da PR Quarto refs #17`
 - **Arquivos afetados**: `.github/workflows/publish-report.yml`, `NEWS.md`, `TODO.md`, `repo-governance/plan/2026-09-27_Plano_Website_Quarto.md`, `report/index.qmd`, `report/relatorio.qmd`, `report/styles.css`
+
+## 2026-09-27 — Configura raiz local de cache exploratório
+
+A pedido do autor, foi definida e preparada uma raiz de cache sob `AppData/Local/Mancano`, fora do
+checkout e da sincronização do repositório. `MANCANO_BBSIA_RADAR_ROOT` foi configurada no `.Renviron`
+local, ignorado pelo Git; a validação do projeto confirmou que a pasta existe, é gravável e está
+fora do repositório. O cache da API usa a subpasta `bbsia-radar/api`, indicada em `.data-source`.
+Não houve chamadas de coleta. Foram propostas, para aprovação do autor, as sementes GitHub
+`Transcritório` e `BERTimbau` e a conta Hugging Face `neuralmind`; a coleta só começa depois dessa
+confirmação.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #14
+- **Mensagem do Commit**: `docs(cache): configura raiz local para coleta exploratoria refs #14`
+- **Arquivos afetados**: `CHANGELOG.md`, `NEWS.md`, `repo-governance/plan/2026-09-27_Plano_Coleta_Exploratoria.md`
 
 ## 2026-09-27 — Cria o site Quarto em estado vazio
 
@@ -84,24 +140,6 @@ será revisada, em sequência, por Gemini 3.1 Pro High e GPT-6-Sol antes da revi
 - **Issue**: #17
 - **Mensagem do Commit**: `feat(report): cria site Quarto e deploy protegido refs #17`
 - **Arquivos afetados**: `.github/workflows/publish-report.yml`, `NEWS.md`, `README.md`, `TODO.md`, `data/relatorios/README.md`, `report/.gitignore`, `report/_quarto.yml`, `report/index.qmd`, `report/metodo.qmd`, `report/relatorio.qmd`, `report/styles.css`, `repo-governance/plan/README.md`, `repo-governance/plan/2026-09-27_Plano_Website_Quarto.md`
-
-## 2026-09-27 — Propõe proteção contra caminhos absolutos
-
-O autor estabeleceu que caminhos absolutos de máquina não devem ser publicados. A inspeção confirmou
-que o hook local atual cobre só parte das linhas adicionadas e possui exclusões e isenção. No
-GitHub.com, um status check pode bloquear o merge, mas só depois de a branch pública receber o push;
-os hooks de pre-receive documentados pelo GitHub são para GitHub Enterprise Server. O plano em
-proposta apresenta alternativas e aguarda decisão do autor sobre a garantia necessária. Não houve
-mudança em código nem nas regras remotas do repositório. A tentativa de criar uma issue dedicada foi
-recusada pela integração GitHub (`403 Resource not accessible by integration`) e o `gh` local está
-sem autenticação válida; a proposta deve ser levada à issue relacionada #1 pelo autor.
-
-**Metadados de Execução**:
-- **Data**: 2026-09-27
-- **Agente**: Codex / GPT-6 / desktop
-- **Issue**: #1 (relacionada; proposta aguardando aprovação)
-- **Mensagem do Commit**: `docs(security): propoe bloqueio de caminhos absolutos refs #1`
-- **Arquivos afetados**: `CHANGELOG.md`, `NEWS.md`, `TODO.md`, `repo-governance/plan/README.md`, `repo-governance/plan/2026-09-27_Plano_Protecao_Caminhos_Absolutos.md`
 
 ## 2026-09-27 — Planeja relatórios Quarto e atualiza a descrição do radar
 
@@ -228,6 +266,47 @@ Adicionadas funções R para consultas paginadas às APIs oficiais do GitHub e d
 - **Issue**: #10
 - **Mensagem do Commit**: `feat(collectors): implement discovery and Decifra corpus refs #10`
 - **Arquivos afetados**: `.data-source`, `DESCRIPTION`, `NAMESPACE`, `NEWS.md`, `README.md`, `R/cache.R`, `R/codebook_para_decifra.R`, `R/coletar_github.R`, `R/coletar_hf.R`, `R/montar_corpus.R`, `tests/fixtures/github_search.json`, `tests/fixtures/hf_models.json`, `tests/fixtures/seeds_minimal.yml`, `tests/testthat.R`, `tests/testthat/helper-load.R`, `tests/testthat/test-cache.R`, `tests/testthat/test-collectors.R`, `tests/testthat/test-corpus-codebook.R`
+
+## 2026-09-27 — Entrega o site Quarto para revisão do autor
+
+A implementação está na PR #18 (`codex/17-website-quarto`), pronta para revisão do autor. Gemini 3.1
+Pro High e GPT-6-Sol revisaram o diff em sequência e não encontraram bloqueios; as observações do
+GPT-6-Sol foram incorporadas no commit `f42fb2a`. O build da PR passou e a reexecução manual do
+workflow no commit final passou no run [#36329907257](https://github.com/mancano-tales/bbsia-radar/actions/runs/36329907257),
+incluindo render HTML/PDF, link de download e upload do artefato. O job de deploy foi ignorado, como
+esperado fora da `main` e com a variável de aprovação ainda ausente.
+
+O PDF final foi revisto visualmente. O navegador da sessão bloqueou a abertura do HTML local por
+`file:`, então a inspeção visual do site ainda precisa ser feita antes da primeira publicação. O
+HTML passou pela conferência estática de hierarquia e do link. Não há dados reais ou candidatos de
+exemplo. A issue #17 permanece aberta para integração após a primeira amostra e para aprovação
+explícita antes de ativar a publicação.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #17
+- **Mensagem do Commit**: `docs(report): entrega PR Quarto para revisão refs #17`
+- **Arquivos afetados**: `CHANGELOG.md`, `NEWS.md`, `TODO.md`, `repo-governance/plan/README.md`, `repo-governance/plan/2026-09-27_Plano_Website_Quarto.md`
+
+## 2026-09-27 — Propõe proteção contra caminhos absolutos
+
+O autor estabeleceu que caminhos absolutos de máquina não devem ser publicados. A inspeção confirmou
+que o hook local atual cobre só parte das linhas adicionadas e possui exclusões e isenção. No
+GitHub.com, um status check pode bloquear o merge, mas só depois de a branch pública receber o push;
+os hooks de pre-receive documentados pelo GitHub são para GitHub Enterprise Server. O plano em
+proposta apresenta alternativas e aguarda decisão do autor sobre a garantia necessária. Não houve
+mudança em código nem nas regras remotas do repositório. A tentativa de criar uma issue dedicada foi
+recusada pela integração GitHub (`403 Resource not accessible by integration`) e o `gh` local está
+sem autenticação válida; a proposta deve ser levada à issue relacionada #1 pelo autor.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #1 (relacionada; proposta aguardando aprovação)
+- **Mensagem do Commit**: `docs(security): propoe bloqueio de caminhos absolutos refs #1`
+- **Arquivos afetados**: `CHANGELOG.md`, `NEWS.md`, `TODO.md`, `repo-governance/plan/README.md`, `repo-governance/plan/2026-09-27_Plano_Protecao_Caminhos_Absolutos.md`
+
 ## 2026-09-27 — Documenta uso do Antigravity CLI para agentes Gemini
 
 O `AGENTS.md` agora aponta para um guia operacional que registra o executável `agy`, as opções e
@@ -407,6 +486,7 @@ Decisão do autor (plano `repo-governance/plan/2026-09-26_Plano_AGENTS_Enxutos_e
 - **Agente**: Claude Code / Claude Opus 5.5 / Claude Code on the web
 - **Mensagem do Commit**: "docs(governance): exportar conversa so quando o autor pedir (governanca comum v2026-09-26c)"
 - **Arquivos afetados**: `AGENTS.md`, `NEWS.md`, `tools/export_conversa.R`, `repo-governance/llm-reviews/README.md`
+
 ## 2026-09-26 — Exportador de conversas descontinuado (governança comum v2026-09-26b)
 
 **Decisão do autor, no chat:** desabilitar o exportador de conversas em todos os repositórios. Plano: `repo-governance/plan/2026-09-26_Plano_Descontinuar_Exportador_Conversas.md` do `mancano-repo-hub` (issue #27 de lá). O bloco de governança comum subiu para v2026-09-26b, com a regra nova, aplicado por `tools/sync_governanca.py`. Fora do bloco:

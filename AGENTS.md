@@ -102,7 +102,7 @@ Radar de soluções de IA **brasileiras**, **adaptadas ao português brasileiro*
 
 ### Travas e comandos
 
-- `hooks/pre-commit` recusa commit sem `NEWS.md` e linha nova com caminho absoluto de máquina (exceção: `nolint: abs-path`). Ative com `git config core.hooksPath hooks`.
+- `hooks/pre-commit` exige `NEWS.md` no mesmo commit; `hooks/pre-commit` e `hooks/pre-push` barram caminhos absolutos reconhecidos em linhas novas de diffs textuais de qualquer arquivo e exibem só arquivo relativo e linha. O workflow `Verificar caminhos absolutos` confere commits de PR; para bloquear o merge, o GitHub precisa exigir esse status check e PRs na branch principal. Ative os hooks neste clone com `git config core.hooksPath hooks`. São mitigações: hooks locais podem ser ignorados e o Actions executa depois do push.
 - A trava do Claude Code (`.claude/settings.json` → `tools/guard-git-command.sh`) bloqueia `git add .`/`-A`/`-u`, `clean -f`, `reset --hard`, `restore .`, `checkout .` e `push --force`. Teste: `printf '{"tool_input":{"command":"git add ."}}' | bash tools/guard-git-command.sh; echo $?` (dá 2).
 - Commits: Conventional Commits com `refs #N`. O `CHANGELOG.md` é gerado (`Rscript tools/render-changelog.R`), nunca editado à mão.
 - Metadados do `NEWS.md`: `Data`, `Agente`, `Issue`, `Mensagem do Commit`, `Arquivos afetados`.

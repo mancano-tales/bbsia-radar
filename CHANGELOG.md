@@ -18,6 +18,7 @@ Arquivo DERIVADO do `git log`. Não edite à mão — a fonte editorial é o `NE
 
 ## Changed
 
+- **`[0518433]` 2026-09-27** — docs(report): align Quarto pages with GitLab sample refs #17
 - **`[ec99f4a]` 2026-09-27** — docs(report): entrega PR Quarto para revisao refs #17
 - **`[4a8a8fb]` 2026-09-27** — docs(security): propoe protecao contra caminhos absolutos refs #1
 - **`[2609d81]` 2026-09-27** — docs(report): planeja site Quarto do radar refs #17

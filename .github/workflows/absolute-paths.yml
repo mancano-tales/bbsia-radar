@@ -1,0 +1,21 @@
+name: Proteção contra caminhos absolutos
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+permissions:
+  contents: read
+jobs:
+  verificar-caminhos-absolutos:
+    name: Verificar caminhos absolutos
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Examinar commits da PR
+        shell: bash
+        run: |
+          base="$(git merge-base HEAD "origin/$GITHUB_BASE_REF")"
+          git log --format= --no-color --no-ext-diff --unified=0 -p "$base..HEAD" -- |
+            bash tools/check-absolute-paths.sh

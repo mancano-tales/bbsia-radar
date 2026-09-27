@@ -33,6 +33,7 @@ O piloto começa por **A** e **B**. O tipo **C** exige um critério mais preciso
 - **A máquina sugere, pessoas conferem.** A amostra inicial tem até 100 candidatos. Quando houver uma segunda pessoa, 30 serão codificados às cegas por ambas para medir consistência humana (kappa ≥ 0,70 em `brasileira`, `ptbr` e `e_ia`). Isso não exige baixar a base do BBSIA: a amostra vem dos candidatos. O desempenho da máquina será medido à parte contra rótulos humanos adjudicados, com precisão, recall, F1 e kappa. Sem validação, nada é enviado ao BBSIA.
 - **Sem repetir o que já está no banco.** Os candidatos são comparados com o catálogo atual.
 - **Coleta responsável.** Só APIs oficiais, respeitando os limites de uso; só dados públicos dos repositórios; **nenhum e-mail ou dado pessoal** (LGPD).
+- **Sementes transparentes.** Além das consultas derivadas do codebook, a primeira amostra planejada inclui somente as três soluções já marcadas como `brazil` na lista global [awesome-open-source-research-tools](https://github.com/mancano-tales/awesome-open-source-research-tools): Transcritório, Open Notebook e QualiLab. A coleta consulta cada repositório pela API oficial do GitHub; não percorre nem importa a lista inteira.
 
 ## Como vai funcionar
 
