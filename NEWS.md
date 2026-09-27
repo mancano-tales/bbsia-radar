@@ -1,5 +1,33 @@
 # NEWS — bbsia-radar
 
+## 2026-09-27 — Cria o site Quarto em estado vazio
+
+O site inicial em `report/` explica em português o que é o radar, descreve método e limites e mostra
+que nenhuma rodada pública existe ainda. O mesmo relatório Quarto gera HTML e PDF; a cópia do PDF
+fica junto do site em `report/_site/` e o HTML oferece um link relativo para baixá-la. A publicação
+usa artefatos do GitHub Pages em jobs separados, com build na PR e na `main`; o deploy só aceita
+execuções de `main` quando `PAGES_PUBLISH_APPROVED=true`. A origem do Pages e a variável não foram
+ativadas, e nenhum dado real foi publicado.
+
+Gemini 3.1 Pro High e GPT-6-Sol revisaram o plano antes da implementação. Foram incorporados os
+requisitos de TinyTeX, permissões mínimas do Pages, deploy só da `main`, PDF dentro do artefato,
+distinção entre o corpus interno e o futuro contrato público, cache R condicional e revisão de
+direitos de conteúdo externo. Como ainda não há amostra, não criamos schema ou linhas fictícias: o
+workflow recompila quando arquivos da área pública mudam, mas a integração que lê e mostra resultados
+reais depende da primeira amostra e permanece aberta no plano #17.
+
+Quarto 1.9.37 renderizou localmente as três páginas HTML e um PDF A4 de duas páginas, inspecionado
+visualmente. O HTML e o link do PDF foram conferidos no artefato gerado; a política do navegador
+bloqueou a abertura de URLs locais `file:`, então a inspeção visual do HTML ficou pendente. A PR
+será revisada, em sequência, por Gemini 3.1 Pro High e GPT-6-Sol antes da revisão do autor.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #17
+- **Mensagem do Commit**: `feat(report): cria site Quarto e deploy protegido refs #17`
+- **Arquivos afetados**: `.github/workflows/publish-report.yml`, `NEWS.md`, `README.md`, `TODO.md`, `data/relatorios/README.md`, `report/.gitignore`, `report/_quarto.yml`, `report/index.qmd`, `report/metodo.qmd`, `report/relatorio.qmd`, `report/styles.css`, `repo-governance/plan/README.md`, `repo-governance/plan/2026-09-27_Plano_Website_Quarto.md`
+
 ## 2026-09-27 — Propõe proteção contra caminhos absolutos
 
 O autor estabeleceu que caminhos absolutos de máquina não devem ser publicados. A inspeção confirmou

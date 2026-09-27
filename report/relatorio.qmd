@@ -1,0 +1,68 @@
+---
+title: "Relatório público do bbsia-radar"
+subtitle: "Candidatas, evidências, proveniência e limites da análise"
+author: "Projeto bbsia-radar"
+date: last-modified
+date-format: "D [de] MMMM [de] YYYY"
+format:
+  html:
+    toc: true
+    format-links:
+      - pdf
+  pdf:
+    pdf-engine: xelatex
+    documentclass: scrartcl
+    papersize: a4
+    geometry:
+      - top=22mm
+      - bottom=22mm
+      - left=22mm
+      - right=22mm
+    toc: true
+    number-sections: true
+    colorlinks: true
+    linkcolor: teal
+    keep-tex: false
+---
+
+## Estado da rodada
+
+::: {.callout-note}
+### Nenhuma rodada foi publicada ainda
+
+Os resultados reais dependem da coleta, da classificação no Decifra e de uma
+revisão humana. Não incluímos registros de exemplo. O relatório será atualizado
+quando uma saída curada e aprovada for preparada em `data/relatorios/` e entrar
+no repositório.
+:::
+
+## Escopo
+
+O radar procura soluções de IA brasileiras, adaptadas ao português brasileiro ou
+de interesse público adaptáveis, disponíveis no GitHub e no Hugging Face. As
+categorias de inclusão e suas evidências são definidas no
+[codebook do projeto](https://github.com/mancano-tales/bbsia-radar/blob/main/config/codebook.yml).
+
+## Método e proveniência
+
+As candidatas são descobertas por APIs oficiais, enriquecidas com metadados
+públicos e classificadas no Decifra com evidências citadas. A revisão humana
+precede a publicação. Cada rodada futura deverá registrar sua data, o commit do
+codebook e do Decifra, a cobertura e as limitações observadas. Consulte a página
+[Como o radar funciona](metodo.qmd) para detalhes sobre fontes, publicação e
+limites.
+
+## Maturidade
+
+O escopo considera diferentes estágios de maturidade. Um TRL publicado será uma
+estimativa própria, acompanhada dos sinais e limites que a sustentam; não é um
+TRL oficial do BBSIA.
+
+## Limitações
+
+Os resultados dependerão da cobertura das plataformas, da qualidade dos
+metadados, do material disponível e da revisão das evidências. Ausência de um
+projeto na lista não prova que a solução não exista. O relatório não atesta
+segurança, eficácia, licença de uso ou adequação para adoção institucional.
+
+Não há neste momento soluções, contagens ou conclusões empíricas publicados.

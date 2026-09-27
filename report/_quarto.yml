@@ -1,0 +1,39 @@
+project:
+  type: website
+  output-dir: _site
+  render:
+    - index.qmd
+    - metodo.qmd
+    - relatorio.qmd
+
+website:
+  title: "Radar Brasileiro de Soluções de IA"
+  description: >-
+    Radar de soluções de IA brasileiras, adaptadas ao português brasileiro ou de
+    interesse público adaptáveis, com fontes, método e limites documentados.
+  page-navigation: true
+  navbar:
+    background: "#123a3a"
+    foreground: "#ffffff"
+    left:
+      - href: index.qmd
+        text: Início
+      - href: metodo.qmd
+        text: Método
+      - href: relatorio.qmd
+        text: Relatório
+    right:
+      - icon: github
+        href: https://github.com/mancano-tales/bbsia-radar
+        aria-label: Repositório do bbsia-radar no GitHub
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+    toc-depth: 3
+    link-external-newwindow: true
+    smooth-scroll: true
+
+lang: pt-BR

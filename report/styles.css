@@ -1,0 +1,139 @@
+:root {
+  --radar-ink: #183b3a;
+  --radar-muted: #526866;
+  --radar-green: #136b5b;
+  --radar-green-dark: #104b43;
+  --radar-mint: #e9f4ee;
+  --radar-paper: #f6f7f2;
+  --radar-line: #d7e2dc;
+  --radar-gold: #f1c66b;
+}
+
+body {
+  color: var(--radar-ink);
+  font-size: 1.04rem;
+  line-height: 1.68;
+}
+
+.navbar {
+  box-shadow: 0 2px 14px rgb(12 44 39 / 12%);
+}
+
+.navbar .navbar-brand {
+  font-weight: 750;
+  letter-spacing: -0.02em;
+}
+
+.hero-panel {
+  position: relative;
+  overflow: hidden;
+  margin: 1.8rem 0 2.5rem;
+  padding: clamp(2rem, 5vw, 4.6rem);
+  border: 1px solid #c5d9cd;
+  border-radius: 1.4rem;
+  background:
+    radial-gradient(ellipse at 90% 12%, rgb(241 198 107 / 38%), transparent 31%),
+    linear-gradient(128deg, #e5f2eb 0%, #f3f7f1 64%, #edf1e8 100%);
+}
+
+.hero-panel h1 {
+  max-width: 15ch;
+  margin: 0.65rem 0 1rem;
+  color: var(--radar-green-dark);
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-weight: 760;
+  letter-spacing: -0.045em;
+  line-height: 1.07;
+}
+
+.hero-panel > p:not(.hero-kicker) {
+  max-width: 60rem;
+  color: #314f4b;
+  font-size: clamp(1.08rem, 1.6vw, 1.3rem);
+}
+
+.hero-kicker {
+  color: var(--radar-green);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+}
+
+.hero-panel .btn {
+  margin: 0.65rem 0.65rem 0 0;
+  border-radius: 999px;
+  font-weight: 650;
+}
+
+.status-panel {
+  margin: 1rem 0 2rem;
+  padding: 1.4rem 1.6rem;
+  border: 1px solid #d9c58b;
+  border-left: 6px solid var(--radar-gold);
+  border-radius: 0.8rem;
+  background: #fff9e8;
+}
+
+.status-panel h3 {
+  margin-top: 0;
+  color: #5b4720;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1.2rem 0 2rem;
+}
+
+.grid-item {
+  padding: 1.25rem 1.35rem;
+  border: 1px solid var(--radar-line);
+  border-radius: 0.9rem;
+  background: #fff;
+}
+
+.grid-item h3 {
+  color: var(--radar-green-dark);
+  font-size: 1.15rem;
+}
+
+.callout-note {
+  border-left-color: var(--radar-green);
+  background: var(--radar-mint);
+}
+
+a {
+  text-underline-offset: 0.16em;
+}
+
+:focus-visible {
+  outline: 3px solid #c08317;
+  outline-offset: 3px;
+}
+
+@media (max-width: 760px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-panel {
+    margin-top: 1rem;
+    padding: 1.6rem;
+  }
+}
+
+@media print {
+  .navbar,
+  .nav-footer,
+  .quarto-title-banner .quarto-title-meta {
+    display: none !important;
+  }
+
+  .hero-panel,
+  .status-panel,
+  .grid-item {
+    break-inside: avoid;
+    box-shadow: none;
+  }
+}

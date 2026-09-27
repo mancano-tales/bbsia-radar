@@ -162,9 +162,25 @@ decifra_codebook <- codebook_para_decifra()
 
 Os coletores usam apenas as APIs oficiais: [GitHub REST](https://docs.github.com/en/rest) e [Hugging Face Hub](https://huggingface.co/docs/hub/api). O corpus exportado por padrão fica na pasta externa `bbsia-radar/exports/`, não no git, e contém um texto citável por solução; a função não classifica automaticamente e não envia nada ao BBSIA. A dimensão de interesse público permanece fora do YAML enquanto estiver marcada como não avaliável no codebook. Os testes com fixtures executam sem rede: `Rscript -e "testthat::test_dir('tests/testthat')"`.
 
-## Relatórios e site público (planejado)
+## Relatórios e site público
 
-Depois que houver execuções revisadas, o diretório `report/` poderá gerar um relatório em Quarto com a mesma edição em HTML e PDF. Ele apresentará os resultados aprovados, a data e a cobertura de cada rodada, links para as fontes e os limites da análise. Os dados publicados serão versões pequenas, revisadas e documentadas em `data/`; o cache bruto continuará fora do repositório. Um workflow do GitHub Actions poderá renderizar o Quarto e atualizar o GitHub Pages quando uma nova versão revisada dos dados entrar na branch principal. Este plano ainda não implementa o site nem inicia a coleta.
+O projeto Quarto em `report/` gera um site em português e um relatório nos formatos HTML e PDF a
+partir do mesmo arquivo Markdown. Enquanto não há uma rodada revisada, as páginas explicam o radar e
+informam que não existem resultados públicos; não usam candidatos de exemplo. Renderize com
+`quarto render report`; os arquivos são produzidos em `report/_site/`.
+
+O workflow `.github/workflows/publish-report.yml` valida HTML/PDF na PR e recompila quando conteúdo
+do site ou da área reservada a saídas públicas revisadas muda. Ele pode publicar somente a partir da
+`main`, com a variável de repositório `PAGES_PUBLISH_APPROVED=true`. Essa variável começa ausente e
+só deve ser ativada pelo autor depois de revisar o artefato inicial; ativá-la também autoriza as
+atualizações futuras elegíveis. A origem do GitHub Pages e a variável ainda não foram ativadas, então
+o site não foi publicado.
+
+Ainda falta fechar, com base na primeira amostra real, o esquema que liga resultados do Decifra e a
+revisão humana ao relatório. Até essa integração, mudanças em `data/relatorios/` acionam a
+renderização, mas a página continua informando que não há rodada pública. Essa pasta é somente para
+saídas pequenas, revisadas e aprovadas para divulgação; rascunhos e cache bruto ficam fora do Git.
+O relatório não envia dados ao BBSIA.
 
 ## Estrutura
 

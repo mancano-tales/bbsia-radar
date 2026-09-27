@@ -6,6 +6,11 @@
 
 ## Pendente
 
+- [ ] **Website e relatório público em Quarto (HTML + PDF)** — implementar as páginas iniciais sem dados fictícios e preparar a renderização e o deploy do GitHub Pages protegidos por aprovação.
+  - Criado: 2026-09-27 10:52 por Codex / GPT-6 / desktop
+  - Progresso 2026-09-27: plano #17 aprovado no chat e revisado por Gemini 3.1 Pro High e GPT-6-Sol. Implementação em `codex/17-website-quarto`; o esquema público será fechado após a primeira amostra real, e a primeira publicação depende de aprovação explícita do autor.
+  - Plano em execução: `repo-governance/plan/2026-09-27_Plano_Website_Quarto.md` · Issue: #17
+
 - [ ] **Issue #14 — amostra exploratória limitada** — registrar os termos GitHub, a conta HF e a raiz de cache aprovados; depois executar a rodada limitada prevista no plano.
   - Criado: 2026-09-27 09:30 por Codex / GPT-6 / desktop
   - Progresso 2026-09-27: os controles de orçamento e validação offline foram integrados pela PR #16 em `main` (`c1835b1`); a suíte offline passou. Nenhuma coleta real foi feita. A rodada aguarda termos GitHub, conta HF e raiz de cache aprovados pelo autor.
@@ -39,9 +44,6 @@
   - Criado: 2026-09-26 11:03 por Claude Opus 5.5
   - Progresso 2026-09-27: a primeira implementação dos coletores foi integrada pela PR #13; a PR #16 acrescentou limites para uma rodada pequena. A execução real ainda não começou.
   - Plano §6–§7
-- [ ] **Website e relatório público em Quarto (HTML + PDF)** — depois que a primeira rodada gerar dados revisados, montar o relatório em `report/` e automatizar a publicação no GitHub Pages a partir das saídas aprovadas.
-  - Criado: 2026-09-27 10:52 por Codex / GPT-6 / desktop
-  - Plano proposto: `repo-governance/plan/2026-09-27_Plano_Website_Quarto.md` · Issue: #17 (aguarda aprovação do autor)
 - [ ] **WP5 — Classificação e validação humana** (regras + LLM contra o codebook, método do `decifra-text-as-data`; amostra codificada pelo autor, kappa no relatório).
   - Criado: 2026-09-26 11:03 por Claude Opus 5.5
   - Plano §8
