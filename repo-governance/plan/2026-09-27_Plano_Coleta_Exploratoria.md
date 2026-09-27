@@ -6,7 +6,7 @@ status: EM EXECUÇÃO # aprovado pelo autor no chat em 2026-09-27
 criado: "2026-09-27 08:40"
 concluido: null
 autor_humano: "Tales Mançano"
-aprovacao_autor: "2026-09-27 no chat: aprovou o plano e o recorte da primeira rodada somente com sementes de config/seeds.yml; módulos adjacentes do BBSIA ficam fora desta coleta."
+aprovacao_autor: "2026-09-27 no chat: aprovou o plano e o recorte da primeira rodada somente com sementes de config/seeds.yml; módulos adjacentes do BBSIA ficam fora desta coleta. Em seguida, delegou a definição da raiz local de cache fora do checkout."
 planos_relacionados: ["repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md"]
 issues_relacionadas: [1, 10, 12]
 ---
@@ -44,6 +44,14 @@ submissão ao BBSIA.
   a issue #12 continua aberta para decisões futuras sobre esses módulos.
 - A issue #14 permanece aberta para registrar e aprovar os parâmetros concretos antes de qualquer
   consulta real de candidatos.
+- A pedido do autor no chat, a raiz externa foi definida como `%USERPROFILE%/AppData/Local/Mancano`,
+  criada e verificada como gravável. `MANCANO_BBSIA_RADAR_ROOT` está configurada no `.Renviron`
+  local, ignorado pelo Git; `.data-source` acrescenta `bbsia-radar/api`. O resolvedor
+  `radar_validate_cache_root()` confirmou que fica fora do checkout e pode ser escrita. O caminho
+  absoluto da máquina não é publicado.
+- Sugestões ainda aguardando aprovação do autor: GitHub `Transcritório` e `BERTimbau`; conta de
+  modelos do Hugging Face `neuralmind`. São itens já presentes em `config/seeds.yml`, com perfis
+  distintos (aplicação e modelo). Nenhuma chamada às APIs foi feita.
 
 ## Escopo proposto para a primeira rodada
 
@@ -139,8 +147,9 @@ pesquisa, não uma fonte normativa.
 
 - Usar somente a API REST oficial do GitHub e a API oficial do Hugging Face Hub; não raspar páginas
   HTML do BBSIA nem de plataformas que ofereçam API para a mesma informação.
-- Definir `MANCANO_BBSIA_RADAR_ROOT` para uma pasta fora do checkout e confirmar apenas que o caminho
-  existe e não está dentro do repositório. Nunca imprimir ou registrar valores de tokens.
+- Manter `MANCANO_BBSIA_RADAR_ROOT` configurada no `.Renviron` local para uma pasta fora do
+  checkout; antes de cada rodada, validar existência, escrita e separação do repositório com
+  `radar_validate_cache_root()`. Nunca imprimir ou registrar valores de tokens.
 - Cache bruto, CSV de candidatos e textos de README/model card ficam somente nessa raiz externa.
   Aplicar a redação de e-mails dos coletores e não incluir e-mails, tokens ou dados pessoais no
   relatório.
@@ -200,15 +209,16 @@ Não conceder diretórios adicionais, não pedir ao agente para executar os cole
    da conta e não troca a conta-semente. Retentativas automáticas foram removidas e a raiz externa de
    cache é validada antes da rede. A suíte `testthat` offline passou em 2026-09-27, e a PR #16 foi
    integrada no commit `c1835b1`.
-5. **Parcial — checar o ambiente local.** Neste checkout, R 4.6.0 e todos os pacotes necessários
-   estão disponíveis. `MANCANO_BBSIA_RADAR_ROOT` ainda está vazio; não há cache configurado. Outra
-   sessão Codex reportou uma biblioteca R sem os pacotes do projeto. As chamadas públicas GitHub e
-   Hugging Face são anônimas; nenhum token é necessário ou lido pelos coletores.
-6. **Pendente — fixar a consulta e executar a amostra.** O autor ainda precisa confirmar na issue #14
-   até dois termos GitHub e a conta HF. A raiz local de cache precisa ser confirmada no chat privado do
-   autor como existente, gravável e externa ao checkout; não publicar seu caminho absoluto pessoal na
-   issue. Até os parâmetros estarem confirmados, não fazer consultas de candidatos. Usar apenas os
-   limites acima.
+5. **Concluído — preparar o ambiente local.** R 4.6.0 e todos os pacotes necessários estão
+   disponíveis. A raiz local foi escolhida a pedido do autor, criada e verificada como gravável; o
+   `.Renviron` ignorado pelo Git define `MANCANO_BBSIA_RADAR_ROOT`, e
+   `radar_validate_cache_root()` confirmou que a raiz está fora do checkout. A API usa a subpasta
+   indicada em `.data-source`. Chamadas públicas GitHub e Hugging Face são anônimas; nenhum token é
+   necessário ou lido pelos coletores.
+6. **Pendente — aprovar a consulta e executar a amostra.** Foram sugeridos ao autor, na issue #14,
+   os termos GitHub `Transcritório` e `BERTimbau`, além da conta-semente HF `neuralmind`. Aguardar a
+   aprovação ou substituição explícita dos três valores antes de qualquer consulta de candidatos.
+   Usar apenas os limites acima e não publicar o caminho absoluto pessoal do cache.
 7. **Pendente — revisar e decidir.** Avaliar relevância, duplicatas entre plataformas, campos ausentes, erros e
    ruído. O autor decide se a próxima rodada amplia consultas e tamanho. Coleta ampliada, uso de dados
    dos módulos do BBSIA e deduplicação registro a registro ficam fora desta aprovação inicial.

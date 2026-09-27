@@ -1,5 +1,22 @@
 # NEWS — bbsia-radar
 
+## 2026-09-27 — Configura raiz local de cache exploratório
+
+A pedido do autor, foi definida e preparada uma raiz de cache sob `AppData/Local/Mancano`, fora do
+checkout e da sincronização do repositório. `MANCANO_BBSIA_RADAR_ROOT` foi configurada no `.Renviron`
+local, ignorado pelo Git; a validação do projeto confirmou que a pasta existe, é gravável e está
+fora do repositório. O cache da API usa a subpasta `bbsia-radar/api`, indicada em `.data-source`.
+Não houve chamadas de coleta. Foram propostas, para aprovação do autor, as sementes GitHub
+`Transcritório` e `BERTimbau` e a conta Hugging Face `neuralmind`; a coleta só começa depois dessa
+confirmação.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #14
+- **Mensagem do Commit**: `docs(cache): configura raiz local para coleta exploratoria refs #14`
+- **Arquivos afetados**: `CHANGELOG.md`, `NEWS.md`, `repo-governance/plan/2026-09-27_Plano_Coleta_Exploratoria.md`
+
 ## 2026-09-27 — Propõe proteção contra caminhos absolutos
 
 O autor estabeleceu que caminhos absolutos de máquina não devem ser publicados. A inspeção confirmou
