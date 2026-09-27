@@ -28,12 +28,12 @@ while read -r local_ref local_sha remote_ref remote_sha; do
   fi
   if [ -n "$base" ]; then
     faixa="$base..$local_sha"
-    if ! git log --format= --no-color --no-ext-diff --unified=0 -p "$faixa" -- \
+    if ! git log --diff-merges=first-parent --format= --no-color --no-ext-diff --unified=0 -p "$faixa" -- \
       | bash tools/check-absolute-paths.sh; then
       falhou=1
     fi
   else
-    if ! git log --root --format= --no-color --no-ext-diff --unified=0 -p "$local_sha" -- \
+    if ! git log --root --diff-merges=first-parent --format= --no-color --no-ext-diff --unified=0 -p "$local_sha" -- \
       | bash tools/check-absolute-paths.sh; then
       falhou=1
     fi

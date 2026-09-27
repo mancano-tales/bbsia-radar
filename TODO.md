@@ -8,6 +8,9 @@
 - [ ] **Proteção contra publicação acidental de caminhos absolutos** — manter as verificações locais e a checagem de PR; falta tornar o status check obrigatório no GitHub.
   - Criado: 2026-09-27 10:53 por Codex / GPT-6 / desktop
   - Progresso 2026-09-27: a proposta foi aprovada no chat pela opção A, como mitigação simples. O scanner compartilhado, os hooks locais e o workflow de pull request estão no branch codex/1-protecao-caminhos-absolutos, baseado na main remota atualizada.
+  - Progresso 2026-09-27: PR #19 integrado. Gemini Pro e GPT-Sol revisaram o diff antes das correções e confirmaram falhas no scanner de URI/literais escapados, no contexto de URLs, em linhas +++ de hunks e em diffs de merge; esta branch aplica as correções. As revisões finais independentes de Gemini Pro e GPT-Sol, já após as últimas correções, não encontraram achados acionáveis; os fixtures direcionados e o scanner sobre o diff completo passaram.
+  - Bloqueio remoto: comentário na issue #1 pela integração GitHub retornou HTTP 403 (Resource not accessible by integration); status check obrigatório ainda não configurado.
+  - Progresso 2026-09-27: a revisão posterior também encontrou e motivou correções para o primeiro push sem base remota, URI file: com ou sem host e links web relativos ao esquema.
   - Próximo passo: o autor deve levar o anúncio à issue #1 e reautenticar o gh para configurar e exigir o status check no GitHub. Esta sessão não conseguiu acessar a API.
   - Plano ativo: repo-governance/plan/2026-09-27_Plano_Protecao_Caminhos_Absolutos.md · Issue: #1
 
