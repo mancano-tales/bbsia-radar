@@ -48,13 +48,14 @@
 - [ ] **WP8 — Piloto de ~30 soluções e apresentação à Eunice Liu**, junto com as perguntas do plano §3 (rascunho de mensagem no §13).
   - Criado: 2026-09-26 11:03 por Claude Opus 5.5
   - Plano §11
-- [ ] **Autor: licença do repositório** — decidir antes de tornar público (MIT ou Apache-2.0 para o código; CC BY 4.0 para a planilha de candidatos, se o BBSIA concordar).
-  - Criado: 2026-09-26 11:03 por Claude Opus 5.5
-- [ ] **Autor: tornar público ou transferir para uma organização do BBSIA/LIIA** — depois de apresentar o piloto.
+- [ ] **Autor: licença do repositório** — urgente, porque o repositório já é público (sem licença, ninguém pode reusar legalmente) (MIT ou Apache-2.0 para o código; CC BY 4.0 para a planilha de candidatos, se o BBSIA concordar).
   - Criado: 2026-09-26 11:03 por Claude Opus 5.5
 
 ## Concluído
 
+- [x] **Autor: tornar público ou transferir para uma organização do BBSIA/LIIA** — decidido: **público**, na conta do autor (transferência continua possível depois).
+  - Criado: 2026-09-26 11:03 por Claude Opus 5.5
+  - Concluído: 2026-09-26 por Tales Mançano (no chat), registrado por Claude Opus 5.5
 - [x] **Criar o repositório com governança** — `AGENTS.md` (coordenação por issues), `README.md` provisório, `NEWS.md`, `TODO.md`, plano do piloto com issue, `tools/`, `hooks/`, modelos de issue e de PR.
   - Criado: 2026-09-26 11:03 por Claude Opus 5.5 (a pedido de Tales Mançano)
   - Concluído: 2026-09-26 11:03 por Claude Opus 5.5

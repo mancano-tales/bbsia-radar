@@ -13,7 +13,7 @@ autor_humano: "Tales Mançano"
 tarefas:
   - { desc: "WP0a — Verificar site e formulário do BBSIA com fontes (issue #2)", status: concluido, data: "2026-09-26" }
   - { desc: "WP0b — Perguntas à coordenação do BBSIA (Eunice Liu), depois do piloto ou do WP0a", status: pendente, data: null }
-  - { desc: "WP1 — Repositório mancano-tales/bbsia-radar (privado) com governança: AGENTS.md, README, TODO, plano, tools, hooks", status: concluido, data: "2026-09-26 11:03" }
+  - { desc: "WP1 — Repositório público mancano-tales/bbsia-radar com governança: AGENTS.md, README, TODO, plano, tools, hooks", status: concluido, data: "2026-09-26 11:03" }
   - { desc: "WP2 — Codebook: o que conta como solução 'brasileira', 'adaptada ao pt-BR' e 'de interesse público adaptável' (issue #3; config/codebook.yml v0.1.0, em revisão pelo autor)", status: em_revisao, data: "2026-09-26 11:45" }
   - { desc: "WP3 — Descoberta: coletores GitHub e Hugging Face + sementes curadas (listas awesome, orgs conhecidas)", status: pendente, data: null }
   - { desc: "WP4 — Enriquecimento: metadados, README/model card, sinais de manutenção", status: pendente, data: null }
@@ -87,7 +87,7 @@ da issue.
 
 **WP0a (issue #2)**: concluído como pesquisa documental em 2026-09-26. As respostas aos sete itens e as fontes estão no comentário de resultado da issue, no `README.md` (“O que verificamos no BBSIA”) e no §1.1. Permanecem não comprovadas a existência de API/exportação pública, a inspeção das chamadas de rede e uma licença específica do catálogo. A investigação não autoriza scraping nem contato com a coordenação.
 
-**WP0b**: decisão do autor de 2026-09-26: o repositório fica privado e a coordenação vê o projeto **quando houver um piloto para mostrar**. A pesquisa documental não encontrou API/exportação pública nem licença específica do catálogo; essas lacunas ficam para confirmar quando o piloto estiver pronto, sem contatar a coordenação agora:
+**WP0b**: decisão do autor de 2026-09-26: o repositório é **público desde já** e a coordenação verá o projeto **quando houver um piloto para mostrar**. A pesquisa documental não encontrou API/exportação pública nem licença específica do catálogo; essas lacunas ficam para confirmar quando o piloto estiver pronto, sem contatar a coordenação agora:
 
 1. **Envio/deduplicação**: existe API, importação por planilha ou export público/autorizado (nome + URL)? Sem uma lista registro a registro, não deduplicar usando apenas contagens agregadas.
 2. **Termos/licença**: que licença ou termos se aplicam aos dados públicos do catálogo e às informações submetidas? O aviso de privacidade, sozinho, não define licença de reutilização.
@@ -100,7 +100,7 @@ da issue.
 ## 4. WP1 — Repositório do projeto (feito em 2026-09-26)
 
 - **Nome**: `bbsia-radar` (decisão do autor, 2026-09-26). O prefixo identifica o projeto na conta pessoal; "radar" diz o que ele faz e continua fazendo sentido se a coleta virar periódica.
-- **Dono e visibilidade**: `mancano-tales/bbsia-radar`, **privado** até o piloto. Tornar público ou transferir para uma organização do BBSIA/LIIA é decisão do autor, depois de apresentar à coordenação.
+- **Dono e visibilidade**: `mancano-tales/bbsia-radar`, **público** por decisão do autor em 2026-09-26. Transferir para uma organização do BBSIA/LIIA é decisão do autor, depois de apresentar à coordenação.
 - **Natureza**: `projeto`. Linha no catálogo do `README.md` do `mancano-repo-hub`.
 - **Governança**: `AGENTS.md` (com a coordenação por issues), `CLAUDE.md` → `@AGENTS.md`, `README.md` para humanos, `NEWS.md`, `TODO.md`, `repo-governance/` (planos e llm-reviews), `tools/` (trava git, export de conversas, changelog), `hooks/pre-commit` (NEWS.md e caminhos absolutos).
 - **Licença**: a decidir pelo autor (ver `TODO.md`).
@@ -260,10 +260,11 @@ declarado no relatório.
 
 ## 13. Decisões do autor
 
-1. ~~Aprovar o plano~~: aprovado em 2026-09-26, com o repositório privado `bbsia-radar`.
+1. ~~Aprovar o plano~~: aprovado em 2026-09-26, com o repositório `bbsia-radar`.
 2. Quando mandar as perguntas do §3 à coordenação: com o piloto, ou antes, se o WP0a não bastar.
 3. Licença do repositório.
 4. R puro ou R + Python (recomendação: R, e Python só se o `huggingface_hub` fizer falta).
+5. **Visibilidade (2026-09-26, no chat, depois da decisão 1):** "bbsia vai ser público mesmo". O repositório é **público** desde já, e a regra "privado até o piloto" (§3 WP0b e §4) está aposentada. A coordenação continua vendo o projeto com o piloto. Com isso, a licença (item 3) deixa de ser "antes de tornar público" e passa a ser urgente.
 
 ### Rascunho de mensagem para a Eunice
 

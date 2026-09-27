@@ -1,5 +1,16 @@
 # NEWS — bbsia-radar
 
+## 2026-09-26 — Push imediato e integração da atualização remota
+
+Por instrução do autor, o `AGENTS.md` específico deste repositório agora também pede push logo após cada commit para reduzir divergências entre sessões locais e remotas; se o remoto avançar, a orientação é buscar, integrar por merge e enviar sem force-push. Integramos a atualização remota que torna explícito que o repositório é público e preservamos sua entrada de histórico; o plano-piloto foi alinhado para não repetir o status anterior de privado.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-26
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #1
+- **Mensagem do Commit**: "docs(governance): exige push imediato e integra main remota refs #1"
+- **Arquivos afetados**: `AGENTS.md`, `NEWS.md`, `README.md`, `TODO.md`, `repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md`
+
 ## 2026-09-26 — Pesquisa documental do BBSIA (WP0a)
 
 Conclusão da pesquisa documental da issue #2, sem preencher nem enviar o formulário. O README e o §1.1 do plano registram os sete itens pesquisados e as fontes primárias: campos e estágios do formulário; organização, busca e filtros do catálogo; ausência de documentação pública de API/exportação encontrada (sem afirmar inexistência, pois a inspeção de chamadas de rede não foi concluída); aviso de privacidade e ausência de licença específica encontrada; contagens com data e a separação dos projetos CNJ/Sinapses; e o método local documentado no repositório RAG de terceiros. O §5 do plano registra que os rótulos do BBSIA são referência comparativa, sem alterar o codebook nem decidir os casos-limite da issue #9. A issue #10 segue adiada: nenhum coletor ou scraping foi iniciado. O Antigravity CLI não estava acessível como comando `AGI` nesta sessão.
@@ -10,6 +21,19 @@ Conclusão da pesquisa documental da issue #2, sem preencher nem enviar o formul
 - **Issue**: #2
 - **Mensagem do Commit**: "docs(research): verifica site do BBSIA refs #2"
 - **Arquivos afetados**: `README.md`, `NEWS.md`, `repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md`, `repo-governance/plan/2026-09-26_Plano_Pesquisa_BBSIA_WP0a.md`
+
+## 2026-09-26 — O repositório é público; aposentada a regra "privado até o piloto"
+
+Decisão do autor, no chat: "bbsia vai ser público mesmo". O repositório já estava público no GitHub. O `AGENTS.md`, o `README.md` e o plano (§13, decisão 5) diziam "privado até o piloto" e foram alinhados. O `AGENTS.md` ganhou o lembrete de que tudo aqui é visível.
+
+No `TODO.md`, o item "tornar público" foi para Concluído. A **licença** passou a ser urgente: sem ela, ninguém pode reusar o código legalmente.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-26
+- **Agente**: Claude Code / Claude Opus 5.5 / Claude Code on the web
+- **Issue**: #1
+- **Mensagem do Commit**: "docs: repositorio publico; aposenta a regra privado ate o piloto"
+- **Arquivos afetados**: `AGENTS.md`, `README.md`, `TODO.md`, `repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md`, `NEWS.md`
 
 ## 2026-09-26 — Governança comum do ecossistema (v2026-09-26d)
 
