@@ -1,0 +1,16 @@
+listas:
+  - nome: radar-fixture-seed
+gabarito:
+  - id_solucao: fixture-solution
+    nome: Fixture
+    artefatos:
+      - plataforma: github
+        url: https://github.com/example/fixture
+      - plataforma: huggingface
+        url: https://huggingface.co/example/fixture-model
+contas:
+  github:
+    - conta: example
+      tipo: organizacao
+  huggingface:
+    - conta: example

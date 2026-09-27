@@ -109,7 +109,29 @@ implementação dos coletores (#10).
 
 ## Estado
 
-Repositório **público** e em fase inicial: governança e plano prontos, nenhum código ainda. Plano vigente: [`repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md`](repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md) ([issue #1](../../issues/1)).
+Repositório **público** em fase de piloto. O primeiro conjunto de funções prepara descoberta via API e exportação do corpus ao Decifra; a coleta em volume e a classificação ainda exigem revisão de escopo e execução controlada. Plano vigente: [`repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md`](repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md) ([issue #1](../../issues/1)).
+
+### Preparar uma execução local
+
+As funções de API e cache dependem de pacotes R descritos em [`DESCRIPTION`](DESCRIPTION), que podem ser instalados com `install.packages(c("dplyr", "digest", "gh", "httr2", "jsonlite", "purrr", "readr", "tibble", "yaml", "testthat"))`. Defina `MANCANO_BBSIA_RADAR_ROOT` no `.Renviron` local apontando para um diretório de dados fora deste checkout. Credenciais opcionais ficam no mesmo `.Renviron` como `GITHUB_PAT` e `HF_TOKEN`; nunca as coloque em YAML versionado. O cache bruto usa `bbsia-radar/api/` sob essa raiz, conforme `.data-source`.
+
+```r
+source("R/cache.R")
+source("R/coletar_github.R")
+source("R/coletar_hf.R")
+source("R/montar_corpus.R")
+source("R/codebook_para_decifra.R")
+
+# Uma coleta é uma ação explícita de rede. Prefira primeiro limitar e revisar
+# as consultas; todas as respostas brutas permanecem no cache externo.
+github <- coletar_readme_github(coletar_github())
+hf <- coletar_readme_hf(coletar_hf())
+corpus <- montar_corpus(github, hf)
+salvar_corpus_decifra(corpus)
+decifra_codebook <- codebook_para_decifra()
+```
+
+Os coletores usam apenas as APIs oficiais: [GitHub REST](https://docs.github.com/en/rest) e [Hugging Face Hub](https://huggingface.co/docs/hub/api). O corpus exportado por padrão fica na pasta externa `bbsia-radar/exports/`, não no git, e contém um texto citável por solução; a função não classifica automaticamente e não envia nada ao BBSIA. A dimensão de interesse público permanece fora do YAML enquanto estiver marcada como não avaliável no codebook. Os testes com fixtures executam sem rede: `Rscript -e "testthat::test_dir('tests/testthat')"`.
 
 ## Estrutura
 
