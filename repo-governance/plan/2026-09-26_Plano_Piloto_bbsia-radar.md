@@ -14,6 +14,7 @@ tarefas:
   - { desc: "WP0a — Verificar site e formulário do BBSIA com fontes (issue #2)", status: concluido, data: "2026-09-26" }
   - { desc: "WP0b — Perguntas à coordenação do BBSIA (Eunice Liu), depois do piloto ou do WP0a", status: pendente, data: null }
   - { desc: "WP1 — Repositório público mancano-tales/bbsia-radar com governança: AGENTS.md, README, TODO, plano, tools, hooks", status: concluido, data: "2026-09-26 11:03" }
+  - { desc: "Guia operacional do Antigravity CLI para pesquisa e revisão de agentes Gemini (autorizado pelo autor no chat; issue #1)", status: concluido, data: "2026-09-27" }
   - { desc: "WP0c — Leitura ampliada e inspeção pública pequena do BBSIA (issue #1; revisão de escopo na #12)", status: concluido, data: "2026-09-27" }
   - { desc: "WP2 — Codebook: o que conta como solução 'brasileira', 'adaptada ao pt-BR' e 'de interesse público adaptável' (issue #9; v0.1.1 com dois casos pendentes)", status: em_revisao, data: "2026-09-27" }
   - { desc: "WP3 — Descoberta: coletores GitHub e Hugging Face + sementes curadas (listas awesome, orgs conhecidas)", status: pendente, data: null }
@@ -138,6 +139,8 @@ módulos está na issue #12. WP0c fica documentalmente concluído; acesso/termos
 permanecem uma dependência para a deduplicação do WP7.
 
 **Porta de saída para WP3/WP4:** a inspeção pública pequena não equivale a autorização para coletar o catálogo. A implementação dos coletores GitHub/Hugging Face pode seguir após registrar a decisão de escopo da issue #12; priorizar APIs oficiais, apoio Antigravity se a CLI estiver disponível, fontes primárias, cache externo e testes offline com fixtures. Não implementar um coletor HTML do BBSIA nem reutilizar fichas do catálogo sem resolver acesso e termos. Nenhum formulário ou POST do site será enviado.
+
+**Agentes Gemini / Antigravity CLI (autorizado pelo autor no chat em 2026-09-27; issue #1):** o executável local confirmado é `agy`. A referência operacional está em [`../agentes-gemini.md`](../agentes-gemini.md) e registra as opções da CLI, os modelos e ferramentas observados, os limites de acesso web e as salvaguardas. Preferência do autor: Flash 3.8 para exploração inicial e Pro como revisor; toda descoberta deve trazer evidência direta, passar por checagem de fontes primárias e receber validação humana quando relevante. A listagem atual não retornou agentes nomeados, embora a sessão Gemini tenha informado ferramentas de subagentes.
 
 ## 4. WP1 — Repositório do projeto (feito em 2026-09-26)
 

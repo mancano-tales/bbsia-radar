@@ -1,5 +1,25 @@
 # NEWS — bbsia-radar
 
+## 2026-09-27 — Documenta uso do Antigravity CLI para agentes Gemini
+
+O `AGENTS.md` agora aponta para um guia operacional que registra o executável `agy`, as opções e
+subcomandos da CLI, o inventário de modelos consultado nesta máquina e as ferramentas web,
+delegação, arquivos, terminal e MCP declaradas pelo agente de teste. A preferência do autor ficou
+registrada: Flash 3.8 na exploração inicial e Pro na revisão independente, com confirmação em fontes
+primárias. O guia diferencia busca/leitura de páginas públicas de um navegador Edge interativo e
+documenta que a listagem `agy agents` não retornou agentes nomeados. Uma pesquisa de teste sobre a
+agenda de Lula em 25/09/2026 acertou as alegações centrais após checagem independente, mas os links
+de redirecionamento e datas de publicação imprecisas reforçam a necessidade de revisar as fontes.
+O `gh` desta sessão não tem token válido; a intenção e o resultado ficam registrados localmente
+para o autor levar à issue #1.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #1
+- **Mensagem do Commit**: "docs(agents): documenta uso do Antigravity refs #1"
+- **Arquivos afetados**: `AGENTS.md`, `repo-governance/agentes-gemini.md`, `NEWS.md`, `TODO.md`, `repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md`
+
 ## 2026-09-27 — Verifica carga pública do catálogo e fixa escopo pré-coleta
 
 Por decisão do autor, Judiciário/CNJ/Sinapses fica fora do radar — inclusive como referência,

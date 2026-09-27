@@ -54,6 +54,11 @@
 
 ## Concluído
 
+- [x] **Documentar execução do Antigravity CLI `agy` para pesquisa e revisão Gemini** — `AGENTS.md` aponta para o guia com comandos, modelos observados, ferramentas web e de delegação, limites e revisão Flash 3.8/Pro.
+  - Criado: 2026-09-27 00:01 por Codex / GPT-6 / desktop (pedido do autor no chat)
+  - Concluído: 2026-09-27 00:12 por Codex / GPT-6 / desktop
+  - Issue: #1 (esta sessão está sem token GitHub válido; o autor deve levar o anúncio e o resultado à issue)
+
 - [x] **Verificar o site e o formulário do BBSIA** — respostas aos sete itens com fontes publicadas na issue #2; README, §§1.1 e 5 do plano, plano WP0a e NEWS atualizados; inspeção técnica de chamadas de rede permaneceu explicitamente inconclusiva.
   - Criado: 2026-09-26 11:03 por Claude Opus 5.5 (a pedido de Tales Mançano)
   - Concluído: 2026-09-26 23:37 por Codex
