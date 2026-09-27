@@ -1,5 +1,23 @@
 # NEWS — bbsia-radar
 
+## 2026-09-27 — Identifica lacuna de cobertura de model cards
+
+Na revisão dos dez documentos selecionados na amostra, todos eram do GitHub; os dois modelos
+retornados pela API do Hugging Face não tiveram seus model cards enriquecidos. O seletor prioriza
+três URLs curadas e depois preenche o teto de dez pela ordem canônica, sem reservar cobertura por
+plataforma. Isso confirma a descoberta HF, mas não testa a leitura de model cards nem a qualidade dos
+metadados de documento dessa fonte. O plano registra a recomendação de reservar ao menos um espaço
+para HF antes de outra chamada, mantendo o teto total e as três prioridades; a decisão fica para o
+autor na issue #14. A leitura preliminar dos READMEs também mostra uma mistura de aplicações e
+artefatos de pesquisa, que ainda não foram classificados pelo Decifra.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #14
+- **Mensagem do Commit**: `docs(plan): registra lacuna de cobertura hf refs #14`
+- **Arquivos afetados**: `CHANGELOG.md`, `NEWS.md`, `TODO.md`, `repo-governance/plan/2026-09-27_Plano_Coleta_Exploratoria.md`
+
 ## 2026-09-27 — Executa a primeira amostra pública das APIs
 
 A primeira execução dos coletores usou os termos GitHub aprovados `Transcritorio` e `BERTimbau`, a

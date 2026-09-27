@@ -15,7 +15,7 @@
 - [ ] **Issue #14 — amostra exploratória limitada** — revisar a qualidade/falsos positivos da amostra concluída e decidir se devemos ajustar, ampliar ou parar.
   - Criado: 2026-09-27 09:30 por Codex / GPT-6 / desktop
   - Progresso 2026-09-27: a PR #20 foi integrada no merge `3075b4b` e a primeira amostra pública foi executada com `Transcritorio`, `BERTimbau`, `neuralmind` e os três itens brasileiros priorizados. Resultado agregado: 103 candidatos GitHub, 2 HF, 10 documentos (1 sem texto) e 16/23 tentativas reservadas; a busca `BERTimbau` foi parcial (134 no total, 100 na página). Dados brutos permanecem no cache externo.
-  - Próximo passo: revisar localmente relevância e falsos positivos. Não ampliar consultas até documentar essa leitura. A integração GitHub recusou o comentário de progresso com `403 Resource not accessible by integration`; o resumo vivo da issue ainda precisa ser atualizado por uma sessão com permissão de escrita.
+  - Próximo passo: revisar localmente relevância e falsos positivos. Os dez documentos selecionados eram todos GitHub; nenhum model card HF entrou, embora a API tenha retornado dois modelos. Antes de outra consulta, decidir se o limite de dez deve reservar pelo menos um documento HF (recomendado) ou manter a seleção canônica atual. O resumo vivo da issue e o comentário de progresso já foram atualizados via `gh`.
   - Plano ativo: `repo-governance/plan/2026-09-27_Plano_Coleta_Exploratoria.md` · Issue: #14
 
 - [ ] **Decifra: requisitos do caso de uso bbsia-radar** — terminar o R1.1 (passo 3 em diante) e os outros itens da issue aberta no `decifra-text-as-data`; desenvolvido lá.
