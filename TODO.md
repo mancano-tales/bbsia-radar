@@ -12,10 +12,15 @@
   - Plano ativo: repo-governance/plan/2026-09-27_Plano_Protecao_Caminhos_Absolutos.md · Issue: #1
 
 
-- [ ] **Issue #14 — amostra exploratória limitada** — revisar a qualidade/falsos positivos da amostra concluída e decidir se devemos ajustar, ampliar ou parar.
+- [ ] **Issue #14 — analisar e revisar a amostra exploratória limitada** — coleta inicial concluída nas APIs GitHub, Hugging Face e GitLab.com; concluir o fluxo Decifra, estimar TRL, validar manualmente e comparar com o BBSIA antes de publicar qualquer resultado.
   - Criado: 2026-09-27 09:30 por Codex / GPT-6 / desktop
-  - Progresso 2026-09-27: a PR #20 foi integrada no merge `3075b4b` e a primeira amostra pública foi executada com `Transcritorio`, `BERTimbau`, `neuralmind` e os três itens brasileiros priorizados. Resultado agregado: 103 candidatos GitHub, 2 HF, 10 documentos (1 sem texto) e 16/23 tentativas reservadas; a busca `BERTimbau` foi parcial (134 no total, 100 na página). Dados brutos permanecem no cache externo.
-  - Próximo passo: revisar localmente relevância e falsos positivos. Os dez documentos selecionados eram todos GitHub; nenhum model card HF entrou, embora a API tenha retornado dois modelos. Antes de outra consulta, decidir se o limite de dez deve reservar pelo menos um documento HF (recomendado) ou manter a seleção canônica atual. O resumo vivo da issue e o comentário de progresso já foram atualizados via `gh`.
+  - Progresso 2026-09-27: os controles de orçamento e validação offline foram integrados pela PR #16 em `main` (`c1835b1`); a suíte offline passou. Nenhuma coleta real foi feita. A rodada aguarda termos GitHub, conta HF e raiz de cache aprovados pelo autor.
+  - Progresso 2026-09-27 16:15: o autor aprovou no chat GitHub/GitLab `Transcritorio` e `BERTimbau`, HF `neuralmind`, até 25 tentativas reservadas e dez documentos; inclusão GitLab implementada na branch `codex/14-gitlab-radar`, suíte offline com 166 testes aprovada e cache externo validado. A coleta exploratória limitada foi iniciada.
+  - Atualização 2026-09-27 17:27: amostra coletada: 104 URLs únicas (GitHub 101, GitLab 1, HF 2), dez documentos selecionados e 17/25 tentativas reservadas. A busca BERTimbau do GitHub ficou parcial (100/134); a suíte offline atual passou com 181 testes após revisão de segurança/cache. Dados e relatório ficam fora do git. Decifra, TRL, revisão humana, comparação com o BBSIA e publicação continuam pendentes.
+  - Atualização 2026-09-27 19:48: revisão final confirmou a correção de expiração HTTP-date no cache; suíte offline passou com 183 testes, zero falhas e zero avisos de teste.
+  - Progresso 2026-09-27 (rodada GitHub/HF registrada após a PR #20): 103 candidatos GitHub e 2 modelos HF; dez documentos selecionados, todos GitHub, e 16/23 tentativas reservadas. Nenhum model card HF foi lido. Este resultado é de uma rodada distinta da amostra ampliada com GitLab descrita acima.
+  - Coordenação: a PR #20 atualizou a issue #14 sobre a rodada GitHub/HF; o marco da rodada GitLab não pôde ser publicado nesta sessão (API retornou 403 e gh sem autenticação válida).
+  - Atualização 2026-09-27 20:28: a integração com as mudanças recentes de main preservou a busca de sementes curadas e a cobertura GitLab; suíte offline combinada passou com 212 testes. Revisões finais Gemini/GPT-Sol e abertura do PR continuam pendentes.
   - Plano ativo: `repo-governance/plan/2026-09-27_Plano_Coleta_Exploratoria.md` · Issue: #14
 
 - [ ] **Decifra: requisitos do caso de uso bbsia-radar** — terminar o R1.1 (passo 3 em diante) e os outros itens da issue aberta no `decifra-text-as-data`; desenvolvido lá.
@@ -36,11 +41,11 @@
 ## Prospectivo
 - [ ] **WP3–WP4 — ampliar coletores e enriquecimento após a amostra exploratória** — as funções de descoberta e enriquecimento já existem; a execução em volume depende da revisão dos resultados da issue #14 e dos limites acordados no plano do piloto.
   - Criado: 2026-09-26 11:03 por Claude Opus 5.5
-  - Progresso 2026-09-27: a PR #13 implementou os coletores, a PR #16 limitou a primeira rodada e a PR #20 acrescentou as três sementes brasileiras aprovadas. A amostra pública pequena já foi executada; ampliar depende da revisão de qualidade registrada no plano da issue #14.
+  - Progresso 2026-09-27: a PR #13 implementou os coletores, a PR #16 limitou a rodada e a PR #20 acrescentou três sementes brasileiras. A coleta GitLab e a seleção com uma vaga por plataforma estão na branch `codex/14-gitlab-radar`; ampliar depende da revisão de qualidade.
   - Plano §6–§7
-- [ ] **Website e relatório público em Quarto (HTML + PDF)** — depois que a primeira rodada gerar dados revisados, montar o relatório em `report/` e automatizar a publicação no GitHub Pages a partir das saídas aprovadas.
+- [ ] **Website e relatório público em Quarto (HTML + PDF)** — o site está em implementação na PR #18; depois que os dados da amostra passarem por classificação e revisão humana, automatizar a publicação no GitHub Pages a partir das saídas aprovadas.
   - Criado: 2026-09-27 10:52 por Codex / GPT-6 / desktop
-  - Plano proposto: `repo-governance/plan/2026-09-27_Plano_Website_Quarto.md` · Issue: #17 (aguarda aprovação do autor)
+  - Plano aprovado no chat em 2026-09-27 e em implementação: `repo-governance/plan/2026-09-27_Plano_Website_Quarto.md` · Issue: #17 · PR: #18
 - [ ] **WP5 — Classificação e validação humana** (regras + LLM contra o codebook, método do `decifra-text-as-data`; amostra codificada pelo autor, kappa no relatório).
   - Criado: 2026-09-26 11:03 por Claude Opus 5.5
   - Plano §8
@@ -81,7 +86,7 @@
   - Concluído: 2026-09-27 09:24 por Codex / GPT-6 / desktop (aprovação de Tales Mançano no chat)
   - Plano: `repo-governance/plan/2026-09-27_Plano_Coleta_Exploratoria.md` · Issues: #12, #14
 
-- [x] **Documentar execução do Antigravity CLI `agy` para pesquisa e revisão Gemini** — `AGENTS.md` aponta para o guia com comandos, modelos observados, ferramentas web e de delegação, limites e revisão Flash 3.8/Pro.
+- [x] **Documentar execução do Antigravity CLI `agy` para pesquisa e revisão Gemini** — `AGENTS.md` aponta para o guia com comandos, modelos observados, ferramentas web e de delegação, limites e regra atual de uso exclusivo do Gemini 3.8 Flash.
   - Criado: 2026-09-27 00:01 por Codex / GPT-6 / desktop (pedido do autor no chat)
   - Concluído: 2026-09-27 00:12 por Codex / GPT-6 / desktop
   - Issue: #1 (esta sessão está sem token GitHub válido; o autor deve levar o anúncio e o resultado à issue)

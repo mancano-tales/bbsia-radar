@@ -60,7 +60,7 @@ _(regras próprias deste repositório; prevalecem sobre o bloco acima em caso de
 
 ### O que é
 
-Radar de soluções de IA **brasileiras**, **adaptadas ao português brasileiro** ou **de interesse público adaptáveis**, publicadas no GitHub e no Hugging Face, que **ainda não estão** no [Banco Brasileiro de Soluções de IA (BBSIA)](https://bancobrasileiro.ia.br/). O BBSIA é mantido pelo LIIA/Enap com Ibict e CIIA.
+Radar de soluções de IA **brasileiras**, **adaptadas ao português brasileiro** ou **de interesse público adaptáveis**, publicadas no GitHub, Hugging Face ou GitLab.com, que **ainda não estão** no [Banco Brasileiro de Soluções de IA (BBSIA)](https://bancobrasileiro.ia.br/). O BBSIA é mantido pelo LIIA/Enap com Ibict e CIIA.
 
 **Saída:** planilha de candidatos no formato do formulário do BBSIA, com estimativa de maturidade (TRL), mais um relatório do método. Maturidade é coluna, não filtro (combinado com a coordenação: "todos os TRLs").
 
@@ -80,7 +80,7 @@ Radar de soluções de IA **brasileiras**, **adaptadas ao português brasileiro*
 
 - R 4.4+ com tidyverse (`gh`, `httr2`, `purrr`, `dplyr`, `tidyr`, `stringdist`; `targets` se o pipeline crescer) para coleta, corpus e entrega. A classificação roda no Decifra (Python). Python aqui só se faltar uma biblioteca de verdade (ex.: `huggingface_hub`), justificado na issue.
 - Estilo tidyverse, com **comentários explicativos extensos em português e inglês**. Funções pequenas em `R/`, com testes em `tests/`. Scripts numerados em `scripts/` só chamam funções.
-- **Agentes Gemini (Antigravity CLI `agy`)**: para descobrir o CLI, selecionar modelos, fazer pesquisa web, delegar subtarefas e revisar evidências, consulte [`repo-governance/agentes-gemini.md`](repo-governance/agentes-gemini.md). A disponibilidade de modelos e ferramentas varia por sessão; valide com `agy --help`, `agy models` e `agy agents`. Use Flash 3.8 para exploração inicial e Pro como revisão independente, sempre conferindo as fontes primárias. Não use `--dangerously-skip-permissions`.
+- **Agentes Gemini (Antigravity CLI `agy`)**: para descobrir o CLI, selecionar modelos, fazer pesquisa web, delegar subtarefas e revisar evidências, consulte [`repo-governance/agentes-gemini.md`](repo-governance/agentes-gemini.md). A disponibilidade de modelos e ferramentas varia por sessão; valide com `agy --help`, `agy models` e `agy agents`. Use somente Gemini 3.8 Flash (`gemini-3.8-flash-*`) em qualquer chamada ao CLI, inclusive revisões; prefira a variante High para revisar. Se nenhuma variante Flash 3.8 estiver disponível, reporte o limite sem substituir o modelo. Confira as fontes primárias e não use `--dangerously-skip-permissions`.
 
 ### Coordenação por issues (além do bloco comum)
 
@@ -95,7 +95,7 @@ Radar de soluções de IA **brasileiras**, **adaptadas ao português brasileiro*
 ### Regras do domínio
 
 - **Segredos**: `GITHUB_PAT` e `HF_TOKEN` só em variável de ambiente (`.Renviron` local, no `.gitignore`).
-- **Coleta responsável**: só APIs oficiais (GitHub REST/GraphQL, Hugging Face Hub). Respeite o rate limit e guarde toda resposta em cache em disco. `User-Agent` identifica o projeto; sem raspar HTML quando há API.
+- **Coleta responsável**: só APIs oficiais (GitHub REST/GraphQL, Hugging Face Hub e GitLab REST API v4 no GitLab.com). Respeite o rate limit e guarde toda resposta em cache em disco. `User-Agent` identifica o projeto; sem raspar HTML quando há API.
 - **LGPD**: só metadados públicos de repositórios e organizações; **nunca e-mail** nem dado pessoal além do nome público do dono.
 - **Dados**: o cache bruto das APIs fica fora do git (`.data-source` + `MANCANO_BBSIA_RADAR_ROOT`, resolvedor em `mancano-repo-hub/tools/data-source/`). Em `data/` entram só saídas pequenas e revisadas.
 - **Nada é enviado ao BBSIA** (formulário, API, e-mail) sem o autor no momento.

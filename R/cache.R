@@ -70,19 +70,21 @@ radar_validate_cache_root <- function(root = Sys.getenv("MANCANO_BBSIA_RADAR_ROO
 }
 
 # (pt) Um objeto mutável é compartilhado por descoberta e enriquecimento para
-#      impor o mesmo teto em toda a rodada. São reservadas até duas tentativas
-#      por leitura HF para cobrir o GET inicial e um redirecionamento; nenhuma
-#      função cliente repete automaticamente pedidos que falharam.
-# (en) Discovery and enrichment share this mutable budget. HF document reads
-#      reserve up to two HTTP attempts for one redirect; clients never retry an
-#      unsuccessful request automatically.
-radar_novo_orcamento <- function(max_tentativas = 23L, max_documentos = 10L) {
+#      impor o mesmo teto em toda a rodada. São reservadas até 25 tentativas:
+#      duas buscas GitHub, uma listagem HF, duas buscas GitLab e até duas
+#      tentativas por um dos dez documentos selecionados (HEAD+GET no GitLab
+#      ou GET mais um redirecionamento no HF). Nenhuma função repete falhas.
+# (en) Discovery and enrichment share one budget. The exploratory ceiling is
+#      25 reserved attempts: two GitHub searches, one HF listing, two GitLab
+#      searches, and up to two attempts for each of ten documents (GitLab
+#      HEAD+GET or an HF GET plus one redirect). Clients never retry failures.
+radar_novo_orcamento <- function(max_tentativas = 25L, max_documentos = 10L) {
   tentativas_n <- suppressWarnings(as.integer(max_tentativas))
   documentos_n <- suppressWarnings(as.integer(max_documentos))
   if (length(tentativas_n) != 1L || is.na(tentativas_n) ||
       !is.numeric(max_tentativas) || max_tentativas != tentativas_n ||
-      tentativas_n < 1L || tentativas_n > 23L) {
-    stop("max_tentativas precisa estar entre 1 e 23.", call. = FALSE)
+      tentativas_n < 1L || tentativas_n > 25L) {
+    stop("max_tentativas precisa estar entre 1 e 25.", call. = FALSE)
   }
   if (length(documentos_n) != 1L || is.na(documentos_n) ||
       !is.numeric(max_documentos) || max_documentos != documentos_n ||
@@ -105,12 +107,12 @@ radar_validar_orcamento <- function(budget) {
     stop("Crie e compartilhe o orçamento com radar_novo_orcamento().", call. = FALSE)
   }
   if (length(budget$max_tentativas) != 1L || is.na(budget$max_tentativas) ||
-      budget$max_tentativas < 1L || budget$max_tentativas > 23L ||
+      budget$max_tentativas < 1L || budget$max_tentativas > 25L ||
       length(budget$max_documentos) != 1L || is.na(budget$max_documentos) ||
       budget$max_documentos < 0L || budget$max_documentos > 10L ||
       budget$tentativas_reservadas < 0L || budget$tentativas_reservadas > budget$max_tentativas ||
       length(budget$documentos) > budget$max_documentos) {
-    stop("O orçamento HTTP está inválido ou excede o teto exploratório de 23 tentativas.", call. = FALSE)
+    stop("O orçamento HTTP está inválido ou excede o teto exploratório de 25 tentativas.", call. = FALSE)
   }
   invisible(budget)
 }
@@ -210,9 +212,15 @@ redact_email_data <- function(value) {
   value
 }
 
-radar_cached <- function(key, fetch, root = Sys.getenv("MANCANO_BBSIA_RADAR_ROOT", unset = ""), refresh = FALSE) {
+radar_cached <- function(key, fetch, root = Sys.getenv("MANCANO_BBSIA_RADAR_ROOT", unset = ""),
+                        refresh = FALSE, refresh_if = NULL) {
+  cache_path <- radar_cache_path(key, root)
   cached <- if (!refresh) radar_cache_read(key, root) else NULL
-  if (!is.null(cached)) return(cached)
+  if (!is.null(cached)) {
+    cached_at <- file.info(cache_path)$mtime[[1]]
+    should_refresh <- is.function(refresh_if) && isTRUE(refresh_if(cached, cached_at))
+    if (!should_refresh) return(cached)
+  }
   value <- redact_email_data(fetch())
   radar_cache_write(key, value, root)
   value
