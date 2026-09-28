@@ -1,13 +1,12 @@
 # Bounded README/model-card enrichment / Enriquecimento limitado de documentos.
 #
-# (pt) Esta função escolhe no máximo dez URLs distintas em ordem canônica,
-#      registra a seleção no retorno e compartilha o orçamento entre GitHub e
-#      Hugging Face. URLs das soluções brasileiras da lista curada podem ser
-#      priorizadas para que façam parte da amostra.
-# (en) This function selects at most ten distinct URLs in canonical order,
-#      records the selection in its return value, and shares one budget across
-#      Hugging Face. URLs for Brazilian solutions from the curated list can be
-#      prioritized so they are represented in the sample.
+# (pt) Esta função escolhe no máximo dez URLs distintas, reserva primeiro
+#      uma vaga por plataforma disponível e prioriza URLs-semente curadas
+#      nas vagas restantes. Compartilha o orçamento entre GitHub, HF e GitLab.
+# (en) This function selects at most ten distinct URLs, first reserving one
+#      slot per available platform and prioritizing curated seed URLs in the
+#      remaining slots. It shares one budget across GitHub, HF, and GitLab.
+#      Only Hugging Face models are eligible in this run.
 
 coletar_readmes_exploratorios <- function(
     repositories,
@@ -15,15 +14,16 @@ coletar_readmes_exploratorios <- function(
     request_github_fn = NULL,
     request_hf_fn = NULL,
     priority_urls = character(),
-    budget) {
+    budget,
+    request_gitlab_fn = NULL) {
   required <- c("platform", "url")
   if (!all(required %in% names(repositories))) {
     stop("repositories precisa de platform e url.", call. = FALSE)
   }
   radar_validar_orcamento(budget)
   radar_validate_cache_root(root)
-  if (anyNA(repositories$platform) || any(!(repositories$platform %in% c("github", "huggingface")))) {
-    stop("platform aceita somente github ou huggingface.", call. = FALSE)
+  if (anyNA(repositories$platform) || any(!(repositories$platform %in% c("github", "huggingface", "gitlab")))) {
+    stop("platform aceita somente github, huggingface ou gitlab.", call. = FALSE)
   }
   if (anyNA(repositories$url) || any(!nzchar(repositories$url))) {
     stop("Todas as soluções precisam ter uma URL antes da seleção.", call. = FALSE)
@@ -41,6 +41,9 @@ coletar_readmes_exploratorios <- function(
   }
   if (any(repositories$platform == "huggingface") && !("id" %in% names(repositories))) {
     stop("Candidatos Hugging Face precisam da coluna id.", call. = FALSE)
+  }
+  if (any(repositories$platform == "gitlab") && !("id" %in% names(repositories))) {
+    stop("Candidatos GitLab precisam da coluna id.", call. = FALSE)
   }
   if (!is.character(priority_urls) || anyNA(priority_urls) ||
       any(!nzchar(trimws(priority_urls)))) {
@@ -63,11 +66,20 @@ coletar_readmes_exploratorios <- function(
   other <- eligible[!(eligible_canonical %in% priority_canonical), , drop = FALSE]
   ordered_eligible <- dplyr::bind_rows(prioritized, other)
   remaining <- budget$max_documentos - length(budget$documentos)
-  selected <- utils::head(ordered_eligible, max(0L, remaining))
+  platforms <- c("github", "huggingface", "gitlab")
+  first_by_platform <- purrr::map_int(
+    platforms, ~ match(.x, ordered_eligible$platform, nomatch = 0L)
+  )
+  first_by_platform <- first_by_platform[first_by_platform > 0L]
+  candidate_order <- c(
+    first_by_platform, setdiff(seq_len(nrow(ordered_eligible)), first_by_platform)
+  )
+  selected <- ordered_eligible[utils::head(candidate_order, max(0L, remaining)), , drop = FALSE]
   selected$selection_order <- seq_len(nrow(selected))
 
   github <- selected[selected$platform == "github", , drop = FALSE]
   hf <- selected[selected$platform == "huggingface", , drop = FALSE]
+  gitlab <- selected[selected$platform == "gitlab", , drop = FALSE]
   enriched <- list()
   if (nrow(github)) {
     enriched[[length(enriched) + 1L]] <- coletar_readme_github(
@@ -77,6 +89,11 @@ coletar_readmes_exploratorios <- function(
   if (nrow(hf)) {
     enriched[[length(enriched) + 1L]] <- coletar_readme_hf(
       hf, root = root, request_fn = request_hf_fn, budget = budget
+    )
+  }
+  if (nrow(gitlab)) {
+    enriched[[length(enriched) + 1L]] <- coletar_readme_gitlab(
+      gitlab, root = root, request_fn = request_gitlab_fn, budget = budget
     )
   }
   documents <- if (length(enriched)) dplyr::bind_rows(enriched) else selected[0, , drop = FALSE]
@@ -96,7 +113,7 @@ coletar_readmes_exploratorios <- function(
       prioritized_selected = sum(tolower(selected$url) %in% priority_canonical)
     ),
     coverage = paste(
-      "URLs prioritárias primeiro, demais em ordem canônica; no máximo dez README/model cards"
+      "uma vaga por plataforma disponível; URLs-semente prioritárias nas demais vagas; no máximo dez documentos"
     )
   )
 }

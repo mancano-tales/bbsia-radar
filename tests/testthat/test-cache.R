@@ -28,6 +28,22 @@ test_that("cache redacts README text encoded by the GitHub API", {
   expect_match(decoded, "EMAIL REDACTED")
 })
 
+test_that("cache refresh predicates receive the saved response time", {
+  root <- tempfile("radar-root-"); dir.create(root)
+  key <- list(provider = "fixture", query = "refresh")
+  calls <- 0L
+  fetch <- function() {
+    calls <<- calls + 1L
+    list(value = calls)
+  }
+  expect_equal(radar_cached(key, fetch, root), list(value = 1L))
+  expect_equal(radar_cached(key, fetch, root, refresh_if = function(value, saved_at) {
+    expect_true(inherits(saved_at, "POSIXt"))
+    value$value == 1L
+  }), list(value = 2L))
+  expect_equal(calls, 2L)
+})
+
 test_that("cache refuses an implicit in-repository fallback", {
   old <- Sys.getenv("MANCANO_BBSIA_RADAR_ROOT", unset = NA_character_)
   Sys.unsetenv("MANCANO_BBSIA_RADAR_ROOT")

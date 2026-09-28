@@ -39,9 +39,9 @@ Na consulta de 2026-09-27, `agy models` retornou:
 | `claude-opus-4-6-thinking` | Claude Opus 4.6 (Thinking) |
 | `gpt-oss-120b-medium` | GPT-OSS 120B (Medium) |
 
-Esses valores são um retrato da conta no dia da consulta, não uma lista permanente. Rode `agy
-models` novamente antes de escolher um modelo. O identificador pode incluir o nível High/Medium/Low;
-`--effort` também é uma opção separada do CLI.
+Esses valores são um retrato da conta no dia da consulta, não uma lista permanente nem autorização
+para usar todos eles. Rode `agy models` novamente antes de escolher uma variante Gemini 3.8 Flash.
+O identificador pode incluir o nível High/Medium/Low; `--effort` também é uma opção separada do CLI.
 
 ## Executar uma tarefa
 
@@ -113,24 +113,24 @@ subagentes conseguiu iniciar e o resultado de cada um, sem presumir que eles for
 
 ## Escolha de modelo e revisão
 
-Preferência do autor registrada em 2026-09-27: usar Gemini 3.8 Flash para exploração e coleta
-inicial, e Gemini Pro como revisor. A preferência orienta o fluxo, mas não substitui avaliação da
-evidência. A primeira execução de teste escolheu Gemini 3.1 Pro (High) como modelo padrão; a lista
-de modelos também confirmou as variantes Gemini 3.8 Flash High, Medium e Low.
+Instrução atual do autor, registrada em 2026-09-27: toda chamada ao `agy`, inclusive para revisão,
+deve usar somente Gemini 3.8 Flash (`gemini-3.8-flash-high`, `-medium` ou `-low`). Prefira High para
+revisar. Se nenhuma variante 3.8 Flash estiver disponível, registre o impedimento e não substitua
+o modelo. A escolha do modelo não substitui a avaliação da evidência.
 
 Para pesquisa:
 
 1. Flash pode localizar candidatos e resumir fontes públicas; peça citações diretas, data do fato,
    data de publicação e indicação explícita do que não conseguiu verificar.
-2. Pro revisa a pergunta, a evidência, os links e as contradições de forma independente. Dê-lhe as
-   fontes originais, não apenas a resposta do Flash.
+2. Uma sessão separada de Gemini 3.8 Flash revisa a pergunta, a evidência, os links e as
+   contradições. Dê-lhe as fontes originais, não apenas a primeira resposta.
 3. Abra as fontes primárias e confirme manualmente as afirmações relevantes. A saída do modelo não é
    fonte. Para notícias, leis ou fatos recentes, não aceite links de redirecionamento como evidência
    final; registre o endereço canônico e a data de publicação.
-4. Se os modelos discordarem ou a evidência for fraca, exponha a discordância e mantenha a conclusão
+4. Se as revisões discordarem ou a evidência for fraca, exponha a discordância e mantenha a conclusão
    como incerta até validação humana.
 
-No teste de 25/09/2026, o Gemini 3.1 Pro (High) pesquisou a agenda de Lula. A checagem independente
+O teste a seguir é histórico e anterior à instrução atual. No teste de 25/09/2026, o Gemini 3.1 Pro (High) pesquisou a agenda de Lula. A checagem independente
 confirmou a caminhada no Recife ([Itatiaia](https://www.itatiaia.com.br/politica/eleicoes/agenda-dos-candidatos/lula-vai-a-recife-para-ato-com-joao-campos-marilia-e-humberto-nesta-sexta-25/)),
 os atos sobre bets e Desenrola ([Ministério da Justiça](https://www.gov.br/mj/pt-br/assuntos/noticias-1/governo-federal-proibe-bets-em-todo-o-pais-e-lanca-pacote-de-protecao-as-familias-endividadas-1))
 e o jantar com empresários ([Poder360](https://www.poder360.com.br/poder-eleicoes-2026/lula-brinca-e-chama-joesley-da-jbs-de-empresario-desaforado/)).
@@ -145,6 +145,8 @@ Quando a ferramenta de subagentes estiver disponível, divida a pesquisa em tare
 que apresente a saída de cada subagente com conclusão, evidência e limites. Evite distribuir a mesma
 edição de arquivo a vários agentes. Para instruções e autorização de mensagens entre agentes, siga a
 seção de coordenação deste `AGENTS.md` e a governança do hub.
+Se o CLI permitir escolher modelos dos subagentes, restrinja-os também a Gemini 3.8 Flash; se não
+permitir confirmar essa escolha, não os invoque por esse CLI.
 
 ## Limites para este repositório
 
@@ -155,9 +157,9 @@ seção de coordenação deste `AGENTS.md` e a governança do hub.
 - Não conceda diretórios extras sem necessidade e não use `--dangerously-skip-permissions`. Se uma
   alteração de arquivo for explicitamente autorizada, limite-a aos arquivos citados na tarefa e
   revise `git diff` antes de aceitar o resultado.
-- A pesquisa do agente não substitui os coletores oficiais do radar: coleta de repositórios continua
-  usando as APIs oficiais do GitHub e Hugging Face, com rate limits e cache externo conforme este
-  `AGENTS.md`.
+- A pesquisa do agente não substitui os coletores oficiais do radar: coleta de repositórios e modelos
+  continua usando as APIs oficiais do GitHub, Hugging Face e GitLab.com, com rate limits e cache
+  externo conforme este `AGENTS.md`.
 - Em uma sessão Codex restrita, o Antigravity CLI pode falhar ao acessar o perfil/configuração local
   e reportar que não há login. No teste deste projeto, a execução pelo shell restrito também mostrou
   `Access is denied`; uma execução autorizada fora da sandbox conseguiu usar o CLI. Não altere arquivos

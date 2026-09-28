@@ -60,6 +60,7 @@ Um hook administrado na instância GHES pode rejeitar conteúdo antes da atualiz
 - A revisão posterior também encontrou variantes file: com/sem host ainda não cobertas, referências web relativas ao esquema confundidas com UNC e o fallback do pre-push sem diff de merge de primeiro pai. O scanner e o hook agora incluem esses casos.
 - A revisão final do GPT-Sol encontrou um falso positivo quando `file://host` em string era seguido de URL relativa; o limite de autoridade e o parser UNC agora param em aspas e delimitadores.
 - Revisões finais independentes de GPT-Sol e Gemini Pro sobre o diff após essa correção: sem achados acionáveis.
+- Em 2026-09-28, a branch do PR #21 foi sincronizada com `main` após a integração do GitLab. O único conflito, em `NEWS.md`, foi resolvido preservando as entradas dos dois lados. A API do GitHub confirmou que `main` não tem proteção de branch e não há ruleset aplicável; logo, o status check ainda não é obrigatório.
 - Validação direcionada: `bash -n`, fixtures positivos/negativos para URIs, UNC, escapes, aspas, `+++`, URLs e stress de linha longa; scanner sobre o diff completo e `git diff --check` passaram.
 
 ## Escopo aprovado

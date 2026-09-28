@@ -1,5 +1,6 @@
 test_that("request budget enforces the hard exploratory ceilings", {
-  expect_error(radar_novo_orcamento(max_tentativas = 24L), "1 e 23")
+  expect_equal(radar_novo_orcamento(max_tentativas = 25L)$max_tentativas, 25L)
+  expect_error(radar_novo_orcamento(max_tentativas = 26L), "1 e 25")
   expect_error(radar_novo_orcamento(max_documentos = 11L), "0 e 10")
 
   budget <- radar_novo_orcamento(max_tentativas = 2L)
@@ -435,7 +436,11 @@ test_that("combined README enrichment selects at most ten URLs deterministically
     request_hf_fn = hf_fake, budget = budget
   )
   expect_length(result$selected_urls, 10L)
-  expect_equal(result$selected_urls, sort(result$selected_urls))
+  expect_equal(result$selected_urls, c(
+    "https://github.com/org/repo1", "https://huggingface.co/org/model1",
+    paste0("https://github.com/org/repo", 2:6),
+    paste0("https://huggingface.co/org/model", 2:4)
+  ))
   expect_equal(nrow(result$documents), 10L)
   expect_equal(result$selection, list(
     eligible_distinct = 12L, selected = 10L, excluded_by_limit = 2L,
@@ -475,7 +480,42 @@ test_that("README enrichment includes prioritized curated solutions inside the t
     budget = budget
   )
   expect_equal(nrow(result$documents), 10L)
-  expect_setequal(result$selected_urls[1:3], curated_urls)
-  expect_equal(result$selection$prioritized_selected, 3L)
   expect_true(all(curated_urls %in% result$selected_urls))
+  expect_true(any(grepl("^https://huggingface.co/", result$selected_urls)))
+  expect_equal(result$selection$prioritized_selected, 3L)
+})
+
+test_that("bounded enrichment reserves a document for every available platform", {
+  root <- tempfile("radar-balanced-selection-"); dir.create(root)
+  repositories <- tibble::tibble(
+    platform = c(rep("github", 12), "huggingface", "gitlab"),
+    url = c(paste0("https://github.com/org/repo", 1:12),
+            "https://huggingface.co/org/model",
+            "https://gitlab.com/org/project"),
+    full_name = c(paste0("org/repo", 1:12), NA_character_, "org/project"),
+    id = c(rep(NA_character_, 12), "org/model", "7001"),
+    kind = c(rep(NA_character_, 12), "models", NA_character_)
+  )
+  github_fake <- function(path, query) {
+    list(content = jsonlite::base64_enc(charToRaw("README")))
+  }
+  hf_fake <- function(repo_id, kind, file) "Model card"
+  gitlab_fake <- function(method, path, query) {
+    list(status = 200L, headers = list("X-Gitlab-Size" = "262145"))
+  }
+
+  result <- coletar_readmes_exploratorios(
+    repositories, root,
+    request_github_fn = github_fake,
+    request_hf_fn = hf_fake,
+    request_gitlab_fn = gitlab_fake,
+    priority_urls = "https://github.com/org/repo12",
+    budget = radar_novo_orcamento()
+  )
+
+  expect_equal(nrow(result$documents), 10L)
+  expect_equal(result$selected_urls[[1]], "https://github.com/org/repo12")
+  expect_equal(result$selection$prioritized_selected, 1L)
+  expect_true(all(c("github", "huggingface", "gitlab") %in% result$documents$platform))
+  expect_equal(result$documents$readme_status[result$documents$platform == "gitlab"], "over_size_limit")
 })
