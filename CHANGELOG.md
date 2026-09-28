@@ -20,6 +20,7 @@ Arquivo DERIVADO do `git log`. Não edite à mão — a fonte editorial é o `NE
 
 ## Changed
 
+- **`[a8b02f6]` 2026-09-27** — docs(report): synchronize exploratory status refs #17
 - **`[0518433]` 2026-09-27** — docs(report): align Quarto pages with GitLab sample refs #17
 - **`[cfa17cf]` 2026-09-27** — docs: registra PR de sementes brasileiras refs #14
 - **`[ec99f4a]` 2026-09-27** — docs(report): entrega PR Quarto para revisao refs #17

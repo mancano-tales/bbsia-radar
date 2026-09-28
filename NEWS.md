@@ -1,5 +1,15 @@
 # NEWS — bbsia-radar
 
+## 2026-09-27 — Qualifica estados pré-coleta no TODO
+
+O TODO agora identifica como históricos os estados registrados antes da primeira coleta e os distingue da atualização posterior com os resultados exploratórios. Isso evita que a leitura isolada de uma frase antiga contradiga o status atual.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #17
+- **Mensagem do Commit**: docs(report): qualifica estados pré-coleta refs #17
+- **Arquivos afetados**: CHANGELOG.md, NEWS.md, TODO.md
 ## 2026-09-27 — Atualiza o status da amostra exploratória
 
 O TODO e o índice de planos registram a coleta ampliada da issue #14: 104 URLs únicas (101 GitHub,

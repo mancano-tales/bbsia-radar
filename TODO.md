@@ -14,13 +14,13 @@
 
 - [ ] **Website e relatório público em Quarto (HTML + PDF)** — integrar o leitor após classificação e revisão humana da amostra coletada; publicar no GitHub Pages só depois da inspeção e aprovação explícita do autor.
   - Criado: 2026-09-27 10:52 por Codex / GPT-6 / desktop
-  - Progresso 2026-09-27: PR #18 pronta para revisão do autor. Gemini 3.1 Pro High e GPT-6-Sol não encontraram bloqueios; as sugestões foram incorporadas. O CI da PR e a reexecução manual no commit final `f42fb2a` passaram. A inspeção visual do HTML continua pendente; a do PDF foi feita. Nenhuma amostra real foi coletada, e a primeira publicação depende de aprovação explícita do autor.
+  - Progresso 2026-09-27: PR #18 pronta para revisão do autor. Gemini 3.1 Pro High e GPT-6-Sol não encontraram bloqueios; as sugestões foram incorporadas. O CI da PR e a reexecução manual no commit final `f42fb2a` passaram. A inspeção visual do HTML continua pendente; a do PDF foi feita. Naquele registro pré-coleta, nenhuma amostra real havia sido coletada. A atualização abaixo registra a rodada posterior; a primeira publicação continua dependendo de aprovação explícita do autor.
   - Atualização 2026-09-27 17:27: a amostra exploratória já foi coletada nas três fontes, mas não foi incorporada ao site porque ainda depende do Decifra e de revisão humana. A PR #18 descreve GitHub, Hugging Face e GitLab.com e mantém vazias as páginas públicas de candidatos. O deploy continua protegido pela variável de aprovação.
   - Plano ativo: `repo-governance/plan/2026-09-27_Plano_Website_Quarto.md` · Issue: #17
 
 - [ ] **Issue #14 — analisar e revisar a amostra exploratória** — coleta concluída nas APIs GitHub, Hugging Face e GitLab.com; concluir Decifra, TRL, revisão humana e comparação com o BBSIA antes de publicar.
   - Criado: 2026-09-27 09:30 por Codex / GPT-6 / desktop
-  - Progresso 2026-09-27: os controles de orçamento e validação offline foram integrados pela PR #16 em `main` (`c1835b1`); a suíte offline passou. Nenhuma coleta real foi feita. A rodada aguarda termos GitHub, conta HF e raiz de cache aprovados pelo autor.
+  - Progresso 2026-09-27: os controles de orçamento e validação offline foram integrados pela PR #16 em `main` (`c1835b1`); a suíte offline passou. Este era o estado antes da coleta: nenhuma chamada real havia sido feita, e a rodada aguardava termos GitHub, conta HF e raiz de cache aprovados pelo autor. A atualização de 20:02 abaixo registra a amostra executada posteriormente.
   - Atualização 2026-09-27 20:02: 104 URLs únicas (GitHub 101, GitLab 1, HF 2), dez documentos selecionados, nove lidos e 17/25 tentativas reservadas; BERTimbau no GitHub ficou parcial (100/134). A amostra segue fora do Git e aguarda classificação e revisão.
   - Plano ativo: `repo-governance/plan/2026-09-27_Plano_Coleta_Exploratoria.md` · Issue: #14
 
