@@ -71,6 +71,15 @@ Consultar novamente o formulário antes de congelar categorias e opções de sel
 - WP3: implementar esquema, IDs, registro de consultas, importação com identificador persistente e um ensaio de duas rodadas que demonstre alteração, ausência e deduplicação sem perda do histórico.
 - WP4: publicar somente após revisão dos registros e autorização da primeira publicação; mostrar contagens por etapa, histórico, proveniência, limites de cobertura e download das tabelas públicas.
 
+## Pendências para avaliação do autor
+
+- **Escopo público:** confirmar que o radar pode publicar metadados revisados e evidências curtas no seu próprio repositório; respostas integrais de APIs e documentos de terceiros continuam no cache externo. A licença de dados do catálogo BBSIA ainda precisa ser esclarecida antes de reproduzir seus registros.
+- **Vocabulário do formulário:** conferir as opções reais dos campos de seleção e aprovar o mapeamento entre elas e o vocabulário atual do radar. O formulário público mostra os nomes dos campos, mas não expôs essas opções na leitura documental realizada.
+- **Revisão humana:** definir quem aprova a primeira amostra pública e como registrar correções e discordâncias. A série semanal pode preparar observações automaticamente, mas a publicação de uma ficha depende de revisão.
+- **Vínculo com o Decifra:** preservar `external_id` no importador antes de depender dele para ligar classificações e observações ao longo do tempo. Essa alteração pertence ao repositório do Decifra.
+- **Site e agenda:** a primeira publicação do GitHub Pages segue o plano próprio do site. Fixar a frequência semanal e o tratamento de semanas sem coleta válida depois do ensaio de duas rodadas.
+- **Cobertura:** a rodada de 104 URLs foi limitada a sementes, uma página por consulta e dez documentos. Antes de chamar a série de abrangente, decidir estratégia de paginação, seleção de sementes e validação de recall.
+
 ## Fontes verificadas
 
 - Formulário: https://bancobrasileiro.ia.br/contribuir
