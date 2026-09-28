@@ -1,5 +1,16 @@
 # NEWS — bbsia-radar
 
+## 2026-09-28 — Atualiza o changelog após integrar o site
+
+O CHANGELOG derivado foi regenerado pelo script oficial após o merge dos históricos das issues #14 e #17. Ele inclui 47 commits elegíveis e preserva as entradas do coletor GitLab e do site Quarto.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-28
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #17
+- **Mensagem do Commit**: `docs(changelog): atualiza histórico após merge do site refs #17`
+- **Arquivos afetados**: `CHANGELOG.md`, `NEWS.md`
+
 ## 2026-09-28 — Sincroniza o site Quarto com GitLab e revisa HTML
 
 A branch do PR #18 incorporou a main após o merge do PR #22, preservando as três fontes, o histórico NEWS e o estado separado das duas amostras. A suíte R offline e `quarto render report` passaram. As páginas inicial, método e relatório foram inspecionadas no navegador local em largura móvel; o PDF consta no artefato. Ainda não há publicação de candidatos nem ativação do Pages.
