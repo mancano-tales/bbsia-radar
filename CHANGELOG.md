@@ -16,13 +16,19 @@ Arquivo DERIVADO do `git log`. Não edite à mão — a fonte editorial é o `NE
 ## Fixed
 
 - **`[bfddbdb]` 2026-09-27** — fix(news): corrige assunto declarado do changelog refs #14
+- **`[6216a8f]` 2026-09-27** — fix(security): corrige detector e inclui diffs de merge refs #1
 - **`[3f590ac]` 2026-09-26** — fix(config): correcoes da revisao do codebook e das sementes
 
 ## Changed
 
+- **`[74f0166]` 2026-09-27** — docs(agents): usa apenas Gemini 3.8 Flash refs #14
 - **`[c0b6f94]` 2026-09-27** — docs(changelog): sincroniza changelog apos integracao refs #14
+- **`[14a6e8d]` 2026-09-27** — docs(plan): confirma PR limpo e workflow refs #1
+- **`[2ea3e8f]` 2026-09-27** — docs(plan): registra resolucao de conflito e validacao refs #1
 - **`[b2636ed]` 2026-09-27** — docs(plan): registra lacuna de cobertura hf refs #14
 - **`[fc19155]` 2026-09-27** — docs(plan): registra primeira amostra exploratoria refs #14
+- **`[3b6cbc7]` 2026-09-27** — docs(plan): atualiza estado após abertura do PR refs #1
+- **`[060500c]` 2026-09-27** — docs(plan): registra bloqueio de abertura do PR refs #1
 - **`[cfa17cf]` 2026-09-27** — docs: registra PR de sementes brasileiras refs #14
 - **`[ab2f779]` 2026-09-27** — docs(cache): configura raiz local para coleta exploratoria refs #14
 - **`[4a8a8fb]` 2026-09-27** — docs(security): propoe protecao contra caminhos absolutos refs #1

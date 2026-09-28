@@ -1,5 +1,16 @@
 # NEWS — bbsia-radar
 
+## 2026-09-28 — Atualiza changelog após integração da proteção
+
+O `CHANGELOG.md` gerado foi recomposto depois do merge da `main` no PR #21 e agora inclui os commits próprios da proteção contra caminhos absolutos.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-28
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #1
+- **Mensagem do Commit**: docs(changelog): atualiza historico do PR 21 refs #1
+- **Arquivos afetados**: CHANGELOG.md, NEWS.md
+
 ## 2026-09-28 — Sincroniza proteção de caminhos com o coletor GitLab
 
 O PR #21 integrou a `main` após o merge do coletor GitLab. O conflito em `NEWS.md` foi resolvido preservando as entradas exclusivas da proteção de caminhos e todas as entradas da `main`. A configuração remota de branch ainda não exige o status check; o PR permanece aberto para revisão do autor.
