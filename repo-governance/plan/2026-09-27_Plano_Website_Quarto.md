@@ -71,10 +71,12 @@ O primeiro build da PR passou. Depois das correções, a execução manual do me
 final `f42fb2a` também passou (run [#36329907257](https://github.com/mancano-tales/bbsia-radar/actions/runs/36329907257)):
 gerou e conferiu as três páginas HTML, o PDF e o link. O deploy foi ignorado porque a execução não
 era da `main` e a condição de aprovação permanece fechada. O PDF foi inspecionado visualmente após a
-renderização local. A inspeção visual manual do HTML ainda está pendente: o navegador disponível
-bloqueou URLs locais `file:` e não foi possível abrir a página nesse fluxo. O HTML gerado teve sua
-estrutura, título principal, link e recursos conferidos estaticamente; isso não substitui a revisão
-visual em navegador antes de ativar a publicação.
+renderização local. Em 2026-09-28, depois de integrar o PR #22 à branch do site, `quarto render report`
+terminou com sucesso. As páginas inicial, método e relatório foram abertas pelo navegador em servidor
+local; a inspeção visual na largura móvel não encontrou cortes ou sobreposição. O relatório mostrou
+corretamente que a amostra exploratória ainda não é uma rodada pública. O HTML aponta para
+`relatorio.pdf`, presente no artefato local. A revisão do artefato final e a aprovação do autor
+continuam necessárias antes de ativar o Pages.
 
 ## Diagnóstico do repositório em 2026-09-27
 

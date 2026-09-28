@@ -17,7 +17,7 @@ tarefas:
   - { desc: "Guia operacional do Antigravity CLI para pesquisa e revisão de agentes Gemini (autorizado pelo autor no chat; issue #1)", status: concluido, data: "2026-09-27" }
   - { desc: "WP0c — Leitura ampliada e inspeção pública pequena do BBSIA (issue #1; revisão de escopo na #12)", status: concluido, data: "2026-09-27" }
   - { desc: "WP2 — Codebook: o que conta como solução 'brasileira', 'adaptada ao pt-BR' e 'de interesse público adaptável' (issue #9; v0.1.1 com dois casos pendentes)", status: em_revisao, data: "2026-09-27" }
-  - { desc: "WP3 — Descoberta: coletores GitHub e Hugging Face + sementes curadas (listas awesome, orgs conhecidas)", status: pendente, data: null }
+  - { desc: "WP3 — Descoberta: coletores GitHub, Hugging Face e GitLab.com + sementes curadas (listas awesome, orgs conhecidas)", status: pendente, data: null }
   - { desc: "WP4 — Enriquecimento: metadados, README/model card, sinais de manutenção", status: pendente, data: null }
   - { desc: "WP5 — Classificação (regras + LLM contra o codebook) e validação humana por amostra", status: pendente, data: null }
   - { desc: "WP6 — Maturidade estimada (TRL provável) a partir de metadados", status: pendente, data: null }
@@ -86,7 +86,7 @@ Os módulos não são intercambiáveis:
 | Formulário e privacidade | A contribuição pede e-mail institucional e nome, além de organização/localização, problema, solução, tipo, estágio, abertura, soberania, dados, links e resultados. O aviso diz que dados de contato não são públicos e recomenda não inserir dados pessoais de terceiros, segredos, credenciais ou bases completas. | Formulário permaneceu intocado. O radar nunca coleta e-mail; dados de contato da submissão humana não fazem parte da coleta automatizada de metadados públicos. Não enviar candidatos ou preencher em nome de terceiros. |
 
 **Escopo vigente por decisão do autor (2026-09-27):** manter o corpus como soluções de IA que passem pelo
-codebook, descobertas por APIs oficiais do GitHub e Hugging Face. Excluir a seção do Judiciário/CNJ/Sinapses
+codebook, descobertas por APIs oficiais do GitHub, Hugging Face e GitLab.com. Excluir a seção do Judiciário/CNJ/Sinapses
 de descoberta, contexto, validação e deduplicação. Recursos reutilizáveis, fontes de dados e modelos não
 passam a ser soluções por aparecerem no mesmo site; uma possível função contextual ou como sementes será
 submetida ao autor na issue #12. A decisão não altera o codebook.
@@ -140,7 +140,7 @@ permanecem uma dependência para a deduplicação do WP7.
 
 **Porta de saída para WP3/WP4:** a inspeção pública pequena não equivale a autorização para coletar o catálogo. A implementação dos coletores GitHub/Hugging Face pode seguir após registrar a decisão de escopo da issue #12; priorizar APIs oficiais, apoio Antigravity se a CLI estiver disponível, fontes primárias, cache externo e testes offline com fixtures. Não implementar um coletor HTML do BBSIA nem reutilizar fichas do catálogo sem resolver acesso e termos. Nenhum formulário ou POST do site será enviado.
 
-**Agentes Gemini / Antigravity CLI (autorizado pelo autor no chat em 2026-09-27; issue #1):** o executável local confirmado é `agy`. A referência operacional está em [`../agentes-gemini.md`](../agentes-gemini.md) e registra as opções da CLI, os modelos e ferramentas observados, os limites de acesso web e as salvaguardas. Preferência do autor: Flash 3.8 para exploração inicial e Pro como revisor; toda descoberta deve trazer evidência direta, passar por checagem de fontes primárias e receber validação humana quando relevante. A listagem atual não retornou agentes nomeados, embora a sessão Gemini tenha informado ferramentas de subagentes.
+**Agentes Gemini / Antigravity CLI (autorizado pelo autor no chat em 2026-09-27; issue #1):** o executável local confirmado é `agy`. A referência operacional está em [`../agentes-gemini.md`](../agentes-gemini.md) e registra as opções da CLI, os modelos e ferramentas observados, os limites de acesso web e as salvaguardas. Instrução atual do autor: usar somente Gemini 3.8 Flash em toda chamada ao CLI, inclusive revisões, preferindo High para revisar; toda descoberta deve trazer evidência direta, passar por checagem de fontes primárias e receber validação humana quando relevante. A listagem atual não retornou agentes nomeados, embora a sessão Gemini tenha informado ferramentas de subagentes.
 
 ## 4. WP1 — Repositório do projeto (feito em 2026-09-26)
 

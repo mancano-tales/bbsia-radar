@@ -167,14 +167,7 @@ bind_github_items <- function(pages) {
 }
 
 github_seed_terms <- function(seeds) {
-  list_names <- purrr::map_chr(seeds$listas %||% list(), ~ .x$nome)
-  solutions <- seeds$gabarito %||% list()
-  solution_names <- purrr::map_chr(solutions, ~ .x$nome %||% NA_character_)
-  repo_names <- purrr::map(solutions, function(solution) {
-    purrr::map_chr(solution$artefatos %||% list(), ~ sub(".*/", "", .x$url))
-  }) |>
-    unlist(use.names = FALSE)
-  unique(c(list_names, solution_names, repo_names))
+  radar_seed_search_terms(seeds)
 }
 
 github_sementes_lista_brasileiras <- function(seeds, list_name) {

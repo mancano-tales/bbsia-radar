@@ -154,9 +154,9 @@ source("R/enriquecer_documentos.R")
 source("R/montar_corpus.R")
 source("R/codebook_para_decifra.R")
 
-# Nesta branch, GitHub e HF compartilham um teto de 23 tentativas.
-# Após integrar o coletor GitLab da issue #14, o teto conjunto será 25;
-# a seleção reservará até dez documentos entre as três plataformas.
+# Este exemplo reproduz a rodada ampliada com GitLab; a rodada GitHub/HF anterior
+# consultou à parte as três URLs da lista curada. O cache bruto fica fora do repo.
+# O teto desta rodada é 25 tentativas e dez documentos entre as três fontes.
 budget <- radar_novo_orcamento()
 github <- coletar_github(search_terms = c("Transcritorio", "BERTimbau"), budget = budget)
 hf <- coletar_hf(account = "neuralmind", budget = budget)
