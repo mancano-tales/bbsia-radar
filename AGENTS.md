@@ -80,7 +80,7 @@ Radar de soluções de IA **brasileiras**, **adaptadas ao português brasileiro*
 
 - R 4.4+ com tidyverse (`gh`, `httr2`, `purrr`, `dplyr`, `tidyr`, `stringdist`; `targets` se o pipeline crescer) para coleta, corpus e entrega. A classificação roda no Decifra (Python). Python aqui só se faltar uma biblioteca de verdade (ex.: `huggingface_hub`), justificado na issue.
 - Estilo tidyverse, com **comentários explicativos extensos em português e inglês**. Funções pequenas em `R/`, com testes em `tests/`. Scripts numerados em `scripts/` só chamam funções.
-- **Agentes Gemini (Antigravity CLI `agy`)**: para descobrir o CLI, selecionar modelos, fazer pesquisa web, delegar subtarefas e revisar evidências, consulte [`repo-governance/agentes-gemini.md`](repo-governance/agentes-gemini.md). A disponibilidade de modelos e ferramentas varia por sessão; valide com `agy --help`, `agy models` e `agy agents`. Use Flash 3.8 para exploração inicial e Pro como revisão independente, sempre conferindo as fontes primárias. Não use `--dangerously-skip-permissions`.
+- **Agentes Gemini (Antigravity CLI `agy`)**: para descobrir o CLI, selecionar modelos, fazer pesquisa web, delegar subtarefas e revisar evidências, consulte [`repo-governance/agentes-gemini.md`](repo-governance/agentes-gemini.md). A disponibilidade de modelos e ferramentas varia por sessão; valide com `agy --help`, `agy models` e `agy agents`. Use somente Gemini 3.8 Flash (`gemini-3.8-flash-*`) em qualquer chamada ao CLI, inclusive revisões; prefira a variante High para revisar. Se nenhuma variante Flash 3.8 estiver disponível, reporte o limite sem substituir o modelo. Confira as fontes primárias e não use `--dangerously-skip-permissions`.
 
 ### Coordenação por issues (além do bloco comum)
 

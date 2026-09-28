@@ -187,8 +187,8 @@ pesquisa, não uma fonte normativa.
 
 ## Uso do Antigravity (`agy`) nesta etapa
 
-Flash 3.8 pode ajudar a conferir a documentação oficial dos parâmetros e sugerir consultas a partir
-das sementes já aprovadas. Pro pode revisar a proposta e as fontes de forma independente. Esses
+Gemini 3.8 Flash pode ajudar a conferir a documentação oficial dos parâmetros e sugerir consultas a partir
+das sementes já aprovadas. Uma sessão separada de Gemini 3.8 Flash pode revisar a proposta e as fontes. Esses
 agentes não executam a coleta local nem substituem a API: saída do modelo só vale como pista até que
 os links oficiais sejam conferidos.
 
@@ -213,7 +213,8 @@ $prompt = @'
 agy --model gemini-3.8-flash-high --mode plan --output-format json --print-timeout 180s --print $prompt
 ```
 
-Para revisão, enviar a resposta junto dos links oficiais originais ao modelo `gemini-3.1-pro-high`.
+Para revisão, enviar a resposta junto dos links oficiais originais ao modelo `gemini-3.8-flash-high`.
+Se nenhuma variante Gemini 3.8 Flash estiver disponível, registrar o impedimento sem substituí-la.
 Não conceder diretórios adicionais, não pedir ao agente para executar os coletores e não usar
 `--dangerously-skip-permissions`.
 

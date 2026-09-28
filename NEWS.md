@@ -1,5 +1,16 @@
 # NEWS — bbsia-radar
 
+## 2026-09-27 — Restringe Antigravity ao Gemini 3.8 Flash
+
+Por instrução do autor, toda chamada futura ao `agy`, incluindo revisões, usa somente Gemini 3.8 Flash. A variante High é preferida para revisão; indisponibilidade ou ausência de login deve ser registrada sem trocar de modelo. Instruções operacionais e planos foram alinhados, preservando os registros históricos de testes com Pro.
+
+**Metadados de Execução**:
+- **Data**: 2026-09-27
+- **Agente**: Codex / GPT-6 / desktop
+- **Issue**: #14
+- **Mensagem do Commit**: `docs(agents): usa apenas Gemini 3.8 Flash refs #14`
+- **Arquivos afetados**: `AGENTS.md`, `CHANGELOG.md`, `NEWS.md`, `TODO.md`, `repo-governance/agentes-gemini.md`, `repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md`, `repo-governance/plan/2026-09-27_Plano_Coleta_Exploratoria.md`, `repo-governance/plan/2026-09-27_Plano_GitLab_Radar.md`
+
 ## 2026-09-27 — Corrige assunto de commit no NEWS
 
 A auditoria com tools/news_db.py identificou acentos no metadado que não existem no assunto real do commit. O campo foi alinhado ao Git e o CHANGELOG foi regenerado para incluir o commit anterior de sincronização.

@@ -86,7 +86,7 @@
   - Concluído: 2026-09-27 09:24 por Codex / GPT-6 / desktop (aprovação de Tales Mançano no chat)
   - Plano: `repo-governance/plan/2026-09-27_Plano_Coleta_Exploratoria.md` · Issues: #12, #14
 
-- [x] **Documentar execução do Antigravity CLI `agy` para pesquisa e revisão Gemini** — `AGENTS.md` aponta para o guia com comandos, modelos observados, ferramentas web e de delegação, limites e revisão Flash 3.8/Pro.
+- [x] **Documentar execução do Antigravity CLI `agy` para pesquisa e revisão Gemini** — `AGENTS.md` aponta para o guia com comandos, modelos observados, ferramentas web e de delegação, limites e regra atual de uso exclusivo do Gemini 3.8 Flash.
   - Criado: 2026-09-27 00:01 por Codex / GPT-6 / desktop (pedido do autor no chat)
   - Concluído: 2026-09-27 00:12 por Codex / GPT-6 / desktop
   - Issue: #1 (esta sessão está sem token GitHub válido; o autor deve levar o anúncio e o resultado à issue)

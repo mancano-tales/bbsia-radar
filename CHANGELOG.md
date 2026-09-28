@@ -15,6 +15,7 @@ Arquivo DERIVADO do `git log`. Não edite à mão — a fonte editorial é o `NE
 
 ## Fixed
 
+- **`[bfddbdb]` 2026-09-27** — fix(news): corrige assunto declarado do changelog refs #14
 - **`[3f590ac]` 2026-09-26** — fix(config): correcoes da revisao do codebook e das sementes
 
 ## Changed

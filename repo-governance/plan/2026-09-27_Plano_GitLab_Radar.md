@@ -108,6 +108,7 @@ A revisão do plano por GPT-6-Sol e a revisão independente da implementação f
 
 ## Aprovação do autor registrada
 
+- No chat de 2026-09-27, o autor determinou que qualquer uso futuro do Antigravity CLI empregue somente Gemini 3.8 Flash, inclusive para revisão; a variante High é a preferência operacional para revisar. A revisão Gemini deste plano continua pendente por falta de login no CLI.
 - No chat de 2026-09-27, o autor aprovou este plano, a inclusão de GitLab.com antes da primeira amostra e a execução das análises exploratórias limitadas.
 - Consultas autorizadas: GitHub e GitLab com os termos exatos `Transcritorio` e `BERTimbau`; Hugging Face com a conta-semente pública `neuralmind`.
 - Limites autorizados: GitLab.com anônimo, somente uma página por busca com ordenação `created_at desc`, README da raiz até 256 KiB via HEAD + GET, no máximo dez documentos no total e 25 tentativas reservadas por rodada.
