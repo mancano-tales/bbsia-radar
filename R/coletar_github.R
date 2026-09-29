@@ -152,7 +152,10 @@ bind_github_items <- function(pages) {
   # as public email if GitHub changes its payload in the future.
   tibble::tibble(
     platform = "github",
-    id = purrr::map_chr(items, ~ as.character(.x$id %||% NA_character_)),
+    id = purrr::map_chr(items, ~ {
+      value <- .x$id %||% NA_character_
+      if (is.numeric(value)) format(value, scientific = FALSE, trim = TRUE) else as.character(value)
+    }),
     full_name = purrr::map_chr(items, ~ .x$full_name %||% NA_character_),
     name = purrr::map_chr(items, ~ .x$name %||% NA_character_),
     description = purrr::map_chr(items, ~ .x$description %||% NA_character_),
@@ -301,9 +304,9 @@ coletar_readme_github <- function(repositories,
   radar_validar_orcamento(budget)
   radar_validate_cache_root(root)
   radar_reservar_documentos(budget, "github", repositories$full_name)
-  repositories |>
-    dplyr::mutate(readme = purrr::map_chr(full_name, function(full_name) {
-      if (is.na(full_name) || !grepl("/", full_name, fixed = TRUE)) return(NA_character_)
+  details <- purrr::map(repositories$full_name, function(full_name) {
+      if (is.na(full_name) || !grepl("/", full_name, fixed = TRUE))
+        return(list(readme = NA_character_, content_hash = NA_character_))
       payload <- tryCatch(
         github_request(paste0("GET /repos/", full_name, "/readme"), list(), root,
                        request_fn, budget),
@@ -314,9 +317,16 @@ coletar_readme_github <- function(repositories,
           stop(error)
         }
       )
-      if (is.null(payload) || is.null(payload$content)) return(NA_character_)
+      if (is.null(payload) || is.null(payload$content))
+        return(list(readme = NA_character_, content_hash = NA_character_))
       raw <- jsonlite::base64_dec(gsub("\\s+", "", payload$content))
       text <- rawToChar(raw)
-      enc2utf8(text)
-    }))
+      text <- enc2utf8(text)
+      sha <- payload$sha %||% NA_character_
+      list(readme = text, content_hash = if (is.na(sha)) NA_character_ else
+             radar_content_hash("github", sha, text))
+    })
+  repositories$readme <- purrr::map_chr(details, "readme")
+  repositories$content_hash <- purrr::map_chr(details, "content_hash")
+  repositories
 }

@@ -5,6 +5,10 @@
 > **Pendente** = pronto para ser trabalhado. **Prospectivo** = identificado, mas falta decisão ou dependência. **Concluído** = feito.
 
 ## Pendente
+- [ ] **Revisar e integrar as correções do parecer Claude no #23** — PR #26 aberto a partir de `codex/24-claude-findings`; revisão cruzada pelo Claude solicitada. O autor pediu a abertura como exceção temporária ao limite de três PRs.
+  - Criado: 2026-09-29 por Codex / GPT-6 / desktop.
+  - Referências: issue #24; parecer no PR #23; issue do hub #42.
+
 - [ ] **Revisão cruzada e integração dos hooks de governança** — PR #23; branch `codex/1-governance-hooks` permanece aberta para revisão do Claude, checks, merge e remoção da branch depois da integração.
   - Criado: 2026-09-28 por Codex / GPT-6 / desktop
   - Motivo: o código deste repo entra por PR; o commit e o push já passaram pelos hooks atualizados sem exceções.

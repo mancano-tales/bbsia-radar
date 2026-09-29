@@ -112,6 +112,9 @@ Radar de soluções de IA **brasileiras**, **adaptadas ao português brasileiro*
 
 ### Travas e comandos
 
+O `core.hooksPath` deste repositório é `hooks`, nunca `tools/git-hooks` diretamente:
+os wrappers locais também executam o scanner de caminhos e o pre-push.
+
 - `hooks/pre-commit` aplica `tools/git-hooks/pre-commit`: recusa recriar `NEWS.md` ou fragmentos, editar `deprecated/` e acrescentar caminhos absolutos. Além disso, recusa qualquer `NEWS.md` na raiz, mesmo sendo pacote R. O scanner deste repo e `hooks/pre-push` também verificam caminhos absolutos em linhas novas de diffs textuais, exibindo só arquivo relativo e linha. `hooks/commit-msg` aplica a checagem comum do trailer `Agent:`. O pre-push e o workflow incluem diffs de primeiro pai dos commits de merge. O workflow `Verificar caminhos absolutos` confere commits de PR; para bloquear o merge, o GitHub precisa exigir esse status check e PRs na branch principal. Ative neste clone com `git config core.hooksPath hooks`. São mitigações: hooks locais podem ser ignorados e o Actions executa depois do push.
 - A trava do Claude Code (`.claude/settings.json` → `tools/guard-git-command.sh`) bloqueia `git add .`/`-A`/`-u`, `clean -f`, `reset --hard`, `restore .`, `checkout .` e `push --force`. Teste: `printf '{"tool_input":{"command":"git add ."}}' | bash tools/guard-git-command.sh; echo $?` (dá 2).
 - Commits: Conventional Commits com `refs #N`. O `CHANGELOG.md` é gerado (`Rscript tools/render-changelog.R`), nunca editado à mão.

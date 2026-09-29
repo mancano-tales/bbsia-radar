@@ -1,0 +1,11 @@
+# Casos sintéticos; as saídas são gabarito para classificação humana/Decifra.
+casos:
+  - id: sem_evidencia
+    documento: "Ferramenta para organizar registros, sem descrição do mecanismo."
+    esperado: {e_ia: incerto, brasileira: incerto, ptbr: incerto, area_problema: []}
+  - id: conflitante
+    documento: "Resumo menciona IA; documentação técnica descreve apenas regras fixas."
+    esperado: {e_ia: incerto, brasileira: incerto, ptbr: incerto, area_problema: []}
+  - id: multirrotulo
+    documento: "Modelo documentado para triagem clínica e formação de profissionais de saúde."
+    esperado: {e_ia: sim, brasileira: incerto, ptbr: incerto, area_problema: [saude, educacao]}

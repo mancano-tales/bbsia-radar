@@ -14,7 +14,7 @@ radar_artifact_id <- function(platform, id, kind = NULL) {
     stop("Plataforma e identificador do artefato são obrigatórios.", call. = FALSE)
   }
   platform <- as.character(platform)
-  id <- as.character(id)
+  id <- if (is.numeric(id)) format(id, scientific = FALSE, trim = TRUE) else as.character(id)
   if (!platform %in% c("github", "gitlab", "huggingface")) {
     stop("Plataforma desconhecida.", call. = FALSE)
   }
@@ -33,7 +33,17 @@ radar_artifact_id <- function(platform, id, kind = NULL) {
   paste("huggingface", kind, id, sep = ":")
 }
 
-radar_propor_vinculos <- function(artifacts) {
+radar_seed_ids <- function(seeds_path = "config/seeds.yml") {
+  seeds <- yaml::yaml.load(readr::read_file(
+    seeds_path, locale = readr::locale(encoding = "UTF-8")))
+  ids <- purrr::map_chr(seeds$gabarito %||% list(), "id_solucao")
+  if (anyNA(ids) || any(!nzchar(ids)) || anyDuplicated(ids)) {
+    stop("config/seeds.yml contém id_solucao ausente ou duplicado.", call. = FALSE)
+  }
+  ids
+}
+
+radar_propor_vinculos <- function(artifacts, seed_ids = radar_seed_ids()) {
   # (pt) A migração mantém IDs de sementes já curadas. Para cada URL ainda usada
   #      como identidade provisória, propõe uma chave sem URL derivada do ID da
   #      plataforma. Isto não deduplica soluções: fusões exigem decisão humana.
@@ -51,14 +61,15 @@ radar_propor_vinculos <- function(artifacts) {
     stop("ID da plataforma duplicado; revisar antes da migração.", call. = FALSE)
   }
   previous <- as.character(artifacts$solution_id)
-  curated <- !is.na(previous) & nzchar(previous) & !grepl("^https?://", previous)
-  proposed <- ifelse(curated, previous, paste0("s-", vapply(artifact_ids, function(id) {
+  curated <- !is.na(previous) & previous %in% seed_ids
+  provisional <- paste0("s-", vapply(artifact_ids, function(id) {
     substr(digest::digest(id, algo = "sha256", serialize = FALSE), 1L, 20L)
-  }, character(1))))
+  }, character(1)))
+  proposed <- ifelse(curated, previous, provisional)
   tibble::tibble(
     artifact_id = artifact_ids,
-    solution_id_proposto = unname(proposed),
-    identidade_status = ifelse(curated, "curado_semente", "provisorio"),
+    solution_id_proposto = as.character(unname(proposed)),
+    identidade_status = as.character(ifelse(curated, "curado_semente", "provisorio")),
     url_observada = as.character(artifacts$url),
     solution_id_anterior = previous
   )
@@ -89,26 +100,35 @@ radar_eventos_rodada <- function(run_id, atual, anterior = NULL) {
       !grepl("^[A-Za-z0-9_-]+$", run_id)) {
     stop("run_id deve ser um identificador seguro para arquivo.", call. = FALSE)
   }
-  if (is.null(anterior)) {
-    anterior <- tibble::tibble(artifact_id = character(), content_hash = character(), status = character())
+  if (is.null(anterior)) anterior <- list()
+  if (is.data.frame(anterior)) anterior <- list(anterior)
+  if (!is.list(anterior) || any(!vapply(anterior, is.data.frame, logical(1)))) {
+    stop("anterior deve ser uma observação ou lista cronológica de observações.", call. = FALSE)
   }
   radar_validar_observacoes(atual)
-  radar_validar_observacoes(anterior)
-  ids <- union(anterior$artifact_id, atual$artifact_id)
+  invisible(lapply(anterior, radar_validar_observacoes))
+  prior_ids <- unique(unlist(lapply(anterior, function(run) run$artifact_id), use.names = FALSE))
+  ids <- union(prior_ids, atual$artifact_id)
   if (!length(ids)) {
     return(tibble::tibble(run_id = character(), artifact_id = character(),
                           evento = character(), content_hash = character()))
   }
-  previous_index <- match(ids, anterior$artifact_id)
+  latest <- if (length(anterior)) anterior[[length(anterior)]] else
+    tibble::tibble(artifact_id = character(), content_hash = character(), status = character())
   current_index <- match(ids, atual$artifact_id)
   event <- vapply(seq_along(ids), function(i) {
-    before <- previous_index[[i]]
+    known <- NULL
+    if (length(anterior)) for (run in rev(anterior)) {
+      index <- match(ids[[i]], run$artifact_id)
+      if (!is.na(index)) { known <- run[index, , drop = FALSE]; break }
+    }
     now <- current_index[[i]]
     if (is.na(now)) return("ausente_da_busca")
     if (identical(atual$status[[now]], "http_404")) return("http_404")
-    if (is.na(before)) return("novo")
-    if (identical(anterior$status[[before]], "http_404")) return("reapareceu")
-    if (identical(anterior$content_hash[[before]], atual$content_hash[[now]])) {
+    if (is.null(known)) return("novo")
+    if (is.na(match(ids[[i]], latest$artifact_id)) ||
+        identical(known$status[[1]], "http_404")) return("reapareceu")
+    if (identical(known$content_hash[[1]], atual$content_hash[[now]])) {
       return("inalterado")
     }
     "alterado"
@@ -118,6 +138,35 @@ radar_eventos_rodada <- function(run_id, atual, anterior = NULL) {
     as.character(atual$content_hash[[i]])
   }, character(1))
   tibble::tibble(run_id = run_id, artifact_id = ids, evento = event, content_hash = hash)
+}
+
+radar_content_hash <- function(platform, revision_sha, text) {
+  if (length(platform) != 1L || !platform %in% c("github", "gitlab", "huggingface") ||
+      length(revision_sha) != 1L || is.na(revision_sha) ||
+      !grepl("^[0-9a-f]{40}([0-9a-f]{24})?$", revision_sha) ||
+      length(text) != 1L || is.na(text)) {
+    stop("Exige plataforma, SHA imutável da revisão lida e texto.", call. = FALSE)
+  }
+  paste(platform, revision_sha,
+        digest::digest(enc2utf8(text), algo = "sha256", serialize = FALSE), sep = ":")
+}
+
+radar_aliases <- function(aliases) {
+  required <- c("artifact_id", "url_antiga", "url_atual")
+  if (!all(required %in% names(aliases)) ||
+      anyNA(aliases[, required]) || anyDuplicated(aliases$url_antiga)) {
+    stop("Mapa de aliases exige artifact_id e URLs únicas, sem ausências.", call. = FALSE)
+  }
+  tibble::as_tibble(aliases[, required, drop = FALSE])
+}
+
+radar_ler_aliases <- function(path = "config/aliases.yml") {
+  source <- yaml::yaml.load(readr::read_file(
+    path, locale = readr::locale(encoding = "UTF-8")))
+  rows <- source$aliases %||% list()
+  if (!length(rows)) return(tibble::tibble(
+    artifact_id = character(), url_antiga = character(), url_atual = character()))
+  radar_aliases(purrr::map_dfr(rows, tibble::as_tibble_row))
 }
 
 radar_salvar_manifesto_rodada <- function(manifesto,

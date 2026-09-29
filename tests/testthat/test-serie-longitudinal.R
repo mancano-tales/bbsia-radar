@@ -5,6 +5,9 @@ test_that("platform IDs are namespaced and mutable URLs are rejected as numeric 
                "huggingface:models:org/model")
   expect_error(radar_artifact_id("github", "https://github.com/org/repo"))
   expect_error(radar_artifact_id("huggingface", "model", "models"))
+  expect_equal(radar_artifact_id("github", 3000000000), "github:3000000000")
+  parsed <- jsonlite::parse_json('{"items":[{"id":3000000000}]}')
+  expect_equal(bind_github_items(list(parsed$items))$id[[1]], "3000000000")
 })
 
 test_that("URL identities migrate to stable provisional keys without merging artifacts", {
@@ -16,7 +19,7 @@ test_that("URL identities migrate to stable provisional keys without merging art
     solution_id = c("https://github.com/org/repo", "seed-model",
                     "https://gitlab.com/org/project")
   )
-  mapped <- radar_propor_vinculos(artifacts)
+  mapped <- radar_propor_vinculos(artifacts, seed_ids = "seed-model")
   expect_equal(mapped$artifact_id, c("github:123", "huggingface:models:org/model", "gitlab:45"))
   expect_equal(mapped$solution_id_proposto[[2]], "seed-model")
   expect_true(all(startsWith(mapped$solution_id_proposto[c(1, 3)], "s-")))
@@ -24,8 +27,37 @@ test_that("URL identities migrate to stable provisional keys without merging art
   renamed <- artifacts
   renamed$url[[1]] <- "https://github.com/new-owner/renamed"
   renamed$solution_id[[1]] <- renamed$url[[1]]
-  expect_equal(radar_propor_vinculos(renamed)$solution_id_proposto[[1]],
+  expect_equal(radar_propor_vinculos(renamed, seed_ids = "seed-model")$solution_id_proposto[[1]],
                mapped$solution_id_proposto[[1]])
+  artifacts$solution_id[[1]] <- "looks-curated-but-is-not-a-seed"
+  expect_equal(radar_propor_vinculos(artifacts, seed_ids = "seed-model")$identidade_status[[1]], "provisorio")
+  empty <- radar_propor_vinculos(artifacts[0, ], seed_ids = "seed-model")
+  expect_identical(unname(vapply(empty, typeof, character(1))), rep("character", 5))
+})
+
+test_that("three rounds compare against last known state after search absence", {
+  first <- tibble::tibble(artifact_id = "github:1", content_hash = "old", status = "ok")
+  absent <- first[0, ]
+  third <- tibble::tibble(artifact_id = "github:1", content_hash = "old", status = "ok")
+  history <- list(first, absent)
+  events <- radar_eventos_rodada("third", third, history)
+  expect_equal(events$evento[[1]], "reapareceu")
+})
+
+test_that("revision-aware hashes require immutable references and retain text digest", {
+  text <- "README fixture"
+  hash <- radar_content_hash("huggingface", strrep("a", 40), text)
+  expect_match(hash, strrep("a", 40))
+  expect_match(hash, digest::digest(text, algo = "sha256", serialize = FALSE))
+  expect_error(radar_content_hash("huggingface", "main", text))
+  expect_error(radar_content_hash("huggingface", "release-2026", text))
+  expect_error(radar_content_hash("github", NA_character_, text))
+  aliases <- radar_aliases(
+    tibble::tibble(artifact_id = "github:1", url_antiga = "https://github.com/old/repo",
+                   url_atual = "https://github.com/new/repo")
+  )
+  expect_equal(aliases$artifact_id[[1]], "github:1")
+  expect_identical(nrow(radar_ler_aliases(file.path(repo_root, "config", "aliases.yml"))), 0L)
 })
 
 test_that("two synthetic runs retain change, absence and HTTP 404 as distinct events", {
