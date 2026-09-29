@@ -93,3 +93,65 @@ test_that("run manifests stay outside the repository and cannot overwrite a run"
   expect_true(startsWith(normalizePath(path, winslash = "/"), normalizePath(root, winslash = "/")))
   expect_error(radar_salvar_manifesto_rodada(manifesto, root))
 })
+
+test_that("a reappearance records whether the content changed since last seen", {
+  first <- tibble::tibble(artifact_id = c("github:1", "github:2"),
+                          content_hash = c("a", "b"), status = "ok")
+  absent <- first[0, ]
+  third <- tibble::tibble(artifact_id = c("github:1", "github:2"),
+                          content_hash = c("a", "b-changed"), status = "ok")
+  events <- radar_eventos_rodada("third", third, list(first, absent))
+  expect_equal(events$evento, c("reapareceu", "reapareceu"))
+  expect_equal(events$conteudo_alterado, c(FALSE, TRUE))
+  # Change flags follow the same comparison for ordinary events; there is no
+  # previous content for a new artifact or for one missing now.
+  second <- tibble::tibble(artifact_id = c("github:1", "github:9"),
+                           content_hash = c("a2", "z"), status = "ok")
+  events <- radar_eventos_rodada("second", second, first)
+  expect_equal(events$conteudo_alterado[match(c("github:1", "github:2", "github:9"), events$artifact_id)],
+               c(TRUE, NA, NA))
+})
+
+test_that("repeated absences are counted, and a 404 is not reset by a search absence", {
+  seen <- tibble::tibble(artifact_id = c("github:1", "github:2"),
+                         content_hash = c("a", "b"), status = "ok")
+  gone <- seen[0, ]
+  not_found <- tibble::tibble(artifact_id = "github:2", content_hash = NA_character_,
+                              status = "http_404")
+  events <- radar_eventos_rodada("r4", gone, list(seen, gone, not_found))
+  expect_equal(events$evento, c("ausente_da_busca", "ausente_da_busca"))
+  # github:1 missing in r2, r3 and now (r4); github:2 missing in r2, 404 in
+  # r3 and missing now: both count as three consecutive rounds without content.
+  expect_equal(events$rodadas_ausente, c(3L, 3L))
+  back <- radar_eventos_rodada("r5", seen, list(seen, gone, not_found, gone))
+  expect_equal(back$evento, c("reapareceu", "reapareceu"))
+  expect_equal(back$rodadas_ausente, c(0L, 0L))
+})
+
+test_that("history with observation times must be chronological", {
+  at <- function(time) tibble::tibble(artifact_id = "github:1", content_hash = "a",
+                                      status = "ok", observado_em = time)
+  ok <- radar_eventos_rodada("r3", at("2026-09-29T10:00:00Z"),
+                             list(at("2026-09-15T10:00:00Z"), at("2026-09-22T10:00:00Z")))
+  expect_equal(ok$evento, "inalterado")
+  expect_error(radar_eventos_rodada("r3", at("2026-09-29T10:00:00Z"),
+                                    list(at("2026-09-22T10:00:00Z"), at("2026-09-15T10:00:00Z"))),
+               "cronol")
+  expect_error(radar_eventos_rodada("r3", at("2026-09-01T10:00:00Z"),
+                                    list(at("2026-09-15T10:00:00Z"))),
+               "cronol")
+  # Without observation times, list order stays the documented contract.
+  plain <- tibble::tibble(artifact_id = "github:1", content_hash = "a", status = "ok")
+  expect_equal(radar_eventos_rodada("r2", plain, list(plain))$evento, "inalterado")
+})
+
+test_that("absence streaks start at first appearance and timestamps are strict", {
+  empty <- tibble::tibble(artifact_id = character(), content_hash = character(), status = character())
+  first_404 <- tibble::tibble(artifact_id = "github:7", content_hash = NA_character_, status = "http_404")
+  events <- radar_eventos_rodada("r4", empty, list(empty, empty, first_404))
+  expect_equal(events$rodadas_ausente, 2L)
+  at <- function(time) tibble::tibble(artifact_id = "github:1", content_hash = "a",
+                                      status = "ok", observado_em = time)
+  expect_error(radar_eventos_rodada("r2", at("2026-09-29T11:00:00Z-extra"),
+                                    list(at("2026-09-22T10:00:00Z"))), "UTC")
+})

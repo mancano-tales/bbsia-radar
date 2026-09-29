@@ -107,11 +107,13 @@ radar_eventos_rodada <- function(run_id, atual, anterior = NULL) {
   }
   radar_validar_observacoes(atual)
   invisible(lapply(anterior, radar_validar_observacoes))
+  radar_validar_ordem_rodadas(c(anterior, list(atual)))
   prior_ids <- unique(unlist(lapply(anterior, function(run) run$artifact_id), use.names = FALSE))
   ids <- union(prior_ids, atual$artifact_id)
   if (!length(ids)) {
     return(tibble::tibble(run_id = character(), artifact_id = character(),
-                          evento = character(), content_hash = character()))
+                          evento = character(), content_hash = character(),
+                          conteudo_alterado = logical(), rodadas_ausente = integer()))
   }
   latest <- if (length(anterior)) anterior[[length(anterior)]] else
     tibble::tibble(artifact_id = character(), content_hash = character(), status = character())
@@ -137,7 +139,64 @@ radar_eventos_rodada <- function(run_id, atual, anterior = NULL) {
     if (is.na(i)) return(NA_character_)
     as.character(atual$content_hash[[i]])
   }, character(1))
-  tibble::tibble(run_id = run_id, artifact_id = ids, evento = event, content_hash = hash)
+  # (pt) `reapareceu` diz que o artefato voltou, mas não se mudou enquanto
+  #      esteve fora. `conteudo_alterado` compara com o último conteúdo lido
+  #      (NA quando não há o que comparar: artefato novo, ausente ou 404 agora).
+  # (en) Compare with the last content actually read, whatever the event.
+  last_hash <- vapply(ids, function(id) {
+    for (run in rev(anterior)) {
+      index <- match(id, run$artifact_id)
+      if (!is.na(index) && identical(run$status[[index]], "ok")) return(run$content_hash[[index]])
+    }
+    NA_character_
+  }, character(1), USE.NAMES = FALSE)
+  now_ok <- !is.na(current_index) & vapply(current_index, function(i)
+    !is.na(i) && identical(atual$status[[i]], "ok"), logical(1))
+  changed <- ifelse(now_ok & !is.na(last_hash), hash != last_hash, NA)
+  # (pt) Rodadas seguidas, até a atual, sem conteúdo lido: ausência da busca e
+  #      404 contam igual, porque em ambas o radar não viu o artefato. A
+  #      contagem para na última rodada em que ele foi lido com sucesso.
+  # (en) Consecutive rounds, up to now, in which the artifact was not read.
+  runs <- c(anterior, list(atual))
+  # Rounds before the artifact first entered the history do not count.
+  missing_streak <- vapply(ids, function(id) {
+    first <- which(vapply(runs, function(run) id %in% run$artifact_id, logical(1)))[[1]]
+    streak <- 0L
+    for (i in rev(seq(first, length(runs)))) {
+      index <- match(id, runs[[i]]$artifact_id)
+      if (!is.na(index) && identical(runs[[i]]$status[[index]], "ok")) break
+      streak <- streak + 1L
+    }
+    streak
+  }, integer(1), USE.NAMES = FALSE)
+  tibble::tibble(run_id = run_id, artifact_id = ids, evento = event, content_hash = hash,
+                 conteudo_alterado = as.logical(changed), rodadas_ausente = missing_streak)
+}
+
+# (pt) Com `observado_em` em todas as rodadas, a lista precisa estar em ordem
+#      cronológica: a comparação usa a última rodada conhecida, e uma lista
+#      embaralhada trocaria "alterado" por "inalterado" sem aviso. Sem
+#      `observado_em`, vale a ordem da lista, como antes.
+# (en) When every run carries `observado_em`, runs must not overlap in time
+#      and must be listed oldest first.
+radar_validar_ordem_rodadas <- function(runs) {
+  has_time <- vapply(runs, function(run) "observado_em" %in% names(run) && nrow(run) > 0L,
+                     logical(1))
+  if (!any(has_time)) return(invisible(TRUE))
+  timed <- runs[has_time]
+  parse <- function(x) as.POSIXct(x, format = "%Y-%m-%dT%H:%M:%SZ", tz = "UTC")
+  bounds <- lapply(timed, function(run) {
+    times <- parse(run$observado_em)
+    strict <- grepl("^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$", run$observado_em)
+    if (anyNA(times) || !all(strict)) stop("observado_em deve estar em UTC, no formato AAAA-MM-DDTHH:MM:SSZ.", call. = FALSE)
+    range(times)
+  })
+  for (i in seq_along(bounds)[-1]) {
+    if (bounds[[i]][[1]] <= bounds[[i - 1L]][[2]]) {
+      stop("As rodadas precisam estar em ordem cronológica, da mais antiga para a atual.", call. = FALSE)
+    }
+  }
+  invisible(TRUE)
 }
 
 radar_content_hash <- function(platform, revision_sha, text) {

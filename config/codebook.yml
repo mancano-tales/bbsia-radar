@@ -20,15 +20,15 @@
 #   depende_bbsia   -> depende da coordenação do BBSIA (issue #2 / plano §3).
 # ==============================================================================
 
-versao: "0.2.1"
-data: "2026-09-28"
+versao: "0.2.2"
+data: "2026-09-29"
 status: rascunho          # rascunho | em_validacao | estavel
 issue: 24
-versao_anterior: "0.2.0"
+versao_anterior: "0.2.1"
 formulario_bbsia: "config/formulario_bbsia.yml"
 politica_migracao: >
   As versões anteriores permanecem no histórico Git. Nenhum valor antigo é substituído
-  em silêncio. Reclassificar uma amostra com a 0.2.1 e registrar lado a lado
+  em silêncio. Reclassificar uma amostra com a 0.2.2 e registrar lado a lado
   rótulo anterior, rótulo novo, motivo, fonte e decisão humana.
 
 # ------------------------------------------------------------------------------
@@ -129,21 +129,24 @@ vinculo:
         - "Tópico `portuguese` ou `portuguese-nlp` sozinho."
     regra_de_decisao: >
       `sim` com 1 sinal forte, ou 2 médios. `incerto` com 1 médio sozinho, só
-      sinais fracos, ausência de sinais, ou sinais conflitantes (ex.:
-      `language:pt` mas documentação só sobre pt-PT). `nao` exige evidência
-      explícita de não adaptação ao pt-BR. Modelo multilíngue genérico que
-      apenas inclui português = `nao` quando isso está documentado.
+      sinais fracos, ausência de sinais, ou sinais conflitantes. `nao` exige
+      evidência explícita de não adaptação ao pt-BR. Modelo multilíngue
+      genérico que apenas inclui português = `nao` quando isso está
+      documentado. Documentação que declara só português europeu (pt-PT),
+      sem menção a pt-BR, = `nao` mesmo com a tag `language:pt` (decisão do
+      autor, 2026-09-29; v0.2.2).
     exemplos_sim:
       - "Tucano / TeenyTinyLlama (Nicholas Kluge Corrêa): modelos treinados em português."
     exemplos_nao:
       - "Um LLM multilíngue que lista `pt` entre 100 idiomas, sem ajuste nem avaliação em pt-BR."
+      - "Modelo com `language:pt` treinado e avaliado só em português europeu, sem menção a pt-BR."
 
   interesse_publico:
     rotulo: "C — De interesse público, adaptável"
     definicao: >
       Solução aberta que resolve um problema típico do setor público e poderia
       ser adaptada ao Brasil, mesmo sem vínculo com o país.
-    # Dimensão RESERVADA na v0.2.1, não codificável. Único valor permitido nesta
+    # Dimensão RESERVADA na v0.2.2, não codificável. Único valor permitido nesta
     # versão: `nao_avaliado`. Sinais, regra de decisão e exemplos entram numa
     # versão futura, junto com os valores sim/nao/incerto.
     valores: [nao_avaliado]
@@ -300,6 +303,9 @@ casos_limite:
     decisao_status: autor
   - caso: "Fork de projeto estrangeiro com adaptação ao pt-BR (tradução, ajuste, dados)."
     decisao: "Não é exclusão `fork_sem_mudanca`; ptbr = sim; brasileira segue as regras do autor do fork."
+    decisao_status: autor
+  - caso: "Modelo com `language:pt` cuja documentação declara só português europeu (pt-PT)."
+    decisao: "ptbr = nao, não incerto: a declaração explícita de pt-PT é evidência de não adaptação ao pt-BR (autor, 2026-09-29; v0.2.2). brasileira segue as regras próprias."
     decisao_status: autor
   - caso: "Projeto de Portugal que também é usado ou avaliado em pt-BR."
     decisao: "brasileira = nao; ptbr = sim se houver avaliação explícita em pt-BR."

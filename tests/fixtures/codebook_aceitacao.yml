@@ -1,11 +1,115 @@
-# Casos sintéticos; as saídas são gabarito para classificação humana/Decifra.
+# Casos sintéticos de aceitação do codebook v0.2.2 (issue #24, plano #28 WP-D).
+#
+# (pt) Cada caso tem um documento curto, os sinais que uma leitura correta
+#      encontraria nele e o resultado esperado. O teste aplica a regra de
+#      decisão (R/triagem.R) aos sinais e exige o resultado esperado; assim,
+#      mudar a regra no codebook sem mudar os casos quebra o teste. Os mesmos
+#      documentos servem de gabarito para conferir o Decifra: ele deve chegar
+#      ao `esperado` lendo só o `documento`.
+#      Sinais por marcação: fortes, medios, fracos (contagens), negativa
+#      (evidência positiva contrária) e conflito. Marcação omitida = silêncio.
+# (en) Signals are what a correct reading finds; `esperado` is the decision.
 casos:
   - id: sem_evidencia
     documento: "Ferramenta para organizar registros, sem descrição do mecanismo."
+    sinais: {}
     esperado: {e_ia: incerto, brasileira: incerto, ptbr: incerto, area_problema: []}
+
   - id: conflitante
     documento: "Resumo menciona IA; documentação técnica descreve apenas regras fixas."
+    sinais:
+      e_ia: {fortes: 1, negativa: true}
     esperado: {e_ia: incerto, brasileira: incerto, ptbr: incerto, area_problema: []}
+
   - id: multirrotulo
     documento: "Modelo documentado para triagem clínica e formação de profissionais de saúde."
+    sinais:
+      e_ia: {fortes: 1}
     esperado: {e_ia: sim, brasileira: incerto, ptbr: incerto, area_problema: [saude, educacao]}
+
+  - id: brasileira_um_sinal_forte
+    documento: >
+      Classificador de atos do Diário Oficial desenvolvido pelo laboratório de IA
+      de uma universidade federal brasileira, que o README nomeia como autora.
+    sinais:
+      e_ia: {fortes: 1}
+      brasileira: {fortes: 1, fracos: 1}
+    esperado: {e_ia: sim, brasileira: sim, ptbr: incerto, area_problema: [gestao_publica]}
+
+  - id: brasileira_um_sinal_medio
+    documento: >
+      Modelo de detecção de objetos. O perfil do dono no GitHub informa
+      "São Paulo, Brasil"; o README está em inglês e não cita instituição.
+    sinais:
+      e_ia: {fortes: 1}
+      brasileira: {medios: 1}
+    esperado: {e_ia: sim, brasileira: incerto, ptbr: incerto, area_problema: []}
+
+  - id: brasileira_dois_sinais_medios
+    documento: >
+      Modelo de detecção de objetos. O perfil do dono informa "Recife, PE" e toda
+      a documentação está em português do Brasil; nenhuma instituição é citada.
+    sinais:
+      e_ia: {fortes: 1}
+      brasileira: {medios: 2}
+    esperado: {e_ia: sim, brasileira: sim, ptbr: incerto, area_problema: []}
+
+  - id: brasileira_so_sinais_fracos
+    documento: >
+      Projeto chamado "Previsão de Filas" sobre atendimento no SUS; o README, em
+      inglês, descreve um modelo de séries temporais treinado com dados
+      históricos de atendimento. Sem dono identificado e sem localização.
+    sinais:
+      e_ia: {fortes: 1}
+      brasileira: {fracos: 2}
+    esperado: {e_ia: sim, brasileira: incerto, ptbr: incerto, area_problema: [saude]}
+
+  - id: origem_estrangeira_declarada
+    documento: >
+      Modelo de fala desenvolvido e mantido por uma empresa sediada no Canadá,
+      como declara o model card; usado por projetos brasileiros.
+    sinais:
+      e_ia: {fortes: 1}
+      brasileira: {negativa: true}
+    esperado: {e_ia: sim, brasileira: nao, ptbr: incerto, area_problema: []}
+
+  - id: so_pt_pt
+    documento: >
+      Modelo de linguagem com a tag `language:pt`, treinado em corpora de
+      português europeu por um centro de investigação de Lisboa; o card não
+      menciona o Brasil nem o português brasileiro.
+    sinais:
+      e_ia: {fortes: 1}
+      brasileira: {negativa: true}
+      # v0.2.2 (autor, 2026-09-29): pt-PT declarado é evidência contrária, e a
+      # tag `language:pt` é só sinal fraco, que não conflita com ela.
+      ptbr: {fracos: 1, negativa: true}
+    esperado: {e_ia: sim, brasileira: nao, ptbr: nao, area_problema: []}
+
+  - id: multilingue_generico_documentado
+    documento: >
+      Modelo multilíngue que lista o português entre cem idiomas; o card diz que
+      não houve ajuste nem avaliação específica para nenhum idioma.
+    sinais:
+      e_ia: {fortes: 1}
+      ptbr: {fracos: 1, negativa: true}
+    esperado: {e_ia: sim, brasileira: incerto, ptbr: nao, area_problema: []}
+
+  - id: multilingue_so_tag
+    documento: >
+      Modelo com a tag `language:pt` entre outras; o card não diz nada sobre o
+      treinamento ou a avaliação em português.
+    sinais:
+      e_ia: {fortes: 1}
+      ptbr: {fracos: 1}
+    esperado: {e_ia: sim, brasileira: incerto, ptbr: incerto, area_problema: []}
+
+  - id: ptbr_dois_sinais_medios
+    documento: >
+      Modelo no Hugging Face com a tag `language:pt` e um card que diz "para
+      português do Brasil", sem detalhar o treinamento; o código está num
+      repositório GitHub com o tópico `brazilian-portuguese`.
+    sinais:
+      e_ia: {fortes: 1}
+      ptbr: {medios: 2}
+    esperado: {e_ia: sim, brasileira: incerto, ptbr: sim, area_problema: []}
