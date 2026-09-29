@@ -265,7 +265,7 @@ gitlab_normalize_items <- function(items) {
     }
     tibble::tibble(
       platform = "gitlab",
-      id = as.character(id),
+      id = if (is.numeric(id)) format(id, scientific = FALSE, trim = TRUE) else as.character(id),
       full_name = as.character(full_name),
       name = as.character(name),
       description = as.character(project$description %||% NA_character_),
@@ -400,6 +400,7 @@ gitlab_readme_payload <- function(project_id, root, request_fn, budget, max_byte
     .radar_size = size,
     encoding = body$encoding,
     content = body$content,
+    .radar_last_commit_id = body$last_commit_id %||% NA_character_,
     .radar_file_path = body$file_path %||% "README.md"
   )
 }
@@ -428,20 +429,24 @@ coletar_readme_gitlab <- function(repositories,
     payload <- gitlab_readme_payload(project_id, root, request_fn, budget, max_bytes)
     status <- payload$.radar_http_status %||% NA_integer_
     if (!is.na(status)) {
-      if (identical(as.integer(status), 404L)) return(list(readme = NA_character_, readme_status = "missing"))
+      if (identical(as.integer(status), 404L)) return(list(readme = NA_character_, readme_status = "missing", content_hash = NA_character_))
       radar_verificar_status_http(status, "GitLab", "README.md")
     }
     skip <- payload$.radar_skip %||% NULL
-    if (!is.null(skip)) return(list(readme = NA_character_, readme_status = as.character(skip)))
+    if (!is.null(skip)) return(list(readme = NA_character_, readme_status = as.character(skip), content_hash = NA_character_))
     raw <- jsonlite::base64_dec(gsub("\\s+", "", payload$content))
     if (length(raw) > max_bytes) {
-      return(list(readme = NA_character_, readme_status = "over_size_limit_after_get"))
+      return(list(readme = NA_character_, readme_status = "over_size_limit_after_get", content_hash = NA_character_))
     }
     text <- if (length(raw)) rawToChar(raw) else ""
     if (length(raw)) Encoding(text) <- "UTF-8"
-    list(readme = text, readme_status = "read")
+    last_commit <- payload$.radar_last_commit_id
+    list(readme = text, readme_status = "read",
+         content_hash = if (is.na(last_commit) || !nzchar(last_commit))
+           NA_character_ else radar_content_hash("gitlab", last_commit, text))
   })
   repositories$readme <- purrr::map_chr(details, "readme")
   repositories$readme_status <- purrr::map_chr(details, "readme_status")
+  repositories$content_hash <- purrr::map_chr(details, "content_hash")
   repositories
 }

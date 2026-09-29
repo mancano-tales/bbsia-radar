@@ -13,7 +13,7 @@ agentes:
   auditor: null
 tarefas:
   - { desc: "WP0 — autor escolher a mitigação e aprová-la", issue: null, status: concluido, data: "2026-09-27" }
-  - { desc: "WP1 — ampliar o detector e conectá-lo aos hooks locais", issue: null, status: concluido, data: null }
+  - { desc: "WP1 — ampliar o detector e conectá-lo aos hooks locais", issue: null, status: concluido, data: "2026-09-27" }
   - { desc: "WP2 — adicionar Actions e tornar o status check obrigatório no GitHub", issue: null, status: pendente, data: null }
   - { desc: "WP3 — documentar operação, limites e resposta à detecção", issue: null, status: concluido, data: null }
 relacionados: ["repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md"]
@@ -52,11 +52,20 @@ Um hook administrado na instância GHES pode rejeitar conteúdo antes da atualiz
 - Um workflow de pull request pode verificar conteúdo antes do merge, mas não antes do push para uma branch pública.
 - O GitHub documenta rulesets para proteger branches e tags públicas; push rulesets por caminhos são limitados a repositórios privados ou internos nos planos aplicáveis.
 - A regra que torna um check obrigatório é uma configuração do repositório no GitHub e não pode ser registrada apenas pelo arquivo de workflow.
-- A sessão não pôde acessar a issue nem alterar regras do repositório: gh informou que o token está inválido e a conexão à API foi bloqueada.
+- Na primeira tentativa, a sessão não pôde acessar a issue nem alterar regras do repositório: gh informou que o token estava inválido e a conexão à API foi bloqueada. A autenticação OAuth foi restabelecida depois.
+- O PR #19 foi integrado. Revisões prévias independentes por Gemini Pro e GPT-Sol confirmaram quatro falhas no scanner e nos diffs de merge; as correções estão nesta execução.
+- A integração GitHub retornou HTTP 403 na tentativa inicial de comentar a issue #1 e criar o PR. Após autorização OAuth do autor, o `gh` CLI autenticou e a atualização foi publicada na issue #1.
+- Os commits 6216a8f, 060500c, 3b6cbc7, 2ea3e8f e ee32b88 estão publicados na branch codex/1-revisao-caminhos-absolutos. O merge de `main` até b2636ed resolveu o segundo conflito concorrente em `NEWS.md`; o GitHub confirma o PR #21 como `CLEAN`/`MERGEABLE`, e o workflow `Verificar caminhos absolutos` passou. O CodeRabbit retornou PASS, com revisão manual indicada para este repositório OSS. A exigência do status check continua pendente.
+- `news_db.py`: 39 entradas, nenhuma sem commit identificável e 37/39 mensagens declaradas coincidentes. As duas divergências em entradas históricas das issues #8 e #1 são anteriores a esta branch; o verificador usa o conteúdo da entrada no commit que a criou. Nenhum commit publicado foi reescrito.
+- A revisão posterior também encontrou variantes file: com/sem host ainda não cobertas, referências web relativas ao esquema confundidas com UNC e o fallback do pre-push sem diff de merge de primeiro pai. O scanner e o hook agora incluem esses casos.
+- A revisão final do GPT-Sol encontrou um falso positivo quando `file://host` em string era seguido de URL relativa; o limite de autoridade e o parser UNC agora param em aspas e delimitadores.
+- Revisões finais independentes de GPT-Sol e Gemini Pro sobre o diff após essa correção: sem achados acionáveis.
+- Em 2026-09-28, a branch do PR #21 foi sincronizada com `main` após a integração do GitLab. O único conflito, em `NEWS.md`, foi resolvido preservando as entradas dos dois lados. A API do GitHub confirmou que `main` não tem proteção de branch e não há ruleset aplicável; logo, o status check ainda não é obrigatório.
+- Validação direcionada: `bash -n`, fixtures positivos/negativos para URIs, UNC, escapes, aspas, `+++`, URLs e stress de linha longa; scanner sobre o diff completo e `git diff --check` passaram.
 
 ## Escopo aprovado
 
-1. Usar um scanner comum nos hooks locais e no workflow para linhas adicionadas em diffs textuais de qualquer arquivo. Ele reconhece drives Windows, caminhos UNC e raízes Unix locais comuns (home, Users, root, tmp, workspace e montagens); não pretende reconhecer todo caminho Unix possível nem inspeciona arquivos binários. Não há diretórios excluídos nem marcador de isenção. A saída revela apenas o caminho relativo do arquivo e o número da linha, nunca o conteúdo detectado.
+1. Usar um scanner comum nos hooks locais e no workflow para linhas adicionadas em diffs textuais de qualquer arquivo. Ele reconhece drives Windows, inclusive em URI file: sem autoridade ou com host e em literais com separadores escapados; UNC com barras invertidas (também em literais escapados); e raízes Unix locais comuns (home, Users, root, tmp, workspace e montagens), inclusive dentro de URI file:. A busca mantém o contexto da linha original; linhas adicionadas que começam com +++ continuam sendo verificadas. Hooks e workflow também inspecionam o diff de primeiro pai de commits de merge. Referências web relativas ao esquema com barras normais não são tratadas como UNC. Não pretende reconhecer todo caminho Unix possível nem inspeciona arquivos binários. Não há diretórios excluídos nem marcador de isenção. A saída revela apenas o caminho relativo do arquivo e o número da linha, nunca o conteúdo detectado.
 2. Instalar pre-commit e pre-push em hooks/, manter os arquivos com LF no Windows e ativá-los neste clone.
 3. Adicionar um workflow para pull requests. A configuração remota que exige o check e restringe integração à branch principal a pull requests fica pendente até o acesso ao GitHub estar disponível.
 4. Atualizar as instruções e registrar a execução neste plano, no TODO e no NEWS.
@@ -64,7 +73,7 @@ Um hook administrado na instância GHES pode rejeitar conteúdo antes da atualiz
 
 ## Critério de conclusão
 
-O detector local e o workflow estão no branch de trabalho. O plano só será concluído quando o autor ou uma sessão autenticada anunciar o trabalho na issue #1 e configurar/confirmar o status check obrigatório no GitHub. Essa etapa remota ainda está pendente.
+O detector local e o workflow passaram na checagem do PR #21. O plano permanece ativo até o autor revisar/mergear o PR e tornar o status check obrigatório nas regras do GitHub.
 
 ## Fontes oficiais
 

@@ -47,11 +47,19 @@ codebook_para_decifra <- function(codebook_path = "config/codebook.yml", output_
     item <- dimension$item
     if (is.null(item)) next
     values <- as.character(unlist(item$valores, use.names = FALSE))
+    signals <- item$sinais %||% list()
+    evidence <- c(
+      if (length(signals$fortes)) paste0("Sinais fortes: ", paste(unlist(signals$fortes), collapse = " | ")),
+      if (length(signals$medios)) paste0("Sinais médios: ", paste(unlist(signals$medios), collapse = " | ")),
+      if (length(signals$fracos)) paste0("Sinais fracos: ", paste(unlist(signals$fracos), collapse = " | ")),
+      if (length(item$inclui)) paste0("Inclui: ", paste(unlist(item$inclui), collapse = " | ")),
+      if (length(item$exclui)) paste0("Exclui: ", paste(unlist(item$exclui), collapse = " | "))
+    )
     categories <- purrr::map(values, function(value) list(
       label = value,
-      definition = paste0("Marque `", value, "` segundo os critérios da dimensão. Pergunta: ", dimension$question),
-      positive_examples = as.list(item$exemplos_sim %||% character()),
-      negative_examples = as.list(item$exemplos_nao %||% character()),
+      definition = paste(c(paste0("Marque `", value, "` segundo os critérios da dimensão. Pergunta: ", dimension$question), evidence), collapse = " "),
+      positive_examples = if (identical(value, "sim")) as.list(item$exemplos_sim %||% character()) else list(),
+      negative_examples = if (identical(value, "nao")) as.list(item$exemplos_nao %||% character()) else list(),
       boundary_notes = item$regra_de_decisao %||% item$nota %||% item$definicao %||% ""
     ))
     variables[[length(variables) + 1L]] <- radar_to_decifra_variable(

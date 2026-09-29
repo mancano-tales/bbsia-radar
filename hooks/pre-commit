@@ -1,20 +1,27 @@
 #!/usr/bin/env bash
 # ==============================================================================
 # pre-commit — governança do bbsia-radar
-# Exige NEWS.md junto com mudanças e bloqueia caminhos absolutos em linhas novas.
+# Aplica a governança comum atual, recusa o NEWS.md na raiz e verifica caminhos
+# absolutos no diff staged.
 # Ative no clone com: git config core.hooksPath hooks
 # ==============================================================================
-set -u
-set -o pipefail
-staged=$(git diff --cached --name-only --diff-filter=ACMR)
-[ -z "$staged" ] && exit 0
-falhou=0
-if ! printf '%s\n' "$staged" | grep -qx 'NEWS.md'; then
-  echo "pre-commit: NEWS.md precisa entrar no mesmo commit (regra do AGENTS.md)." >&2
-  falhou=1
+set -euo pipefail
+
+# A fonte comum recusa recriar NEWS.md/fragmentos, editar deprecated/ e inserir
+# caminhos de máquina. O scanner local cobre também os arquivos excluídos pela
+# checagem comum, mantendo a proteção aprovada para este repositório.
+bash tools/git-hooks/pre-commit
+
+# (pt) A checagem comum isenta pacotes R (há DESCRIPTION) e deixa o NEWS.md na
+#      raiz. Por decisão do autor (2026-09-29), este repositório não usa essa
+#      exceção: o NEWS.md antigo está em repo-governance/deprecated/ e não volta.
+# (en) The shared hook exempts R packages; this repository opts out of that
+#      exemption, so any staged root NEWS.md (added, edited or renamed) fails.
+if git diff --cached --name-only --diff-filter=ACMR | grep -qx 'NEWS.md'; then
+  echo "pre-commit: NEWS.md foi aposentado neste repositório, sem exceção para pacote R" >&2
+  echo "(AGENTS.md, seção específica). Registre no corpo do commit, no PR e na issue." >&2
+  exit 1
 fi
-if ! git diff --cached --no-ext-diff --no-color --unified=0 --diff-filter=ACMR -- \
-  | bash tools/check-absolute-paths.sh; then
-  falhou=1
-fi
-exit "$falhou"
+
+git diff --cached --no-ext-diff --no-color --unified=0 --diff-filter=ACMR -- \
+  | bash tools/check-absolute-paths.sh

@@ -160,7 +160,7 @@ out_lines <- c(
   "",
   paste0("Derivado do `git log` por `tools/render-changelog.R`. Commit mais recente incluído: ", most_recent_date, "."),
   "",
-  "Arquivo DERIVADO do `git log`. Não edite à mão — a fonte editorial é o `NEWS.md` e o histórico do Git.",
+  "Arquivo DERIVADO do `git log`. Não edite à mão — registre mudanças nos commits, PRs e issues.",
   ""
 )
 
