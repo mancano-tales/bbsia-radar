@@ -2,6 +2,8 @@
 
 **Radar que encontra e documenta soluções de IA brasileiras, adaptadas ao português brasileiro ou de interesse público que possam ser adaptadas, ainda ausentes do Banco Brasileiro de Soluções de IA (BBSIA). Busca projetos no GitHub, Hugging Face e GitLab.com e prepara candidatas para revisão humana.**
 
+> **Proposta independente.** Este radar é uma proposta de Tales Mançano, voluntário do BBSIA, para apresentação à coordenação do programa. Ainda não é uma iniciativa oficial do BBSIA e não conta com endosso institucional. Os ativos da identidade visual oficial estão preparados no repositório, mas desativados no site e no relatório até uma decisão da coordenação.
+
 > **Verificação documental (2026-09-26; issue #2).** O site e o formulário foram consultados sem enviar dados. As respostas e os limites da evidência estão registrados abaixo e na issue. Contagens são retratos da data, não dados exportados.
 
 ---
@@ -14,7 +16,7 @@ Hoje, uma solução entra no banco quando alguém preenche o formulário à mão
 
 ## A proposta
 
-Usar as interfaces oficiais (APIs) do GitHub, do Hugging Face e do GitLab.com para **encontrar, descrever e organizar** essas soluções, e entregar ao BBSIA uma lista de candidatos pronta para revisão, no formato do formulário. A ideia foi combinada com a coordenação do BBSIA (Eunice Liu, Enap) em 26/09/2026.
+Usar as interfaces oficiais (APIs) do GitHub, do Hugging Face e do GitLab.com para **encontrar, descrever e organizar** essas soluções, e entregar ao BBSIA uma lista de candidatos pronta para revisão, no formato do formulário. Houve uma conversa inicial sobre a ideia com a coordenação do BBSIA (Eunice Liu, Enap) em 26/09/2026; a proposta de radar ainda será apresentada à coordenação para avaliação. A conversa inicial não constitui aprovação do projeto ou do site.
 
 Três tipos de solução interessam:
 

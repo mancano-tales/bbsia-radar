@@ -5,32 +5,17 @@ project:
     - index.qmd
     - metodo.qmd
     - relatorio.qmd
-  resources:
-    - assets/*.png
-
 website:
-  title: "Radar Brasileiro de Soluções de IA"
-  site-url: https://mancano-tales.github.io/bbsia-radar/
+  title: "Proposta de radar de soluções de IA"
   description: >-
-    Radar de soluções de IA brasileiras, adaptadas ao português brasileiro ou de
-    interesse público adaptáveis, com fontes, método e limites documentados.
+    Proposta independente de Tales Mançano, voluntário do BBSIA, para apreciação
+    pela coordenação do programa. Ainda não é uma iniciativa oficial do BBSIA.
   page-navigation: true
-  image: assets/og-image.png
-  favicon: assets/favicon-32x32.png
-  open-graph:
-    image: assets/og-image.png
-    image-width: 1200
-    image-height: 630
-  twitter-card:
-    image: assets/og-image.png
-    image-width: 1200
-    image-height: 630
-    card-style: summary_large_image
+  page-footer:
+    center: "Proposta independente de Tales Mançano, voluntário do BBSIA. Sem caráter oficial ou endosso institucional."
   navbar:
-    background: "#183b60"
+    background: "#123a3a"
     foreground: "#ffffff"
-    logo: assets/bbsia-logo-transparent.svg
-    logo-alt: "Símbolo do BBSIA"
     left:
       - href: index.qmd
         text: Início
@@ -47,9 +32,6 @@ format:
   html:
     theme: cosmo
     css: styles.css
-    include-in-header:
-      text: |
-        <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" sizes="180x180">
     toc: true
     toc-depth: 3
     link-external-newwindow: true

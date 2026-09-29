@@ -1,7 +1,7 @@
 ---
-title: "Relatório público do bbsia-radar"
-subtitle: "Candidatas, evidências, proveniência e limites da análise"
-author: "Projeto bbsia-radar"
+title: "Relatório da proposta de radar"
+subtitle: "Iniciativa independente para apreciação da coordenação do BBSIA"
+author: "Tales Mançano, voluntário do BBSIA"
 date: today
 date-format: "D [de] MMMM [de] YYYY"
 format:
@@ -25,7 +25,13 @@ format:
     keep-tex: false
 ---
 
-![](assets/bbsia-radar-horizontal.png){fig-alt="BBSIA Radar" width=380px}
+::: {.callout-note}
+### Proposta independente, ainda sem caráter oficial
+
+Este radar é uma proposta de Tales Mançano, voluntário do BBSIA, para apresentar
+à coordenação do programa. Este relatório não é uma publicação oficial do BBSIA
+nem expressa decisão ou endosso da coordenação.
+:::
 
 ## Estado da rodada
 

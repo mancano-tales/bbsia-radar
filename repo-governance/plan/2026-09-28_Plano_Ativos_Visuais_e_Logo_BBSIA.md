@@ -6,7 +6,7 @@ status: ATIVO
 criado: "2026-09-28"
 concluido: null
 autor_humano: "Tales Mançano"
-autorizacao_atual: "No chat em 2026-09-28, após a auditoria independente do Codex registrada na issue #17, o autor pediu todas as refatorações necessárias e a execução do subplano, com cuidado para não conflitar com outros agentes no repositório. A primeira publicação do site permanece sujeita à aprovação própria prevista no plano Quarto."
+autorizacao_atual: "Em 2026-09-28 o autor pediu executar o subplano. Em 2026-09-29 determinou manter os ativos da identidade oficial como opção implementada, porém desativada, e identificar o radar como proposta independente de um voluntário do BBSIA para apresentação à coordenação. Ativar a marca e publicar o site dependem das decisões próprias da coordenação e do plano Quarto."
 agentes:
   orquestrador: "Antigravity / Gemini 3.8 Flash (High) / desktop"
   executor: "Codex / GPT-6 / desktop"
@@ -15,6 +15,7 @@ tarefas:
   - { desc: "WP1 — Especificação e geração dos ativos vetoriais SVG (mestre, transparente e banner)", status: concluido }
   - { desc: "WP2 — Pipeline de renderização em alta definição para PNGs e favicons via Chromium headless", status: concluido }
   - { desc: "WP3 — Validação de integridade visual, conferência de dimensões e integração ao Quarto", status: concluido }
+  - { desc: "WP4 — Desativar a identidade oficial no site e no PDF e explicitar o caráter de proposta independente", status: concluido }
 relacionados: ["repo-governance/plan/2026-09-27_Plano_Website_Quarto.md"]
 ---
 
@@ -24,7 +25,9 @@ relacionados: ["repo-governance/plan/2026-09-27_Plano_Website_Quarto.md"]
 
 ## 1. Objetivo e contexto
 
-Incorporar ao repositório os ativos visuais oficiais do Banco Brasileiro de Soluções de IA (BBSIA) para uso no futuro site público Quarto e nos relatórios exportados em PDF.
+Incorporar ao repositório os ativos visuais oficiais do Banco Brasileiro de Soluções de IA (BBSIA) como opção técnica futura, **desativada na apresentação atual** do site Quarto e dos relatórios PDF.
+
+Em 2026-09-29, o autor decidiu que o radar deve ser apresentado como proposta independente de Tales Mançano, voluntário do BBSIA, a ser levada à coordenação do programa. A identidade oficial não será exibida, distribuída no artefato do site nem aplicada aos metadados sociais antes de decisão e autorização próprias. A intenção futura de tornar o projeto oficial não representa endosso atual.
 
 O autor manifestou a preocupação de garantir a marca na mais alta qualidade visual possível. A fonte verificável é o [ícone SVG publicado pelo próprio BBSIA](https://bancobrasileiro.ia.br/icon.svg), consultado em 2026-09-28 e preservado como `report/assets/bbsia-source-icon.svg` (SHA-256 `90ba06d6626b4b9af4719b43e7b350f94583069f9ef1755f8e4b55fc1a83c402`). O comentário do ícone informa que o portal vetorizou a marca de `bbsia.PNG` (265×184). As curvas do símbolo no radar derivam diretamente das coordenadas do ícone, não de uma aproximação descrita em prosa. A licença do código do radar não cobre a marca de terceiros nem significa endosso institucional.
 
@@ -65,7 +68,7 @@ Os arquivos serão armazenados em `report/assets/`:
 Para suprir contextos em que o formato SVG não é suportado (como metatags de compartilhamento OpenGraph/Twitter ou aplicações legadas), o repositório incluirá um script reproduzível:
 
 * **Script**: `tools/render-assets.mjs` (Node.js 24, apenas módulos nativos). Uso: `node tools/render-assets.mjs` para gerar e `node tools/render-assets.mjs --check` para validar sem navegador.
-* **Mecanismo**: detecção de Edge/Chrome/Chromium no Windows e Linux, com opção `BBSIA_BROWSER` para apontar o executável. A captura headless usa HTML local autônomo, margem zero, dimensões exatas, escala de dispositivo 1 e perfil temporário isolado; o script rejeita falha do navegador, PNG inválido, dimensão incorreta e pacote acima de 500 KB. Os PNGs são versionados: o build Quarto/CI só os consome e executa `--check`, sem precisar iniciar navegador. A regeneração em outro sistema pode variar nos pixels de antialiasing, mas não nas dimensões nem na geometria-fonte.
+* **Mecanismo**: detecção de Edge/Chrome/Chromium no Windows e Linux, com opção `BBSIA_BROWSER` para apontar o executável. A captura headless usa HTML local autônomo, margem zero, dimensões exatas, escala de dispositivo 1 e perfil temporário isolado; o script rejeita falha do navegador, PNG inválido, dimensão incorreta e pacote acima de 500 KB. Os PNGs são versionados e podem ser verificados localmente com `--check`, sem iniciar navegador; o build Quarto/CI não os consome enquanto a marca estiver desativada. A regeneração em outro sistema pode variar nos pixels de antialiasing, mas não nas dimensões nem na geometria-fonte.
 * **Composição OpenGraph**: fundo sólido claro, banner vetorial e faixa de gradiente; nenhum dado de candidatos é lido.
 * **Saídas geradas**:
   * `report/assets/bbsia-logo-512.png` (512×512 px)
@@ -84,7 +87,7 @@ Para suprir contextos em que o formato SVG não é suportado (como metatags de c
 * Os seis PNGs têm assinatura PNG válida e dimensões conferidas pelo modo `--check`; o símbolo e o cartão são inspecionados visualmente depois da geração.
 * Todos os caminhos nos scripts e no Quarto são relativos à raiz do repositório (em conformidade estrita com o `AGENTS.md` e os hooks de caminhos absolutos).
 * Os arquivos finais são compactos (<500 KB no total de todas as variantes PNG/SVG somadas), respeitando a política de dados leves do repositório.
-* A integração não altera a coleta, o esquema público, os dados, o workflow de Pages nem a autorização para a primeira publicação. As referências estáticas no Quarto devem ser compatibilizadas com a PR #18 antes do merge.
+* A integração não altera a coleta, o esquema público, os dados, o gatilho de deploy nem a autorização para a primeira publicação. O artefato Quarto não inclui os ativos oficiais enquanto a opção estiver desativada.
 
 ---
 
@@ -95,12 +98,16 @@ Conforme a governança do repositório e a skill `request-audit`, este plano é 
 ### Fragilidades e autocrítica:
 1. **Fidelidade da tipografia horizontal**: resolvida com lettering em curvas SVG, independente de fonte instalada.
 2. **Dependência do Chromium para o render**: restrita à regeneração local dos PNGs versionados; o modo `--check` e o build Quarto/CI não iniciam navegador. Falha local é explícita. O Edge produziu todos os PNGs no ambiente Windows do autor; a execução dentro do sandbox do agente falhou por restrições de GPU, registradas na auditoria da issue #17.
-3. **Escopo isolado**: os ativos e sua validação não publicam páginas ou dados. A PR #18 contém a estrutura Quarto estática e continua protegida pela autorização de publicação; qualquer referência aos ativos será integrada sem alterar essa proteção.
+3. **Escopo isolado**: os ativos e sua validação não publicam páginas ou dados. A PR #18 contém a estrutura Quarto estática e continua protegida pela autorização de publicação; nenhuma referência à marca oficial integra a apresentação atual.
 
 ## 6. Evidência da execução
 
-* `node tools/render-assets.mjs --check`: seis PNGs válidos, dimensões esperadas e pacote SVG/PNG de 496159 bytes. O Edge headless gerou os arquivos no ambiente Windows; a build Linux usa só o modo `--check` sobre os arquivos versionados.
+* `node tools/render-assets.mjs --check`: seis PNGs válidos, dimensões esperadas e pacote SVG/PNG de 496159 bytes. O Edge headless gerou os arquivos no ambiente Windows; após desativar a marca, o build Linux não precisa dos ativos e sua verificação fica como comando local de manutenção.
 * `quarto render report`: HTML e PDF gerados. O primeiro build com SVG no PDF falhou por falta de `rsvg-convert`; o cabeçalho do PDF passou a usar o PNG horizontal derivado, e o build completo passou sem instalar conversor SVG.
-* Inspeção visual: símbolo 512, cartão OpenGraph, página inicial em desktop e primeira página do PDF sem distorção ou corte do logo. O site inclui favicon, ícone Apple, banner, logo da navbar e imagem social no artefato; a imagem OpenGraph/Twitter aponta para a URL esperada do GitHub Pages. A configuração atual do repositório ainda não habilita Pages, e nenhuma publicação foi feita.
-* A integração é baseada na branch da PR #18 e adiciona ao workflow apenas validação dos ativos no job de build. O job de deploy e a condição `PAGES_PUBLISH_APPROVED` permanecem inalterados. O merge do subplano depende da integração da PR #18 e da revisão cruzada exigida pelo `AGENTS.md`.
-* Entrega em PR #25, branch `codex/17-ativos-quarto`, empilhada na PR #18. As três WPs foram implementadas; o plano permanece `ATIVO` até a revisão cruzada e o merge.
+* Inspeção visual da primeira implementação: símbolo 512, cartão OpenGraph, página inicial em desktop e primeira página do PDF sem distorção ou corte do logo. Naquela versão, o artefato incluía favicon, ícone Apple, banner, logo da navbar e imagem social; essa integração foi posteriormente desativada pela decisão de 2026-09-29. A configuração atual do repositório ainda não habilita Pages, e nenhuma publicação foi feita.
+* A integração é baseada na branch da PR #18. O job de deploy e a condição `PAGES_PUBLISH_APPROVED` permanecem inalterados. O merge do subplano depende da integração da PR #18 e da revisão cruzada exigida pelo `AGENTS.md`.
+* Entrega em PR #25, branch `codex/17-ativos-quarto`, empilhada na PR #18. As quatro WPs foram implementadas; o plano permanece `ATIVO` até a revisão cruzada e o merge.
+
+### Decisão de apresentação em 2026-09-29
+
+O autor apontou o risco de que a estética oficial sugira endosso institucional e determinou desativá-la até a conversa com a coordenação. A PR #25 conserva SVGs, PNGs e o gerador como opção técnica, mas retira as referências da configuração Quarto, das páginas, do PDF e do workflow de publicação. O README, a página inicial, a página de método e o relatório declaram a autoria voluntária e a ausência de caráter oficial. A ativação futura requer decisão explícita da coordenação e atualização deste plano antes de mudar a apresentação pública.

@@ -1,7 +1,11 @@
 ---
 title: "Como o radar funciona"
-description: "Fontes, etapas de análise e limites do bbsia-radar."
+description: "Método de uma proposta independente de radar, ainda sem caráter oficial do BBSIA."
 ---
+
+**Esta é uma proposta independente de Tales Mançano, voluntário do BBSIA, para
+apresentação à coordenação do programa. O método e seus resultados não são
+publicações oficiais do BBSIA.**
 
 O radar prepara candidatas a partir de metadados públicos e documentos de
 projeto. A presença de um repositório não significa que a solução foi confirmada
