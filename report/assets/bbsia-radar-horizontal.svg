@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="320" viewBox="0 0 1280 320" role="img" aria-labelledby="title description">
+  <title id="title">BBSIA Radar</title>
+  <desc id="description">Símbolo do BBSIA à esquerda e lettering geométrico BBSIA RADAR à direita.</desc>
+  <defs>
+    <linearGradient id="brand" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#356CAF"/>
+      <stop offset="1" stop-color="#019480"/>
+    </linearGradient>
+    <!-- Lettering vetorial próprio: nenhum glifo depende de fonte do sistema. -->
+    <path id="B" d="M0 100 V0 H35 C68 0 68 50 35 50 H0 M35 50 C69 50 69 100 35 100 H0"/>
+    <path id="S" d="M55 9 C40 -4 0 -3 0 24 C0 50 55 42 55 76 C55 104 16 107 0 90"/>
+    <path id="I" d="M0 0 H55 M27.5 0 V100 M0 100 H55"/>
+    <path id="A" d="M0 100 L28 0 L56 100 M10 66 H46"/>
+    <path id="R" d="M0 100 V0 H34 C67 0 67 52 34 52 H0 M31 52 L62 100"/>
+    <path id="D" d="M0 0 V100 H23 C76 100 76 0 23 0 Z"/>
+  </defs>
+  <g transform="translate(32 32) scale(8)">
+    <rect width="32" height="32" rx="6" fill="url(#brand)"/>
+    <rect x="2" y="7" width="6.14" height="18.05" fill="#4AAA47"/>
+    <path d="M19.26 7.37 L30 25.05 L8.51 25.05 Z" fill="#F6BB15"/>
+    <path d="M12.51 25.05 A6.75 6.75 0 0 1 26.01 25.05 Z" fill="#4AAA47"/>
+  </g>
+  <g fill="none" stroke="#183B60" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" transform="translate(356 45) scale(1.35)">
+    <use href="#B" x="0"/><use href="#B" x="78"/><use href="#S" x="156"/><use href="#I" x="234"/><use href="#A" x="312"/>
+  </g>
+  <path d="M356 205 H864" stroke="#4AAA47" stroke-width="5"/>
+  <g fill="none" stroke="#356CAF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" transform="translate(356 225) scale(.65)">
+    <use href="#R" x="0"/><use href="#A" x="88"/><use href="#D" x="176"/><use href="#A" x="264"/><use href="#R" x="352"/>
+  </g>
+</svg>
