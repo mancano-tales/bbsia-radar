@@ -58,3 +58,27 @@ test_that("generated YAML round-trips without changing the source codebook", {
   expect_true(all(c("concept", "description", "variables") %in% names(generated)))
   expect_identical(readLines(source_path, warn = FALSE), before)
 })
+
+test_that("BBSIA form mapping uses observed options and leaves ambiguous categories manual", {
+  codebook <- yaml::yaml.load(readr::read_file(file.path(repo_root, "config", "codebook.yml"),
+                                                 locale = readr::locale(encoding = "UTF-8")))
+  form <- yaml::yaml.load(readr::read_file(file.path(repo_root, "config", "formulario_bbsia.yml"),
+                                             locale = readr::locale(encoding = "UTF-8")))
+  expect_equal(codebook$versao, "0.2.0")
+  expect_equal(form$fonte, "https://bancobrasileiro.ia.br/contribuir")
+  for (entry in list(list(internal = codebook$tipo_artefato, form = form$campos$tipo_ativo),
+                     list(internal = codebook$area_problema, form = form$campos$area))) {
+    mapped <- unlist(entry$internal$mapeamento_formulario, use.names = FALSE)
+    manual <- unlist(entry$internal$mapeamento_manual, use.names = FALSE)
+    internal <- if (identical(entry$internal, codebook$tipo_artefato)) {
+      names(entry$internal$valores)
+    } else {
+      unlist(entry$internal$valores, use.names = FALSE)
+    }
+    expect_true(all(mapped %in% unlist(entry$form$opcoes, use.names = FALSE)))
+    expect_setequal(c(names(entry$internal$mapeamento_formulario), manual), internal)
+    expect_length(intersect(names(entry$internal$mapeamento_formulario), manual), 0L)
+  }
+  expect_true(grepl("incerto.*sem sinais", codebook$vinculo$brasileira$regra_de_decisao))
+  expect_true(grepl("ausência de sinais", codebook$vinculo$ptbr$regra_de_decisao))
+})

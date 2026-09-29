@@ -6,12 +6,13 @@
 #        1. pelas regras automáticas (R/, WP5 passo 1);
 #        2. como instrução ao LLM que classifica o resto (WP5 passo 2);
 #        3. como guia de quem codifica a amostra humana de validação (WP5 passo 3).
-#      Mudou o codebook? Suba `versao`, registre no NEWS.md e recodifique a amostra.
+#      Mudou o codebook? Suba `versao`, registre o motivo no commit/issue e
+#      recodifique a amostra; NEWS.md recebe somente notas de versão lançada.
 # (en) Decides what enters the radar and how each solution is described. Written
 #      BEFORE data collection; read by the rule engine, by the LLM classifier and
 #      by human coders. Any change bumps `versao` and triggers re-coding.
 #
-# Issue: #3 · Plano: repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md §5
+# Issues: #3 (base) e #24 (ampliação pública e série longitudinal).
 #
 # Status das decisões: cada caso-limite traz `decisao_status`:
 #   proposta        -> escolha do agente, vale até o autor revisar;
@@ -19,10 +20,16 @@
 #   depende_bbsia   -> depende da coordenação do BBSIA (issue #2 / plano §3).
 # ==============================================================================
 
-versao: "0.1.1"
-data: "2026-09-26"
+versao: "0.2.0"
+data: "2026-09-28"
 status: rascunho          # rascunho | em_validacao | estavel
-issue: 3
+issue: 24
+versao_anterior: "0.1.1"
+formulario_bbsia: "config/formulario_bbsia.yml"
+politica_migracao: >
+  A versão 0.1.1 permanece no histórico Git. Nenhum valor antigo é substituído
+  em silêncio. Reclassificar uma amostra com a 0.2.0 e registrar lado a lado
+  rótulo anterior, rótulo novo, motivo, fonte e decisão humana.
 
 # ------------------------------------------------------------------------------
 # 1. Unidade de análise / unit of analysis
@@ -87,7 +94,9 @@ vinculo:
         - "Problema tipicamente brasileiro (SUS, ENEM, Pix, CPF, Diário Oficial)."
     regra_de_decisao: >
       `sim` com 1 sinal forte, ou 2 médios. `incerto` com 1 médio ou só fracos.
-      `nao` sem sinais. Sinal fraco sozinho nunca basta.
+      `incerto` sem sinais; silêncio da fonte não demonstra origem estrangeira.
+      `nao` exige evidência positiva de origem não brasileira. Sinal fraco
+      sozinho nunca basta.
     exemplos_sim:
       - "Transcritório (antrologos): app de transcrição de entrevistas, autor brasileiro."
       - "BERTimbau (NeuralMind): modelo e código de empresa brasileira."
@@ -114,9 +123,10 @@ vinculo:
         - "Tópico `portuguese` ou `portuguese-nlp` sozinho."
     regra_de_decisao: >
       `sim` com 1 sinal forte, ou 2 médios. `incerto` com 1 médio sozinho, só
-      sinais fracos, ou sinais conflitantes (ex.: `language:pt` mas documentação
-      só sobre pt-PT). `nao` sem sinais. Modelo multilíngue genérico que apenas
-      inclui português = `nao`.
+      sinais fracos, ausência de sinais, ou sinais conflitantes (ex.:
+      `language:pt` mas documentação só sobre pt-PT). `nao` exige evidência
+      explícita de não adaptação ao pt-BR. Modelo multilíngue genérico que
+      apenas inclui português = `nao` quando isso está documentado.
     exemplos_sim:
       - "Tucano / TeenyTinyLlama (Nicholas Kluge Corrêa): modelos treinados em português."
     exemplos_nao:
@@ -168,7 +178,25 @@ tipo_artefato:
     dataset: "Base de dados ou corpus para treinar ou avaliar IA."
     benchmark: "Conjunto de avaliação com protocolo e métricas."
     demo: "Demonstração (ex.: Space do Hugging Face) sem uso real previsto."
+    api: "Serviço acessado por uma interface documentada."
+    servidor_mcp: "Servidor MCP que conecta ferramentas a um agente de IA."
+    agente_ia: "Assistente capaz de executar tarefas com ferramentas."
+    pipeline: "Fluxo de processamento de dados reutilizável."
+    guia_metodologia: "Guia, publicação ou metodologia reutilizável."
+    outro: "Formato documentado que não cabe nas categorias anteriores."
   nota: "Escolher o principal; os outros artefatos vão em `artefatos`."
+  mapeamento_formulario:
+    aplicacao: "Aplicação ou sistema pronto para usar"
+    biblioteca: "Código ou biblioteca para instalar e adaptar"
+    api: "API (serviço que outros sistemas consultam)"
+    servidor_mcp: "Servidor MCP (conecta ferramentas a um agente de IA)"
+    agente_ia: "Agente de IA (assistente que executa tarefas)"
+    modelo: "Modelo de IA treinado"
+    dataset: "Dataset (uma base de dados)"
+    pipeline: "Pipeline / fluxo de processamento de dados"
+    guia_metodologia: "Guia, publicação ou metodologia"
+    outro: "Outro (descreva nas observações)"
+  mapeamento_manual: [benchmark, demo]
 
 area_problema:
   status: provisorio      # substituir pelo vocabulário do BBSIA quando a issue #2 trouxer
@@ -189,6 +217,22 @@ area_problema:
     - ciencia_e_pesquisa
     - cultura_e_linguagem     # inclui PLN em português de uso geral
     - transversal             # ferramentas genéricas (transcrição, OCR, anonimização)
+  mapeamento_formulario:
+    saude: "Saúde"
+    educacao: "Educação"
+    seguranca_publica: "Segurança Pública"
+    financas_e_tributos: "Fazenda/Tributação"
+    meio_ambiente_e_agro: "Meio Ambiente"
+    gestao_publica: "Gestão Pública"
+  mapeamento_manual:
+    - justica_e_direito
+    - atendimento_ao_cidadao
+    - transparencia_e_controle
+    - trabalho_e_assistencia_social
+    - infraestrutura_e_mobilidade
+    - ciencia_e_pesquisa
+    - cultura_e_linguagem
+    - transversal
 
 problema_resumo:
   descricao: >
@@ -214,7 +258,11 @@ maturidade:
         sinais: ["README com instalação e exemplo", "avaliação ou resultados reportados", "algum uso (estrelas, downloads)", "atividade nos últimos 12 meses"]
       "7-9":
         rotulo: "Em operação"
-        sinais: ["releases versionadas", "publicado em CRAN/PyPI/Hub com uso expressivo", "vários contribuidores", "uso institucional declarado"]
+        sinais: ["uso institucional em produção declarado e citável", "documentação de implantação real"]
+    cautela: >
+      Estrelas, downloads, releases, atividade e vários contribuidores não
+      comprovam uso externo ou TRL 7-9. O TRL é estimativa separada do campo
+      de maturidade do formulário e exige revisão humana antes de publicação.
   ativo:
     definicao: "Houve push (GitHub) ou atualização (Hugging Face) nos últimos 12 meses."
     valores: [sim, nao]
@@ -317,3 +365,77 @@ campos_saida:
   - proveniencia
   - versao_codebook
   - ja_no_bbsia          # sim | nao | possivel_duplicata
+  - estado_revisao
+  - evidencias
+  - campos_publicos_bbsia
+
+# ------------------------------------------------------------------------------
+# 11. Campos públicos do formulário / public form fields (issue #24)
+# ------------------------------------------------------------------------------
+campos_publicos:
+  politica_geral: >
+    Cada valor observável guarda estado, URL da fonte, trecho ou campo exato,
+    data de captura, data declarada na fonte quando existir, rodada, revisor,
+    versão do codebook e confiança. Ausência de menção fica
+    nao_verificavel_publicamente; não vira resposta negativa. Uma proposta de
+    LLM não é uma declaração da instituição. Para cada valor multivalorado,
+    guardar evidência e revisão independentes.
+  estados:
+    - declarado_na_fonte
+    - inferido
+    - nao_verificavel_publicamente
+    - nao_se_aplica
+    - conflitante
+  revisao:
+    estados: [proposto, revisado, rejeitado]
+    regra: "Só fatos revisados entram na ficha pública; divergência permanece no log de eventos."
+  campos:
+    nome_solucao:
+      responsavel: radar
+      regra: "Nome declarado no repositório ou card; preservar URL e data da captura."
+    problema:
+      responsavel: decifra_com_revisao_humana
+      regra: "Uma frase em linguagem comum, sustentada por trecho do documento; não inventar problema."
+    funcionamento:
+      responsavel: decifra_com_revisao_humana
+      regra: "Descrição do mecanismo declarado; separar resumo da citação original."
+    tecnologia_ia:
+      responsavel: decifra_com_revisao_humana
+      regra: "Mapear para opção observada do formulário apenas se documentação sustentar; senão desconhecido."
+    tipo_ativo:
+      responsavel: decifra_com_revisao_humana
+      regra: "Mapear tipo_artefato do radar para opção do formulário; equivalência não é presumida."
+    area:
+      responsavel: decifra_com_revisao_humana
+      regra: "Formulário aceita uma área; preservar até duas áreas internas do radar sem inventar equivalência."
+    ja_usado:
+      responsavel: humano
+      regra: "Só marcar uso externo com declaração pública específica; métricas de plataforma não provam uso."
+    ponto_atual:
+      responsavel: humano
+      regra: "Estágio declarado; TRL estimado é campo separado e não substitui resposta do formulário."
+    aberta:
+      responsavel: radar_com_revisao_humana
+      regra: "Capturar licença e acesso, mas reuso institucional exige avaliação; repo público não basta."
+    recursos_publicos:
+      responsavel: decifra_com_revisao_humana
+      regra: "Usar só declaração específica de financiamento; órgão público autor não basta."
+    soberania:
+      responsavel: decifra_com_revisao_humana
+      regra: "Registrar dependências declaradas; silêncio não prova autonomia."
+    dado_sensivel:
+      responsavel: decifra_com_revisao_humana
+      regra: "Registrar processamento declarado; não certificar ausência nem conformidade."
+    links:
+      responsavel: radar
+      regra: "Somente links da própria solução, com papel e plataforma; preservar aliases."
+    resultados:
+      responsavel: decifra_com_revisao_humana
+      regra: "Relato da fonte com população, período e método quando existirem; não afirmar efeito causal."
+    orgao_nivel_uf_municipio:
+      responsavel: humano
+      regra: "Atribuir somente com afiliação institucional pública explícita."
+    disposicao_aberto:
+      responsavel: humano
+      regra: "Sem declaração institucional específica, nao_verificavel_publicamente; licença não equivale a disposição."
+  campos_de_contato_proibidos: [email, nome_respondente, cargo_respondente, telefone, consentimento]
