@@ -37,7 +37,7 @@ body {
 }
 
 .hero-panel h2 {
-  max-width: 15ch;
+  max-width: 20ch;
   margin: 0.65rem 0 1rem;
   color: var(--radar-green-dark);
   font-size: clamp(2.2rem, 5vw, 4rem);
@@ -77,6 +77,38 @@ body {
 .status-panel h3 {
   margin-top: 0;
   color: #5b4720;
+}
+
+.disclaimer-panel {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  margin: 0 0 2.5rem;
+  padding: 1.2rem 1.5rem;
+  border: 1px solid #d9c58b;
+  border-left: 6px solid var(--radar-gold);
+  border-radius: 0.8rem;
+  background: #fff9e8;
+}
+
+.disclaimer-panel p {
+  margin: 0;
+}
+
+/* Quarto wraps the logo in a <p>; that wrapper is the flex item. */
+.disclaimer-panel > p:first-child {
+  flex: 0 0 72px;
+}
+
+.disclaimer-panel img.disclaimer-logo {
+  width: 72px;
+  max-width: none;
+  height: 72px;
+}
+
+.disclaimer-text {
+  color: #4a3c1d;
+  font-size: 0.98rem;
 }
 
 .grid {
@@ -121,6 +153,11 @@ a {
     margin-top: 1rem;
     padding: 1.6rem;
   }
+
+  .disclaimer-panel {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
 @media print {
@@ -131,6 +168,7 @@ a {
   }
 
   .hero-panel,
+  .disclaimer-panel,
   .status-panel,
   .grid-item {
     break-inside: avoid;

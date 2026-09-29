@@ -52,10 +52,19 @@ jobs:
           test -s report/_site/relatorio.pdf
           grep -q 'href="relatorio.pdf"' report/_site/relatorio.html
           grep -q 'href="apresentacao.pdf"' report/_site/apresentacao.html
-          grep -q 'Proposta independente' report/_site/index.html
+          # A marca do BBSIA só pode aparecer junto do aviso de proposta
+          # independente (decisão do autor, 2026-09-29; plano #28 §2.3).
+          grep -q 'Este site não é do BBSIA' report/_site/index.html
+          grep -q 'disclaimer-panel' report/_site/index.html
           grep -q 'Documento para discussão' report/_site/apresentacao.html
+          grep -q 'Proposta independente' report/_site/metodo.html
           grep -q 'Proposta independente' report/_site/relatorio.html
-          test ! -e report/_site/assets/bbsia-logo.svg
+          grep -q 'Não é um site oficial do BBSIA' report/_site/index.html
+          for page in report/_site/*.html; do
+            if grep -q 'bbsia-logo' "$page"; then
+              grep -q 'disclaimer-panel' "$page" || { echo "::error::$page usa a marca fora do aviso"; exit 1; }
+            fi
+          done
           test ! -e report/_site/assets/og-image.png
 
       - name: Enviar o site completo como artefato do Pages
