@@ -83,26 +83,59 @@ documento_solucao <- function(rows) {
 
 montar_corpus <- function(github = tibble::tibble(),
                           huggingface = tibble::tibble(),
-                          gitlab = tibble::tibble()) {
-  artifacts <- dplyr::bind_rows(github, huggingface, gitlab) |>
+                          gitlab = tibble::tibble(),
+                          artifact_ids = FALSE, max_chars = NULL) {
+  artifacts <- dplyr::bind_rows(github, huggingface, gitlab)
+  if (!"url" %in% names(artifacts)) artifacts$url <- character(nrow(artifacts))
+  artifacts <- artifacts |>
     dplyr::mutate(url = vapply(url, normalizar_url_artefato, character(1))) |>
     dplyr::filter(!is.na(url), nzchar(url)) |>
     dplyr::distinct(url, .keep_all = TRUE)
-  if (!nrow(artifacts)) return(tibble::tibble(id = character(), text = character(), source_urls = character()))
+  if (!nrow(artifacts)) {
+    empty <- tibble::tibble(id = character(), text = character(), source_urls = character())
+    if (artifact_ids) {
+      empty$text_length_original <- integer()
+      empty$text_truncated <- logical()
+    }
+    return(empty)
+  }
 
   # A shared GitHub URL and HF model URL are linked only if either source's
   # `solution_id` has been manually assigned; otherwise each platform artifact
   # is a separate provisional solution, avoiding speculative identity merges.
   if (!"solution_id" %in% names(artifacts)) artifacts$solution_id <- artifacts$url
-  artifacts |>
+  if (artifact_ids) {
+    if (length(max_chars) != 1L || is.na(max_chars) || !is.numeric(max_chars) ||
+        max_chars < 1L || max_chars != as.integer(max_chars))
+      stop("max_chars precisa ser um inteiro positivo.", call. = FALSE)
+    if (!all(c("platform", "id") %in% names(artifacts)))
+      stop("IDs de artefato exigem platform e id da API.", call. = FALSE)
+    artifacts$artifact_id <- purrr::pmap_chr(
+      list(artifacts$platform, artifacts$id,
+           if ("kind" %in% names(artifacts)) artifacts$kind else rep(NA_character_, nrow(artifacts))),
+      radar_artifact_id
+    )
+    # Prefer the same artifact across repeated discovery orders. A curated
+    # multi-platform solution remains one document with one stable primary ID.
+    artifacts <- artifacts[order(artifacts$artifact_id), , drop = FALSE]
+  }
+  corpus <- artifacts |>
     dplyr::group_by(solution_id) |>
     dplyr::summarise(
-      id = as.character(dplyr::first(solution_id)),
+      id = if (artifact_ids) as.character(dplyr::first(artifact_id)) else
+        as.character(dplyr::first(solution_id)),
       text = documento_solucao(dplyr::pick(dplyr::everything())),
       source_urls = paste(url, collapse = " | "),
       .groups = "drop"
     ) |>
     dplyr::select(id, text, source_urls)
+  if (artifact_ids) {
+    if (anyDuplicated(corpus$id)) stop("O corpus contém IDs de artefato repetidos.", call. = FALSE)
+    corpus$text_length_original <- nchar(corpus$text, type = "chars")
+    corpus$text_truncated <- corpus$text_length_original > max_chars
+    corpus$text <- substr(corpus$text, 1L, max_chars)
+  }
+  corpus
 }
 
 salvar_corpus_decifra <- function(corpus, path = NULL, root = Sys.getenv("MANCANO_BBSIA_RADAR_ROOT", "")) {

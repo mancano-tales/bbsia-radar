@@ -37,6 +37,7 @@ hf_api_page <- function(kind, query, root, request_fn = NULL, budget, reserved_a
                         .radar_next = hf_link_next(httr2::resp_header(response, "link")))
       }
     }
+    radar_registrar_status(budget, "huggingface", radar_status_resposta(payload), kind)
     hf_validar_itens_publicos(payload)
     payload
   }, root = root)
@@ -99,7 +100,10 @@ coletar_readme_hf <- function(repositories,
                               request_fn = NULL, budget) {
   required <- c("id", "kind", "sha")
   if (!all(required %in% names(repositories))) stop("repositories precisa de id, kind e sha.", call. = FALSE)
-  if (nrow(repositories) > 10L) stop("Selecione no máximo dez documentos antes do enriquecimento.", call. = FALSE)
+  if (nrow(repositories) > budget$max_documentos)
+    stop(if (budget$max_documentos == 10L)
+      "Selecione no máximo dez documentos antes do enriquecimento." else
+      "Selecione documentos dentro do limite da rodada antes do enriquecimento.", call. = FALSE)
   if (anyNA(repositories$kind) || any(repositories$kind != "models")) {
     stop("O modo exploratório só enriquece model cards de modelos.", call. = FALSE)
   }
@@ -116,7 +120,11 @@ coletar_readme_hf <- function(repositories,
       key <- list(provider = "huggingface", file = "README.md", kind = kind, id = repo_id, revision = sha)
       payload <- radar_cached(key, function() {
         radar_reservar_requisicao(budget, "huggingface", paste0(kind, "/", repo_id, "/README.md"), 2L)
-        if (!is.null(request_fn)) return(request_fn(repo_id, kind, "README.md"))
+        if (!is.null(request_fn)) {
+          response <- request_fn(repo_id, kind, "README.md")
+          radar_registrar_status(budget, "huggingface", radar_status_resposta(response), "README.md")
+          return(response)
+        }
         repo_prefix <- if (identical(kind, "models")) "" else paste0(kind, "/")
         url <- paste0("https://huggingface.co/", repo_prefix, repo_id, "/raw/", sha, "/README.md")
         req <- httr2::request(url) |>
@@ -128,6 +136,7 @@ coletar_readme_hf <- function(repositories,
         # redirect to the content CDN.
         response <- httr2::req_perform(req)
         status <- httr2::resp_status(response)
+        radar_registrar_status(budget, "huggingface", status, "README.md")
         if (is.na(status) || status < 200L || status >= 300L) {
           return(list(.radar_http_status = status,
                       .radar_http_body = httr2::resp_body_string(response, encoding = "UTF-8")))
