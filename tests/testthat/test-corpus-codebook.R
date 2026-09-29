@@ -104,13 +104,40 @@ test_that("Decifra definitions retain evidence rules and examples stay in their 
   expect_match(ia$incerto$boundary_notes, "silêncio.*incerto")
 })
 
-test_that("acceptance fixtures specify expected outcomes for uncertainty and multiple labels", {
+test_that("acceptance cases follow the codebook decision rule, case by case", {
   fixtures <- yaml::yaml.load(readr::read_file(
     file.path(repo_root, "tests", "fixtures", "codebook_aceitacao.yml"),
     locale = readr::locale(encoding = "UTF-8")))
-  expect_setequal(purrr::map_chr(fixtures$casos, "id"),
-                  c("sem_evidencia", "conflitante", "multirrotulo"))
-  expect_equal(fixtures$casos[[1]]$esperado$e_ia, "incerto")
-  expect_equal(fixtures$casos[[2]]$esperado$e_ia, "incerto")
-  expect_equal(length(fixtures$casos[[3]]$esperado$area_problema), 2L)
+  ids <- purrr::map_chr(fixtures$casos, "id")
+  expect_false(anyDuplicated(ids) > 0)
+  # Cases the author asked for (2026-09-29): one and two medium signals,
+  # European Portuguese only, generic multilingual models.
+  expect_true(all(c("sem_evidencia", "conflitante", "multirrotulo",
+                    "brasileira_um_sinal_medio", "brasileira_dois_sinais_medios",
+                    "so_pt_pt", "multilingue_generico_documentado",
+                    "multilingue_so_tag") %in% ids))
+  for (caso in fixtures$casos) {
+    decided <- radar_decidir_caso(caso$sinais %||% list())
+    expected <- unlist(caso$esperado[c("e_ia", "brasileira", "ptbr")])
+    expect_equal(decided, expected, info = caso$id)
+    expect_lte(length(caso$esperado$area_problema), 2L)
+  }
+})
+
+test_that("the executable rule matches the thresholds written in the codebook", {
+  codebook <- yaml::yaml.load(readr::read_file(file.path(repo_root, "config", "codebook.yml"),
+                                               locale = readr::locale(encoding = "UTF-8")))
+  for (flag in c("brasileira", "ptbr")) {
+    rule <- gsub("[[:space:]]+", " ", codebook$vinculo[[flag]]$regra_de_decisao)
+    expect_match(rule, "`sim` com 1 sinal forte, ou 2 médios", info = flag)
+  }
+  expect_match(codebook$e_ia$regra_de_decisao, "silêncio da documentação leva a `incerto`")
+  expect_equal(radar_decidir_marcacao(medios = 1L), "incerto")
+  expect_equal(radar_decidir_marcacao(medios = 2L), "sim")
+  expect_equal(radar_decidir_marcacao(fracos = 5L), "incerto")
+  expect_equal(radar_decidir_marcacao(), "incerto")
+  expect_equal(radar_decidir_marcacao(negativa = TRUE), "nao")
+  expect_equal(radar_decidir_marcacao(fortes = 1L, negativa = TRUE), "incerto")
+  expect_error(radar_decidir_marcacao(medios = -1L))
+  expect_error(radar_decidir_marcacao(negativa = NA))
 })
