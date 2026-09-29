@@ -2,9 +2,9 @@
 tipo: Plano
 titulo: "Identidade visual e ativos da logo BBSIA para o site Quarto e relatórios"
 issue: 17
-status: ATIVO
+status: CONCLUIDO
 criado: "2026-09-28"
-concluido: null
+concluido: "2026-09-29"
 autor_humano: "Tales Mançano"
 autorizacao_atual: "Em 2026-09-28 o autor pediu executar o subplano. Em 2026-09-29 determinou manter os ativos da identidade oficial como opção implementada, porém desativada, e identificar o radar como proposta independente de um voluntário do BBSIA para apresentação à coordenação. Ativar a marca e publicar o site dependem das decisões próprias da coordenação e do plano Quarto."
 agentes:
@@ -108,6 +108,7 @@ Conforme a governança do repositório e a skill `request-audit`, este plano é 
 * A integração é baseada na branch da PR #18. O job de deploy e a condição `PAGES_PUBLISH_APPROVED` permanecem inalterados. O merge do subplano depende da integração da PR #18 e da revisão cruzada exigida pelo `AGENTS.md`.
 * Entrega em PR #25, branch `codex/17-ativos-quarto`, empilhada na PR #18. As quatro WPs foram implementadas; o plano permanece `ATIVO` até a revisão cruzada e o merge.
 * Atualização 2026-09-29: a PR #18 foi integrada, a PR #25 foi retargetada para `main` e a justificativa para usar Node somente na geração/verificação dos ativos foi registrada na issue #17. A revisão cruzada e a ativação institucional da marca continuam independentes.
+* Conclusão 2026-09-29: a PR #25 foi integrada depois de resolver os achados da revisão do Claude. O build HTML/PDF passou na `main` e o job Pages foi ignorado; a decisão de exibir a marca continua com a coordenação do BBSIA, fora deste subplano técnico.
 
 ### Decisão de apresentação em 2026-09-29
 

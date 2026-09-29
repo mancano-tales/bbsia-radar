@@ -5,11 +5,6 @@
 > **Pendente** = pronto para ser trabalhado. **Prospectivo** = identificado, mas falta decisão ou dependência. **Concluído** = feito.
 
 ## Pendente
-- [ ] **Ativos visuais BBSIA** — PR #25 mantém a marca preparada, mas desativada até decisão da coordenação; #18 já integrado, PR #25 retargetado para `main` e aguardando revisão cruzada; issue #17. Criado: 2026-09-28 por Codex / GPT-6 / desktop.
-- [ ] **Limpar checkout local do PR #26** — correções integradas na `main`; a branch `codex/24-claude-findings` ainda ocupa uma worktree local.
-  - Criado: 2026-09-29 por Codex / GPT-6 / desktop.
-  - Referências: issue #24; parecer no PR #23; issue do hub #42.
-
 - [ ] **Limpar checkout local dos hooks de governança** — PR #23 integrado; a branch local `codex/1-governance-hooks` permanece aberta até a limpeza da worktree.
   - Criado: 2026-09-28 por Codex / GPT-6 / desktop
   - Referências: issue #1; plano do hub #37; PR #23.
@@ -32,6 +27,7 @@
   - Atualização 2026-09-27 17:27: a amostra exploratória já foi coletada nas três fontes, mas não foi incorporada ao site porque ainda depende do Decifra e de revisão humana. A PR #18 descreve GitHub, Hugging Face e GitLab.com e mantém vazias as páginas públicas de candidatos. O deploy continua protegido pela variável de aprovação.
   - Atualização 2026-09-28: o PR #22 foi integrado; os conflitos do PR #18 foram resolvidos em branch isolada. `quarto render report` passou, e as três páginas HTML foram inspecionadas no navegador local em largura móvel, sem problemas visuais observados. O PDF está no artefato. Pages segue sem aprovação de publicação.
   - Atualização 2026-09-29: a PR #25 acrescenta uma nota de apresentação independente em HTML/PDF para a conversa com a coordenação; a marca oficial continua desativada e nenhuma candidata entra no site. A publicação e a integração de resultados seguem pendentes.
+  - Atualização 2026-09-29: PRs #18 e #25 integrados; os builds HTML/PDF passaram no GitHub. O job Pages foi ignorado porque `PAGES_PUBLISH_APPROVED` não existe. Leitor de resultados, revisão humana e primeira publicação continuam pendentes.
   - Plano ativo: `repo-governance/plan/2026-09-27_Plano_Website_Quarto.md` · Issue: #17
 
 - [ ] **Issue #14 — analisar e revisar a amostra exploratória limitada** — coleta inicial concluída nas APIs GitHub, Hugging Face e GitLab.com; concluir o fluxo Decifra, estimar TRL, validar manualmente e comparar com o BBSIA antes de publicar qualquer resultado.
@@ -78,6 +74,12 @@
   - Criado: 2026-09-26 11:03 por Claude Opus 5.5
 
 ## Concluído
+- [x] **Ativos visuais BBSIA** — PR #25 integrado após revisão; os ativos permanecem no repositório, desativados no site/PDF até decisão da coordenação (issue #17).
+  - Criado: 2026-09-28 por Codex / GPT-6 / desktop
+  - Concluído: 2026-09-29 por Codex / GPT-6 / desktop
+- [x] **Limpar checkout local do PR #26** — a worktree e a branch local `codex/24-claude-findings` foram removidas depois do merge (issue #24; hub #42).
+  - Criado: 2026-09-29 por Codex / GPT-6 / desktop
+  - Concluído: 2026-09-29 por Codex / GPT-6 / desktop
 - [x] **Autor: ativar o hook de pre-commit no clone local** — o diretório hooks está configurado como hooksPath.
   - Criado: 2026-09-26 11:03 por Claude Opus 5.5
   - Concluído: 2026-09-27 12:52 por Codex / GPT-6 / desktop
