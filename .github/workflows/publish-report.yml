@@ -45,11 +45,15 @@ jobs:
         shell: bash
         run: |
           test -s report/_site/index.html
+          test -s report/_site/apresentacao.html
+          test -s report/_site/apresentacao.pdf
           test -s report/_site/metodo.html
           test -s report/_site/relatorio.html
           test -s report/_site/relatorio.pdf
           grep -q 'href="relatorio.pdf"' report/_site/relatorio.html
+          grep -q 'href="apresentacao.pdf"' report/_site/apresentacao.html
           grep -q 'Proposta independente' report/_site/index.html
+          grep -q 'Documento para discussão' report/_site/apresentacao.html
           grep -q 'Proposta independente' report/_site/relatorio.html
           test ! -e report/_site/assets/bbsia-logo.svg
           test ! -e report/_site/assets/og-image.png

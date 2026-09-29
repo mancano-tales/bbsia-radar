@@ -3,6 +3,7 @@ project:
   output-dir: _site
   render:
     - index.qmd
+    - apresentacao.qmd
     - metodo.qmd
     - relatorio.qmd
 website:
@@ -19,6 +20,8 @@ website:
     left:
       - href: index.qmd
         text: Início
+      - href: apresentacao.qmd
+        text: Proposta
       - href: metodo.qmd
         text: Método
       - href: relatorio.qmd
