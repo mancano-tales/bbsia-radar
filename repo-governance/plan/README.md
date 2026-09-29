@@ -41,7 +41,7 @@ Logo abaixo do título do documento, a linha `> **Issue: #N.**`.
 <!-- BEGIN_PLAN_INDEX -->
 | Plano | Issue | Status | Executor | O que é |
 |---|---|---|---|---|
-| `2026-09-28_Plano_Codebook_Publico_e_Serie_Longitudinal.md` | — | PROPOSTO (criado 2026-09-28) | — | Ampliar o codebook com evidência pública do formulário e preparar série semanal revisada no radar. |
+| `2026-09-28_Plano_Codebook_Publico_e_Serie_Longitudinal.md` | #24 | EM EXECUÇÃO (criado 2026-09-28) | Codex / GPT-6 / desktop | Ampliar o codebook com evidência pública do formulário e preparar série semanal revisada no radar. |
 | `2026-09-27_Plano_Protecao_Caminhos_Absolutos.md` | #1 (relacionada) | EM EXECUÇÃO (criado 2026-09-27 10:53) | Codex / GPT-6 / desktop | Reduzir o risco de incluir caminhos absolutos em alterações versionadas, com hooks locais e checagem de PR. |
 | `2026-09-27_Plano_Website_Quarto.md` | #17 | EM EXECUÇÃO (criado 2026-09-27 10:52) | Codex / GPT-6 / desktop | Implementar relatórios revisados em Quarto HTML/PDF e atualização automatizada do GitHub Pages após revisão dos dados. |
 | `2026-09-27_Plano_Coleta_Exploratoria.md` | #14 | EM EXECUÇÃO (criado 2026-09-27 08:40) | Codex / GPT-6 / desktop | Amostra limitada coletada; revisar relevância, cobertura e próximos passos antes de ampliar ou publicar. |

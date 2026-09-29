@@ -1,18 +1,18 @@
 ---
 tipo: Plano
 titulo: "Codebook público do formulário BBSIA e série longitudinal do radar"
-issue: null
-status: PROPOSTO
+issue: 24
+status: EM EXECUÇÃO
 criado: "2026-09-28"
 concluido: null
 autor_humano: "Tales Mançano"
-autorizacao_atual: "Em 2026-09-28, o autor autorizou a execução condicional à aprovação de duas revisões independentes (Antigravity e subagente). A primeira rodada pediu revisão do plano; execução ainda não autorizada até nova aprovação de ambas, registro da decisão e criação da issue. A primeira publicação continua sujeita ao plano do site."
+autorizacao_atual: "Em 2026-09-28, o autor autorizou a execução condicional à aprovação de duas revisões independentes. Após ajustes no commit 1cfac00, Antigravity e subagente aprovaram o plano como roteiro; condição satisfeita, issue #24 criada. A primeira publicação continua sujeita ao plano do site."
 agentes:
   orquestrador: "Codex / modelo da sessão / desktop"
-  executor: null
-  auditor: null
+  executor: "Codex / GPT-6 / desktop"
+  auditor: "Antigravity / Gemini 3.8 Flash High; subagente Codex independente"
 tarefas:
-  - { desc: "WP1 — especificar campos observáveis e regras de evidência do codebook", status: pendente, data: null }
+  - { desc: "WP1 — especificar campos observáveis e regras de evidência do codebook", status: em_execucao, data: "2026-09-28" }
   - { desc: "WP2 — codificar e validar o codebook ampliado e seu contrato com o Decifra", status: pendente, data: null }
   - { desc: "WP3 — definir identificadores, eventos e saídas revisadas da série semanal", status: pendente, data: null }
   - { desc: "WP4 — publicar série e método no site após revisão e primeira publicação autorizada", status: pendente, data: null }
@@ -24,7 +24,14 @@ relacionados:
 
 # Plano: codebook público e série longitudinal do radar
 
-> **Proposto em 2026-09-28.** Este plano detalha e coordena WP2/WP8 do piloto e WP1 do site. O autor autorizou sua execução se duas revisões independentes o aprovarem. Os primeiros pareceres (Antigravity e subagente, 2026-09-28) pediram ajustes; o status permanece `PROPOSTO`. Antes de executar, registrar dois pareceres favoráveis, a autorização condicional e a issue do plano. A primeira publicação requer a autorização específica prevista no plano do site.
+> **Issue: #24. Em execução desde 2026-09-28.** Este plano detalha e coordena WP2/WP8 do piloto e WP1 do site. O autor autorizou sua execução se duas revisões independentes o aprovassem. Após revisão do commit `1cfac00`, Antigravity e subagente deram parecer favorável como roteiro. A primeira publicação requer a autorização específica prevista no plano do site.
+
+## Revisões e autorização
+
+- **Autorização do autor no chat (2026-09-28):** delegar a Antigravity e a outro subagente a revisão deste plano e executá-lo se os dois pareceres aprovarem.
+- **Primeira rodada (2026-09-28):** ambos pediram revisão. O subagente encontrou colisão do estado `nao` por silêncio, IDs por URL, dependência do `external_id` e limites da publicação. Antigravity encontrou falta de esquema físico, de atribuição de campos entre Radar e Decifra e de trava explícita do `external_id`.
+- **Correção:** commit `1cfac00` incorporou os achados ao roteiro.
+- **Segunda rodada (2026-09-28):** subagente aprovou como roteiro após leitura local do plano e código; Antigravity / `gemini-3.8-flash-high` aprovou após ler somente o plano público nesse commit (conversa `9ae9f384-ee40-4a59-a944-c9e8fd106a10`). As duas aprovações validam o roteiro, não concluem WP1–WP4 nem substituem os gates do Decifra, da revisão humana e do site.
 
 ## Decisão proposta
 
