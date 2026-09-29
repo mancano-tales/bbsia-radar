@@ -146,11 +146,15 @@ bind_github_items <- function(pages) {
     return(tibble::tibble(
       platform = character(), id = character(), full_name = character(), name = character(),
       description = character(), url = character(), owner = character(), language = character(),
-      stars = integer(), updated_at = character(), topics = list(), readme = character()
+      stars = integer(), updated_at = character(), topics = list(), readme = character(),
+      license = character(), created_at = character(), pushed_at = character(),
+      fork = logical(), archived = logical()
     ))
   }
   # Explicit field allow-list prevents accidental ingestion of API fields such
   # as public email if GitHub changes its payload in the future.
+  # (pt) license, created_at, pushed_at, fork e archived alimentam a estimativa
+  #      de maturidade (R/trl.R); já vêm nas respostas de listagem e busca.
   tibble::tibble(
     platform = "github",
     id = purrr::map_chr(items, ~ {
@@ -166,7 +170,12 @@ bind_github_items <- function(pages) {
     stars = purrr::map_int(items, ~ as.integer(.x$stargazers_count %||% 0L)),
     updated_at = purrr::map_chr(items, ~ .x$updated_at %||% NA_character_),
     topics = purrr::map(items, ~ unlist(.x$topics %||% character(), use.names = FALSE)),
-    readme = NA_character_
+    readme = NA_character_,
+    license = purrr::map_chr(items, ~ .x$license$spdx_id %||% NA_character_),
+    created_at = purrr::map_chr(items, ~ .x$created_at %||% NA_character_),
+    pushed_at = purrr::map_chr(items, ~ .x$pushed_at %||% NA_character_),
+    fork = purrr::map_lgl(items, ~ isTRUE(.x$fork)),
+    archived = purrr::map_lgl(items, ~ isTRUE(.x$archived))
   )
 }
 

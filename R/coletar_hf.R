@@ -164,7 +164,8 @@ hf_normalize_items <- function(items, kind) {
       platform = character(), kind = character(), id = character(), full_name = character(),
       name = character(), description = character(), url = character(), owner = character(),
       language = character(), stars = integer(), updated_at = character(), topics = list(),
-      readme = character(), sha = character()
+      readme = character(), sha = character(), downloads = integer(),
+      created_at = character(), license = character(), pipeline_tag = character()
     ))
   }
   # A direct lookup (`/api/models/{id}`) returns one object, while list/search
@@ -186,7 +187,16 @@ hf_normalize_items <- function(items, kind) {
       language = NA_character_, stars = as.integer(item$likes %||% 0L),
       updated_at = item$lastModified %||% NA_character_,
       topics = list(unlist(item$tags %||% character(), use.names = FALSE)),
-      readme = NA_character_
+      readme = NA_character_,
+      # (pt) Sinais de maturidade para R/trl.R; a licença vem da tag `license:`.
+      downloads = suppressWarnings(as.integer(item$downloads %||% NA_integer_)),
+      created_at = item$createdAt %||% NA_character_,
+      license = {
+        tags <- unlist(item$tags %||% character(), use.names = FALSE)
+        found <- sub("^license:", "", tags[startsWith(tags, "license:")])
+        if (length(found)) found[[1]] else NA_character_
+      },
+      pipeline_tag = item$pipeline_tag %||% NA_character_
     )
   })
 }
