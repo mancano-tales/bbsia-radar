@@ -5,6 +5,11 @@
 > **Pendente** = pronto para ser trabalhado. **Prospectivo** = identificado, mas falta decisão ou dependência. **Concluído** = feito.
 
 ## Pendente
+- [ ] **Revisão cruzada e integração dos hooks de governança** — PR #23; branch `codex/1-governance-hooks` permanece aberta para revisão do Claude, checks, merge e remoção da branch depois da integração.
+  - Criado: 2026-09-28 por Codex / GPT-6 / desktop
+  - Motivo: o código deste repo entra por PR; o commit e o push já passaram pelos hooks atualizados sem exceções.
+  - Referências: issue #1; plano do hub #37; PR #23.
+
 - [ ] **Proteção contra publicação acidental de caminhos absolutos** — manter as verificações locais e a checagem de PR; falta tornar o status check obrigatório no GitHub.
   - Criado: 2026-09-27 10:53 por Codex / GPT-6 / desktop
   - Progresso 2026-09-27: a proposta foi aprovada no chat pela opção A, como mitigação simples. O scanner compartilhado, os hooks locais e o workflow de pull request estão no branch codex/1-protecao-caminhos-absolutos, baseado na main remota atualizada.

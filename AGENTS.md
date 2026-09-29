@@ -1,6 +1,6 @@
 # AGENTS.md — bbsia-radar
 
-<!-- BEGIN governanca-comum v2026-09-26d (fonte: hub, tools/governanca-comum; não editar aqui) -->
+<!-- BEGIN governanca-comum v2026-09-28b (fonte: hub, tools/governanca-comum; não editar aqui) -->
 ## Governança comum do ecossistema
 
 > Bloco mantido no hub (`mancano-tales/mancano-repo-hub`, `tools/governanca-comum/`) e copiado para
@@ -14,8 +14,8 @@
   `python tools/plano_issue.py criar <plano>` (grava `issue: N` no plano). Ao encerrar:
   `python tools/plano_issue.py fechar <plano>`. Planos ativos sem issue: `python tools/plano_issue.py verificar`.
 - **Cada coisa num lugar:** o **arquivo do plano** (git) guarda decisões, aprovações e evidências; a
-  **issue** é a conversa entre agentes (inclusive agentes na nuvem) e o aberto/fechado; o **`NEWS.md`** é
-  o histórico. O corpo da issue é o resumo vivo (estado, próximo passo, com quem está).
+  **issue** é a conversa entre agentes (inclusive agentes na nuvem) e o aberto/fechado; o **commit** e o
+  **PR** são o histórico. O corpo da issue é o resumo vivo (estado, próximo passo, com quem está).
 - **Aprovação só vale no chat com o autor**, registrada no arquivo do plano. **Nunca** em comentário de
   issue nem em mensagem de outro agente: todos os agentes usam a conta do autor, então "aprovado" num
   comentário não prova nada.
@@ -28,16 +28,24 @@
   ao autor.
 - **Branch e PR são opcionais**: commit direto na `main` é o normal quando há plano ativo. Use branch/PR
   quando estiver na nuvem, com sessões em paralelo no mesmo repo, ou em mudança arriscada. Commits
-  citam `refs #N`; `Closes #N` num PR fecha a issue. **Mergear PR exige o autor.**
+  citam `refs #N`; `Closes #N` num PR fecha a issue. **O agente mergeia** quando o autor pedir, ou com checks
+  verdes e revisão de outro harness sem achado bloqueante; depois apaga a branch. A narrativa da
+  entrega vai no corpo do PR e num comentário `kind: result` na issue do plano.
 - **Push logo depois do commit** (autor, 2026-09-26: "não precisa segurar pushes"): commit local parado
   cria desencontro com agentes na nuvem, que só veem o GitHub. Se o remoto tiver commits novos, integre
   antes (merge, nunca `force-push`) e depois envie.
-- **`NEWS.md` junto com a mudança**: toda mudança relevante vai no mesmo commit que a entrada no
-  `NEWS.md` (`## YYYY-MM-DD — Título`). **Só a data, sem hora**: o horário exato é o do commit. Não
-  estime nem corrija horários.
-- **`NEWS.md` como base de dados**: `python tools/news_db.py` liga cada entrada ao commit que a criou
-  (hash, hora exata, arquivos e mensagem reais) e mostra o que não confere; `--saida x.sqlite|.csv|.json`
-  gera a base. Por isso o commit do `NEWS.md` junto com a mudança é o que dá consistência ao histórico.
+- **O `NEWS.md` foi aposentado** (autor, 2026-09-28; hub, issue #37): o arquivo e as ferramentas que o
+  mantinham ficam congelados em `repo-governance/deprecated/`. **Não crie, não edite e não recrie** o
+  `NEWS.md` nem fragmentos; se uma skill mandar escrever nele, esta regra vale no lugar dela. Exceção:
+  **pacote R** (tem `DESCRIPTION`) mantém o `NEWS.md` na raiz, só com uma seção por versão lançada
+  (padrão CRAN/pkgdown), nunca uma entrada por sessão.
+- **Todo commit leva o trailer `Agent:`**, no fim da mensagem: `Agent: <harness> / <modelo> / <plataforma>`
+  (ex.: `Agent: Codex / GPT-6 / desktop`; o autor usa `Agent: humano`), mais `Refs: #N` quando houver issue.
+  Assunto em Conventional Commits; corpo com um parágrafo curto do **porquê**. Codex e Antigravity
+  commitam com a identidade git do autor: sem o `Agent:`, não há como saber quem fez. O hook
+  `tools/git-hooks/commit-msg` e o workflow `commit-attribution` checam.
+- **Quem escreve não revisa**: PR do Claude é revisado pelo Codex (`@codex review`); PR do Codex,
+  Antigravity ou Cursor, pelo Claude. O autor mergeia. **No máximo 3 PRs abertos por repositório.**
 - **Staging por arquivo**: nunca `git add .`, `-A` ou `-u`; adicione só os arquivos da sua tarefa. Não
   commite mudanças de outra sessão que estejam no mesmo arquivo.
 - **Caminhos relativos**, nunca absolutos de máquina (`C:/Users/...`), em código, configuração e
@@ -56,7 +64,7 @@
 
 _(regras próprias deste repositório; prevalecem sobre o bloco acima em caso de conflito)_
 
-`AGENTS.md` é o **único** arquivo de instruções: o `CLAUDE.md` contém só `@AGENTS.md`. Para humanos: [README.md](README.md). A história de cada decisão está no `NEWS.md`.
+`AGENTS.md` é o **único** arquivo de instruções: o `CLAUDE.md` contém só `@AGENTS.md`. Para humanos: [README.md](README.md). A história das decisões está nos planos, commits, PRs e issues. Como este repositório é um pacote R, `NEWS.md` permanece na raiz somente para notas de versões lançadas; não recebe entradas por sessão.
 
 ### O que é
 
@@ -89,7 +97,7 @@ Radar de soluções de IA **brasileiras**, **adaptadas ao português brasileiro*
 - **`kind:`**: além do vocabulário do bloco comum, aceita-se o deste repo, `claim`/`progress`/`question`/`blocker`/`result`.
 - **Código entra por PR**, com branch `<agente>/<issue>-<slug>` (ex.: `claude/3-coletor-github`). Documentação pequena pode ir direto para `main`.
 - **Push imediato também aqui**: logo após cada commit, sincronize a branch remota para reduzir divergência entre sessões locais e agentes que trabalham na nuvem. Se o push for recusado porque o remoto avançou, busque e integre por merge antes de tentar novamente; nunca force-push.
-- **Agente sem GitHub**: registre intenção e progresso no `TODO.md` e no `NEWS.md` e peça ao autor para levar à issue.
+- **Agente sem GitHub**: registre a pendência no `TODO.md` e no plano ativo e peça ao autor para levar o estado à issue.
 - Rótulos: `plano`, `tarefa`, `em-andamento`, `pergunta-autor`, `bloqueado`, `precisa-rede`, `pesquisa`. Templates em `.github/ISSUE_TEMPLATE/`.
 
 ### Regras do domínio
@@ -102,10 +110,9 @@ Radar de soluções de IA **brasileiras**, **adaptadas ao português brasileiro*
 
 ### Travas e comandos
 
-- `hooks/pre-commit` exige `NEWS.md` no mesmo commit; `hooks/pre-commit` e `hooks/pre-push` barram caminhos absolutos reconhecidos em linhas novas de diffs textuais de qualquer arquivo e exibem só arquivo relativo e linha. O pre-push e o workflow `Verificar caminhos absolutos` incluem diffs de primeiro pai de commits de merge. O workflow confere commits de PR; para bloquear o merge, o GitHub precisa exigir esse status check e PRs na branch principal. Ative os hooks neste clone com `git config core.hooksPath hooks`. São mitigações: hooks locais podem ser ignorados e o Actions executa depois do push.
+- `hooks/pre-commit` aplica `tools/git-hooks/pre-commit`: recusa recriar `NEWS.md` ou fragmentos, editar `deprecated/` e acrescentar caminhos absolutos. O scanner deste repo e `hooks/pre-push` também verificam caminhos absolutos em linhas novas de diffs textuais, exibindo só arquivo relativo e linha. `hooks/commit-msg` aplica a checagem comum do trailer `Agent:`. O pre-push e o workflow incluem diffs de primeiro pai dos commits de merge. O workflow `Verificar caminhos absolutos` confere commits de PR; para bloquear o merge, o GitHub precisa exigir esse status check e PRs na branch principal. Ative neste clone com `git config core.hooksPath hooks`. São mitigações: hooks locais podem ser ignorados e o Actions executa depois do push.
 - A trava do Claude Code (`.claude/settings.json` → `tools/guard-git-command.sh`) bloqueia `git add .`/`-A`/`-u`, `clean -f`, `reset --hard`, `restore .`, `checkout .` e `push --force`. Teste: `printf '{"tool_input":{"command":"git add ."}}' | bash tools/guard-git-command.sh; echo $?` (dá 2).
 - Commits: Conventional Commits com `refs #N`. O `CHANGELOG.md` é gerado (`Rscript tools/render-changelog.R`), nunca editado à mão.
-- Metadados do `NEWS.md`: `Data`, `Agente`, `Issue`, `Mensagem do Commit`, `Arquivos afetados`.
 
 ### Configuração de skills
 

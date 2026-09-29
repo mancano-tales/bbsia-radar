@@ -1,93 +1,5 @@
 # NEWS — bbsia-radar
 
-## 2026-09-28 — Atualiza changelog após integração da proteção
-
-O `CHANGELOG.md` gerado foi recomposto depois do merge da `main` no PR #21 e agora inclui os commits próprios da proteção contra caminhos absolutos.
-
-**Metadados de Execução**:
-- **Data**: 2026-09-28
-- **Agente**: Codex / GPT-6 / desktop
-- **Issue**: #1
-- **Mensagem do Commit**: docs(changelog): atualiza historico do PR 21 refs #1
-- **Arquivos afetados**: CHANGELOG.md, NEWS.md
-
-## 2026-09-28 — Sincroniza proteção de caminhos com o coletor GitLab
-
-O PR #21 integrou a `main` após o merge do coletor GitLab. O conflito em `NEWS.md` foi resolvido preservando as entradas exclusivas da proteção de caminhos e todas as entradas da `main`. A configuração remota de branch ainda não exige o status check; o PR permanece aberto para revisão do autor.
-
-**Metadados de Execução**:
-- **Data**: 2026-09-28
-- **Agente**: Codex / GPT-6 / desktop
-- **Issue**: #1
-- **Mensagem do Commit**: merge(security): sincroniza PR 21 com GitLab refs #1
-- **Arquivos afetados**: NEWS.md, TODO.md, repo-governance/plan/2026-09-27_Plano_Protecao_Caminhos_Absolutos.md e arquivos integrados da main
-
-## 2026-09-27 — Confirma PR sem conflitos e workflow aprovado
-
-Após o push do merge `ee32b88`, o GitHub confirmou o PR #21 como `CLEAN` e `MERGEABLE`; o workflow `Verificar caminhos absolutos` passou. O CodeRabbit segue em PASS, com revisão manual necessária para este repositório OSS. `news_db.py` encontrou 39 entradas, zero sem commit identificável e 37/39 mensagens declaradas coincidentes. As duas divergências restantes são históricas (issues #8 e #1), registradas nos commits originais e não introduzidas por esta branch. O PR não foi mergeado.
-
-**Metadados de Execução**:
-- **Data**: 2026-09-27
-- **Agente**: Codex / GPT-6 / desktop
-- **Issue**: #1
-- **Mensagem do Commit**: docs(plan): confirma PR limpo e workflow refs #1
-- **Arquivos afetados**: NEWS.md, TODO.md, repo-governance/plan/2026-09-27_Plano_Protecao_Caminhos_Absolutos.md
-
-## 2026-09-27 — Resolve segundo conflito de NEWS após avanço de main
-
-O commit b2636ed de main acrescentou uma entrada de cobertura HF ao topo do NEWS.md enquanto o PR #21 era atualizado. A branch integrou essa atualização, preservando as entradas dos dois lados em ordem cronológica e sem reescrever histórico. O conflito estava restrito a NEWS.md; o estado e os checks do PR serão conferidos após o push.
-
-**Metadados de Execução**:
-- **Data**: 2026-09-27
-- **Agente**: Codex / GPT-6 / desktop
-- **Issue**: #1
-- **Mensagem do Commit**: merge: integra main e resolve segundo conflito de NEWS refs #1
-- **Arquivos afetados**: CHANGELOG.md, NEWS.md, TODO.md, repo-governance/plan/2026-09-27_Plano_Coleta_Exploratoria.md, repo-governance/plan/2026-09-27_Plano_Protecao_Caminhos_Absolutos.md
-
-## 2026-09-27 — Resolve conflito e valida workflow do PR #21
-
-O merge `5257e2a` integrou `main` à branch do PR #21 e preservou as entradas recentes dos dois lados de `NEWS.md`. O GitHub agora informa o PR como `MERGEABLE` e `CLEAN`. O workflow `Verificar caminhos absolutos` passou; o CodeRabbit marcou PASS, mas solicitou revisão manual para este repositório OSS. `news_db.py` encontrou 36 entradas, nenhuma sem commit identificável e 34/36 mensagens declaradas coincidentes. As duas divergências são anteriores a esta branch (licenças/validação da issue #8 e proposta de proteção); o verificador lê o texto no commit que criou cada entrada. O histórico não foi reescrito.
-
-**Metadados de Execução**:
-- **Data**: 2026-09-27
-- **Agente**: Codex / GPT-6 / desktop
-- **Issue**: #1
-- **Mensagem do Commit**: docs(plan): registra resolucao de conflito e validacao refs #1
-- **Arquivos afetados**: NEWS.md, TODO.md, repo-governance/plan/2026-09-27_Plano_Protecao_Caminhos_Absolutos.md
-
-## 2026-09-27 — Restabelece autenticação e abre PR para revisão
-
-Após a autorização OAuth do autor, `gh auth status` confirmou a conta `mancano-tales`. A atualização foi publicada na issue #1 e o PR #21 foi aberto para `main`, sem merge. O CodeRabbit retornou PASS, com revisão manual indicada para este repositório OSS; o workflow de caminhos absolutos ainda não consta nas verificações do PR. O status check obrigatório segue pendente. [PR #21](https://github.com/mancano-tales/bbsia-radar/pull/21).
-
-**Metadados de Execução**:
-- **Data**: 2026-09-27
-- **Agente**: Codex / GPT-6 / desktop
-- **Issue**: #1
-- **Mensagem do Commit**: docs(plan): atualiza estado após abertura do PR refs #1
-- **Arquivos afetados**: NEWS.md, TODO.md, repo-governance/plan/2026-09-27_Plano_Protecao_Caminhos_Absolutos.md
-
-## 2026-09-27 — Envia correções e registra bloqueio de abertura do PR
-
-O commit 6216a8f foi enviado para a branch codex/1-revisao-caminhos-absolutos. A criação do pull request pela integração GitHub retornou HTTP 403 (Resource not accessible by integration), e `gh auth status` confirmou token inválido. A comparação da branch abriu numa sessão autenticada do Chrome, mas a automação da página expirou antes de preencher e enviar o formulário; nenhum PR foi criado. [Abrir a comparação com main](https://github.com/mancano-tales/bbsia-radar/compare/main...codex/1-revisao-caminhos-absolutos?expand=1). Permanecem pendentes o PR, o comentário de estado na issue #1 e a exigência do status check no GitHub.
-
-**Metadados de Execução**:
-- **Data**: 2026-09-27
-- **Agente**: Codex / GPT-6 / desktop
-- **Issue**: #1
-- **Mensagem do Commit**: docs(plan): registra bloqueio de abertura do PR refs #1
-- **Arquivos afetados**: NEWS.md, TODO.md, repo-governance/plan/2026-09-27_Plano_Protecao_Caminhos_Absolutos.md
-
-## 2026-09-27 — Corrige casos de borda da proteção contra caminhos absolutos
-
-Após o merge do PR #19, revisões prévias independentes por Gemini Pro e GPT-Sol identificaram omissões de caminhos Windows em URI e literais escapados, perda de contexto na busca por raízes Unix, tratamento incorreto de linhas +++ dentro de hunks e ausência dos diffs de primeiro pai de commits de merge. O scanner, o pre-push e o workflow foram corrigidos. As revisões posteriores também apontaram o fallback do primeiro push sem base remota, variantes de URI file: com e sem host e URLs relativas ao esquema que poderiam ser confundidas com UNC; esses casos foram tratados. Verificações direcionadas cobriram URIs Windows/Unix/UNC, escapes, aspas, linhas +++ em hunks, URLs comuns, 1.500 URLs após um token file: e uma linha de 50.000 caracteres; o scanner também passou sobre o diff completo e git diff --check. As revisões finais independentes de Gemini Pro e GPT-Sol não encontraram achados acionáveis. O status check obrigatório no GitHub continua pendente.
-
-**Metadados de Execução**:
-- **Data**: 2026-09-27
-- **Agente**: Codex / GPT-6 / desktop
-- **Issue**: #1
-- **Mensagem do Commit**: fix(security): corrige detector e inclui diffs de merge refs #1
-- **Arquivos afetados**: .github/workflows/absolute-paths.yml, AGENTS.md, NEWS.md, TODO.md, hooks/pre-push, repo-governance/plan/2026-09-27_Plano_Protecao_Caminhos_Absolutos.md, tools/check-absolute-paths.sh
-
 ## 2026-09-27 — Restringe Antigravity ao Gemini 3.8 Flash
 
 Por instrução do autor, toda chamada futura ao `agy`, incluindo revisões, usa somente Gemini 3.8 Flash. A variante High é preferida para revisão; indisponibilidade ou ausência de login deve ser registrada sem trocar de modelo. Instruções operacionais e planos foram alinhados, preservando os registros históricos de testes com Pro.
@@ -109,7 +21,6 @@ A auditoria com tools/news_db.py identificou acentos no metadado que não existe
 - **Issue**: #14
 - **Mensagem do Commit**: `fix(news): corrige assunto declarado do changelog refs #14`
 - **Arquivos afetados**: `CHANGELOG.md`, `NEWS.md`
-
 ## 2026-09-27 — Sincroniza o changelog após integração
 
 Depois do merge 5983f13, o renderizador foi executado novamente sobre o histórico integrado. O CHANGELOG gerado passou a incluir os commits GitLab e as mudanças de documentação dos dois lados da integração, totalizando 38 entradas.
@@ -120,7 +31,6 @@ Depois do merge 5983f13, o renderizador foi executado novamente sobre o históri
 - **Issue**: #14
 - **Mensagem do Commit**: `docs(changelog): sincroniza changelog apos integracao refs #14`
 - **Arquivos afetados**: `CHANGELOG.md`, `NEWS.md`
-
 ## 2026-09-27 — Integra sementes curadas e cobertura GitLab
 
 A branch `codex/14-gitlab-radar` foi integrada às mudanças recentes de `main`, preservando a consulta opcional de sementes brasileiras da PR #20 e a seleção de documentos com cobertura das plataformas disponíveis, incluindo GitLab. O orçamento da rodada ampliada segue limitado a 25 tentativas e dez documentos. As estatísticas das rodadas GitHub/HF e GitHub/GitLab/HF permanecem separadas; esta integração não executou nova coleta nem publicou candidatos. A suíte offline combinada passou com 212 testes, sem falhas ou avisos.
@@ -131,7 +41,6 @@ A branch `codex/14-gitlab-radar` foi integrada às mudanças recentes de `main`,
 - **Issue**: #14
 - **Mensagem do Commit**: `merge(main): integra sementes curadas com cobertura GitLab refs #14`
 - **Arquivos afetados**: `CHANGELOG.md`, `NEWS.md`, `R/coletar_github.R`, `R/enriquecer_documentos.R`, `README.md`, `TODO.md`, `repo-governance/plan/2026-09-27_Plano_Coleta_Exploratoria.md`, `tests/fixtures/seeds_awesome_brazil.yml`, `tests/testthat/test-collectors.R`
-
 ## 2026-09-27 — Integra GitLab e executa amostra exploratória
 
 O autor aprovou no chat a inclusão do GitLab.com como terceira fonte e a amostra limitada. A rodada
