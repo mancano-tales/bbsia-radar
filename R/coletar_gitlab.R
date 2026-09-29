@@ -249,7 +249,8 @@ gitlab_normalize_items <- function(items) {
       platform = character(), id = character(), full_name = character(), name = character(),
       description = character(), url = character(), owner = character(), language = character(),
       stars = integer(), updated_at = character(), updated_at_semantics = character(),
-      topics = list(), readme = character(), solution_id = character()
+      topics = list(), readme = character(), solution_id = character(),
+      created_at = character(), archived = logical()
     ))
   }
   if (!is.null(items$id) || !is.null(items$web_url)) items <- list(items)
@@ -278,7 +279,9 @@ gitlab_normalize_items <- function(items) {
       updated_at_semantics = "project_activity_at",
       topics = list(unlist(project$topics %||% project$tag_list %||% character(), use.names = FALSE)),
       readme = NA_character_,
-      solution_id = as.character(url)
+      solution_id = as.character(url),
+      created_at = as.character(project$created_at %||% NA_character_),
+      archived = isTRUE(project$archived)
     )
   })
   projects

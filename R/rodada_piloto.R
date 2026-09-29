@@ -147,6 +147,48 @@ radar_manifesto_piloto <- function(rodada, budget, counts, corpus, hf_checks = l
   )
 }
 
+# (pt) Metadados dos candidatos selecionados, sem o texto do README: servem à
+#      estimativa de TRL e à planilha do formulário (R/planilha_bbsia.R).
+# (en) Selected candidates' metadata, without README text.
+radar_tabela_candidatos <- function(docs) {
+  keep <- intersect(c("id", "platform", "kind", "name", "full_name", "url", "owner", "description",
+                      "language", "stars", "downloads", "license", "created_at", "pushed_at",
+                      "updated_at", "fork", "archived", "pipeline_tag", "readme_status", "sha"),
+                    names(docs))
+  table <- docs[keep]
+  table$id <- purrr::pmap_chr(
+    list(docs$platform, docs$id, if ("kind" %in% names(docs)) docs$kind else rep(NA_character_, nrow(docs))),
+    radar_artifact_id)
+  table$readme_chars <- ifelse(is.na(docs$readme), 0L, nchar(docs$readme, type = "chars"))
+  table
+}
+
+# (pt) Refaz descoberta, seleção e leitura de uma rodada já executada usando
+#      SÓ o cache: toda função de requisição falha de propósito, então uma
+#      resposta ausente vira erro em vez de chamada nova às APIs. Para na
+#      seleção (o texto já está no corpus) e não grava manifesto nem corpus. Serve para recuperar metadados de rodadas
+#      anteriores a radar_tabela_candidatos().
+# (en) Cache-only replay of a finished round; any cache miss is an error.
+radar_reconstruir_rodada <- function(path, root = Sys.getenv("MANCANO_BBSIA_RADAR_ROOT", "")) {
+  offline <- function(...) stop("Resposta ausente do cache; a reconstrução não chama as APIs.", call. = FALSE)
+  rodada <- radar_ler_rodada(path)
+  radar_validate_cache_root(root)
+  seeds_path <- file.path(radar_repository_root(), "config", "seeds.yml")
+  budget <- radar_novo_orcamento(rodada$max_tentativas, rodada$max_documentos)
+  github <- coletar_github_rodada(rodada, seeds_path, root, budget, offline)
+  hf <- coletar_hf_rodada(rodada, seeds_path, root, budget, offline)
+  gitlab <- coletar_gitlab(seeds_path, root, offline, rodada$gitlab$termos, budget)
+  candidates <- dplyr::bind_rows(github, hf, gitlab)
+  seeds <- yaml::yaml.load(readr::read_file(seeds_path, locale = readr::locale(encoding = "UTF-8")))
+  priority_urls <- unlist(lapply(seeds$gabarito, function(entry)
+    vapply(entry$artefatos, function(artifact) artifact$url, character(1))), use.names = FALSE)
+  # Stops at the selection: README text is already in the corpus, and the
+  # GitLab README check is refreshed on every run by design (never cache-only).
+  selected <- selecionar_enriquecimento_rodada(candidates, rodada$max_documentos, priority_urls)
+  selected$readme <- NA_character_
+  selected
+}
+
 radar_executar_rodada <- function(path, root = Sys.getenv("MANCANO_BBSIA_RADAR_ROOT", ""),
                                  request_github_fn = NULL, request_hf_fn = NULL,
                                  request_gitlab_fn = NULL) {
@@ -189,6 +231,8 @@ radar_executar_rodada <- function(path, root = Sys.getenv("MANCANO_BBSIA_RADAR_R
                         paste0(rodada$run_id, "-corpus.csv"))
     if (file.exists(export)) stop("Corpus da rodada já existe; não sobrescrever.", call. = FALSE)
     salvar_corpus_decifra(corpus, export, root)
+    readr::write_csv(radar_tabela_candidatos(docs),
+                     sub("-corpus\\.csv$", "-candidatos.csv", export), na = "")
     manifesto <- radar_manifesto_piloto(rodada, budget, counts, corpus, hf_checks)
     radar_salvar_manifesto_rodada(manifesto, root)
     list(corpus = corpus, manifesto = manifesto, corpus_path = export,

@@ -15,6 +15,8 @@ Imports:
     purrr,
     readr,
     tibble,
+    tidyr,
+    writexl,
     yaml
 Suggests:
     testthat (>= 3.0.0)
