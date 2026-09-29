@@ -67,8 +67,8 @@ uma a uma, entregues em planilha no formato do formulário e publicadas no site 
 projeto. O objetivo é que a coordenação veja fichas reais e diga o que mudar
 antes de rodar a busca completa.
 
-A primeira sondagem já encontrou 104 projetos a partir de poucos termos de busca;
-o piloto amplia essa busca e revisa uma amostra.
+Uma primeira sondagem, com poucos termos de busca, trouxe 104 resultados, que
+ainda não foram avaliados; o piloto amplia essa busca e revisa uma amostra.
 
 ## O que o radar não faz
 

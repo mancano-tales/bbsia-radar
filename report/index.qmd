@@ -64,9 +64,10 @@ Uma pessoa revisa tudo antes de qualquer publicação.
 ## Em que pé está
 
 - **Pronto:** a busca no GitHub, no Hugging Face e no GitLab; uma primeira
-  sondagem, que encontrou 104 projetos; as regras de classificação.
-- **Em andamento:** um piloto com cerca de 30 soluções, classificadas e revisadas
-  uma a uma, para mostrar à coordenação como seriam as fichas.
+  sondagem, com 104 resultados de busca ainda não avaliados; as regras de
+  classificação.
+- **Em preparação:** um piloto com cerca de 30 soluções, a serem classificadas e
+  revisadas uma a uma, para mostrar à coordenação como seriam as fichas.
 - **Depois do piloto:** ajustar os campos e os critérios com a coordenação e só
   então rodar a busca completa.
 

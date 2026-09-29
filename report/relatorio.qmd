@@ -34,10 +34,10 @@ Relatório de uma proposta voluntária, não uma publicação do BBSIA.
 ## Situação
 
 ::: {.callout-important}
-### O piloto está em revisão
+### O piloto está em preparação
 
-As soluções do piloto estão sendo classificadas e revisadas uma a uma. Esta
-página vai mostrar as fichas revisadas, os números por tipo de solução e o quanto
+As soluções do piloto serão classificadas e revisadas uma a uma. Esta página
+vai mostrar as fichas revisadas, os números por tipo de solução e o quanto
 a classificação automática acertou em comparação com a revisão humana. Nada
 aparece aqui antes de ser conferido.
 :::
