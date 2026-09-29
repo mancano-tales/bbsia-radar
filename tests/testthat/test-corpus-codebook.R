@@ -64,7 +64,7 @@ test_that("BBSIA form mapping uses observed options and leaves ambiguous categor
                                                  locale = readr::locale(encoding = "UTF-8")))
   form <- yaml::yaml.load(readr::read_file(file.path(repo_root, "config", "formulario_bbsia.yml"),
                                              locale = readr::locale(encoding = "UTF-8")))
-  expect_equal(codebook$versao, "0.2.0")
+  expect_equal(codebook$versao, "0.2.1")
   expect_equal(form$fonte, "https://bancobrasileiro.ia.br/contribuir")
   for (entry in list(list(internal = codebook$tipo_artefato, form = form$campos$tipo_ativo),
                      list(internal = codebook$area_problema, form = form$campos$area))) {
@@ -81,4 +81,36 @@ test_that("BBSIA form mapping uses observed options and leaves ambiguous categor
   }
   expect_true(grepl("incerto.*sem sinais", codebook$vinculo$brasileira$regra_de_decisao))
   expect_true(grepl("ausência de sinais", codebook$vinculo$ptbr$regra_de_decisao))
+  expect_true(all(c("meio_ambiente_e_agro", "gestao_publica") %in% codebook$area_problema$mapeamento_manual))
+  expect_match(codebook$e_ia$regra_de_decisao, "silêncio.*incerto")
+  expect_match(codebook$e_ia$regra_de_decisao, "`nao` exige evidência positiva")
+})
+
+test_that("Decifra definitions retain evidence rules and examples stay in their category", {
+  converted <- codebook_para_decifra(file.path(repo_root, "config", "codebook.yml"))
+  vars <- stats::setNames(converted$variables, purrr::map_chr(converted$variables, "name"))
+  for (name in c("brasileira", "ptbr")) {
+    cats <- stats::setNames(vars[[name]]$categories, purrr::map_chr(vars[[name]]$categories, "label"))
+    expect_length(cats$nao$positive_examples, 0L)
+    expect_length(cats$sim$negative_examples, 0L)
+    expect_length(cats$incerto$positive_examples, 0L)
+    expect_match(cats$sim$definition, "Sinais fortes")
+    expect_match(cats$sim$definition, "Sinais m")
+    expect_match(cats$sim$definition, "Sinais fracos")
+  }
+  ia <- stats::setNames(vars$e_ia$categories, purrr::map_chr(vars$e_ia$categories, "label"))
+  expect_match(ia$sim$definition, "Inclui")
+  expect_match(ia$nao$definition, "Exclui")
+  expect_match(ia$incerto$boundary_notes, "silêncio.*incerto")
+})
+
+test_that("acceptance fixtures specify expected outcomes for uncertainty and multiple labels", {
+  fixtures <- yaml::yaml.load(readr::read_file(
+    file.path(repo_root, "tests", "fixtures", "codebook_aceitacao.yml"),
+    locale = readr::locale(encoding = "UTF-8")))
+  expect_setequal(purrr::map_chr(fixtures$casos, "id"),
+                  c("sem_evidencia", "conflitante", "multirrotulo"))
+  expect_equal(fixtures$casos[[1]]$esperado$e_ia, "incerto")
+  expect_equal(fixtures$casos[[2]]$esperado$e_ia, "incerto")
+  expect_equal(length(fixtures$casos[[3]]$esperado$area_problema), 2L)
 })

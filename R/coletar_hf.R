@@ -97,8 +97,8 @@ hf_seed_accounts <- function(seeds) {
 coletar_readme_hf <- function(repositories,
                               root = Sys.getenv("MANCANO_BBSIA_RADAR_ROOT", ""),
                               request_fn = NULL, budget) {
-  required <- c("id", "kind")
-  if (!all(required %in% names(repositories))) stop("repositories precisa de id e kind.", call. = FALSE)
+  required <- c("id", "kind", "sha")
+  if (!all(required %in% names(repositories))) stop("repositories precisa de id, kind e sha.", call. = FALSE)
   if (nrow(repositories) > 10L) stop("Selecione no máximo dez documentos antes do enriquecimento.", call. = FALSE)
   if (anyNA(repositories$kind) || any(repositories$kind != "models")) {
     stop("O modo exploratório só enriquece model cards de modelos.", call. = FALSE)
@@ -106,15 +106,18 @@ coletar_readme_hf <- function(repositories,
   radar_validar_orcamento(budget)
   radar_validate_cache_root(root)
   radar_reservar_documentos(budget, "huggingface", repositories$id)
-  repositories |>
-    dplyr::mutate(readme = purrr::map2_chr(id, kind, function(repo_id, kind) {
-      if (is.na(repo_id) || !nzchar(repo_id)) return(NA_character_)
-      key <- list(provider = "huggingface", file = "README.md", kind = kind, id = repo_id, revision = "main")
+  details <- purrr::pmap(list(repositories$id, repositories$kind, repositories$sha),
+    function(repo_id, kind, sha) {
+      if (is.na(repo_id) || !nzchar(repo_id) || is.na(sha) || !nzchar(sha))
+        return(list(readme = NA_character_, content_hash = NA_character_))
+      if (!grepl("^[A-Za-z0-9_-]{7,}$", sha) || tolower(sha) %in% c("main", "master", "head"))
+        stop("Hugging Face exige SHA imutável do commit.", call. = FALSE)
+      key <- list(provider = "huggingface", file = "README.md", kind = kind, id = repo_id, revision = sha)
       payload <- radar_cached(key, function() {
         radar_reservar_requisicao(budget, "huggingface", paste0(kind, "/", repo_id, "/README.md"), 2L)
         if (!is.null(request_fn)) return(request_fn(repo_id, kind, "README.md"))
         repo_prefix <- if (identical(kind, "models")) "" else paste0(kind, "/")
-        url <- paste0("https://huggingface.co/", repo_prefix, repo_id, "/raw/main/README.md")
+        url <- paste0("https://huggingface.co/", repo_prefix, repo_id, "/raw/", sha, "/README.md")
         req <- httr2::request(url) |>
           httr2::req_user_agent("bbsia-radar/0.1.0 (public research)") |>
           httr2::req_error(is_error = function(response) FALSE) |>
@@ -131,11 +134,15 @@ coletar_readme_hf <- function(repositories,
         httr2::resp_body_string(response, encoding = "UTF-8")
       }, root = root)
       if (is.list(payload) && !is.null(payload$.radar_http_status)) {
-        if (identical(as.integer(payload$.radar_http_status), 404L)) return(NA_character_)
+        if (identical(as.integer(payload$.radar_http_status), 404L))
+          return(list(readme = NA_character_, content_hash = NA_character_))
         radar_verificar_status_http(payload$.radar_http_status, "Hugging Face", "README.md")
       }
-      payload
-    }))
+      list(readme = payload, content_hash = radar_content_hash("huggingface", sha, payload))
+    })
+  repositories$readme <- purrr::map_chr(details, "readme")
+  repositories$content_hash <- purrr::map_chr(details, "content_hash")
+  repositories
 }
 
 hf_normalize_items <- function(items, kind) {
@@ -144,7 +151,7 @@ hf_normalize_items <- function(items, kind) {
       platform = character(), kind = character(), id = character(), full_name = character(),
       name = character(), description = character(), url = character(), owner = character(),
       language = character(), stars = integer(), updated_at = character(), topics = list(),
-      readme = character()
+      readme = character(), sha = character()
     ))
   }
   # A direct lookup (`/api/models/{id}`) returns one object, while list/search
@@ -156,6 +163,7 @@ hf_normalize_items <- function(items, kind) {
     tibble::tibble(
       platform = "huggingface", kind = kind,
       id = as.character(model_id), full_name = as.character(model_id),
+      sha = as.character(item$sha %||% NA_character_),
       name = ifelse(is.na(model_id), NA_character_, sub("^.*/", "", model_id)),
       description = item$cardData$description %||% item$description %||% NA_character_,
       url = ifelse(is.na(model_id), NA_character_, paste0(

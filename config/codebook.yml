@@ -20,15 +20,15 @@
 #   depende_bbsia   -> depende da coordenação do BBSIA (issue #2 / plano §3).
 # ==============================================================================
 
-versao: "0.2.0"
+versao: "0.2.1"
 data: "2026-09-28"
 status: rascunho          # rascunho | em_validacao | estavel
 issue: 24
-versao_anterior: "0.1.1"
+versao_anterior: "0.2.0"
 formulario_bbsia: "config/formulario_bbsia.yml"
 politica_migracao: >
-  A versão 0.1.1 permanece no histórico Git. Nenhum valor antigo é substituído
-  em silêncio. Reclassificar uma amostra com a 0.2.0 e registrar lado a lado
+  As versões anteriores permanecem no histórico Git. Nenhum valor antigo é substituído
+  em silêncio. Reclassificar uma amostra com a 0.2.1 e registrar lado a lado
   rótulo anterior, rótulo novo, motivo, fonte e decisão humana.
 
 # ------------------------------------------------------------------------------
@@ -64,6 +64,12 @@ e_ia:
     - "Automação por regras fixas, RPA sem modelo, raspadores, CRUD, painéis de dados."
     - "Pacotes de acesso a dados públicos sem modelo (valiosos, mas fora do escopo do BBSIA de IA)."
   nota: "`nao` elimina a solução; `incerto` vai para revisão humana."
+  regra_de_decisao: >
+    `sim` exige evidência citável de uso, produção ou avaliação de modelo
+    aprendido a partir de dados. O silêncio da documentação leva a `incerto`,
+    nunca a `nao`. `nao` exige evidência positiva de que o mecanismo é
+    exclusivamente baseado em regras fixas ou outra técnica sem modelo.
+    Evidências conflitantes levam a `incerto` e revisão humana.
 
 # ------------------------------------------------------------------------------
 # 3. Vínculo com o Brasil / Link to Brazil
@@ -137,7 +143,7 @@ vinculo:
     definicao: >
       Solução aberta que resolve um problema típico do setor público e poderia
       ser adaptada ao Brasil, mesmo sem vínculo com o país.
-    # v0.1.0: dimensão RESERVADA, não codificável. Único valor permitido nesta
+    # Dimensão RESERVADA na v0.2.1, não codificável. Único valor permitido nesta
     # versão: `nao_avaliado`. Sinais, regra de decisão e exemplos entram numa
     # versão futura, junto com os valores sim/nao/incerto.
     valores: [nao_avaliado]
@@ -222,9 +228,9 @@ area_problema:
     educacao: "Educação"
     seguranca_publica: "Segurança Pública"
     financas_e_tributos: "Fazenda/Tributação"
-    meio_ambiente_e_agro: "Meio Ambiente"
-    gestao_publica: "Gestão Pública"
   mapeamento_manual:
+    - meio_ambiente_e_agro
+    - gestao_publica
     - justica_e_direito
     - atendimento_ao_cidadao
     - transparencia_e_controle
@@ -401,7 +407,7 @@ campos_publicos:
       regra: "Descrição do mecanismo declarado; separar resumo da citação original."
     tecnologia_ia:
       responsavel: decifra_com_revisao_humana
-      regra: "Mapear para opção observada do formulário apenas se documentação sustentar; senão desconhecido."
+      regra: "Mapear para opção observada do formulário apenas se documentação sustentar; senão nao_verificavel_publicamente."
     tipo_ativo:
       responsavel: decifra_com_revisao_humana
       regra: "Mapear tipo_artefato do radar para opção do formulário; equivalência não é presumida."

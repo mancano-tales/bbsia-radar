@@ -1,6 +1,6 @@
 # Série longitudinal do radar
 
-Este diretório ainda não contém fichas publicadas. O codebook v0.2.0 e o
+Este diretório ainda não contém fichas publicadas. O codebook v0.2.1 e o
 vocabulário lido do [formulário BBSIA](../config/formulario_bbsia.yml) descrevem
 o que poderá ser revisado. Os 104 registros exploratórios são candidatos
 encontrados por buscas limitadas, não 104 soluções verificadas.
@@ -18,6 +18,11 @@ encontrados por buscas limitadas, não 104 soluções verificadas.
 `artifact_id` usa `github:<repository_id>`, `gitlab:<project_id>` ou
 `huggingface:<models|datasets|spaces>:<namespace/repo_id>`. O identificador do
 Hugging Face pode mudar com renomeações; vínculos e aliases preservam o histórico.
+O mapa versionado de renomeações verificadas é `config/aliases.yml`; a lista
+começa vazia e não cria vínculos automaticamente. O `content_hash` combina
+a revisão imutável lida (blob SHA no GitHub, commit SHA no Hugging Face,
+`last_commit_id` no GitLab) com SHA-256 do texto. Sem essa revisão, o hash
+fica ausente e a observação não pode ser registrada como `ok`.
 `solution_id` é atribuído por curadoria e pode reunir vários artefatos. A
 migração dos IDs provisórios por URL do corpus é requisito anterior à primeira
 rodada longitudinal integrada.
