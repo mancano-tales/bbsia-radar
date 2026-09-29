@@ -72,7 +72,7 @@ relatório. O radar não envia dados ao BBSIA.
 - [Leia a descrição, o escopo e as decisões no README do projeto](https://github.com/mancano-tales/bbsia-radar#readme).
 - [Veja a proposta para discussão com a coordenação](apresentacao.qmd).
 - [Abra o relatório em HTML e baixe sua versão em PDF](relatorio.qmd).
-- [Consulte o registro de mudanças](https://github.com/mancano-tales/bbsia-radar/blob/main/NEWS.md).
+- [Consulte o registro de mudanças](https://github.com/mancano-tales/bbsia-radar/blob/main/CHANGELOG.md).
 
 > **Estimativas e limites:** quando os resultados forem publicados, o TRL será
 > uma estimativa do radar, não uma classificação oficial do BBSIA. Cada rodada

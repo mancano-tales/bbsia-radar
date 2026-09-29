@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Mantém o trailer Agent: obrigatório usando a fonte de governança comum.
+set -euo pipefail
+exec bash tools/git-hooks/commit-msg "$@"

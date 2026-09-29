@@ -41,7 +41,8 @@ Logo abaixo do título do documento, a linha `> **Issue: #N.**`.
 <!-- BEGIN_PLAN_INDEX -->
 | Plano | Issue | Status | Executor | O que é |
 |---|---|---|---|---|
-| `2026-09-28_Plano_Ativos_Visuais_e_Logo_BBSIA.md` | #17 (relacionada) | ATIVO (criado 2026-09-28) | Codex / GPT-6 / desktop | Ativos da marca preparados, mas desativados no site e PDF; PR #25 aguarda revisão cruzada e integração da PR #18. |
+| `2026-09-28_Plano_Ativos_Visuais_e_Logo_BBSIA.md` | #17 (relacionada) | ATIVO (criado 2026-09-28) | Codex / GPT-6 / desktop | Ativos da marca preparados, desativados no site e PDF; PR #25 aguarda revisão cruzada após integração da PR #18. |
+| `2026-09-28_Plano_Codebook_Publico_e_Serie_Longitudinal.md` | #24 | EM EXECUÇÃO (criado 2026-09-28) | Codex / GPT-6 / desktop | Ampliar o codebook com evidência pública do formulário e preparar série semanal revisada no radar. |
 | `2026-09-27_Plano_Protecao_Caminhos_Absolutos.md` | #1 (relacionada) | EM EXECUÇÃO (criado 2026-09-27 10:53) | Codex / GPT-6 / desktop | Reduzir o risco de incluir caminhos absolutos em alterações versionadas, com hooks locais e checagem de PR. |
 | `2026-09-27_Plano_Website_Quarto.md` | #17 | ATIVO (criado 2026-09-27 10:52) | Codex / GPT-6 / desktop | Site Quarto na PR #18 e nota independente para a coordenação na PR #25; resultados aguardam Decifra e revisão humana. |
 | `2026-09-27_Plano_Coleta_Exploratoria.md` | #14 | EM EXECUÇÃO (criado 2026-09-27 08:40) | Codex / GPT-6 / desktop | Amostra de GitHub, Hugging Face e GitLab.com coletada; classificação Decifra, TRL, revisão humana e comparação com o BBSIA pendentes. |

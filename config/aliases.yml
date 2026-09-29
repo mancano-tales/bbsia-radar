@@ -1,0 +1,4 @@
+# Renomeações verificadas de artefatos; não faz deduplicação de soluções.
+# Cada item exige artifact_id, url_antiga e url_atual. Somente evidência
+# pública revisada deve ser incluída aqui. A lista vazia é intencional.
+aliases: []

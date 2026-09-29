@@ -1,4 +1,5 @@
 hooks/* text eol=lf
+tools/git-hooks/* text eol=lf
 tools/check-absolute-paths.sh text eol=lf
 .github/workflows/*.yml text eol=lf
 report/assets/*.svg text eol=lf

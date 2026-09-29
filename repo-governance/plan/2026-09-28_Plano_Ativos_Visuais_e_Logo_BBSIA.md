@@ -107,6 +107,7 @@ Conforme a governança do repositório e a skill `request-audit`, este plano é 
 * Inspeção visual da primeira implementação: símbolo 512, cartão OpenGraph, página inicial em desktop e primeira página do PDF sem distorção ou corte do logo. Naquela versão, o artefato incluía favicon, ícone Apple, banner, logo da navbar e imagem social; essa integração foi posteriormente desativada pela decisão de 2026-09-29. A configuração atual do repositório ainda não habilita Pages, e nenhuma publicação foi feita.
 * A integração é baseada na branch da PR #18. O job de deploy e a condição `PAGES_PUBLISH_APPROVED` permanecem inalterados. O merge do subplano depende da integração da PR #18 e da revisão cruzada exigida pelo `AGENTS.md`.
 * Entrega em PR #25, branch `codex/17-ativos-quarto`, empilhada na PR #18. As quatro WPs foram implementadas; o plano permanece `ATIVO` até a revisão cruzada e o merge.
+* Atualização 2026-09-29: a PR #18 foi integrada, a PR #25 foi retargetada para `main` e a justificativa para usar Node somente na geração/verificação dos ativos foi registrada na issue #17. A revisão cruzada e a ativação institucional da marca continuam independentes.
 
 ### Decisão de apresentação em 2026-09-29
 

@@ -125,7 +125,8 @@ test_that("GitLab README uses HEAD before GET, enforces the byte ceiling, and re
     }
     list(status = 200L, body = list(
       size = nchar(README, type = "bytes"), encoding = "base64", content = encoded,
-      file_path = "README.md", commit_id = "commit-7001", blob_id = "blob-7001"
+      file_path = "README.md", commit_id = "commit-7001", blob_id = "blob-7001",
+      last_commit_id = strrep("c", 40)
     ))
   }
   budget <- radar_novo_orcamento()
@@ -138,6 +139,7 @@ test_that("GitLab README uses HEAD before GET, enforces the byte ceiling, and re
   expect_match(result$readme, "T\u00edtulo pt-BR")
   expect_match(result$readme, "EMAIL REDACTED")
   expect_equal(result$readme_status, "read")
+  expect_match(result$content_hash[[1]], paste0("^gitlab:", strrep("c", 40), ":"))
   expect_equal(budget$tentativas_reservadas, 2L)
   expect_equal(budget$documentos, "gitlab:7001")
 })

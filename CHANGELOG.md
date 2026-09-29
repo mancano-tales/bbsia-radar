@@ -1,11 +1,14 @@
 # CHANGELOG (derivado)
 
-Derivado do `git log` por `tools/render-changelog.R`. Commit mais recente incluído: 2026-09-27.
+Derivado do `git log` por `tools/render-changelog.R`. Commit mais recente incluído: 2026-09-29.
 
-Arquivo DERIVADO do `git log`. Não edite à mão — a fonte editorial é o `NEWS.md` e o histórico do Git.
+Arquivo DERIVADO do `git log`. Não edite à mão — registre mudanças nos commits, PRs e issues.
 
 ## Added
 
+- **`[ff4f0d3]` 2026-09-28** — feat(series): propose URL-free identities for exploratory candidates refs #24
+- **`[82edd5f]` 2026-09-28** — feat(series): prepare longitudinal run contract refs #24
+- **`[bb67518]` 2026-09-28** — feat(codebook): map public BBSIA form fields refs #24
 - **`[1eb2f16]` 2026-09-27** — feat(collectors): add GitLab discovery refs #14
 - **`[17297e3]` 2026-09-27** — feat(collectors): inclui sementes brasileiras da lista curada refs #14
 - **`[4fa2bb4]` 2026-09-27** — feat(security): reduz risco de caminhos absolutos refs #1
@@ -16,19 +19,42 @@ Arquivo DERIVADO do `git log`. Não edite à mão — a fonte editorial é o `NE
 
 ## Fixed
 
+- **`[92b9529]` 2026-09-29** — fix(radar): pin HF revisions and grandfather legacy commits refs #24
+- **`[84b2da0]` 2026-09-29** — fix(governance): retira exceção de pacote R do NEWS refs #1
+- **`[0bc9a83]` 2026-09-29** — fix(radar): corrigir codebook e identidade longitudinal refs #24
+- **`[25d7e2f]` 2026-09-28** — fix(governance): align Radar hooks with NEWS retirement refs #1
 - **`[bfddbdb]` 2026-09-27** — fix(news): corrige assunto declarado do changelog refs #14
+- **`[6216a8f]` 2026-09-27** — fix(security): corrige detector e inclui diffs de merge refs #1
 - **`[f42fb2a]` 2026-09-27** — fix(report): aplica revisões da PR Quarto refs #17
 - **`[3f590ac]` 2026-09-26** — fix(config): correcoes da revisao do codebook e das sementes
 
 ## Changed
 
+- **`[22641a6]` 2026-09-29** — Update author attribution in README.md
+- **`[4c3474f]` 2026-09-29** — docs(todo): acompanhar revisão do PR #26 refs #24
+- **`[653a5e6]` 2026-09-29** — docs(todo): registrar branch aguardando vaga de PR refs #24
+- **`[e33d612]` 2026-09-28** — docs(changelog): regenerate after PR21 main sync refs #1
+- **`[e70cdbc]` 2026-09-28** — docs(plan): publish proposed BBSIA visual assets audit refs #17
+- **`[5dbe61e]` 2026-09-28** — docs(plan): align pending decisions with codebook v0.2.0 refs #24
+- **`[b0440b6]` 2026-09-28** — docs(plan): record candidate identity proposal refs #24
+- **`[d7d2367]` 2026-09-28** — docs(plan): record codebook and series progress refs #24
+- **`[58b483b]` 2026-09-28** — docs(plan): activate codebook and longitudinal work refs #24
+- **`[1cfac00]` 2026-09-28** — docs(codebook): incorporate independent plan reviews refs #1
+- **`[d87c1c1]` 2026-09-28** — docs(governance): track cross-review of hook update refs #1
+- **`[c9a2d9c]` 2026-09-28** — docs(codebook): propose public schema and longitudinal series refs #1
+- **`[4a4e854]` 2026-09-28** — docs(changelog): atualiza historico do PR 21 refs #1
+- **`[15b0533]` 2026-09-28** — docs(changelog): atualiza histórico após merge do site refs #17
 - **`[74f0166]` 2026-09-27** — docs(agents): usa apenas Gemini 3.8 Flash refs #14
 - **`[f508992]` 2026-09-27** — docs(report): qualifica estados pré-coleta refs #17
 - **`[c0b6f94]` 2026-09-27** — docs(changelog): sincroniza changelog apos integracao refs #14
+- **`[14a6e8d]` 2026-09-27** — docs(plan): confirma PR limpo e workflow refs #1
+- **`[2ea3e8f]` 2026-09-27** — docs(plan): registra resolucao de conflito e validacao refs #1
 - **`[a8b02f6]` 2026-09-27** — docs(report): synchronize exploratory status refs #17
 - **`[b2636ed]` 2026-09-27** — docs(plan): registra lacuna de cobertura hf refs #14
 - **`[fc19155]` 2026-09-27** — docs(plan): registra primeira amostra exploratoria refs #14
 - **`[0518433]` 2026-09-27** — docs(report): align Quarto pages with GitLab sample refs #17
+- **`[3b6cbc7]` 2026-09-27** — docs(plan): atualiza estado após abertura do PR refs #1
+- **`[060500c]` 2026-09-27** — docs(plan): registra bloqueio de abertura do PR refs #1
 - **`[cfa17cf]` 2026-09-27** — docs: registra PR de sementes brasileiras refs #14
 - **`[ec99f4a]` 2026-09-27** — docs(report): entrega PR Quarto para revisao refs #17
 - **`[ab2f779]` 2026-09-27** — docs(cache): configura raiz local para coleta exploratoria refs #14
