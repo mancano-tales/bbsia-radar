@@ -67,7 +67,9 @@ cache externo.
 6. **Guia de agentes via CLI:** ampliar `repo-governance/agentes-gemini.md` para cobrir Antigravity,
    Codex e Claude, e depois propor onde padronizar (hub, skill ou repositório próprio).
 7. **Revisão de código:** todo PR do Claude recebe `@codex review` no GitHub antes do merge.
-8. **Tarefas fora do radar** (autorizações inválidas; inventário dos repositórios do MancanoSync):
+8. **Merges:** o agente pode mergear os próprios PRs e os do Codex quando os checks estiverem verdes e a revisão cruzada não tiver achado bloqueante pendente ("pode mergear você mesmo").
+9. **Português europeu:** documentação que declara só pt-PT dá `ptbr = nao`, não `incerto` ("pt-PT explícito deve ser nao"). Aplicado no codebook v0.2.2 (PR #31).
+10. **Tarefas fora do radar** (autorizações inválidas; inventário dos repositórios do MancanoSync):
    sessões separadas.
 
 ## 3. Ordem e caminho crítico

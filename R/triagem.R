@@ -1,6 +1,6 @@
 # Decision rule shared by e_ia, brasileira and ptbr / Regra de decisão comum.
 #
-# (pt) O codebook (config/codebook.yml, v0.2.1) usa a mesma regra nas duas
+# (pt) O codebook (config/codebook.yml, v0.2.2) usa a mesma regra nas duas
 #      marcações de vínculo (brasileira e ptbr): `sim` com 1 sinal forte ou 2 médios; `incerto` com
 #      1 médio, só fracos, nenhum sinal ou sinais conflitantes; `nao` só com
 #      evidência positiva contrária. Em `e_ia`, `sim` exige evidência citável

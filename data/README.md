@@ -1,6 +1,6 @@
 # Série longitudinal do radar
 
-Este diretório ainda não contém fichas publicadas. O codebook v0.2.1 e o
+Este diretório ainda não contém fichas publicadas. O codebook v0.2.2 e o
 vocabulário lido do [formulário BBSIA](../config/formulario_bbsia.yml) descrevem
 o que poderá ser revisado. Os 104 registros exploratórios são candidatos
 encontrados por buscas limitadas, não 104 soluções verificadas.

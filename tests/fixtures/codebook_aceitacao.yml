@@ -1,4 +1,4 @@
-# Casos sintéticos de aceitação do codebook v0.2.1 (issue #24, plano #28 WP-D).
+# Casos sintéticos de aceitação do codebook v0.2.2 (issue #24, plano #28 WP-D).
 #
 # (pt) Cada caso tem um documento curto, os sinais que uma leitura correta
 #      encontraria nele e o resultado esperado. O teste aplica a regra de
@@ -81,11 +81,10 @@ casos:
     sinais:
       e_ia: {fortes: 1}
       brasileira: {negativa: true}
-      # Regra vigente (v0.2.1): `language:pt` com documentação só sobre pt-PT
-      # é conflito e vai para `incerto` e revisão humana. Pergunta ao autor
-      # na issue #28: pt-PT explícito deveria ser `nao`?
-      ptbr: {fracos: 1, conflito: true}
-    esperado: {e_ia: sim, brasileira: nao, ptbr: incerto, area_problema: []}
+      # v0.2.2 (autor, 2026-09-29): pt-PT declarado é evidência contrária, e a
+      # tag `language:pt` é só sinal fraco, que não conflita com ela.
+      ptbr: {fracos: 1, negativa: true}
+    esperado: {e_ia: sim, brasileira: nao, ptbr: nao, area_problema: []}
 
   - id: multilingue_generico_documentado
     documento: >
