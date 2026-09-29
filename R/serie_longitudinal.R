@@ -33,6 +33,37 @@ radar_artifact_id <- function(platform, id, kind = NULL) {
   paste("huggingface", kind, id, sep = ":")
 }
 
+radar_propor_vinculos <- function(artifacts) {
+  # (pt) A migração mantém IDs de sementes já curadas. Para cada URL ainda usada
+  #      como identidade provisória, propõe uma chave sem URL derivada do ID da
+  #      plataforma. Isto não deduplica soluções: fusões exigem decisão humana.
+  # (en) Preserve curated seed IDs. Derive a URL-free provisional solution ID
+  #      from the platform ID for each remaining artifact. This is a proposal,
+  #      not an automatic cross-platform entity resolution.
+  required <- c("platform", "id", "kind", "url", "solution_id")
+  if (!all(required %in% names(artifacts))) {
+    stop("Artefatos exigem platform, id, kind, url e solution_id.", call. = FALSE)
+  }
+  artifact_ids <- vapply(seq_len(nrow(artifacts)), function(i) {
+    radar_artifact_id(artifacts$platform[[i]], artifacts$id[[i]], artifacts$kind[[i]])
+  }, character(1))
+  if (anyDuplicated(artifact_ids)) {
+    stop("ID da plataforma duplicado; revisar antes da migração.", call. = FALSE)
+  }
+  previous <- as.character(artifacts$solution_id)
+  curated <- !is.na(previous) & nzchar(previous) & !grepl("^https?://", previous)
+  proposed <- ifelse(curated, previous, paste0("s-", vapply(artifact_ids, function(id) {
+    substr(digest::digest(id, algo = "sha256", serialize = FALSE), 1L, 20L)
+  }, character(1))))
+  tibble::tibble(
+    artifact_id = artifact_ids,
+    solution_id_proposto = unname(proposed),
+    identidade_status = ifelse(curated, "curado_semente", "provisorio"),
+    url_observada = as.character(artifacts$url),
+    solution_id_anterior = previous
+  )
+}
+
 radar_validar_observacoes <- function(observacoes) {
   required <- c("artifact_id", "content_hash", "status")
   if (!all(required %in% names(observacoes))) {

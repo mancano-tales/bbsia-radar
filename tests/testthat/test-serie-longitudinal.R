@@ -7,6 +7,27 @@ test_that("platform IDs are namespaced and mutable URLs are rejected as numeric 
   expect_error(radar_artifact_id("huggingface", "model", "models"))
 })
 
+test_that("URL identities migrate to stable provisional keys without merging artifacts", {
+  artifacts <- tibble::tibble(
+    platform = c("github", "huggingface", "gitlab"),
+    id = c("123", "org/model", "45"), kind = c(NA_character_, "models", NA_character_),
+    url = c("https://github.com/org/repo", "https://huggingface.co/org/model",
+            "https://gitlab.com/org/project"),
+    solution_id = c("https://github.com/org/repo", "seed-model",
+                    "https://gitlab.com/org/project")
+  )
+  mapped <- radar_propor_vinculos(artifacts)
+  expect_equal(mapped$artifact_id, c("github:123", "huggingface:models:org/model", "gitlab:45"))
+  expect_equal(mapped$solution_id_proposto[[2]], "seed-model")
+  expect_true(all(startsWith(mapped$solution_id_proposto[c(1, 3)], "s-")))
+  expect_equal(length(unique(mapped$solution_id_proposto)), 3L)
+  renamed <- artifacts
+  renamed$url[[1]] <- "https://github.com/new-owner/renamed"
+  renamed$solution_id[[1]] <- renamed$url[[1]]
+  expect_equal(radar_propor_vinculos(renamed)$solution_id_proposto[[1]],
+               mapped$solution_id_proposto[[1]])
+})
+
 test_that("two synthetic runs retain change, absence and HTTP 404 as distinct events", {
   first <- tibble::tibble(
     artifact_id = c("github:1", "gitlab:2", "huggingface:models:org/model"),

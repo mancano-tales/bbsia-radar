@@ -21,6 +21,9 @@ Hugging Face pode mudar com renomeações; vínculos e aliases preservam o hist�
 `solution_id` é atribuído por curadoria e pode reunir vários artefatos. A
 migração dos IDs provisórios por URL do corpus é requisito anterior à primeira
 rodada longitudinal integrada.
+`radar_propor_vinculos()` gera chaves provisórias sem URL a partir do ID da
+plataforma e preserva os IDs das sementes já curadas; a proposta não faz fusão
+automática entre plataformas e precisa de revisão antes de entrar em `data/`.
 
 Os eventos `novo`, `alterado`, `inalterado`, `reapareceu`, `ausente_da_busca` e
 `http_404` não afirmam encerramento. Um 404 pode indicar remoção, privacidade ou
