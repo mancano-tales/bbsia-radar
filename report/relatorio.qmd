@@ -1,6 +1,6 @@
 ---
-title: "Relatório da proposta de radar"
-subtitle: "Iniciativa independente para apreciação da coordenação do BBSIA"
+title: "Resultados do piloto"
+subtitle: "Radar de soluções de IA brasileiras"
 author: "Tales Mançano, voluntário do BBSIA"
 date: today
 date-format: "D [de] MMMM [de] YYYY"
@@ -26,57 +26,46 @@ format:
 ---
 
 ::: {.callout-note}
-### Proposta independente, ainda sem caráter oficial
+### Proposta independente
 
-Este radar é uma proposta de Tales Mançano, voluntário do BBSIA, para apresentar
-à coordenação do programa. Este relatório não é uma publicação oficial do BBSIA
-nem expressa decisão ou endosso da coordenação.
+Relatório de uma proposta voluntária, não uma publicação do BBSIA.
 :::
 
-## Estado da rodada
+## Situação
 
-::: {.callout-note}
-### Nenhuma rodada foi publicada ainda
+::: {.callout-important}
+### O piloto está em preparação
 
-Uma amostra exploratória foi coletada, mas ainda depende da classificação no
-Decifra e de revisão humana. Não incluímos seus candidatos como registros
-públicos nem usamos linhas de exemplo. O relatório será atualizado quando uma
-saída curada e aprovada for preparada em `data/relatorios/` e entrar no
-repositório.
+As soluções do piloto serão classificadas e revisadas uma a uma. Esta página
+vai mostrar as fichas revisadas, os números por tipo de solução e o quanto
+a classificação automática acertou em comparação com a revisão humana. Nada
+aparece aqui antes de ser conferido.
 :::
 
-A data no cabeçalho indica quando o relatório foi gerado. Quando houver uma
-rodada pública, a data da coleta e a cobertura serão informadas separadamente
-como proveniência dos resultados.
+A data no alto da página é a data em que o relatório foi gerado. Cada rodada de
+busca terá também a sua própria data e a lista do que foi consultado.
 
-## Escopo
+## O que foi buscado
 
-O radar procura soluções de IA brasileiras, adaptadas ao português brasileiro ou
-de interesse público adaptáveis, disponíveis no GitHub, Hugging Face e GitLab.com. As
-categorias de inclusão e suas evidências são definidas no
-[codebook do projeto](https://github.com/mancano-tales/bbsia-radar/blob/main/config/codebook.yml).
+Soluções de IA brasileiras ou adaptadas ao português do Brasil, publicadas no
+GitHub, no Hugging Face e no GitLab. Os termos de busca, os grupos consultados e o
+número de páginas lidas em cada plataforma serão listados aqui, junto com os
+resultados.
 
-## Método e proveniência
+## Como ler os resultados
 
-As candidatas são descobertas por APIs oficiais, enriquecidas com metadados
-públicos e classificadas no Decifra com evidências citadas. A revisão humana
-precede a publicação. Cada rodada futura deverá registrar sua data, o commit do
-codebook e do Decifra, a cobertura e as limitações observadas. Consulte a página
-[Como o radar funciona](metodo.qmd) para detalhes sobre fontes, publicação e
-limites.
+- Cada ficha traz o link para a fonte e o trecho que sustenta cada resposta.
+- "Incerto" quer dizer que a documentação não permite responder, não que a
+  resposta seja "não".
+- A maturidade é uma faixa de TRL estimada pelo radar a partir de sinais
+  públicos, não uma avaliação do BBSIA.
+- As regras de classificação estão no
+  [livro de códigos](https://github.com/mancano-tales/bbsia-radar/blob/main/config/codebook.yml),
+  e o passo a passo, em [Como o radar funciona](metodo.qmd).
 
-## Maturidade
+## Limites
 
-O escopo considera diferentes estágios de maturidade. Um TRL publicado será uma
-estimativa própria, acompanhada dos sinais e limites que a sustentam; não é um
-TRL oficial do BBSIA.
-
-## Limitações
-
-Os resultados dependerão da cobertura das plataformas, da qualidade dos
-metadados, do material disponível e da revisão das evidências. Ausência de um
-projeto na lista não prova que a solução não exista. O relatório não atesta
-segurança, eficácia, licença de uso ou adequação para adoção institucional.
-
-Uma amostra exploratória já existe, mas não há soluções, contagens ou conclusões empíricas publicadas
-até que a classificação no Decifra e a revisão humana sejam concluídas.
+Plataformas abertas não reúnem todas as soluções de IA do país, e a
+documentação dos projetos pode estar incompleta. Não aparecer nesta lista não
+quer dizer que a solução não existe. O relatório descreve o que as fontes dizem;
+não atesta segurança, eficácia ou adequação para uso em órgãos públicos.

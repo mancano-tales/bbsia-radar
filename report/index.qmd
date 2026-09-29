@@ -1,79 +1,82 @@
 ---
-title: "Proposta de radar de soluções de IA para o interesse público"
-subtitle: "Iniciativa independente de um voluntário do BBSIA, para apreciação da coordenação"
+title: "Radar de soluções de IA brasileiras"
 page-layout: full
 ---
 
 ::: {.hero-panel}
 ::: {.hero-kicker}
-PROPOSTA INDEPENDENTE · EM PREPARAÇÃO
+PROPOSTA DE UM VOLUNTÁRIO · PILOTO EM PREPARAÇÃO
 :::
 
-## Encontrar soluções. Mostrar as evidências. Facilitar a revisão.
+## Muita IA brasileira já está publicada. Falta encontrá-la.
 
-O **bbsia-radar** identifica soluções de inteligência artificial brasileiras,
-adaptadas ao português brasileiro ou de interesse público que possam ser
-adaptadas. Ele busca projetos publicados no GitHub, no Hugging Face e no GitLab.com e prepara
-candidatas para revisão humana relacionada ao [Banco Brasileiro de Soluções de
-IA (BBSIA)](https://bancobrasileiro.ia.br/).
+Grupos de pesquisa, empresas e órgãos públicos publicam modelos e ferramentas de
+IA no GitHub, no Hugging Face e no GitLab. O
+[Banco Brasileiro de Soluções de IA (BBSIA)](https://bancobrasileiro.ia.br/)
+reúne soluções para o setor público, mas depende de alguém preencher o
+formulário, uma solução de cada vez.
 
-**Esta é uma proposta de Tales Mançano, voluntário do BBSIA, para apresentar à
-coordenação do programa. O radar ainda não é uma iniciativa oficial do BBSIA e
-não tem endosso institucional.**
+O **radar** faz a primeira parte desse trabalho: procura essas soluções nas
+plataformas abertas, lê a documentação de cada uma e prepara uma ficha
+pré-preenchida para que uma pessoa confira.
 
-[Leia a proposta para a coordenação](apresentacao.qmd){.btn .btn-primary .btn-lg}
-[Conheça o método](metodo.qmd){.btn .btn-outline-primary .btn-lg}
+[Leia a proposta](apresentacao.qmd){.btn .btn-primary .btn-lg}
+[Veja como funciona](metodo.qmd){.btn .btn-outline-primary .btn-lg}
 :::
 
-## Para a conversa com a coordenação
+::: {.disclaimer-panel}
+![](assets/bbsia-logo.svg){.disclaimer-logo fig-alt="Logotipo do Banco Brasileiro de Soluções de IA"}
 
-A [nota de apresentação](apresentacao.qmd) resume o piloto sugerido, o que já foi
-preparado e as decisões ainda necessárias sobre escopo, revisão, comparação com o
-catálogo e eventual adoção institucional. Ela também pode ser baixada em PDF na
-própria página. **Nenhuma candidata foi validada ou submetida ao BBSIA.**
-
-## Situação dos dados
-
-::: {.status-panel}
-### Ainda não há uma rodada pública
-
-Uma amostra exploratória já foi coletada e permanece fora do repositório. Ela
-ainda não passou pela classificação no Decifra nem pela revisão humana; por isso,
-esta página continua sem soluções ou estatísticas públicas.
+::: {.disclaimer-text}
+**Este site não é do BBSIA.** É uma proposta independente de Tales Mançano,
+voluntário do programa, preparada para apresentar à coordenação. O logotipo
+identifica o programa a que a proposta se destina; não indica aprovação, parceria
+ou endosso. Nenhuma ficha foi enviada ao BBSIA.
+:::
 :::
 
-## O que este radar faz
+## O que o radar faz
 
 ::: {.grid}
 ::: {.grid-item}
-### Descobre
+### Procura
 
-Consulta as APIs oficiais do GitHub, do Hugging Face e do GitLab.com usando
-critérios e sementes documentados.
+Consulta as plataformas pelas interfaces oficiais, a partir de uma lista pública
+de termos de busca e de grupos já conhecidos.
 :::
 
 ::: {.grid-item}
-### Organiza evidências
+### Lê e classifica
 
-Prepara um documento citável por solução. A classificação segue o codebook do
-projeto e é feita no [Decifra](https://github.com/mancano-tales/decifra-text-as-data).
+Lê o README ou a ficha do modelo e responde, com o trecho que justifica cada
+resposta: é IA? É brasileira? Funciona em português do Brasil? Que problema
+resolve?
 :::
 
 ::: {.grid-item}
-### Publica com revisão
+### Prepara a ficha
 
-Só resultados selecionados, revisados e apropriados para divulgação entram no
-relatório. O radar não envia dados ao BBSIA.
+Organiza o resultado nos campos do formulário do BBSIA e estima a maturidade.
+Uma pessoa revisa tudo antes de qualquer publicação.
 :::
 :::
 
-## Acompanhe
+## Em que pé está
 
-- [Leia a descrição, o escopo e as decisões no README do projeto](https://github.com/mancano-tales/bbsia-radar#readme).
-- [Veja a proposta para discussão com a coordenação](apresentacao.qmd).
-- [Abra o relatório em HTML e baixe sua versão em PDF](relatorio.qmd).
-- [Consulte o registro de mudanças](https://github.com/mancano-tales/bbsia-radar/blob/main/CHANGELOG.md).
+- **Pronto:** a busca no GitHub, no Hugging Face e no GitLab; uma primeira
+  sondagem, com 104 resultados de busca ainda não avaliados; as regras de
+  classificação.
+- **Em preparação:** um piloto com cerca de 30 soluções, a serem classificadas e
+  revisadas uma a uma, para mostrar à coordenação como seriam as fichas.
+- **Depois do piloto:** ajustar os campos e os critérios com a coordenação e só
+  então rodar a busca completa.
 
-> **Estimativas e limites:** quando os resultados forem publicados, o TRL será
-> uma estimativa do radar, não uma classificação oficial do BBSIA. Cada rodada
-> deverá informar sua data, cobertura, proveniência e limitações.
+Os resultados do piloto aparecerão no [relatório](relatorio.qmd) quando a
+revisão terminar.
+
+## Para saber mais
+
+- [Proposta para a coordenação](apresentacao.qmd), também em PDF.
+- [Como o radar funciona](metodo.qmd): fontes, regras e limites.
+- [Código e documentação no GitHub](https://github.com/mancano-tales/bbsia-radar#readme).
+- [Histórico de mudanças](https://github.com/mancano-tales/bbsia-radar/blob/main/CHANGELOG.md).

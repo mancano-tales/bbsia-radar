@@ -1,62 +1,68 @@
 ---
 title: "Como o radar funciona"
-description: "Método de uma proposta independente de radar, ainda sem caráter oficial do BBSIA."
+description: "Fontes, regras de classificação e limites do radar de soluções de IA brasileiras."
 ---
 
-**Esta é uma proposta independente de Tales Mançano, voluntário do BBSIA, para
-apresentação à coordenação do programa. O método e seus resultados não são
-publicações oficiais do BBSIA.**
+::: {.callout-note}
+### Proposta independente
 
-O radar prepara candidatas a partir de metadados públicos e documentos de
-projeto. A presença de um repositório não significa que a solução foi confirmada
-como brasileira, adaptada ao português brasileiro, útil ao setor público ou
-pronta para uso.
+Método de uma proposta voluntária, ainda não adotada pelo BBSIA.
+:::
 
-## Etapas
+## O que conta como solução
 
-1. **Descoberta:** consulta as APIs oficiais do GitHub, do Hugging Face e do
-   GitLab.com, a partir de buscas e sementes mantidas no repositório.
-2. **Enriquecimento:** registra metadados públicos e reúne o README ou model card
-   para que as alegações possam ser examinadas junto da fonte.
-3. **Classificação:** envia o corpus ao Decifra, que aplica o codebook do radar
-   e devolve rótulos com evidências citadas.
-4. **Revisão humana:** verifica casos, discordâncias e a qualidade das
-   evidências antes de selecionar resultados públicos.
-5. **Maturidade e entrega:** estima TRL a partir dos sinais disponíveis e
-   prepara uma lista de candidatas para avaliação. Nada é enviado ao BBSIA
-   automaticamente.
+O radar procura três tipos de solução, conforme a conversa inicial com a
+coordenação do BBSIA:
 
-## Fontes e privacidade
+- **Brasileira:** feita por pessoa, grupo, empresa ou órgão sediado no Brasil.
+- **Adaptada ao português do Brasil:** um modelo, conjunto de dados ou programa
+  treinado, ajustado ou avaliado para o português brasileiro.
+- **De interesse público adaptável:** resolve um problema típico do setor público
+  e tem código aberto. Esta categoria fica para depois do piloto, porque precisa
+  de um critério escrito com a coordenação.
 
-O radar usa as APIs oficiais do GitHub, do Hugging Face e do GitLab.com e respeita
-seus limites de uso. A descoberta inicial do GitLab cobre somente projetos
-públicos no GitLab.com, uma página por consulta; não cobre instâncias self-managed
-nem examina o conteúdo do código. O README GitLab é lido somente na raiz, após
-verificação HEAD do tamanho e com teto de 256 KiB. O cache bruto e os arquivos de
-trabalho ficam fora do repositório. A coleta se limita a metadados e documentos
-públicos; não coleta e-mail nem credenciais.
+A unidade é a solução, não o repositório: um modelo no Hugging Face e o código no
+GitHub do mesmo grupo formam uma única ficha. As regras completas, com exemplos e
+casos difíceis, estão no
+[livro de códigos do projeto](https://github.com/mancano-tales/bbsia-radar/blob/main/config/codebook.yml).
 
-## Publicação e proveniência
+## Passo a passo
 
-O relatório deve apontar para as páginas de origem, informar o codebook e a
-versão do Decifra usados, e descrever a cobertura da rodada. Uma licença do
-projeto não transfere direitos sobre README, model cards ou dados de terceiros.
-Por isso, resumos e evidências textuais passam por revisão de necessidade,
-atribuição e licença antes de serem publicados.
+1. **Busca.** O radar consulta o GitHub, o Hugging Face e o GitLab pelas
+   interfaces oficiais de cada plataforma. Usa termos de busca, temas (como
+   `brazilian-portuguese`) e contas de grupos conhecidos, todos listados no
+   repositório.
+2. **Leitura.** Para cada projeto escolhido, guarda os dados públicos (descrição,
+   licença, datas, estrelas ou downloads) e o README ou a ficha do modelo. No
+   Hugging Face, lê a versão exata da ficha em vigor no momento da coleta, para
+   que a leitura possa ser repetida.
+3. **Classificação.** Um modelo de linguagem responde às perguntas do livro de
+   códigos e cita o trecho que sustenta cada resposta. Quando a documentação não
+   diz, a resposta é "incerto", não "não".
+4. **Revisão.** Uma pessoa confere cada ficha do piloto. As respostas dela servem
+   também para medir quantas vezes o modelo acertou.
+5. **Maturidade.** O radar estima uma faixa de TRL a partir de sinais públicos:
+   versões publicadas, documentação, atividade recente, número de colaboradores.
+   É uma estimativa do radar, não uma avaliação do BBSIA.
 
-Os registros do catálogo do BBSIA não entram no relatório sem fonte e autorização
-adequadas. A deduplicação pode depender desses registros, mas não autoriza sua
-republicação.
+## Privacidade e uso das plataformas
+
+- Só informações públicas dos projetos. Nada de e-mail ou outro dado pessoal
+  além do nome público de quem mantém o repositório.
+- As consultas respeitam os limites de uso de cada plataforma, e cada resposta
+  fica guardada para não repetir chamadas.
+- Os textos completos coletados ficam fora do repositório público. O site mostra
+  apenas fichas revisadas e trechos curtos, com link para a fonte.
+- O radar não coleta dados do catálogo do BBSIA e não envia nada ao programa.
 
 ## Limites
 
-- A descoberta em GitHub, Hugging Face e GitLab.com não representa todas as
-  soluções de IA existentes. Consultas parciais e de uma página podem omitir
-  projetos; ausência nos resultados não prova inexistência.
-- Metadados e documentos podem estar incompletos, desatualizados ou incorretos.
-- Uma classificação automatizada é uma indicação apoiada por evidências, não
-  uma decisão oficial do BBSIA.
-- A estimativa de TRL é do radar e não substitui avaliação de implantação,
-  segurança, desempenho ou adequação institucional.
-- A amostra exploratória já foi coletada, mas suas contagens e candidatos ainda não foram publicados:
-  isso depende da classificação no Decifra e da revisão humana.
+- Plataformas abertas não contêm todas as soluções de IA do país; soluções
+  internas de órgãos públicos, por exemplo, raramente estão lá. Não aparecer no
+  radar não quer dizer que a solução não existe.
+- A documentação pode estar incompleta, desatualizada ou exagerada. A ficha
+  descreve o que a fonte diz; não atesta que a solução funciona ou é segura.
+- Estrelas, downloads e commits indicam atividade, não uso real em serviço
+  público.
+- A licença deste projeto cobre o código e os textos do radar, não os README,
+  fichas de modelo ou dados de terceiros.

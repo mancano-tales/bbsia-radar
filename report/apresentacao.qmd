@@ -1,6 +1,6 @@
 ---
-title: "Proposta de radar de soluções de IA"
-subtitle: "Nota para conversa com a coordenação do BBSIA"
+title: "Radar de soluções de IA brasileiras"
+subtitle: "Proposta para a coordenação do BBSIA"
 author: "Tales Mançano, voluntário do BBSIA"
 format:
   html:
@@ -24,71 +24,72 @@ format:
 ::: {.callout-note}
 ### Documento para discussão
 
-Esta é uma proposta independente de Tales Mançano, voluntário do BBSIA, para
-apreciação da coordenação. O radar ainda não é uma iniciativa oficial do programa,
-e este documento não representa aprovação ou endosso institucional.
+Proposta independente, escrita por um voluntário. Não é uma iniciativa oficial do
+BBSIA nem tem aprovação da coordenação.
 :::
 
-## A ideia em uma frase
+## O problema
 
-Encontrar, em plataformas públicas, possíveis soluções de IA relevantes para o
-Brasil e preparar **candidatas documentadas para avaliação humana**, com origem,
-evidências e limites explícitos. O radar complementaria a submissão voluntária de
-soluções ao BBSIA; não substituiria a curadoria do programa.
+O BBSIA cresce à medida que alguém preenche o formulário, uma solução por vez.
+Enquanto isso, muitas soluções brasileiras já estão publicadas em plataformas
+abertas, como o GitHub e o Hugging Face, com código, documentação e, às vezes,
+modelos prontos para usar. Encontrá-las e cadastrá-las à mão é lento, e o
+catálogo acaba mostrando só quem se lembrou de enviar.
 
-## Por que testar
+## A proposta
 
-Projetos úteis estão dispersos em repositórios de código e modelos. Uma busca
-repetível pode ampliar a descoberta e reduzir o trabalho inicial de reunir
-informações. A presença de um projeto numa plataforma, porém, não comprova sua
-qualidade, relevância, maturidade ou elegibilidade para o BBSIA.
+Um programa que procura essas soluções de forma sistemática e prepara, para cada
+uma, uma ficha com os campos do formulário do BBSIA já preenchidos no que a
+documentação pública permite responder. Cada resposta vem acompanhada do trecho
+de onde saiu, para que a revisão seja rápida. A maturidade entra como coluna
+(uma estimativa de TRL), não como filtro, como combinado na conversa inicial.
 
-## Piloto sugerido
+O radar não substitui a curadoria do BBSIA: ele entrega uma lista conferida para
+a equipe decidir o que entra.
 
-1. **Recorte inicial:** soluções brasileiras ou adaptadas ao português brasileiro.
-   Soluções de interesse público sem esses vínculos exigem um critério adicional,
-   a definir com a coordenação antes de ampliar o escopo.
-2. **Descoberta e documentação:** consultar as APIs do GitHub, Hugging Face e
-   GitLab.com; guardar links de origem e preparar um documento de evidências por
-   candidata.
-3. **Classificação e conferência:** aplicar o codebook do projeto com o Decifra,
-   conferir evidências e discordâncias por revisão humana e registrar uma
-   estimativa de maturidade separada de qualquer classificação oficial.
-4. **Devolutiva controlada:** discutir com a coordenação um primeiro conjunto de
-   cerca de 30 candidatas para calibrar campos e critérios. Uma lista maior só
-   faria sentido depois dessa revisão. Nada é enviado automaticamente ao BBSIA.
+## Como funciona
 
-## O que a entrega futura deve mostrar
+1. **Busca.** Consulta o GitHub, o Hugging Face e o GitLab pelas interfaces
+   oficiais, com termos e grupos conhecidos listados publicamente.
+2. **Leitura.** Guarda a descrição e a documentação de cada projeto.
+3. **Classificação.** Um modelo de linguagem responde às perguntas do cadastro
+   (é IA? é brasileira? funciona em português do Brasil? que problema resolve?)
+   citando o trecho que justifica cada resposta. A classificação roda no
+   [Decifra](https://github.com/mancano-tales/decifra-text-as-data), uma
+   ferramenta aberta de análise de textos que mede o acerto do modelo contra uma
+   amostra codificada por pessoas.
+4. **Revisão.** Uma pessoa confere as fichas antes de qualquer uso.
 
-- Uma lista de candidatas para revisão, com links para as fontes e campos
-  compatíveis, quando possível, com o formulário do BBSIA.
-- A evidência e as limitações de cada classificação; uma estimativa própria de
-  maturidade, identificada como tal; e o estado da revisão humana.
-- Um relatório da rodada com data de coleta, cobertura, versões do codebook e do
-  Decifra e critérios de inclusão e exclusão.
+## O piloto
 
-Esses produtos **ainda não estão prontos para divulgação**. O formato final
-depende da amostra classificada, da revisão humana e dos campos acordados com a
-coordenação.
+Cerca de 30 soluções brasileiras ou adaptadas ao português do Brasil, revisadas
+uma a uma, entregues em planilha no formato do formulário e publicadas no site do
+projeto. O objetivo é que a coordenação veja fichas reais e diga o que mudar
+antes de rodar a busca completa.
 
-## Situação desta versão
+Uma primeira sondagem, com poucos termos de busca, trouxe 104 resultados, que
+ainda não foram avaliados; o piloto amplia essa busca e revisa uma amostra.
 
-O código de descoberta e uma coleta exploratória limitada já existem. A amostra
-de trabalho permanece fora do site: ainda faltam classificação no Decifra,
-validação humana, estimativa de maturidade e comparação segura com o catálogo do
-BBSIA. Por isso, o relatório do projeto continua sem lista de soluções ou
-estatísticas de resultados. O site e este PDF apresentam **a proposta e o método**,
-não conclusões da rodada.
+## O que o radar não faz
 
-## Pontos para decidir com a coordenação
+- Não envia nada ao BBSIA: o envio, se houver, segue o caminho que a coordenação
+  indicar.
+- Não coleta e-mail nem outros dados pessoais; usa só informações públicas dos
+  projetos.
+- Não copia registros do catálogo do BBSIA.
+- Não afirma que uma solução funciona bem ou é segura: descreve o que a
+  documentação diz.
 
-1. O recorte inicial e os critérios para incluir ou rejeitar candidatas.
-2. Os campos e a forma de revisão mais úteis para receber um piloto pequeno.
-3. Uma fonte ou procedimento autorizado para comparar candidatas com registros
-   já conhecidos do BBSIA, sem presumir acesso ou direito de republicação.
-4. Se, quando e em quais condições a proposta poderá ser adotada como iniciativa
-   do programa, publicada ou apresentada com sua identidade visual.
+## O que precisamos combinar
 
-Até essas decisões, o radar permanece uma iniciativa voluntária independente.
-Dados de contato, respostas brutas e registros não autorizados do catálogo não
-entram na publicação.
+1. **Escopo.** Começar pelas soluções brasileiras e pelas adaptadas ao português
+   do Brasil. Soluções estrangeiras de interesse público ficam para depois, com
+   critério escrito.
+2. **Campos.** Quais campos da ficha são mais úteis para a equipe e como ela
+   prefere receber o piloto.
+3. **Repetições.** Como saber quais soluções já estão no catálogo, sem copiar os
+   registros: uma lista de nomes e links fornecida pela equipe resolveria.
+4. **Envio.** Se existe ou pode existir importação por planilha ou por interface
+   de programação, em vez do preenchimento manual.
+5. **Casa do projeto.** Se o radar deve continuar como projeto voluntário ou
+   passar a uma organização do BBSIA ou do LIIA.

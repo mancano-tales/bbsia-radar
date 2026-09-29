@@ -7,13 +7,14 @@ project:
     - metodo.qmd
     - relatorio.qmd
 website:
-  title: "Proposta de radar de soluções de IA"
+  title: "Radar de soluções de IA brasileiras"
   description: >-
-    Proposta independente de Tales Mançano, voluntário do BBSIA, para apreciação
-    pela coordenação do programa. Ainda não é uma iniciativa oficial do BBSIA.
+    Proposta independente de Tales Mançano, voluntário do BBSIA: procurar soluções
+    de IA brasileiras publicadas no GitHub, no Hugging Face e no GitLab e preparar
+    fichas para revisão. Não é uma iniciativa oficial do BBSIA.
   page-navigation: true
   page-footer:
-    center: "Proposta independente de Tales Mançano, voluntário do BBSIA. Sem caráter oficial ou endosso institucional."
+    center: "Proposta independente de Tales Mançano, voluntário do BBSIA. Não é um site oficial do BBSIA nem tem endosso do programa."
   navbar:
     background: "#123a3a"
     foreground: "#ffffff"
@@ -25,7 +26,7 @@ website:
       - href: metodo.qmd
         text: Método
       - href: relatorio.qmd
-        text: Relatório
+        text: Resultados
     right:
       - icon: github
         href: https://github.com/mancano-tales/bbsia-radar

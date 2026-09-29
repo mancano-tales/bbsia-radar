@@ -52,10 +52,13 @@ jobs:
           test -s report/_site/relatorio.pdf
           grep -q 'href="relatorio.pdf"' report/_site/relatorio.html
           grep -q 'href="apresentacao.pdf"' report/_site/apresentacao.html
-          grep -q 'Proposta independente' report/_site/index.html
+          # A marca do BBSIA só pode aparecer dentro do quadro de aviso
+          # (decisão do autor, 2026-09-29; plano #28 §2.3).
+          python3 tools/check_brand_disclaimer.py report/_site
           grep -q 'Documento para discussão' report/_site/apresentacao.html
+          grep -q 'Proposta independente' report/_site/metodo.html
           grep -q 'Proposta independente' report/_site/relatorio.html
-          test ! -e report/_site/assets/bbsia-logo.svg
+          grep -q 'Não é um site oficial do BBSIA' report/_site/index.html
           test ! -e report/_site/assets/og-image.png
 
       - name: Enviar o site completo como artefato do Pages
