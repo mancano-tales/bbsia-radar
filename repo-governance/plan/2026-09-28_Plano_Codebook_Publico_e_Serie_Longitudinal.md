@@ -49,7 +49,7 @@ O site em GitHub Pages lê somente saídas revisadas. A primeira publicação ex
 
 Cada campo codificado guarda `valor`, `estado`, `fonte_url`, `trecho_ou_campo`, `observado_em`, `revisor`, `versao_codebook` e `confianca`. Estados: `declarado_na_fonte`, `inferido`, `nao_verificavel_publicamente`, `nao_se_aplica`, `conflitante`. Ausência de menção não vira `não`. Texto livre gerado por LLM é proposta até revisão; nenhuma inferência é apresentada como declaração de um responsável. Links e trechos de evidência são curtos, sem copiar documentos completos para o Git.
 
-O codebook atual usa `nao` por ausência de sinais em `brasileira` e `ptbr`; WP1 deve decidir a migração explícita para `desconhecido` antes de WP2, sem apagar a versão anterior nem reclassificar silenciosamente os 104 candidatos. O teste de aceitação inclui exemplos sem evidência, contraditórios e com múltiplos valores. Para cada valor multivalorado, guardar evidência e revisão próprias. Separar `observado_em` (captura), data declarada na fonte e data da rodada; nunca inferir a data do fato pela data da coleta.
+A versão 0.1.1 do codebook usava `nao` por ausência de sinais em `brasileira` e `ptbr`. A versão 0.2.0 adotou `incerto` nesses casos, sem apagar a versão anterior nem reclassificar silenciosamente os 104 candidatos. Falta a validação humana da migração. O teste de aceitação inclui exemplos sem evidência, contraditórios e com múltiplos valores. Para cada valor multivalorado, guardar evidência e revisão próprias. Separar `observado_em` (captura), data declarada na fonte e data da rodada; nunca inferir a data do fato pela data da coleta.
 
 ## Matriz proposta a partir do formulário público
 
@@ -91,7 +91,7 @@ WP1 consulta as opções por leitura do formulário público, inclusive do HTML/
 ## Pendências para avaliação do autor
 
 - **Escopo público:** confirmar que o radar pode publicar metadados revisados e evidências curtas no seu próprio repositório; respostas integrais de APIs e documentos de terceiros continuam no cache externo. A licença de dados do catálogo BBSIA ainda precisa ser esclarecida antes de reproduzir seus registros.
-- **Vocabulário do formulário:** conferir as opções reais dos campos de seleção e aprovar o mapeamento entre elas e o vocabulário atual do radar. O formulário público mostra os nomes dos campos, mas não expôs essas opções na leitura documental realizada.
+- **Vocabulário do formulário:** as opções de seleção observadas no formulário público estão em `config/formulario_bbsia.yml`; falta aprovar o mapeamento proposto entre elas e o vocabulário atual do radar.
 - **Revisão humana:** definir quem aprova a primeira amostra pública e como registrar correções e discordâncias. A série semanal pode preparar observações automaticamente, mas a publicação de uma ficha depende de revisão.
 - **Vínculo com o Decifra:** preservar `external_id` no importador antes de depender dele para ligar classificações e observações ao longo do tempo. Essa alteração pertence ao repositório do Decifra.
 - **Ciclo de vida:** ausência na busca, erro 404 e exclusão confirmada são estados diferentes. Um 404 pode indicar remoção, privacidade ou restrição; não registrar motivo sem evidência independente.
