@@ -197,7 +197,7 @@ bbsia-radar/
 ├── repo-governance/   planos e registro das conversas com agentes de IA
 ├── tools/, hooks/     utilitários e verificações de governança
 ├── AGENTS.md          regras para agentes de IA (coordenação por issues)
-├── NEWS.md            histórico das decisões
+├── CHANGELOG.md       histórico gerado do git log (decisões: planos, commits, PRs e issues)
 └── TODO.md            pendências
 ```
 
