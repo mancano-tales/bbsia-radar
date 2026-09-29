@@ -75,10 +75,12 @@ test_that("the review workbook hides nothing but keeps the machine answers apart
   path <- decifra_fixture(tempfile(fileext = ".csv"))
   corpus <- tibble::tibble(id = candidatos_fixture()$id, text = c("a", "b", "c"), source_urls = "u")
   revisao <- radar_planilha_revisao(corpus, candidatos_fixture(), radar_ler_decifra(path))
-  expect_named(revisao, c("instrucoes", "codificar", "maquina"))
-  expect_true(all(revisao$codificar$e_ia == ""))
-  expect_false(any(c("e_ia", "brasileira", "ptbr") %in% names(revisao$codificar)[1:4]))
-  expect_equal(revisao$maquina$e_ia, c("sim", "sim", "incerto"))
+  # Two workbooks: the author's has no machine answers at all.
+  expect_named(revisao, c("autor", "maquina"))
+  expect_named(revisao$autor, c("instrucoes", "codificar"))
+  expect_true(all(revisao$autor$codificar$e_ia == ""))
+  expect_false(any(grepl("evidencia", names(revisao$autor$codificar))))
+  expect_equal(revisao$maquina$maquina$e_ia, c("sim", "sim", "incerto"))
 })
 
 test_that("Decifra rows without external ids or duplicated per variable are refused", {
@@ -101,4 +103,37 @@ test_that("the candidates table keeps metadata, namespaced ids and README size, 
   expect_equal(tabela$id, c("github:1", "huggingface:models:org/m"))
   expect_equal(tabela$readme_chars, c(15L, 0L))
   expect_false(any(c("readme", "email") %in% names(tabela)))
+})
+
+
+test_that("review fixes of PR #32: README only, one row per solution, restricted licences", {
+  meta <- "Nome: x\nArtefatos: https://github.com/a/a | https://huggingface.co/org/m\nTópicos/tags: "
+  expect_equal(radar_readme_do_documento(c(paste0("Texto do README.\n\n", meta), meta, NA)),
+               c("Texto do README.", NA, NA))
+  # A solution with two artifacts is one corpus document and one sheet row.
+  candidatos <- candidatos_fixture()
+  extra <- candidatos[1, ]
+  extra$id <- "huggingface:models:a/extra"
+  corpus <- tibble::tibble(id = candidatos$id,
+                           text = c(paste0(strrep("a", 2000), "\n\n", meta), meta, meta),
+                           source_urls = c("https://github.com/a/a | https://huggingface.co/a/extra", "u2", "u3"))
+  por_solucao <- radar_candidatos_por_solucao(rbind(candidatos, extra), corpus)
+  expect_equal(nrow(por_solucao), 3L)
+  expect_match(por_solucao$url[[1]], "huggingface")
+  # Metadata text is not documentation: the second document has no README.
+  expect_true(is.na(por_solucao$readme[[2]]))
+  expect_equal(radar_estimar_trl(por_solucao, as.Date("2026-09-29"))$trl_provavel[[2]], "indeterminado")
+  expect_false(any(c("llama2", "llama3", "openrail") %in% RADAR_LICENCAS_ABERTAS))
+})
+
+test_that("TRL survives missing dates and does not credit forks with upstream signals", {
+  sem_datas <- candidatos_fixture()[c("id", "readme", "stars")]
+  expect_equal(radar_estimar_trl(sem_datas, as.Date("2026-09-29"))$ativo, rep(NA_character_, 3))
+  estranha <- candidatos_fixture()
+  estranha$pushed_at[[1]] <- "ontem"
+  estranha$updated_at[[1]] <- "ontem"
+  expect_true(is.na(radar_estimar_trl(estranha, as.Date("2026-09-29"))$ativo[[1]]))
+  fork <- candidatos_fixture()[1, ]
+  fork$fork <- TRUE
+  expect_equal(radar_estimar_trl(fork, as.Date("2026-09-29"))$trl_provavel, "1-3")
 })

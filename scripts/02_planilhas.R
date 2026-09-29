@@ -22,12 +22,12 @@ candidatos <- readr::read_csv(candidatos_path, col_types = readr::cols(.default 
 candidatos$stars <- as.integer(candidatos$stars)
 if ("downloads" %in% names(candidatos)) candidatos$downloads <- as.integer(candidatos$downloads)
 if ("archived" %in% names(candidatos)) candidatos$archived <- as.logical(candidatos$archived)
-# The form sheet needs README text only to estimate TRL; take it from the corpus.
-candidatos$readme <- corpus$text[match(candidatos$id, corpus$id)]
+if ("fork" %in% names(candidatos)) candidatos$fork <- as.logical(candidatos$fork)
 decifra <- radar_ler_decifra(args[[2]])
 
 revisao <- radar_planilha_revisao(corpus, candidatos, decifra)
-formulario <- radar_montar_planilha_formulario(candidatos, decifra, rodada$run_id)
-writexl::write_xlsx(revisao, file.path(exports, paste0(rodada$run_id, "-revisao-autor.xlsx")))
+formulario <- radar_montar_planilha_formulario(candidatos, decifra, rodada$run_id, corpus = corpus)
+writexl::write_xlsx(revisao$autor, file.path(exports, paste0(rodada$run_id, "-revisao-autor.xlsx")))
+writexl::write_xlsx(revisao$maquina, file.path(exports, paste0(rodada$run_id, "-revisao-maquina.xlsx")))
 writexl::write_xlsx(list(formulario = formulario), file.path(exports, paste0(rodada$run_id, "-formulario.xlsx")))
 cat("Planilhas gravadas no cache externo:", nrow(formulario), "soluções.\n")

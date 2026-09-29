@@ -72,12 +72,43 @@ radar_mapear_formulario <- function(valores, mapa, sem_mapa = "mapeamento_manual
 # (pt) Licenças abertas reconhecidas pelo SPDX mais comuns em código e
 #      modelos. "Aberta" aqui é só a licença declarada: o formulário pergunta
 #      se outro órgão pode reusar, e isso exige revisão (codebook, campo aberta).
+#      Licenças com restrição de uso (Llama, RAIL/OpenRAIL) ficam fora: não
+#      equivalem a "código aberto" e dependem de leitura humana.
 RADAR_LICENCAS_ABERTAS <- c("mit", "apache-2.0", "bsd-2-clause", "bsd-3-clause", "gpl-2.0", "gpl-3.0",
                             "lgpl-2.1", "lgpl-3.0", "agpl-3.0", "mpl-2.0", "cc-by-4.0", "cc-by-sa-4.0",
-                            "cc0-1.0", "unlicense", "openrail", "llama2", "llama3")
+                            "cc0-1.0", "unlicense")
+
+# (pt) O documento do corpus é o README (se houver) seguido do bloco de
+#      metadados que montar_corpus() escreve começando por "Nome:" e
+#      "Artefatos:". O TRL precisa só do README; os metadados não são
+#      documentação de uso. Corta-se a partir do último bloco desse formato.
+# (en) Strip the trailing metadata block so only README text is measured.
+radar_readme_do_documento <- function(text) {
+  vapply(text, function(doc) {
+    if (is.na(doc)) return(NA_character_)
+    if (grepl("^Nome: [^\n]*\nArtefatos: ", doc, perl = TRUE)) return(NA_character_)
+    # (?s): `.` also matches newlines; the greedy prefix keeps everything up
+    # to the LAST metadata block.
+    stripped <- sub("(?s)^(.*)\n\nNome: [^\n]*\nArtefatos: .*$", "\\1", doc, perl = TRUE)
+    if (nzchar(stripped)) stripped else NA_character_
+  }, character(1), USE.NAMES = FALSE)
+}
+
+# (pt) Uma linha por SOLUÇÃO, como no corpus: um documento pode reunir vários
+#      artefatos (ex.: código no GitHub e modelo no Hugging Face), e o Decifra
+#      só conhece o id do documento. Os metadados vêm do artefato principal.
+# (en) One row per corpus document; extra artifacts stay in source_urls.
+radar_candidatos_por_solucao <- function(candidatos, corpus) {
+  base <- candidatos[match(corpus$id, candidatos$id), , drop = FALSE]
+  if (anyNA(base$id)) stop("Há documentos do corpus sem candidato correspondente.", call. = FALSE)
+  base$url <- corpus$source_urls
+  base$readme <- radar_readme_do_documento(corpus$text)
+  base
+}
 
 radar_montar_planilha_formulario <- function(candidatos, decifra, run_id, codebook_path = "config/codebook.yml",
-                                             referencia = Sys.Date()) {
+                                             referencia = Sys.Date(), corpus = NULL) {
+  if (!is.null(corpus)) candidatos <- radar_candidatos_por_solucao(candidatos, corpus)
   mapas <- radar_ler_mapas(codebook_path)
   wide <- radar_decifra_largo(decifra)
   base <- dplyr::left_join(candidatos, wide, by = "id")
@@ -125,11 +156,12 @@ radar_planilha_revisao <- function(corpus, candidatos, decifra, max_chars = 4000
   maquina <- maquina[c("id", intersect(c(rbind(RADAR_MARCACOES, paste0(RADAR_MARCACOES, "_evidencia"))),
                                        names(maquina)))]
   instrucoes <- tibble::tibble(passo = 1:5, instrucao = c(
-    "Preencha a aba 'codificar' ANTES de abrir a aba 'maquina', para não se deixar influenciar.",
+    "Preencha a aba 'codificar' ANTES de abrir o arquivo separado com as respostas da máquina.",
     "Use só sim, nao ou incerto em e_ia, brasileira e ptbr, com as regras de config/codebook.yml (v0.2.2).",
     "Silêncio da documentação é incerto, nunca nao. Abra o link quando o trecho não bastar.",
     "Deixe em branco o que não quiser codificar; linhas em branco não entram na comparação.",
-    "Depois compare com a aba 'maquina' e anote divergências em 'observacao'."
+    "Depois compare com o arquivo da máquina e anote divergências em 'observacao'."
   ))
-  list(instrucoes = instrucoes, codificar = codificar, maquina = maquina)
+  # Two workbooks, so the machine's answers are not one click away while coding.
+  list(autor = list(instrucoes = instrucoes, codificar = codificar), maquina = list(maquina = maquina))
 }

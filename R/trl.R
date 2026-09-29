@@ -18,8 +18,9 @@ RADAR_TRL_LIMIARES <- list(
 )
 
 radar_ultima_atividade <- function(candidatos) {
-  pushed <- if ("pushed_at" %in% names(candidatos)) candidatos$pushed_at else NA_character_
-  updated <- if ("updated_at" %in% names(candidatos)) candidatos$updated_at else NA_character_
+  n <- nrow(candidatos)
+  pushed <- if ("pushed_at" %in% names(candidatos)) candidatos$pushed_at else rep(NA_character_, n)
+  updated <- if ("updated_at" %in% names(candidatos)) candidatos$updated_at else rep(NA_character_, n)
   # GitHub `pushed_at` is the last push; `updated_at` also moves on metadata
   # edits, so it is only the fallback (and the only field HF/GitLab provide).
   ifelse(!is.na(pushed) & nzchar(pushed), pushed, updated)
@@ -38,7 +39,9 @@ radar_estimar_trl <- function(candidatos, referencia = Sys.Date(),
   fork <- as.logical(col("fork", FALSE))
   fork[is.na(fork)] <- FALSE
 
-  ultima <- as.Date(substr(radar_ultima_atividade(candidatos), 1L, 10L))
+  # All three APIs return ISO 8601; anything else becomes NA instead of an error.
+  ultima <- as.Date(substr(radar_ultima_atividade(candidatos), 1L, 10L), format = "%Y-%m-%d",
+                    optional = TRUE)
   dias <- as.integer(as.Date(referencia) - ultima)
   ativo <- ifelse(is.na(dias), NA_character_, ifelse(dias <= limiares$dias_ativo, "sim", "nao"))
 
@@ -51,8 +54,10 @@ radar_estimar_trl <- function(candidatos, referencia = Sys.Date(),
     grepl("model-index|\\bF1\\b|acur[aá]cia|accuracy|benchmark|avalia[cç][aã]o", readme,
           ignore.case = TRUE)
 
+  # A fork inherits README and metrics from its upstream, so they say nothing
+  # about the fork itself (codebook exclusion `fork_sem_mudanca`).
   trl <- ifelse(readme_len == 0L, "indeterminado",
-                ifelse(documentado & (uso | avaliacao) & !archived, "4-6", "1-3"))
+                ifelse(documentado & (uso | avaliacao) & !archived & !fork, "4-6", "1-3"))
   sinais <- vapply(seq_len(n), function(i) {
     parts <- c(
       if (readme_len[[i]] == 0L) "sem README lido" else
@@ -64,7 +69,7 @@ radar_estimar_trl <- function(candidatos, referencia = Sys.Date(),
       if (is.na(ativo[[i]])) "sem data de atividade" else
         paste0("última atividade há ", dias[[i]], " dias"),
       if (archived[[i]]) "arquivado",
-      if (fork[[i]]) "fork"
+      if (fork[[i]]) "fork (sinais do original não contam)"
     )
     paste(parts, collapse = "; ")
   }, character(1))
