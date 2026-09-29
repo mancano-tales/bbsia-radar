@@ -2,7 +2,7 @@
 tipo: Plano
 titulo: "Identidade visual e ativos da logo BBSIA para o site Quarto e relatórios"
 issue: 17
-status: EM EXECUÇÃO
+status: ATIVO
 criado: "2026-09-28"
 concluido: null
 autor_humano: "Tales Mançano"
@@ -103,3 +103,4 @@ Conforme a governança do repositório e a skill `request-audit`, este plano é 
 * `quarto render report`: HTML e PDF gerados. O primeiro build com SVG no PDF falhou por falta de `rsvg-convert`; o cabeçalho do PDF passou a usar o PNG horizontal derivado, e o build completo passou sem instalar conversor SVG.
 * Inspeção visual: símbolo 512, cartão OpenGraph, página inicial em desktop e primeira página do PDF sem distorção ou corte do logo. O site inclui favicon, ícone Apple, banner, logo da navbar e imagem social no artefato; a imagem OpenGraph/Twitter aponta para a URL esperada do GitHub Pages. A configuração atual do repositório ainda não habilita Pages, e nenhuma publicação foi feita.
 * A integração é baseada na branch da PR #18 e adiciona ao workflow apenas validação dos ativos no job de build. O job de deploy e a condição `PAGES_PUBLISH_APPROVED` permanecem inalterados. O merge do subplano depende da integração da PR #18 e da revisão cruzada exigida pelo `AGENTS.md`.
+* Entrega em PR #25, branch `codex/17-ativos-quarto`, empilhada na PR #18. As três WPs foram implementadas; o plano permanece `ATIVO` até a revisão cruzada e o merge.

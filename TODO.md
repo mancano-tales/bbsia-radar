@@ -5,6 +5,7 @@
 > **Pendente** = pronto para ser trabalhado. **Prospectivo** = identificado, mas falta decisão ou dependência. **Concluído** = feito.
 
 ## Pendente
+- [ ] **Ativos visuais BBSIA** — PR #25 na branch `codex/17-ativos-quarto` aguarda revisão cruzada por Claude e integração da PR #18; issue #17. Criado: 2026-09-28 por Codex / GPT-6 / desktop.
 - [ ] **Proteção contra publicação acidental de caminhos absolutos** — manter as verificações locais e a checagem de PR; falta tornar o status check obrigatório no GitHub.
   - Criado: 2026-09-27 10:53 por Codex / GPT-6 / desktop
   - Progresso 2026-09-27: a proposta foi aprovada no chat pela opção A, como mitigação simples. O scanner compartilhado, os hooks locais e o workflow de pull request estão no branch codex/1-protecao-caminhos-absolutos, baseado na main remota atualizada.
