@@ -38,6 +38,14 @@ jobs:
           version: "1.9.37"
           tinytex: true
 
+      - name: Preparar Node para verificar ativos estáticos
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Conferir dimensões e tamanho dos ativos visuais
+        run: node tools/render-assets.mjs --check
+
       - name: Renderizar o site e o relatório
         run: quarto render report
 
@@ -48,7 +56,12 @@ jobs:
           test -s report/_site/metodo.html
           test -s report/_site/relatorio.html
           test -s report/_site/relatorio.pdf
+          test -s report/_site/assets/og-image.png
+          test -s report/_site/assets/apple-touch-icon.png
+          test -s report/_site/assets/favicon-32x32.png
+          test -s report/_site/assets/bbsia-radar-horizontal.svg
           grep -q 'href="relatorio.pdf"' report/_site/relatorio.html
+          grep -q 'assets/og-image.png' report/_site/index.html
 
       - name: Enviar o site completo como artefato do Pages
         uses: actions/upload-pages-artifact@v4

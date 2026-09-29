@@ -20,6 +20,7 @@ const variants = [
   { file: 'bbsia-logo-1024.png', svg: 'bbsia-logo.svg', width: 1024, height: 1024 },
   { file: 'apple-touch-icon.png', svg: 'bbsia-logo.svg', width: 180, height: 180 },
   { file: 'favicon-32x32.png', svg: 'bbsia-logo.svg', width: 32, height: 32 },
+  { file: 'bbsia-radar-horizontal.png', svg: 'bbsia-radar-horizontal.svg', width: 640, height: 160 },
   { file: 'og-image.png', svg: 'bbsia-radar-horizontal.svg', width: 1200, height: 630, og: true },
 ];
 

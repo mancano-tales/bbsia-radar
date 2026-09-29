@@ -5,6 +5,8 @@ page-layout: full
 ---
 
 ::: {.hero-panel}
+![](assets/bbsia-radar-horizontal.svg){.hero-logo fig-alt="BBSIA Radar"}
+
 ::: {.hero-kicker}
 PROJETO PÚBLICO · BBSIA-RADAR
 :::

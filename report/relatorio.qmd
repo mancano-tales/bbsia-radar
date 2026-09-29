@@ -25,6 +25,8 @@ format:
     keep-tex: false
 ---
 
+![](assets/bbsia-radar-horizontal.png){fig-alt="BBSIA Radar" width=380px}
+
 ## Estado da rodada
 
 ::: {.callout-note}

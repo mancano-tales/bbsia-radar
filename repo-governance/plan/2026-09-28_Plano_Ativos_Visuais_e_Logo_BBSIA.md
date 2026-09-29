@@ -14,7 +14,7 @@ agentes:
 tarefas:
   - { desc: "WP1 — Especificação e geração dos ativos vetoriais SVG (mestre, transparente e banner)", status: concluido }
   - { desc: "WP2 — Pipeline de renderização em alta definição para PNGs e favicons via Chromium headless", status: concluido }
-  - { desc: "WP3 — Validação de integridade visual, conferência de dimensões e integração ao Quarto", status: em_execucao }
+  - { desc: "WP3 — Validação de integridade visual, conferência de dimensões e integração ao Quarto", status: concluido }
 relacionados: ["repo-governance/plan/2026-09-27_Plano_Website_Quarto.md"]
 ---
 
@@ -72,6 +72,7 @@ Para suprir contextos em que o formato SVG não é suportado (como metatags de c
   * `report/assets/bbsia-logo-1024.png` (1024×1024 px — definição para mídias impressas ou telas Retina)
   * `report/assets/apple-touch-icon.png` (180×180 px — atalhos móveis)
   * `report/assets/favicon-32x32.png` (32×32 px — navegador desktop)
+  * `report/assets/bbsia-radar-horizontal.png` (640×160 px — cabeçalho PDF sem conversor SVG adicional)
   * `report/assets/og-image.png` (1200×630 px — cartão de compartilhamento social com proporção 1.91:1)
 
 ---
@@ -80,7 +81,7 @@ Para suprir contextos em que o formato SVG não é suportado (como metatags de c
 
 * Todos os SVGs são autônomos, válidos perante o padrão W3C e livres de tags ou scripts maliciosos.
 * Nenhuma imagem bitmap apresenta distorção de aspecto ou interpolação com artefatos borrados.
-* Os cinco PNGs têm assinatura PNG válida e dimensões conferidas pelo modo `--check`; o símbolo e o cartão são inspecionados visualmente depois da geração.
+* Os seis PNGs têm assinatura PNG válida e dimensões conferidas pelo modo `--check`; o símbolo e o cartão são inspecionados visualmente depois da geração.
 * Todos os caminhos nos scripts e no Quarto são relativos à raiz do repositório (em conformidade estrita com o `AGENTS.md` e os hooks de caminhos absolutos).
 * Os arquivos finais são compactos (<500 KB no total de todas as variantes PNG/SVG somadas), respeitando a política de dados leves do repositório.
 * A integração não altera a coleta, o esquema público, os dados, o workflow de Pages nem a autorização para a primeira publicação. As referências estáticas no Quarto devem ser compatibilizadas com a PR #18 antes do merge.
@@ -95,3 +96,10 @@ Conforme a governança do repositório e a skill `request-audit`, este plano é 
 1. **Fidelidade da tipografia horizontal**: resolvida com lettering em curvas SVG, independente de fonte instalada.
 2. **Dependência do Chromium para o render**: restrita à regeneração local dos PNGs versionados; o modo `--check` e o build Quarto/CI não iniciam navegador. Falha local é explícita. O Edge produziu todos os PNGs no ambiente Windows do autor; a execução dentro do sandbox do agente falhou por restrições de GPU, registradas na auditoria da issue #17.
 3. **Escopo isolado**: os ativos e sua validação não publicam páginas ou dados. A PR #18 contém a estrutura Quarto estática e continua protegida pela autorização de publicação; qualquer referência aos ativos será integrada sem alterar essa proteção.
+
+## 6. Evidência da execução
+
+* `node tools/render-assets.mjs --check`: seis PNGs válidos, dimensões esperadas e pacote SVG/PNG de 496159 bytes. O Edge headless gerou os arquivos no ambiente Windows; a build Linux usa só o modo `--check` sobre os arquivos versionados.
+* `quarto render report`: HTML e PDF gerados. O primeiro build com SVG no PDF falhou por falta de `rsvg-convert`; o cabeçalho do PDF passou a usar o PNG horizontal derivado, e o build completo passou sem instalar conversor SVG.
+* Inspeção visual: símbolo 512, cartão OpenGraph, página inicial em desktop e primeira página do PDF sem distorção ou corte do logo. O site inclui favicon, ícone Apple, banner, logo da navbar e imagem social no artefato; a imagem OpenGraph/Twitter aponta para a URL esperada do GitHub Pages. A configuração atual do repositório ainda não habilita Pages, e nenhuma publicação foi feita.
+* A integração é baseada na branch da PR #18 e adiciona ao workflow apenas validação dos ativos no job de build. O job de deploy e a condição `PAGES_PUBLISH_APPROVED` permanecem inalterados. O merge do subplano depende da integração da PR #18 e da revisão cruzada exigida pelo `AGENTS.md`.
