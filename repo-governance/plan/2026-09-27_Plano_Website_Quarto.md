@@ -249,6 +249,11 @@ como pipeline de dados enquanto essa etapa estiver pendente.
   estado atual e decisões pendentes, mantendo a identidade oficial desativada.
   A nota é material de discussão de uma iniciativa voluntária, sem publicar
   candidatos ou pressupor adoção pelo BBSIA.
+- No commit `22ad567`, `quarto render report` gerou quatro páginas HTML e dois
+  PDFs; a nota de apresentação ocupa duas páginas A4 e foi inspecionada em HTML
+  e PDF. O [build Linux da PR #25](https://github.com/mancano-tales/bbsia-radar/actions/runs/36541746947)
+  passou, incluindo links dos dois PDFs e ausência dos ativos oficiais no
+  artefato; o job de publicação no Pages foi ignorado.
 - A primeira publicação pública ainda depende de aprovação explícita do autor depois que o artefato
   inicial HTML/PDF estiver pronto para inspeção. A variável `PAGES_PUBLISH_APPROVED` mantém o deploy
   bloqueado até essa decisão.
