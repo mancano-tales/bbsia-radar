@@ -205,4 +205,4 @@ bbsia-radar/
 
 O trabalho é coordenado pelas **issues** deste repositório, tanto entre pessoas quanto entre os agentes de IA que ajudam no projeto: cada tarefa tem uma issue, e quem vai trabalhar nela avisa antes o que vai fazer e como. As regras completas estão em [AGENTS.md](AGENTS.md).
 
-Responsável: Tales Mançano ([@mancano-tales](https://github.com/mancano-tales)), voluntário no BBSIA.
+Autor: Tales Mançano ([@mancano-tales](https://github.com/mancano-tales)), voluntário no BBSIA.
