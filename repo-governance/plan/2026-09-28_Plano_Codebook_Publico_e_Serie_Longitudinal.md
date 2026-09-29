@@ -13,7 +13,7 @@ agentes:
   auditor: "Antigravity / Gemini 3.8 Flash High; subagente Codex independente"
 tarefas:
   - { desc: "WP1 — especificar campos observáveis e regras de evidência do codebook", status: em_execucao, data: "2026-09-28" }
-  - { desc: "WP2 — codificar e validar o codebook ampliado e seu contrato com o Decifra", status: pendente, data: null }
+  - { desc: "WP2 — codificar e validar o codebook ampliado e seu contrato com o Decifra", status: em_execucao, data: "2026-09-28" }
   - { desc: "WP3 — definir identificadores, eventos e saídas revisadas da série semanal", status: pendente, data: null }
   - { desc: "WP4 — publicar série e método no site após revisão e primeira publicação autorizada", status: pendente, data: null }
 relacionados:
@@ -32,6 +32,12 @@ relacionados:
 - **Primeira rodada (2026-09-28):** ambos pediram revisão. O subagente encontrou colisão do estado `nao` por silêncio, IDs por URL, dependência do `external_id` e limites da publicação. Antigravity encontrou falta de esquema físico, de atribuição de campos entre Radar e Decifra e de trava explícita do `external_id`.
 - **Correção:** commit `1cfac00` incorporou os achados ao roteiro.
 - **Segunda rodada (2026-09-28):** subagente aprovou como roteiro após leitura local do plano e código; Antigravity / `gemini-3.8-flash-high` aprovou após ler somente o plano público nesse commit (conversa `9ae9f384-ee40-4a59-a944-c9e8fd106a10`). As duas aprovações validam o roteiro, não concluem WP1–WP4 nem substituem os gates do Decifra, da revisão humana e do site.
+
+## Execução iniciada em 2026-09-28
+
+- **WP1 em andamento:** opções reais dos campos de seleção verificadas por leitura do formulário público, sem submissão, e registradas em `config/formulario_bbsia.yml`. A matriz de campos observáveis está em `config/codebook.yml` v0.2.0 como rascunho para revisão do autor; categorias ambíguas exigem mapeamento humano.
+- **WP2 em andamento:** a versão 0.2.0 corrige `nao` por ausência de sinais para `incerto`, acrescenta campos públicos e mapeia somente categorias com equivalência explícita. A versão 0.1.1 permanece no histórico Git. O conversor do Decifra continua limitado às cinco dimensões classificáveis existentes; falta recodificar e adjudicar uma amostra real.
+- **WP3 preparatório:** `R/serie_longitudinal.R` e teste sintético demonstram IDs por plataforma, alteração, ausência da busca e HTTP 404 distintos, além do manifesto imutável fora do Git. `data/README.md` documenta o esquema público; nenhum candidato real foi publicado. Persistem a migração dos IDs provisórios do corpus e a correção do `external_id` no Decifra para o ensaio integrado.
 
 ## Decisão proposta
 
