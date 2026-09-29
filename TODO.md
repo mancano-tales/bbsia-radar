@@ -27,11 +27,18 @@
   - Plano ativo: repo-governance/plan/2026-09-27_Plano_Protecao_Caminhos_Absolutos.md · Issue: #1
 
 
+- [ ] **Website e relatório público em Quarto (HTML + PDF)** — integrar o leitor após classificação e revisão humana da amostra coletada; publicar no GitHub Pages só depois da inspeção e aprovação explícita do autor.
+  - Criado: 2026-09-27 10:52 por Codex / GPT-6 / desktop
+  - Progresso 2026-09-27: PR #18 pronta para revisão do autor. Gemini 3.1 Pro High e GPT-6-Sol não encontraram bloqueios; as sugestões foram incorporadas. O CI da PR e a reexecução manual no commit final `f42fb2a` passaram. A inspeção visual do HTML continua pendente; a do PDF foi feita. Naquele registro pré-coleta, nenhuma amostra real havia sido coletada. A atualização abaixo registra a rodada posterior; a primeira publicação continua dependendo de aprovação explícita do autor.
+  - Atualização 2026-09-27 17:27: a amostra exploratória já foi coletada nas três fontes, mas não foi incorporada ao site porque ainda depende do Decifra e de revisão humana. A PR #18 descreve GitHub, Hugging Face e GitLab.com e mantém vazias as páginas públicas de candidatos. O deploy continua protegido pela variável de aprovação.
+  - Atualização 2026-09-28: o PR #22 foi integrado; os conflitos do PR #18 foram resolvidos em branch isolada. `quarto render report` passou, e as três páginas HTML foram inspecionadas no navegador local em largura móvel, sem problemas visuais observados. O PDF está no artefato. Pages segue sem aprovação de publicação.
+  - Plano ativo: `repo-governance/plan/2026-09-27_Plano_Website_Quarto.md` · Issue: #17
+
 - [ ] **Issue #14 — analisar e revisar a amostra exploratória limitada** — coleta inicial concluída nas APIs GitHub, Hugging Face e GitLab.com; concluir o fluxo Decifra, estimar TRL, validar manualmente e comparar com o BBSIA antes de publicar qualquer resultado.
   - Criado: 2026-09-27 09:30 por Codex / GPT-6 / desktop
   - Progresso 2026-09-27: os controles de orçamento e validação offline foram integrados pela PR #16 em `main` (`c1835b1`); a suíte offline passou. Nenhuma coleta real foi feita. A rodada aguarda termos GitHub, conta HF e raiz de cache aprovados pelo autor.
   - Progresso 2026-09-27 16:15: o autor aprovou no chat GitHub/GitLab `Transcritorio` e `BERTimbau`, HF `neuralmind`, até 25 tentativas reservadas e dez documentos; inclusão GitLab implementada na branch `codex/14-gitlab-radar`, suíte offline com 166 testes aprovada e cache externo validado. A coleta exploratória limitada foi iniciada.
-  - Atualização 2026-09-27 17:27: amostra coletada: 104 URLs únicas (GitHub 101, GitLab 1, HF 2), dez documentos selecionados e 17/25 tentativas reservadas. A busca BERTimbau do GitHub ficou parcial (100/134); a suíte offline atual passou com 181 testes após revisão de segurança/cache. Dados e relatório ficam fora do git. Decifra, TRL, revisão humana, comparação com o BBSIA e publicação continuam pendentes.
+  - Atualização 2026-09-27 17:27: amostra coletada: 104 URLs únicas (GitHub 101, GitLab 1, HF 2), dez documentos selecionados, nove lidos e 17/25 tentativas reservadas. A busca BERTimbau do GitHub ficou parcial (100/134); a suíte offline atual passou com 181 testes após revisão de segurança/cache. Dados e relatório ficam fora do git. Decifra, TRL, revisão humana, comparação com o BBSIA e publicação continuam pendentes.
   - Atualização 2026-09-27 19:48: revisão final confirmou a correção de expiração HTTP-date no cache; suíte offline passou com 183 testes, zero falhas e zero avisos de teste.
   - Progresso 2026-09-27 (rodada GitHub/HF registrada após a PR #20): 103 candidatos GitHub e 2 modelos HF; dez documentos selecionados, todos GitHub, e 16/23 tentativas reservadas. Nenhum model card HF foi lido. Este resultado é de uma rodada distinta da amostra ampliada com GitLab descrita acima.
   - Coordenação: a PR #20 atualizou a issue #14 sobre a rodada GitHub/HF; o marco da rodada GitLab não pôde ser publicado nesta sessão (API retornou 403 e gh sem autenticação válida).
@@ -58,9 +65,6 @@
   - Criado: 2026-09-26 11:03 por Claude Opus 5.5
   - Progresso 2026-09-27: a PR #13 implementou os coletores, a PR #16 limitou a rodada e a PR #20 acrescentou três sementes brasileiras. A coleta GitLab e a seleção com uma vaga por plataforma estão na branch `codex/14-gitlab-radar`; ampliar depende da revisão de qualidade.
   - Plano §6–§7
-- [ ] **Website e relatório público em Quarto (HTML + PDF)** — o site está em implementação na PR #18; depois que os dados da amostra passarem por classificação e revisão humana, automatizar a publicação no GitHub Pages a partir das saídas aprovadas.
-  - Criado: 2026-09-27 10:52 por Codex / GPT-6 / desktop
-  - Plano aprovado no chat em 2026-09-27 e em implementação: `repo-governance/plan/2026-09-27_Plano_Website_Quarto.md` · Issue: #17 · PR: #18
 - [ ] **WP5 — Classificação e validação humana** (regras + LLM contra o codebook, método do `decifra-text-as-data`; amostra codificada pelo autor, kappa no relatório).
   - Criado: 2026-09-26 11:03 por Claude Opus 5.5
   - Plano §8

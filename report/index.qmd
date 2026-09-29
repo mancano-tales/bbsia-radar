@@ -1,0 +1,67 @@
+---
+title: "Radar de soluções de IA para o interesse público"
+subtitle: "Descoberta documentada, revisão humana e resultados com proveniência"
+page-layout: full
+---
+
+::: {.hero-panel}
+::: {.hero-kicker}
+PROJETO PÚBLICO · BBSIA-RADAR
+:::
+
+## Encontrar soluções. Mostrar as evidências. Facilitar a revisão.
+
+O **bbsia-radar** identifica soluções de inteligência artificial brasileiras,
+adaptadas ao português brasileiro ou de interesse público que possam ser
+adaptadas. Ele busca projetos publicados no GitHub, no Hugging Face e no GitLab.com e prepara
+candidatas para revisão humana relacionada ao [Banco Brasileiro de Soluções de
+IA (BBSIA)](https://bancobrasileiro.ia.br/).
+
+[Conheça o método](metodo.qmd){.btn .btn-primary .btn-lg}
+[Acompanhe o relatório](relatorio.qmd){.btn .btn-outline-primary .btn-lg}
+:::
+
+## Situação dos dados
+
+::: {.status-panel}
+### Ainda não há uma rodada pública
+
+Uma amostra exploratória já foi coletada e permanece fora do repositório. Ela
+ainda não passou pela classificação no Decifra nem pela revisão humana; por isso,
+esta página continua sem soluções ou estatísticas públicas.
+:::
+
+## O que este radar faz
+
+::: {.grid}
+::: {.grid-item}
+### Descobre
+
+Consulta as APIs oficiais do GitHub, do Hugging Face e do GitLab.com usando
+critérios e sementes documentados.
+:::
+
+::: {.grid-item}
+### Organiza evidências
+
+Prepara um documento citável por solução. A classificação segue o codebook do
+projeto e é feita no [Decifra](https://github.com/mancano-tales/decifra-text-as-data).
+:::
+
+::: {.grid-item}
+### Publica com revisão
+
+Só resultados selecionados, revisados e apropriados para divulgação entram no
+relatório. O radar não envia dados ao BBSIA.
+:::
+:::
+
+## Acompanhe
+
+- [Leia a descrição, o escopo e as decisões no README do projeto](https://github.com/mancano-tales/bbsia-radar#readme).
+- [Abra o relatório em HTML e baixe sua versão em PDF](relatorio.qmd).
+- [Consulte o registro de mudanças](https://github.com/mancano-tales/bbsia-radar/blob/main/CHANGELOG.md).
+
+> **Estimativas e limites:** quando os resultados forem publicados, o TRL será
+> uma estimativa do radar, não uma classificação oficial do BBSIA. Cada rodada
+> deverá informar sua data, cobertura, proveniência e limitações.

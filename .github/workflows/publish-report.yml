@@ -1,0 +1,76 @@
+name: Renderizar e publicar relatório Quarto
+
+on:
+  pull_request:
+    paths:
+      - "report/**"
+      - "data/relatorios/**"
+      - ".github/workflows/publish-report.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "report/**"
+      - "data/relatorios/**"
+      - ".github/workflows/publish-report.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Renderizar HTML e PDF
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Baixar o repositório
+        uses: actions/checkout@v6
+
+      - name: Instalar Quarto e TinyTeX
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: "1.9.37"
+          tinytex: true
+
+      - name: Renderizar o site e o relatório
+        run: quarto render report
+
+      - name: Conferir HTML, PDF e link de download
+        shell: bash
+        run: |
+          test -s report/_site/index.html
+          test -s report/_site/metodo.html
+          test -s report/_site/relatorio.html
+          test -s report/_site/relatorio.pdf
+          grep -q 'href="relatorio.pdf"' report/_site/relatorio.html
+
+      - name: Enviar o site completo como artefato do Pages
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: report/_site
+
+  deploy:
+    name: Publicar no GitHub Pages
+    if: >-
+      github.event_name != 'pull_request' &&
+      github.ref == 'refs/heads/main' &&
+      vars.PAGES_PUBLISH_APPROVED == 'true'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publicar artefato validado
+        id: deployment
+        uses: actions/deploy-pages@v4
