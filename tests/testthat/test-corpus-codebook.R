@@ -141,3 +141,14 @@ test_that("the executable rule matches the thresholds written in the codebook", 
   expect_error(radar_decidir_marcacao(medios = -1L))
   expect_error(radar_decidir_marcacao(negativa = NA))
 })
+
+test_that("e_ia needs model evidence, and medium signals against contrary evidence conflict", {
+  # Review of PR #31: e_ia has no signal scale; two medium signals are not
+  # citable evidence of a learned model.
+  expect_equal(radar_decidir_marcacao(medios = 2L, regra = "e_ia"), "incerto")
+  expect_equal(radar_decidir_marcacao(fortes = 1L, regra = "e_ia"), "sim")
+  expect_equal(radar_decidir_marcacao(negativa = TRUE, regra = "e_ia"), "nao")
+  expect_equal(radar_decidir_marcacao(medios = 1L, negativa = TRUE), "incerto")
+  expect_equal(radar_decidir_marcacao(fracos = 1L, negativa = TRUE), "nao")
+  expect_error(radar_decidir_marcacao(regra = "outra"))
+})

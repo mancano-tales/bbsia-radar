@@ -56,8 +56,9 @@ casos:
 
   - id: brasileira_so_sinais_fracos
     documento: >
-      Projeto chamado "Previsão de Filas" sobre atendimento no SUS; sem dono
-      identificado, sem localização e com README em inglês.
+      Projeto chamado "Previsão de Filas" sobre atendimento no SUS; o README, em
+      inglês, descreve um modelo de séries temporais treinado com dados
+      históricos de atendimento. Sem dono identificado e sem localização.
     sinais:
       e_ia: {fortes: 1}
       brasileira: {fracos: 2}

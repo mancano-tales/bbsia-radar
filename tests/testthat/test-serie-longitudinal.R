@@ -144,3 +144,14 @@ test_that("history with observation times must be chronological", {
   plain <- tibble::tibble(artifact_id = "github:1", content_hash = "a", status = "ok")
   expect_equal(radar_eventos_rodada("r2", plain, list(plain))$evento, "inalterado")
 })
+
+test_that("absence streaks start at first appearance and timestamps are strict", {
+  empty <- tibble::tibble(artifact_id = character(), content_hash = character(), status = character())
+  first_404 <- tibble::tibble(artifact_id = "github:7", content_hash = NA_character_, status = "http_404")
+  events <- radar_eventos_rodada("r4", empty, list(empty, empty, first_404))
+  expect_equal(events$rodadas_ausente, 2L)
+  at <- function(time) tibble::tibble(artifact_id = "github:1", content_hash = "a",
+                                      status = "ok", observado_em = time)
+  expect_error(radar_eventos_rodada("r2", at("2026-09-29T11:00:00Z-extra"),
+                                    list(at("2026-09-22T10:00:00Z"))), "UTC")
+})

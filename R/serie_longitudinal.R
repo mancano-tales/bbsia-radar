@@ -158,11 +158,13 @@ radar_eventos_rodada <- function(run_id, atual, anterior = NULL) {
   #      contagem para na última rodada em que ele foi lido com sucesso.
   # (en) Consecutive rounds, up to now, in which the artifact was not read.
   runs <- c(anterior, list(atual))
+  # Rounds before the artifact first entered the history do not count.
   missing_streak <- vapply(ids, function(id) {
+    first <- which(vapply(runs, function(run) id %in% run$artifact_id, logical(1)))[[1]]
     streak <- 0L
-    for (run in rev(runs)) {
-      index <- match(id, run$artifact_id)
-      if (!is.na(index) && identical(run$status[[index]], "ok")) break
+    for (i in rev(seq(first, length(runs)))) {
+      index <- match(id, runs[[i]]$artifact_id)
+      if (!is.na(index) && identical(runs[[i]]$status[[index]], "ok")) break
       streak <- streak + 1L
     }
     streak
@@ -185,7 +187,8 @@ radar_validar_ordem_rodadas <- function(runs) {
   parse <- function(x) as.POSIXct(x, format = "%Y-%m-%dT%H:%M:%SZ", tz = "UTC")
   bounds <- lapply(timed, function(run) {
     times <- parse(run$observado_em)
-    if (anyNA(times)) stop("observado_em deve estar em UTC, no formato AAAA-MM-DDTHH:MM:SSZ.", call. = FALSE)
+    strict <- grepl("^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$", run$observado_em)
+    if (anyNA(times) || !all(strict)) stop("observado_em deve estar em UTC, no formato AAAA-MM-DDTHH:MM:SSZ.", call. = FALSE)
     range(times)
   })
   for (i in seq_along(bounds)[-1]) {
