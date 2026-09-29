@@ -17,5 +17,5 @@ jobs:
         shell: bash
         run: |
           base="$(git merge-base HEAD "origin/$GITHUB_BASE_REF")"
-          git log --format= --no-color --no-ext-diff --unified=0 -p "$base..HEAD" -- |
+          git log --diff-merges=first-parent --format= --no-color --no-ext-diff --unified=0 -p "$base..HEAD" -- |
             bash tools/check-absolute-paths.sh
