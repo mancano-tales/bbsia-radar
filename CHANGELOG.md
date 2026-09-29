@@ -34,6 +34,8 @@ Arquivo DERIVADO do `git log`. Não edite à mão — registre mudanças nos com
 
 ## Changed
 
+- **`[af2354e]` 2026-09-29** — docs(plan): fechar subplano visual após PR #25 refs #17
+- **`[a4ff801]` 2026-09-29** — docs(changelog): incluir entrega visual no histórico refs #17
 - **`[07b2fa6]` 2026-09-29** — docs(changelog): regenerar após sincronizar site refs #17
 - **`[22641a6]` 2026-09-29** — Update author attribution in README.md
 - **`[4c3474f]` 2026-09-29** — docs(todo): acompanhar revisão do PR #26 refs #24
