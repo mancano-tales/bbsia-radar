@@ -109,8 +109,9 @@ coletar_readme_hf <- function(repositories,
   details <- purrr::pmap(list(repositories$id, repositories$kind, repositories$sha),
     function(repo_id, kind, sha) {
       if (is.na(repo_id) || !nzchar(repo_id) || is.na(sha) || !nzchar(sha))
-        return(list(readme = NA_character_, content_hash = NA_character_))
-      if (!grepl("^[A-Za-z0-9_-]{7,}$", sha) || tolower(sha) %in% c("main", "master", "head"))
+        return(list(readme = NA_character_, content_hash = NA_character_,
+                    readme_status = "sem_sha"))
+      if (!grepl("^[0-9a-f]{40}([0-9a-f]{24})?$", sha))
         stop("Hugging Face exige SHA imutável do commit.", call. = FALSE)
       key <- list(provider = "huggingface", file = "README.md", kind = kind, id = repo_id, revision = sha)
       payload <- radar_cached(key, function() {
@@ -135,13 +136,16 @@ coletar_readme_hf <- function(repositories,
       }, root = root)
       if (is.list(payload) && !is.null(payload$.radar_http_status)) {
         if (identical(as.integer(payload$.radar_http_status), 404L))
-          return(list(readme = NA_character_, content_hash = NA_character_))
+          return(list(readme = NA_character_, content_hash = NA_character_,
+                      readme_status = "missing"))
         radar_verificar_status_http(payload$.radar_http_status, "Hugging Face", "README.md")
       }
-      list(readme = payload, content_hash = radar_content_hash("huggingface", sha, payload))
+      list(readme = payload, content_hash = radar_content_hash("huggingface", sha, payload),
+           readme_status = "read")
     })
   repositories$readme <- purrr::map_chr(details, "readme")
   repositories$content_hash <- purrr::map_chr(details, "content_hash")
+  repositories$readme_status <- purrr::map_chr(details, "readme_status")
   repositories
 }
 
@@ -191,7 +195,9 @@ coletar_hf <- function(seeds_path = "config/seeds.yml",
   if (length(account) != 1L || is.na(account) || !nzchar(account) || !(account %in% accounts)) {
     stop("Escolha exatamente uma conta Hugging Face já listada em config/seeds.yml.", call. = FALSE)
   }
-  items <- hf_collect_query("models", list(author = account, limit = 100), root,
+  # full=true is documented by the Hub client as including the commit SHA,
+  # which lets README reads pin the exact revision instead of mutable main.
+  items <- hf_collect_query("models", list(author = account, limit = 100, full = "true"), root,
                             request_fn, max_pages = 1L, budget)
   pagination <- attr(items, "pagination_summary")
   result <- hf_normalize_items(items, "models") |>

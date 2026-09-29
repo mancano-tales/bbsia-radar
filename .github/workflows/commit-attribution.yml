@@ -1,6 +1,6 @@
 name: Commit attribution
 
-# Every non-merge commit must carry an "Agent:" trailer (AGENTS.md, "Registro de cada rodada").
+# Every non-merge commit made after adoption must carry an "Agent:" trailer.
 # On pull requests the check fails the PR; on pushes to main it only reports, since the push already happened.
 # Plan: repo-governance/plan/2026-09-28_Plano_Limpeza_Coordenacao_Agentes_e_Fim_do_NEWS.md (D2).
 
@@ -35,9 +35,16 @@ jobs:
             range="$PUSH_BEFORE..$PUSH_AFTER"
           fi
           missing=0
+          # Radar adopted the rule when PR #23 merged (6f958d2). Existing PRs
+          # retain earlier commits; rewriting published history is not required.
+          adopted_at=$(date -u -d '2026-09-29T02:34:17Z' +%s)
           for c in $(git rev-list --no-merges "$range"); do
             author=$(git log -1 --format='%ae' "$c")
             case "$author" in *'[bot]'*) continue ;; esac
+            committed_at=$(git log -1 --format='%ct' "$c")
+            if [ "$committed_at" -lt "$adopted_at" ]; then
+              continue
+            fi
             if ! git log -1 --format='%B' "$c" | grep -qE '^Agent:[[:space:]]*[^[:space:]]'; then
               echo "::error::$(git log -1 --format='%h %s' "$c") — sem trailer 'Agent:'"
               missing=$((missing + 1))
@@ -45,7 +52,7 @@ jobs:
           done
           if [ "$missing" -gt 0 ]; then
             echo "$missing commit(s) sem 'Agent:'. O trailer precisa estar em cada commit:"
-            echo "em branch própria, refaça a mensagem (amend/rebase) antes do merge; na main, a falha só fica registrada."
+            echo "Corrija a atribuição nos próximos commits; não reescreva histórico já publicado."
             [ "$EVENT" = "pull_request" ] && exit 1
           fi
-          echo "OK: todos os commits em $range têm 'Agent:' (ou são de bot/merge)."
+          echo "OK: commits após adoção em $range têm 'Agent:' (ou são de bot/merge)."

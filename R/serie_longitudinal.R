@@ -143,8 +143,7 @@ radar_eventos_rodada <- function(run_id, atual, anterior = NULL) {
 radar_content_hash <- function(platform, revision_sha, text) {
   if (length(platform) != 1L || !platform %in% c("github", "gitlab", "huggingface") ||
       length(revision_sha) != 1L || is.na(revision_sha) ||
-      !grepl("^[A-Za-z0-9_-]{7,}$", revision_sha) ||
-      tolower(revision_sha) %in% c("main", "master", "head") ||
+      !grepl("^[0-9a-f]{40}([0-9a-f]{24})?$", revision_sha) ||
       length(text) != 1L || is.na(text)) {
     stop("Exige plataforma, SHA imutável da revisão lida e texto.", call. = FALSE)
   }

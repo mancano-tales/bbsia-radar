@@ -46,10 +46,11 @@ test_that("three rounds compare against last known state after search absence", 
 
 test_that("revision-aware hashes require immutable references and retain text digest", {
   text <- "README fixture"
-  hash <- radar_content_hash("huggingface", "commit123", text)
-  expect_match(hash, "commit123")
+  hash <- radar_content_hash("huggingface", strrep("a", 40), text)
+  expect_match(hash, strrep("a", 40))
   expect_match(hash, digest::digest(text, algo = "sha256", serialize = FALSE))
   expect_error(radar_content_hash("huggingface", "main", text))
+  expect_error(radar_content_hash("huggingface", "release-2026", text))
   expect_error(radar_content_hash("github", NA_character_, text))
   aliases <- radar_aliases(
     tibble::tibble(artifact_id = "github:1", url_antiga = "https://github.com/old/repo",

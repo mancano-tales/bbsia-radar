@@ -266,11 +266,11 @@ test_that("GitHub README content is decoded and each attempted document consumes
   root <- tempfile("radar-cache-"); dir.create(root)
   budget <- radar_novo_orcamento()
   fake <- function(path, query) list(
-    content = jsonlite::base64_enc(charToRaw("Título pt-BR")), sha = "blob12345")
+    content = jsonlite::base64_enc(charToRaw("Título pt-BR")), sha = strrep("b", 40))
   input <- tibble::tibble(full_name = "org/repo", url = "https://github.com/org/repo")
   output <- coletar_readme_github(input, root = root, request_fn = fake, budget = budget)
   expect_match(output$readme, "pt-BR")
-  expect_match(output$content_hash, "^github:blob12345:")
+  expect_match(output$content_hash, paste0("^github:", strrep("b", 40), ":"))
   expect_equal(budget$tentativas_reservadas, 1L)
   expect_true(length(list.files(file.path(root, "bbsia-radar", "api"), pattern = "json$")) == 1L)
   expect_error(coletar_readme_github(
@@ -281,10 +281,16 @@ test_that("GitHub README content is decoded and each attempted document consumes
 
 test_that("Hugging Face README uses a commit SHA and hashes the read text", {
   root <- tempfile("radar-hf-hash-"); dir.create(root)
-  input <- tibble::tibble(id = "org/model", kind = "models", sha = "commit123")
+  input <- tibble::tibble(id = "org/model", kind = "models", sha = strrep("a", 40))
   output <- coletar_readme_hf(input, root, function(repo_id, kind, file) "Model card",
                               radar_novo_orcamento())
-  expect_match(output$content_hash[[1]], "^huggingface:commit123:")
+  expect_match(output$content_hash[[1]], paste0("^huggingface:", strrep("a", 40), ":"))
+  expect_equal(output$readme_status[[1]], "read")
+  input$sha <- NA_character_
+  no_sha <- coletar_readme_hf(input, root, function(repo_id, kind, file) "Model card",
+                               radar_novo_orcamento())
+  expect_true(is.na(no_sha$readme[[1]]))
+  expect_equal(no_sha$readme_status[[1]], "sem_sha")
   input$sha <- "main"
   expect_error(coletar_readme_hf(input, root, function(repo_id, kind, file) "Model card",
                                  radar_novo_orcamento()))
@@ -342,6 +348,7 @@ test_that("HF normalizer omits private-profile fields", {
   models <- hf_normalize_items(fixture, "models")
   expect_equal(models$id, "neuralmind/bert-base-portuguese-cased")
   expect_equal(models$url, "https://huggingface.co/neuralmind/bert-base-portuguese-cased")
+  expect_equal(models$sha, strrep("a", 40))
   expect_false("email" %in% names(models))
   expect_false(any(grepl("must-not-be-read", unlist(models), fixed = TRUE)))
 })
@@ -369,7 +376,8 @@ test_that("HF collector queries only the explicitly selected seeded models accou
   calls <- list()
   fake <- function(kind, query) {
     calls[[length(calls) + 1L]] <<- list(kind = kind, query = query)
-    list(list(id = "example/fixture-model", likes = 1L, tags = character()))
+    list(list(id = "example/fixture-model", sha = strrep("a", 40),
+              likes = 1L, tags = character()))
   }
   root <- tempfile("radar-cache-"); dir.create(root)
   seed_path <- testthat::test_path("..", "fixtures", "seeds_minimal.yml")
@@ -379,8 +387,13 @@ test_that("HF collector queries only the explicitly selected seeded models accou
   expect_equal(calls[[1]]$kind, "models")
   expect_equal(calls[[1]]$query$author, "example")
   expect_equal(calls[[1]]$query$limit, 100)
-  expect_null(calls[[1]]$query$full)
+  expect_equal(calls[[1]]$query$full, "true")
   expect_equal(output$id, "example/fixture-model")
+  enriched <- coletar_readme_hf(output, root = root,
+                                request_fn = function(repo_id, kind, file) "Model card",
+                                budget = budget)
+  expect_equal(enriched$readme_status[[1]], "read")
+  expect_match(enriched$content_hash[[1]], paste0("^huggingface:", strrep("a", 40), ":"))
   expect_match(attr(output, "radar_metadata")$account_check, "retornou modelos")
   expect_error(coletar_hf(seed_path, root, request_fn = fake, account = "other",
                           budget = radar_novo_orcamento()), "config/seeds.yml")
@@ -432,7 +445,7 @@ test_that("combined README enrichment selects at most ten URLs deterministically
     full_name = c(paste0("org/repo", 1:6), rep(NA_character_, 6)),
     id = c(rep(NA_character_, 6), paste0("org/model", 1:6)),
     kind = c(rep(NA_character_, 6), rep("models", 6)),
-    sha = c(rep(NA_character_, 6), rep("commit123", 6))
+    sha = c(rep(NA_character_, 6), rep(strrep("a", 40), 6))
   )
   github_calls <- 0L
   hf_calls <- 0L
@@ -483,7 +496,7 @@ test_that("README enrichment includes prioritized curated solutions inside the t
     ),
     id = c(rep(NA_character_, 3), paste0("org/model", 1:9)),
     kind = c(rep(NA_character_, 3), rep("models", 9)),
-    sha = c(rep(NA_character_, 3), rep("commit123", 9))
+    sha = c(rep(NA_character_, 3), rep(strrep("a", 40), 9))
   )
   result <- coletar_readmes_exploratorios(
     repositories, root,
@@ -510,7 +523,7 @@ test_that("bounded enrichment reserves a document for every available platform",
     full_name = c(paste0("org/repo", 1:12), NA_character_, "org/project"),
     id = c(rep(NA_character_, 12), "org/model", "7001"),
     kind = c(rep(NA_character_, 12), "models", NA_character_),
-    sha = c(rep(NA_character_, 12), "commit123", NA_character_)
+    sha = c(rep(NA_character_, 12), strrep("a", 40), NA_character_)
   )
   github_fake <- function(path, query) {
     list(content = jsonlite::base64_enc(charToRaw("README")))
