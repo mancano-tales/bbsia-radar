@@ -7,7 +7,7 @@
 #        2. como instrução ao LLM que classifica o resto (WP5 passo 2);
 #        3. como guia de quem codifica a amostra humana de validação (WP5 passo 3).
 #      Mudou o codebook? Suba `versao`, registre o motivo no commit/issue e
-#      recodifique a amostra; NEWS.md recebe somente notas de versão lançada.
+#      recodifique a amostra; o histórico fica em commits, PRs e issues.
 # (en) Decides what enters the radar and how each solution is described. Written
 #      BEFORE data collection; read by the rule engine, by the LLM classifier and
 #      by human coders. Any change bumps `versao` and triggers re-coding.

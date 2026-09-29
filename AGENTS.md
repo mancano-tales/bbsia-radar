@@ -64,7 +64,9 @@
 
 _(regras próprias deste repositório; prevalecem sobre o bloco acima em caso de conflito)_
 
-`AGENTS.md` é o **único** arquivo de instruções: o `CLAUDE.md` contém só `@AGENTS.md`. Para humanos: [README.md](README.md). A história das decisões está nos planos, commits, PRs e issues. Como este repositório é um pacote R, `NEWS.md` permanece na raiz somente para notas de versões lançadas; não recebe entradas por sessão.
+`AGENTS.md` é o **único** arquivo de instruções: o `CLAUDE.md` contém só `@AGENTS.md`. Para humanos: [README.md](README.md). A história das decisões está nos planos, commits, PRs e issues.
+
+**Sem exceção de pacote R para o `NEWS.md`** (autor, 2026-09-29, no chat; plano do piloto §13): embora o repositório tenha `DESCRIPTION`, a exceção do bloco comum **não vale aqui**. O `NEWS.md` antigo foi movido para `repo-governance/deprecated/NEWS.md` e não se recria na raiz, nem para notas de versão; `hooks/pre-commit` recusa. A frase de `repo-governance/deprecated/README.md` sobre o `NEWS.md` na raiz ficou superada por esta decisão (o arquivo é congelado e não se edita).
 
 ### O que é
 
@@ -113,7 +115,7 @@ Radar de soluções de IA **brasileiras**, **adaptadas ao português brasileiro*
 O `core.hooksPath` deste repositório é `hooks`, nunca `tools/git-hooks` diretamente:
 os wrappers locais também executam o scanner de caminhos e o pre-push.
 
-- `hooks/pre-commit` aplica `tools/git-hooks/pre-commit`: recusa recriar `NEWS.md` ou fragmentos, editar `deprecated/` e acrescentar caminhos absolutos. O scanner deste repo e `hooks/pre-push` também verificam caminhos absolutos em linhas novas de diffs textuais, exibindo só arquivo relativo e linha. `hooks/commit-msg` aplica a checagem comum do trailer `Agent:`. O pre-push e o workflow incluem diffs de primeiro pai dos commits de merge. O workflow `Verificar caminhos absolutos` confere commits de PR; para bloquear o merge, o GitHub precisa exigir esse status check e PRs na branch principal. Ative neste clone com `git config core.hooksPath hooks`. São mitigações: hooks locais podem ser ignorados e o Actions executa depois do push.
+- `hooks/pre-commit` aplica `tools/git-hooks/pre-commit`: recusa recriar `NEWS.md` ou fragmentos, editar `deprecated/` e acrescentar caminhos absolutos. Além disso, recusa qualquer `NEWS.md` na raiz, mesmo sendo pacote R. O scanner deste repo e `hooks/pre-push` também verificam caminhos absolutos em linhas novas de diffs textuais, exibindo só arquivo relativo e linha. `hooks/commit-msg` aplica a checagem comum do trailer `Agent:`. O pre-push e o workflow incluem diffs de primeiro pai dos commits de merge. O workflow `Verificar caminhos absolutos` confere commits de PR; para bloquear o merge, o GitHub precisa exigir esse status check e PRs na branch principal. Ative neste clone com `git config core.hooksPath hooks`. São mitigações: hooks locais podem ser ignorados e o Actions executa depois do push.
 - A trava do Claude Code (`.claude/settings.json` → `tools/guard-git-command.sh`) bloqueia `git add .`/`-A`/`-u`, `clean -f`, `reset --hard`, `restore .`, `checkout .` e `push --force`. Teste: `printf '{"tool_input":{"command":"git add ."}}' | bash tools/guard-git-command.sh; echo $?` (dá 2).
 - Commits: Conventional Commits com `refs #N`. O `CHANGELOG.md` é gerado (`Rscript tools/render-changelog.R`), nunca editado à mão.
 
