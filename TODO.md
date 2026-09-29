@@ -5,7 +5,7 @@
 > **Pendente** = pronto para ser trabalhado. **Prospectivo** = identificado, mas falta decisão ou dependência. **Concluído** = feito.
 
 ## Pendente
-- [ ] **Abrir PR das correções do parecer Claude no #23** — branch `codex/24-claude-findings` publicada em `0bc9a83`; aguarda vaga, pois #18, #21 e #25 já ocupam o limite de três PRs abertos. Revisão cruzada e integração vêm depois.
+- [ ] **Revisar e integrar as correções do parecer Claude no #23** — PR #26 aberto a partir de `codex/24-claude-findings`; revisão cruzada pelo Claude solicitada. O autor pediu a abertura como exceção temporária ao limite de três PRs.
   - Criado: 2026-09-29 por Codex / GPT-6 / desktop.
   - Referências: issue #24; parecer no PR #23; issue do hub #42.
 
