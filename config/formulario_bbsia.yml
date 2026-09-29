@@ -1,0 +1,80 @@
+# Vocabulário observado por leitura do formulário público, sem envio de dados.
+fonte: "https://bancobrasileiro.ia.br/contribuir"
+observado_em: "2026-09-28"
+uso: "Mapeamento documental; o radar não preenche nem envia o formulário."
+
+campos:
+  tecnologia_ia:
+    rotulo: "Tecnologia utilizada (opcional)"
+    opcoes:
+      - "Análise de texto / linguagem (NLP)"
+      - "Análise de imagens / vídeo (visão computacional)"
+      - "Previsão / classificação (machine learning)"
+      - "Recomendação / sugestão"
+      - "Otimização (rotas, alocação…)"
+      - "Voz / áudio (fala → texto)"
+      - "Não usa IA"
+      - "Outro"
+      - "Não sei"
+  tipo_ativo:
+    rotulo: "Tipo de ativo"
+    opcoes:
+      - "Aplicação ou sistema pronto para usar"
+      - "Código ou biblioteca para instalar e adaptar"
+      - "API (serviço que outros sistemas consultam)"
+      - "Servidor MCP (conecta ferramentas a um agente de IA)"
+      - "Agente de IA (assistente que executa tarefas)"
+      - "Modelo de IA treinado"
+      - "Dataset (uma base de dados)"
+      - "Pipeline / fluxo de processamento de dados"
+      - "Guia, publicação ou metodologia"
+      - "Outro (descreva nas observações)"
+  area:
+    rotulo: "Área de atuação"
+    opcoes:
+      - "Saúde"
+      - "Educação"
+      - "Segurança Pública"
+      - "Fazenda/Tributação"
+      - "Meio Ambiente"
+      - "Gestão Pública"
+      - "Administração/Processos"
+      - "Outro"
+  ja_usado:
+    rotulo: "Além de você ou da sua equipe, alguém já usou?"
+    opcoes:
+      - "Sim, outro órgão/instituição"
+      - "Só nós"
+      - "Ninguém ainda"
+  ponto_atual:
+    rotulo: "Em que ponto está hoje?"
+    opcoes:
+      - "É pesquisa em andamento (artigo, modelo ou PoC em universidade/ICT)"
+      - "Ainda em desenvolvimento (protótipo)"
+      - "Funciona, mas em fase de teste"
+      - "Em uso / produção em pelo menos um órgão"
+  aberta:
+    rotulo: "É aberta / reusável por outro órgão?"
+    opcoes: ["Sim, código aberto", "Sim, com ajustes", "Não", "Não sei"]
+  recursos_publicos:
+    rotulo: "Desenvolvida majoritariamente com recursos públicos?"
+    opcoes: ["Sim", "Não", "Parceria público-privada", "Privado", "Outro"]
+  soberania:
+    rotulo: "Infra/modelo nacional ou aberto, ou depende de serviço externo?"
+    opcoes: ["Infra/modelo nacional ou aberto", "Depende de serviço externo", "Misto", "Não sei", "Não se aplica"]
+  dado_sensivel:
+    rotulo: "Lida com dado pessoal ou sensível?"
+    opcoes: ["Sim", "Não", "Não sei"]
+  disposicao_aberto:
+    rotulo: "Disposição institucional para fornecer a solução como código aberto"
+    opcoes: ["SIM", "Não, no momento", "Talvez, precisamos de mais informações", "Parcialmente, em versão demo"]
+  nivel_governo:
+    rotulo: "Nível de governo"
+    opcoes: ["Federal", "Estadual", "Municipal", "Academia ou ICT", "Setor privado", "Outro"]
+
+fora_do_radar_publico:
+  - email_institucional
+  - nome_completo_do_respondente
+  - cargo_do_respondente
+  - telefone_do_respondente
+  - consentimento_do_respondente
