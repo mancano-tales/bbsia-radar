@@ -70,26 +70,28 @@ radar_validate_cache_root <- function(root = Sys.getenv("MANCANO_BBSIA_RADAR_ROO
 }
 
 # (pt) Um objeto mutável é compartilhado por descoberta e enriquecimento para
-#      impor o mesmo teto em toda a rodada. São reservadas até 25 tentativas:
+#      impor o mesmo teto em toda a rodada. Por padrão, até 25 tentativas:
 #      duas buscas GitHub, uma listagem HF, duas buscas GitLab e até duas
 #      tentativas por um dos dez documentos selecionados (HEAD+GET no GitLab
 #      ou GET mais um redirecionamento no HF). Nenhuma função repete falhas.
-# (en) Discovery and enrichment share one budget. The exploratory ceiling is
+# (en) Discovery and enrichment share one budget. The exploratory default is
 #      25 reserved attempts: two GitHub searches, one HF listing, two GitLab
 #      searches, and up to two attempts for each of ten documents (GitLab
-#      HEAD+GET or an HF GET plus one redirect). Clients never retry failures.
+#      HEAD+GET or an HF GET plus one redirect). A declared pilot run can raise
+#      the limits to absolute caps of 150 attempts and 40 documents.
+#      Clients never retry failures.
 radar_novo_orcamento <- function(max_tentativas = 25L, max_documentos = 10L) {
   tentativas_n <- suppressWarnings(as.integer(max_tentativas))
   documentos_n <- suppressWarnings(as.integer(max_documentos))
   if (length(tentativas_n) != 1L || is.na(tentativas_n) ||
       !is.numeric(max_tentativas) || max_tentativas != tentativas_n ||
-      tentativas_n < 1L || tentativas_n > 25L) {
-    stop("max_tentativas precisa estar entre 1 e 25.", call. = FALSE)
+      tentativas_n < 1L || tentativas_n > 150L) {
+    stop("max_tentativas precisa estar entre 1 e 150.", call. = FALSE)
   }
   if (length(documentos_n) != 1L || is.na(documentos_n) ||
       !is.numeric(max_documentos) || max_documentos != documentos_n ||
-      documentos_n < 0L || documentos_n > 10L) {
-    stop("max_documentos precisa estar entre 0 e 10.", call. = FALSE)
+      documentos_n < 0L || documentos_n > 40L) {
+    stop("max_documentos precisa estar entre 0 e 40.", call. = FALSE)
   }
   budget <- new.env(parent = emptyenv())
   budget$radar_budget <- TRUE
@@ -99,6 +101,8 @@ radar_novo_orcamento <- function(max_tentativas = 25L, max_documentos = 10L) {
   budget$requisicoes_logicas <- 0L
   budget$documentos <- character()
   budget$ledger <- list()
+  budget$status_http <- integer()
+  budget$falhas <- list()
   budget
 }
 
@@ -107,12 +111,12 @@ radar_validar_orcamento <- function(budget) {
     stop("Crie e compartilhe o orçamento com radar_novo_orcamento().", call. = FALSE)
   }
   if (length(budget$max_tentativas) != 1L || is.na(budget$max_tentativas) ||
-      budget$max_tentativas < 1L || budget$max_tentativas > 25L ||
+      budget$max_tentativas < 1L || budget$max_tentativas > 150L ||
       length(budget$max_documentos) != 1L || is.na(budget$max_documentos) ||
-      budget$max_documentos < 0L || budget$max_documentos > 10L ||
+      budget$max_documentos < 0L || budget$max_documentos > 40L ||
       budget$tentativas_reservadas < 0L || budget$tentativas_reservadas > budget$max_tentativas ||
       length(budget$documentos) > budget$max_documentos) {
-    stop("O orçamento HTTP está inválido ou excede o teto exploratório de 25 tentativas.", call. = FALSE)
+    stop("O orçamento HTTP está inválido ou excede o teto absoluto de 150 tentativas.", call. = FALSE)
   }
   invisible(budget)
 }
@@ -139,7 +143,8 @@ radar_reservar_documentos <- function(budget, provider, ids) {
   ids <- unique(as.character(ids[!is.na(ids) & nzchar(ids)]))
   novas <- setdiff(paste(provider, ids, sep = ":"), budget$documentos)
   if (length(budget$documentos) + length(novas) > budget$max_documentos) {
-    stop("O limite global de dez README/model cards seria excedido.", call. = FALSE)
+    stop(paste0("O limite global de ", budget$max_documentos,
+                " README/model cards seria excedido."), call. = FALSE)
   }
   budget$documentos <- c(budget$documentos, novas)
   invisible(budget)
@@ -153,8 +158,32 @@ radar_resumo_orcamento <- function(budget) {
     requisicoes_logicas = budget$requisicoes_logicas,
     documentos_selecionados = length(budget$documentos),
     limite_documentos = budget$max_documentos,
-    chamadas = budget$ledger
+    chamadas = budget$ledger,
+    status_http = as.list(budget$status_http),
+    falhas = budget$falhas
   )
+}
+
+# (pt) Registramos apenas códigos de chamadas efetivas, sem URL ou corpo.
+# (en) Record HTTP codes for actual requests, without URLs or response bodies.
+radar_registrar_status <- function(budget, provider, status, resource = "") {
+  status <- suppressWarnings(as.integer(status))
+  key <- paste(provider, if (is.na(status)) "unknown" else status, sep = ":")
+  counts <- budget$status_http
+  counts[key] <- if (key %in% names(counts)) counts[[key]] + 1L else 1L
+  budget$status_http <- counts
+  if (is.na(status) || status < 200L || status >= 300L) {
+    budget$falhas[[length(budget$falhas) + 1L]] <- list(
+      provider = provider, resource = resource, status = status
+    )
+  }
+  invisible(budget)
+}
+
+radar_status_resposta <- function(payload) {
+  if (is.list(payload) && !is.null(payload$.radar_http_status))
+    return(payload$.radar_http_status)
+  200L
 }
 
 radar_verificar_status_http <- function(status, provider, resource) {

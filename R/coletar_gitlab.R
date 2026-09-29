@@ -146,6 +146,7 @@ gitlab_request <- function(method, path, query = list(), root,
     radar_reservar_requisicao(budget, "gitlab", paste(method, path), reserved_attempts)
     response <- gitlab_send_request(method, path, query, request_fn)
     status <- response$.radar_http_status
+    radar_registrar_status(budget, "gitlab", status, paste(method, path))
     if (is.na(status) || status < 200L || status >= 300L) return(response)
     if (isTRUE(require_public_projects)) gitlab_validar_projetos_publicos(response$.radar_body)
     if (is.function(validate_response)) response <- validate_response(response)

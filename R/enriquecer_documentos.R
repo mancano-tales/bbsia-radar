@@ -1,9 +1,9 @@
 # Bounded README/model-card enrichment / Enriquecimento limitado de documentos.
 #
-# (pt) Esta função escolhe no máximo dez URLs distintas, reserva primeiro
+# (pt) Por padrão, esta função escolhe no máximo dez URLs distintas, reserva primeiro
 #      uma vaga por plataforma disponível e prioriza URLs-semente curadas
 #      nas vagas restantes. Compartilha o orçamento entre GitHub, HF e GitLab.
-# (en) This function selects at most ten distinct URLs, first reserving one
+# (en) By default, this function selects at most ten distinct URLs, first reserving one
 #      slot per available platform and prioritizing curated seed URLs in the
 #      remaining slots. It shares one budget across GitHub, HF, and GitLab.
 #      Only Hugging Face models are eligible in this run.
@@ -15,7 +15,8 @@ coletar_readmes_exploratorios <- function(
     request_hf_fn = NULL,
     priority_urls = character(),
     budget,
-    request_gitlab_fn = NULL) {
+    request_gitlab_fn = NULL,
+    selected_repositories = NULL) {
   required <- c("platform", "url")
   if (!all(required %in% names(repositories))) {
     stop("repositories precisa de platform e url.", call. = FALSE)
@@ -74,7 +75,15 @@ coletar_readmes_exploratorios <- function(
   candidate_order <- c(
     first_by_platform, setdiff(seq_len(nrow(ordered_eligible)), first_by_platform)
   )
-  selected <- ordered_eligible[utils::head(candidate_order, max(0L, remaining)), , drop = FALSE]
+  selected <- if (is.null(selected_repositories)) {
+    ordered_eligible[utils::head(candidate_order, max(0L, remaining)), , drop = FALSE]
+  } else {
+    selected_repositories
+  }
+  if (nrow(selected) > remaining || anyDuplicated(tolower(selected$url)) ||
+      !all(tolower(selected$url) %in% eligible_canonical)) {
+    stop("A seleção da rodada excede o orçamento ou contém candidatos inválidos.", call. = FALSE)
+  }
   selected$selection_order <- seq_len(nrow(selected))
 
   github <- selected[selected$platform == "github", , drop = FALSE]
@@ -112,8 +121,57 @@ coletar_readmes_exploratorios <- function(
       excluded_by_limit = nrow(eligible) - nrow(selected),
       prioritized_selected = sum(tolower(selected$url) %in% priority_canonical)
     ),
-    coverage = paste(
+    coverage = if (is.null(selected_repositories)) paste(
       "uma vaga por plataforma disponível; URLs-semente prioritárias nas demais vagas; no máximo dez documentos"
-    )
+    ) else paste("alocação proporcional por plataforma; sementes e descrições prioritárias")
   )
+}
+
+# (pt) Reparte as vagas proporcionalmente, garante uma por fonte e desempata
+#      pela ordem fixa das plataformas. A prioridade interna não depende da
+#      ordem incidental das respostas das APIs.
+# (en) Allocate proportionally with one slot per present source; fixed
+#      platform and canonical URL ordering make ties reproducible.
+selecionar_enriquecimento_rodada <- function(repositories, max_documentos,
+                                            priority_urls = character()) {
+  platforms <- c("github", "huggingface", "gitlab")
+  if (!all(c("platform", "url", "description") %in% names(repositories)))
+    stop("Candidatos precisam de platform, url e description.", call. = FALSE)
+  if (anyNA(repositories$url) || anyNA(repositories$platform) ||
+      !all(repositories$platform %in% platforms))
+    stop("Candidatos precisam de URLs e plataformas válidas.", call. = FALSE)
+  ordered <- repositories[order(tolower(repositories$url), repositories$url), , drop = FALSE]
+  eligible <- ordered[!duplicated(tolower(ordered$url)), , drop = FALSE]
+  counts <- vapply(platforms, function(platform) sum(eligible$platform == platform), integer(1))
+  present <- which(counts > 0L)
+  slots <- min(as.integer(max_documentos), nrow(eligible))
+  if (length(present) && slots < length(present))
+    stop("max_documentos precisa reservar uma vaga por plataforma presente.", call. = FALSE)
+  allocation <- integer(length(platforms))
+  if (slots > 0L) {
+    allocation[present] <- 1L
+    while (sum(allocation) < slots) {
+      # Largest deficit against the ideal proportional quota; platform order
+      # is the deterministic tie breaker and capacity is never exceeded.
+      ideal <- slots * counts / sum(counts)
+      deficit <- ideal - allocation
+      deficit[allocation >= counts] <- -Inf
+      allocation[[which.max(deficit)]] <- allocation[[which.max(deficit)]] + 1L
+    }
+  }
+  priority <- tolower(priority_urls)
+  has_description <- !is.na(eligible$description) & nzchar(trimws(eligible$description))
+  seed_link <- tolower(eligible$url) %in% priority
+  if ("solution_id" %in% names(eligible))
+    seed_link <- seed_link | (!is.na(eligible$solution_id) &
+      eligible$solution_id != eligible$url)
+  chosen <- lapply(seq_along(platforms), function(index) {
+    rows <- eligible[eligible$platform == platforms[[index]], , drop = FALSE]
+    flags_seed <- seed_link[eligible$platform == platforms[[index]]]
+    flags_desc <- has_description[eligible$platform == platforms[[index]]]
+    rows <- rows[order(-as.integer(flags_seed), -as.integer(flags_desc),
+                       tolower(rows$url), rows$url), , drop = FALSE]
+    utils::head(rows, allocation[[index]])
+  })
+  dplyr::bind_rows(chosen)
 }

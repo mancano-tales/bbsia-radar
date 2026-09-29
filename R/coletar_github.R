@@ -41,6 +41,7 @@ github_request <- function(path, query = list(), root = Sys.getenv("MANCANO_BBSI
         payload <- httr2::resp_body_json(response, simplifyVector = FALSE)
       }
     }
+    radar_registrar_status(budget, "github", radar_status_resposta(payload), path)
     if (isTRUE(public_only) && is.null(payload$.radar_http_status)) {
       repo_metadata <- grepl("^GET /repos/[^/]+/[^/]+$", path)
       expected_repo <- if (repo_metadata) sub("^GET /repos/", "", path) else NULL
@@ -100,7 +101,7 @@ github_search_window <- function(term, start_date, end_date, root, request_fn = 
 
 github_validar_itens_publicos <- function(payload, require_explicit_repo = FALSE,
                                           expected_repo = NULL) {
-  items <- payload$items %||% list()
+  items <- payload$items %||% if (is.null(names(payload))) payload else list()
   # A repository endpoint returns one object rather than a Search envelope.
   # Require its visibility flag explicitly so an incomplete response can never
   # be treated as public merely because the field is absent.
@@ -300,8 +301,11 @@ coletar_readme_github <- function(repositories,
                                   request_fn = NULL, budget) {
   required <- c("full_name", "url")
   if (!all(required %in% names(repositories))) stop("repositories precisa de full_name e url.", call. = FALSE)
-  if (nrow(repositories) > 10L) stop("Selecione no máximo dez documentos antes do enriquecimento.", call. = FALSE)
   radar_validar_orcamento(budget)
+  if (nrow(repositories) > budget$max_documentos)
+    stop(if (budget$max_documentos == 10L)
+      "Selecione no máximo dez documentos antes do enriquecimento." else
+      "Selecione documentos dentro do limite da rodada antes do enriquecimento.", call. = FALSE)
   radar_validate_cache_root(root)
   radar_reservar_documentos(budget, "github", repositories$full_name)
   details <- purrr::map(repositories$full_name, function(full_name) {
