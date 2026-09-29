@@ -6,7 +6,7 @@ status: ATIVO
 criado: "2026-09-27 10:52"
 concluido: null
 autor_humano: "Tales Mançano"
-autorizacao_atual: "No chat em 2026-09-27, o autor aprovou o plano e pediu sua revisão sequencial por Gemini 3.1 Pro e GPT-6-Sol, seguida da implementação em branch e PR. A estrutura inicial pode ser feita sem dados reais; nenhum candidato ou primeira publicação pública está autorizado sem revisão posterior do autor."
+autorizacao_atual: "Em 2026-09-27, o autor aprovou a estrutura do site sem dados reais. Em 2026-09-29, pediu continuar a versão independente para apresentar à coordenação, com nota de proposta em HTML e PDF. Nenhum candidato ou primeira publicação pública está autorizado sem revisão posterior do autor."
 agentes:
   orquestrador: "Codex / GPT-6 / desktop"
   executor: "Codex / GPT-6 / desktop"
@@ -244,6 +244,16 @@ como pipeline de dados enquanto essa etapa estiver pendente.
 ## Aprovação ainda necessária
 
 - O autor aprovou o plano e autorizou a implementação em branch e PR no chat de 2026-09-27.
+- Em 2026-09-29, o autor pediu concluir uma versão para mostrar à coordenação. A
+  PR #25 acrescenta uma nota de apresentação em HTML/PDF, com piloto sugerido,
+  estado atual e decisões pendentes, mantendo a identidade oficial desativada.
+  A nota é material de discussão de uma iniciativa voluntária, sem publicar
+  candidatos ou pressupor adoção pelo BBSIA.
+- No commit `22ad567`, `quarto render report` gerou quatro páginas HTML e dois
+  PDFs; a nota de apresentação ocupa duas páginas A4 e foi inspecionada em HTML
+  e PDF. O [build Linux da PR #25](https://github.com/mancano-tales/bbsia-radar/actions/runs/36541746947)
+  passou, incluindo links dos dois PDFs e ausência dos ativos oficiais no
+  artefato; o job de publicação no Pages foi ignorado.
 - A primeira publicação pública ainda depende de aprovação explícita do autor depois que o artefato
   inicial HTML/PDF estiver pronto para inspeção. A variável `PAGES_PUBLISH_APPROVED` mantém o deploy
   bloqueado até essa decisão.

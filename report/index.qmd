@@ -1,12 +1,12 @@
 ---
-title: "Radar de soluções de IA para o interesse público"
-subtitle: "Descoberta documentada, revisão humana e resultados com proveniência"
+title: "Proposta de radar de soluções de IA para o interesse público"
+subtitle: "Iniciativa independente de um voluntário do BBSIA, para apreciação da coordenação"
 page-layout: full
 ---
 
 ::: {.hero-panel}
 ::: {.hero-kicker}
-PROJETO PÚBLICO · BBSIA-RADAR
+PROPOSTA INDEPENDENTE · EM PREPARAÇÃO
 :::
 
 ## Encontrar soluções. Mostrar as evidências. Facilitar a revisão.
@@ -17,9 +17,20 @@ adaptadas. Ele busca projetos publicados no GitHub, no Hugging Face e no GitLab.
 candidatas para revisão humana relacionada ao [Banco Brasileiro de Soluções de
 IA (BBSIA)](https://bancobrasileiro.ia.br/).
 
-[Conheça o método](metodo.qmd){.btn .btn-primary .btn-lg}
-[Acompanhe o relatório](relatorio.qmd){.btn .btn-outline-primary .btn-lg}
+**Esta é uma proposta de Tales Mançano, voluntário do BBSIA, para apresentar à
+coordenação do programa. O radar ainda não é uma iniciativa oficial do BBSIA e
+não tem endosso institucional.**
+
+[Leia a proposta para a coordenação](apresentacao.qmd){.btn .btn-primary .btn-lg}
+[Conheça o método](metodo.qmd){.btn .btn-outline-primary .btn-lg}
 :::
+
+## Para a conversa com a coordenação
+
+A [nota de apresentação](apresentacao.qmd) resume o piloto sugerido, o que já foi
+preparado e as decisões ainda necessárias sobre escopo, revisão, comparação com o
+catálogo e eventual adoção institucional. Ela também pode ser baixada em PDF na
+própria página. **Nenhuma candidata foi validada ou submetida ao BBSIA.**
 
 ## Situação dos dados
 
@@ -59,6 +70,7 @@ relatório. O radar não envia dados ao BBSIA.
 ## Acompanhe
 
 - [Leia a descrição, o escopo e as decisões no README do projeto](https://github.com/mancano-tales/bbsia-radar#readme).
+- [Veja a proposta para discussão com a coordenação](apresentacao.qmd).
 - [Abra o relatório em HTML e baixe sua versão em PDF](relatorio.qmd).
 - [Consulte o registro de mudanças](https://github.com/mancano-tales/bbsia-radar/blob/main/CHANGELOG.md).
 

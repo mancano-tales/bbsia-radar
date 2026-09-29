@@ -3,21 +3,25 @@ project:
   output-dir: _site
   render:
     - index.qmd
+    - apresentacao.qmd
     - metodo.qmd
     - relatorio.qmd
-
 website:
-  title: "Radar Brasileiro de Soluções de IA"
+  title: "Proposta de radar de soluções de IA"
   description: >-
-    Radar de soluções de IA brasileiras, adaptadas ao português brasileiro ou de
-    interesse público adaptáveis, com fontes, método e limites documentados.
+    Proposta independente de Tales Mançano, voluntário do BBSIA, para apreciação
+    pela coordenação do programa. Ainda não é uma iniciativa oficial do BBSIA.
   page-navigation: true
+  page-footer:
+    center: "Proposta independente de Tales Mançano, voluntário do BBSIA. Sem caráter oficial ou endosso institucional."
   navbar:
     background: "#123a3a"
     foreground: "#ffffff"
     left:
       - href: index.qmd
         text: Início
+      - href: apresentacao.qmd
+        text: Proposta
       - href: metodo.qmd
         text: Método
       - href: relatorio.qmd

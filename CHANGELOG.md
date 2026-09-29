@@ -6,6 +6,9 @@ Arquivo DERIVADO do `git log`. Não edite à mão — registre mudanças nos com
 
 ## Added
 
+- **`[22ad567]` 2026-09-29** — feat(report): adiciona nota independente para coordenacao refs #17
+- **`[0b7515f]` 2026-09-28** — feat(report): integra marca BBSIA ao Quarto sem publicar refs #17
+- **`[d98d5d4]` 2026-09-28** — feat(report): cria ativos vetoriais BBSIA e PNGs verificados refs #17
 - **`[ff4f0d3]` 2026-09-28** — feat(series): propose URL-free identities for exploratory candidates refs #24
 - **`[82edd5f]` 2026-09-28** — feat(series): prepare longitudinal run contract refs #24
 - **`[bb67518]` 2026-09-28** — feat(codebook): map public BBSIA form fields refs #24
@@ -22,6 +25,7 @@ Arquivo DERIVADO do `git log`. Não edite à mão — registre mudanças nos com
 - **`[92b9529]` 2026-09-29** — fix(radar): pin HF revisions and grandfather legacy commits refs #24
 - **`[84b2da0]` 2026-09-29** — fix(governance): retira exceção de pacote R do NEWS refs #1
 - **`[0bc9a83]` 2026-09-29** — fix(radar): corrigir codebook e identidade longitudinal refs #24
+- **`[abd093b]` 2026-09-29** — fix(report): desativa marca oficial na proposta de radar refs #17
 - **`[25d7e2f]` 2026-09-28** — fix(governance): align Radar hooks with NEWS retirement refs #1
 - **`[bfddbdb]` 2026-09-27** — fix(news): corrige assunto declarado do changelog refs #14
 - **`[6216a8f]` 2026-09-27** — fix(security): corrige detector e inclui diffs de merge refs #1
@@ -30,9 +34,12 @@ Arquivo DERIVADO do `git log`. Não edite à mão — registre mudanças nos com
 
 ## Changed
 
+- **`[07b2fa6]` 2026-09-29** — docs(changelog): regenerar após sincronizar site refs #17
 - **`[22641a6]` 2026-09-29** — Update author attribution in README.md
 - **`[4c3474f]` 2026-09-29** — docs(todo): acompanhar revisão do PR #26 refs #24
+- **`[3ca4586]` 2026-09-29** — docs(plan): registra validacao da apresentacao refs #17
 - **`[653a5e6]` 2026-09-29** — docs(todo): registrar branch aguardando vaga de PR refs #24
+- **`[29ba1a1]` 2026-09-29** — docs(plan): registra entrega dos ativos e espera da PR 18 refs #17
 - **`[e33d612]` 2026-09-28** — docs(changelog): regenerate after PR21 main sync refs #1
 - **`[e70cdbc]` 2026-09-28** — docs(plan): publish proposed BBSIA visual assets audit refs #17
 - **`[5dbe61e]` 2026-09-28** — docs(plan): align pending decisions with codebook v0.2.0 refs #24

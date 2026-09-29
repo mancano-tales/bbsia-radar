@@ -5,15 +5,14 @@
 > **Pendente** = pronto para ser trabalhado. **Prospectivo** = identificado, mas falta decisão ou dependência. **Concluído** = feito.
 
 ## Pendente
-- [ ] **Revisar e integrar as correções do parecer Claude no #23** — PR #26 aberto a partir de `codex/24-claude-findings`; revisão cruzada pelo Claude solicitada. O autor pediu a abertura como exceção temporária ao limite de três PRs.
+- [ ] **Ativos visuais BBSIA** — PR #25 mantém a marca preparada, mas desativada até decisão da coordenação; #18 já integrado, PR #25 retargetado para `main` e aguardando revisão cruzada; issue #17. Criado: 2026-09-28 por Codex / GPT-6 / desktop.
+- [ ] **Limpar checkout local do PR #26** — correções integradas na `main`; a branch `codex/24-claude-findings` ainda ocupa uma worktree local.
   - Criado: 2026-09-29 por Codex / GPT-6 / desktop.
   - Referências: issue #24; parecer no PR #23; issue do hub #42.
 
-- [ ] **Revisão cruzada e integração dos hooks de governança** — PR #23; branch `codex/1-governance-hooks` permanece aberta para revisão do Claude, checks, merge e remoção da branch depois da integração.
+- [ ] **Limpar checkout local dos hooks de governança** — PR #23 integrado; a branch local `codex/1-governance-hooks` permanece aberta até a limpeza da worktree.
   - Criado: 2026-09-28 por Codex / GPT-6 / desktop
-  - Motivo: o código deste repo entra por PR; o commit e o push já passaram pelos hooks atualizados sem exceções.
   - Referências: issue #1; plano do hub #37; PR #23.
-
 - [ ] **Proteção contra publicação acidental de caminhos absolutos** — manter as verificações locais e a checagem de PR; falta tornar o status check obrigatório no GitHub.
   - Criado: 2026-09-27 10:53 por Codex / GPT-6 / desktop
   - Progresso 2026-09-27: a proposta foi aprovada no chat pela opção A, como mitigação simples. O scanner compartilhado, os hooks locais e o workflow de pull request estão no branch codex/1-protecao-caminhos-absolutos, baseado na main remota atualizada.
@@ -32,6 +31,7 @@
   - Progresso 2026-09-27: PR #18 pronta para revisão do autor. Gemini 3.1 Pro High e GPT-6-Sol não encontraram bloqueios; as sugestões foram incorporadas. O CI da PR e a reexecução manual no commit final `f42fb2a` passaram. A inspeção visual do HTML continua pendente; a do PDF foi feita. Naquele registro pré-coleta, nenhuma amostra real havia sido coletada. A atualização abaixo registra a rodada posterior; a primeira publicação continua dependendo de aprovação explícita do autor.
   - Atualização 2026-09-27 17:27: a amostra exploratória já foi coletada nas três fontes, mas não foi incorporada ao site porque ainda depende do Decifra e de revisão humana. A PR #18 descreve GitHub, Hugging Face e GitLab.com e mantém vazias as páginas públicas de candidatos. O deploy continua protegido pela variável de aprovação.
   - Atualização 2026-09-28: o PR #22 foi integrado; os conflitos do PR #18 foram resolvidos em branch isolada. `quarto render report` passou, e as três páginas HTML foram inspecionadas no navegador local em largura móvel, sem problemas visuais observados. O PDF está no artefato. Pages segue sem aprovação de publicação.
+  - Atualização 2026-09-29: a PR #25 acrescenta uma nota de apresentação independente em HTML/PDF para a conversa com a coordenação; a marca oficial continua desativada e nenhuma candidata entra no site. A publicação e a integração de resultados seguem pendentes.
   - Plano ativo: `repo-governance/plan/2026-09-27_Plano_Website_Quarto.md` · Issue: #17
 
 - [ ] **Issue #14 — analisar e revisar a amostra exploratória limitada** — coleta inicial concluída nas APIs GitHub, Hugging Face e GitLab.com; concluir o fluxo Decifra, estimar TRL, validar manualmente e comparar com o BBSIA antes de publicar qualquer resultado.
