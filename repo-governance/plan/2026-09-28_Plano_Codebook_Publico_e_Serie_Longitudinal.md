@@ -14,7 +14,7 @@ agentes:
 tarefas:
   - { desc: "WP1 — especificar campos observáveis e regras de evidência do codebook", status: em_execucao, data: "2026-09-28" }
   - { desc: "WP2 — codificar e validar o codebook ampliado e seu contrato com o Decifra", status: em_execucao, data: "2026-09-28" }
-  - { desc: "WP3 — definir identificadores, eventos e saídas revisadas da série semanal", status: pendente, data: null }
+  - { desc: "WP3 — definir identificadores, eventos e saídas revisadas da série semanal", status: em_execucao, data: "2026-09-28" }
   - { desc: "WP4 — publicar série e método no site após revisão e primeira publicação autorizada", status: pendente, data: null }
 relacionados:
   - "repo-governance/plan/2026-09-26_Plano_Piloto_bbsia-radar.md"
@@ -37,7 +37,7 @@ relacionados:
 
 - **WP1 em andamento:** opções reais dos campos de seleção verificadas por leitura do formulário público, sem submissão, e registradas em `config/formulario_bbsia.yml`. A matriz de campos observáveis está em `config/codebook.yml` v0.2.0 como rascunho para revisão do autor; categorias ambíguas exigem mapeamento humano.
 - **WP2 em andamento:** a versão 0.2.0 corrige `nao` por ausência de sinais para `incerto`, acrescenta campos públicos e mapeia somente categorias com equivalência explícita. A versão 0.1.1 permanece no histórico Git. O conversor do Decifra continua limitado às cinco dimensões classificáveis existentes; falta recodificar e adjudicar uma amostra real.
-- **WP3 preparatório:** `R/serie_longitudinal.R` e teste sintético demonstram IDs por plataforma, alteração, ausência da busca e HTTP 404 distintos, além do manifesto imutável fora do Git. `data/README.md` documenta o esquema público; nenhum candidato real foi publicado. Persistem a migração dos IDs provisórios do corpus e a correção do `external_id` no Decifra para o ensaio integrado.
+- **WP3 em andamento:** `R/serie_longitudinal.R` e teste sintético demonstram IDs por plataforma, alteração, ausência da busca e HTTP 404 distintos, além do manifesto imutável fora do Git. `data/README.md` documenta o esquema público. `radar_propor_vinculos()` foi aplicado somente em memória aos 104 candidatos do cache exploratório: 104 IDs de artefato distintos, duas sementes curadas preservadas e 102 chaves provisórias sem URL propostas. Nenhum vínculo foi aplicado ao corpus nem publicado. Persistem a revisão humana desses vínculos e a correção do `external_id` no Decifra para o ensaio integrado.
 
 ## Decisão proposta
 
