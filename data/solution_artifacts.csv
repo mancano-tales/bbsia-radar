@@ -1,0 +1,14 @@
+solution_id,artifact_id,plataforma,url,data_inicio,justificativa
+s-transcritorio,github:1210047875,github,https://github.com/antrologos/Transcritorio,2026-09-29,Um artefato.
+s-bertimbau,github:233952052,github,https://github.com/neuralmind-ai/portuguese-bert,2026-09-29,O README do modelo no Hugging Face remete ao repositório GitHub do mesmo grupo.
+s-bertimbau,huggingface:models:neuralmind/bert-large-portuguese-cased,huggingface,https://huggingface.co/neuralmind/bert-large-portuguese-cased,2026-09-29,O README do modelo no Hugging Face remete ao repositório GitHub do mesmo grupo.
+s-teenytinyllama,github:749088086,github,https://github.com/Nkluge-correa/TeenyTinyLlama,2026-09-29,Um artefato.
+s-tucano,github:885940738,github,https://github.com/Nkluge-correa/Tucano,2026-09-29,Um artefato.
+s-robertacrawlpt,huggingface:models:eduagarcia/RoBERTaCrawlPT-base,huggingface,https://huggingface.co/eduagarcia/RoBERTaCrawlPT-base,2026-09-29,"Modelo genérico; o RoBERTaLexPT, da mesma pesquisa, é outra solução, com outro problema (texto jurídico)."
+s-robertalexpt,huggingface:models:eduagarcia/RoBERTaLexPT-base,huggingface,https://huggingface.co/eduagarcia/RoBERTaLexPT-base,2026-09-29,Modelo do domínio jurídico; separado do RoBERTaCrawlPT.
+s-sabia,huggingface:models:maritaca-ai/sabia-7b,huggingface,https://huggingface.co/maritaca-ai/sabia-7b,2026-09-29,"Família Sabiá. O Sabiá-7B tem pesos públicos; os tokenizadores são do Sabiá-2, servido por API comercial."
+s-sabia,huggingface:models:maritaca-ai/sabia-2-tokenizer-medium,huggingface,https://huggingface.co/maritaca-ai/sabia-2-tokenizer-medium,2026-09-29,"Família Sabiá. O Sabiá-7B tem pesos públicos; os tokenizadores são do Sabiá-2, servido por API comercial."
+s-sabia,huggingface:models:maritaca-ai/sabia-2-tokenizer-small,huggingface,https://huggingface.co/maritaca-ai/sabia-2-tokenizer-small,2026-09-29,"Família Sabiá. O Sabiá-7B tem pesos públicos; os tokenizadores são do Sabiá-2, servido por API comercial."
+s-aira2,huggingface:models:nicholasKluge/Aira-2-124M,huggingface,https://huggingface.co/nicholasKluge/Aira-2-124M,2026-09-29,"Família Aira-2: três tamanhos da mesma série, do mesmo autor."
+s-aira2,huggingface:models:nicholasKluge/Aira-2-124M-DPO,huggingface,https://huggingface.co/nicholasKluge/Aira-2-124M-DPO,2026-09-29,"Família Aira-2: três tamanhos da mesma série, do mesmo autor."
+s-aira2,huggingface:models:nicholasKluge/Aira-2-1B1,huggingface,https://huggingface.co/nicholasKluge/Aira-2-1B1,2026-09-29,"Família Aira-2: três tamanhos da mesma série, do mesmo autor."

@@ -62,13 +62,17 @@ a equipe decidir o que entra.
 
 ## O piloto
 
-Cerca de 30 soluções brasileiras ou adaptadas ao português do Brasil, revisadas
-uma a uma, entregues em planilha no formato do formulário e publicadas no site do
-projeto. O objetivo é que a coordenação veja fichas reais e diga o que mudar
-antes de rodar a busca completa.
+A primeira rodada, em setembro de 2026, buscou em poucas contas e temas
+conhecidos. Encontrou 379 ocorrências, leu e classificou 39 documentos, e o
+autor confirmou 8 soluções brasileiras ou em português do Brasil, entre elas o
+Transcritório, o BERTimbau e o Tucano. Quando a máquina disse que algo era IA
+brasileira, acertou em todos os casos; quando faltava evidência, respondeu
+"incerto" em vez de arriscar.
 
-Uma primeira sondagem, com poucos termos de busca, trouxe 104 resultados, que
-ainda não foram avaliados; o piloto amplia essa busca e revisa uma amostra.
+As fichas, os números e o método estão no
+[relatório do piloto](https://mancano-tales.github.io/bbsia-radar/relatorio.html).
+O objetivo é que a coordenação veja fichas reais e diga o que mudar antes de
+ampliar a busca.
 
 ## O que o radar não faz
 

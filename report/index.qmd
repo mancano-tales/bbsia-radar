@@ -5,7 +5,7 @@ page-layout: full
 
 ::: {.hero-panel}
 ::: {.hero-kicker}
-PROPOSTA DE UM VOLUNTÁRIO · PILOTO EM PREPARAÇÃO
+PROPOSTA DE UM VOLUNTÁRIO · PILOTO REVISADO
 :::
 
 ## Muita IA brasileira já está publicada. Falta encontrá-la.
@@ -63,16 +63,16 @@ Uma pessoa revisa tudo antes de qualquer publicação.
 
 ## Em que pé está
 
-- **Pronto:** a busca no GitHub, no Hugging Face e no GitLab; uma primeira
-  sondagem, com 104 resultados de busca ainda não avaliados; as regras de
-  classificação.
-- **Em preparação:** um piloto com cerca de 30 soluções, a serem classificadas e
-  revisadas uma a uma, para mostrar à coordenação como seriam as fichas.
-- **Depois do piloto:** ajustar os campos e os critérios com a coordenação e só
-  então rodar a busca completa.
+- **Pronto:** a busca no GitHub, no Hugging Face e no GitLab; as regras de
+  classificação; e um **piloto revisado**: das 379 ocorrências encontradas, 39
+  documentos foram lidos e classificados, e o autor confirmou 8 soluções
+  brasileiras ou em português do Brasil.
+- **A classificação automática acertou bem:** quando disse "sim", acertou
+  sempre; quando faltava evidência, preferiu "incerto".
+- **Próximo passo:** ajustar os campos e os critérios com a coordenação e só
+  então ampliar a busca.
 
-Os resultados do piloto aparecerão no [relatório](relatorio.qmd) quando a
-revisão terminar.
+Veja as soluções e os números no [relatório do piloto](relatorio.qmd).
 
 ## Para saber mais
 
