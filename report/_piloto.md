@@ -20,18 +20,18 @@ As colunas **brasileira** e **pt-BR** foram revisadas pelo autor. Tipo, área, T
 | Solução | Problema que resolve (proposta) | Brasileira | pt-BR | Tipo (proposta) | Área (proposta) | TRL provável | Licença |
 |---|---|---|---|---|---|---|---|
 | [Transcritório](https://github.com/antrologos/Transcritorio) | Ajuda pesquisadores a transcrever entrevistas gravadas em português e separar os falantes, sem enviar o áudio para a internet. | sim | sim | Aplicação | Ciência e pesquisa; Transversal | 4-6 | MIT |
-| [BERTimbau](https://github.com/neuralmind-ai/portuguese-bert) (+1) | Ajuda quem desenvolve sistemas de texto em português a partir de um modelo de linguagem já treinado em português brasileiro, para tarefas como reconhecer nomes e comparar o sentido de frases. | sim | sim | Modelo | Cultura e linguagem; Transversal | 4-6 | não declarada |
+| [BERTimbau](https://github.com/neuralmind-ai/portuguese-bert) (+1) | Ajuda quem desenvolve sistemas de texto em português a partir de um modelo de linguagem já treinado em português brasileiro, para tarefas como reconhecer nomes e comparar o sentido de frases. | sim | sim | Modelo | Cultura e linguagem; Transversal | 4-6 | mit / NOASSERTION |
 | [TeenyTinyLlama](https://github.com/Nkluge-correa/TeenyTinyLlama) | Ajuda pesquisadores e desenvolvedores com pouco recurso computacional a usar modelos de linguagem pequenos e abertos, treinados em português brasileiro. | sim | sim | Modelo | — | 1-3 | Apache-2.0 |
 | [Tucano](https://github.com/Nkluge-correa/Tucano) | Ajuda pesquisadores e desenvolvedores a gerar texto em português com modelos abertos treinados desde o início nesse idioma. | sim | sim | Modelo | Ciência e pesquisa; Cultura e linguagem | 1-3 | Apache-2.0 |
 | [RoBERTaCrawlPT](https://huggingface.co/eduagarcia/RoBERTaCrawlPT-base) | Ajuda quem desenvolve aplicações de texto em português a partir de um modelo de linguagem genérico, treinado do zero com textos da web em português. | sim | sim | Modelo | — | 4-6 | cc-by-4.0 |
 | [RoBERTaLexPT](https://huggingface.co/eduagarcia/RoBERTaLexPT-base) | Ajuda quem desenvolve aplicações para textos jurídicos em português, com um modelo de linguagem treinado em documentos legais. | sim | sim | Modelo | Justiça e direito | 4-6 | cc-by-4.0 |
-| [Sabiá (Maritaca AI)](https://huggingface.co/maritaca-ai/sabia-7b) (+2) | Ajuda quem precisa gerar texto em português com modelos de linguagem adaptados a esse idioma pela Maritaca AI. | sim | sim | Modelo | — | 4-6 | — |
-| [Aira-2](https://huggingface.co/nicholasKluge/Aira-2-124M) (+2) | Ajuda pesquisadores a estudar o ajuste de pequenos modelos de linguagem para seguir instruções, com modelos abertos em três tamanhos. | sim | não | Modelo | — | 4-6 | apache-2.0 |
+| [Sabiá (Maritaca AI)](https://huggingface.co/maritaca-ai/sabia-7b) (+2) | Ajuda quem precisa gerar texto em português com modelos de linguagem adaptados a esse idioma pela Maritaca AI. | sim | sim | Modelo | — | 1-3 / 4-6 | — |
+| [Aira-2](https://huggingface.co/nicholasKluge/Aira-2-124M) (+2) | Ajuda pesquisadores a estudar o ajuste de pequenos modelos de linguagem para seguir instruções, com modelos abertos de 124 milhões e 1,1 bilhão de parâmetros. | sim | não | Modelo | — | 4-6 | apache-2.0 |
 
 **Observações**
 
 - **Sabiá (Maritaca AI).** Caso-limite pendente com a coordenação do BBSIA (codebook, API comercial fechada): o Sabiá-2 é proprietário e os tokenizadores publicados servem só para estimar o custo de uso da API.
-- **Aira-2.** Os três modelos declaram inglês como idioma; entram por brasileira = sim (autor brasileiro), não por ptbr (adjudicação do autor em 2026-10-03).
+- **Aira-2.** Os três modelos declaram inglês como idioma: entram pelo critério "brasileira", não por "pt-BR" (adjudicação do autor em 2026-10-03).
 
 ## Quanto a classificação automática acertou
 
@@ -43,5 +43,7 @@ Comparamos a resposta da máquina com a revisão do autor em cada documento. A p
 | É brasileira? | 35 | 1,00 | 0,70 | 0,82 | 0,77 | 27 |
 | É adaptada ao português do Brasil? | 38 | 1,00 | 0,73 | 0,84 | 0,79 | 29 |
 
-A máquina nunca disse *sim* quando o autor disse *não* (precisão 1,00). Ela é conservadora: prefere *incerto* quando a documentação não basta, e por isso deixou passar algumas soluções brasileiras. 17 das 195 extrações falharam por tempo esgotado e ficaram fora da conta.
+A máquina nunca disse *sim* quando o autor disse *não*. Quando a documentação não bastava, ela respondeu *incerto*, e por isso deixou passar algumas soluções brasileiras.
+
+17 das 195 extrações automáticas falharam e ficaram fora da conta; a causa está registrada no Decifra (issue #11 do decifra-text-as-data).
 

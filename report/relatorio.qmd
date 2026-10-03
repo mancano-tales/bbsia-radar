@@ -44,7 +44,8 @@ e os números de cada etapa, no
 
 ## Como ler os resultados
 
-- Cada ficha traz o link para a fonte e o trecho que sustenta cada resposta.
+- Cada ficha traz o link para a fonte. Os trechos de README e model card que
+  sustentam cada resposta ficam no cache do projeto e não são republicados aqui.
 - "Incerto" quer dizer que a documentação não permite responder, não que a
   resposta seja "não".
 - Os dados completos do piloto, um fato por linha e com a fonte de cada um,

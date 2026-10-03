@@ -50,6 +50,11 @@ radar_concordancia <- function(gold, maquina, variaveis = RADAR_MARCACOES) {
   })
 }
 
+radar_juntar_valores <- function(x) {
+  valores <- unique(stats::na.omit(as.character(x)))
+  if (!length(valores)) NA_character_ else paste(sort(valores), collapse = " / ")
+}
+
 radar_publicar_piloto <- function(gold, maquina, candidatos, corpus, solucoes, manifesto, decifra,
                                   out_dir = "data", referencia = Sys.Date()) {
   run_id <- solucoes$rodada
@@ -133,11 +138,13 @@ radar_publicar_piloto <- function(gold, maquina, candidatos, corpus, solucoes, m
     dplyr::summarise(
       artefatos = paste(url, collapse = " | "), plataformas = paste(unique(platform), collapse = ", "),
       responsavel = paste(unique(stats::na.omit(owner)), collapse = ", "),
-      e_ia = if (any(e_ia == "sim")) "sim" else dplyr::first(e_ia),
-      brasileira = if (any(brasileira == "sim")) "sim" else dplyr::first(brasileira),
-      ptbr = if (any(ptbr == "sim")) "sim" else dplyr::first(ptbr),
-      tipo_artefato = dplyr::first(tipo_artefato), area_problema = dplyr::first(area_problema),
-      trl_provavel = dplyr::first(trl_provavel), ativo = dplyr::first(ativo), licenca = dplyr::first(license),
+      # Values that differ across a family's artifacts are shown together
+      # ("1-3 / 4-6") instead of hiding all but the first.
+      e_ia = radar_juntar_valores(e_ia), brasileira = radar_juntar_valores(brasileira),
+      ptbr = radar_juntar_valores(ptbr),
+      tipo_artefato = radar_juntar_valores(tipo_artefato), area_problema = dplyr::first(area_problema),
+      trl_provavel = radar_juntar_valores(trl_provavel), ativo = radar_juntar_valores(ativo),
+      licenca = radar_juntar_valores(license),
       .groups = "drop") |>
     dplyr::right_join(sol[c("solution_id", "nome", "problema_resumo", "nota")], by = "solution_id")
   snap <- snap[match(sol$solution_id, snap$solution_id), c("solution_id", "nome", "problema_resumo",
@@ -230,7 +237,11 @@ radar_relatorio_piloto_md <- function(res, manifesto, decifra) {
     "|---|---|---|---|---|---|---|",
     linhas_conc,
     "",
-    sprintf("A máquina nunca disse *sim* quando o autor disse *não* (precisão 1,00). Ela é conservadora: prefere *incerto* quando a documentação não basta, e por isso deixou passar algumas soluções brasileiras. %d das %s extrações falharam por tempo esgotado e ficaram fora da conta.",
+    if (all(conc$falso_positivo == 0))
+      "A máquina nunca disse *sim* quando o autor disse *não*. Quando a documentação não bastava, ela respondeu *incerto*, e por isso deixou passar algumas soluções brasileiras."
+    else sprintf("A máquina disse *sim* quando o autor disse *não* em %d casos, somando as três perguntas.", sum(conc$falso_positivo)),
+    "",
+    sprintf("%d das %s extrações automáticas falharam e ficaram fora da conta; a causa está registrada no Decifra (issue #11 do decifra-text-as-data).",
             decifra$falhas, num(decifra$extracoes)),
     ""
   )

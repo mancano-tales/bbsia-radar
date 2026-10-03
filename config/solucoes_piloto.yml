@@ -82,8 +82,9 @@ solucoes:
                 "huggingface:models:nicholasKluge/Aira-2-1B1"]
     problema_resumo: >-
       Ajuda pesquisadores a estudar o ajuste de pequenos modelos de linguagem
-      para seguir instruções, com modelos abertos em três tamanhos.
-    justificativa: "Família Aira-2: três tamanhos da mesma série, do mesmo autor."
+      para seguir instruções, com modelos abertos de 124 milhões e 1,1 bilhão
+      de parâmetros.
+    justificativa: "Família Aira-2: três modelos da mesma série (124M, 124M-DPO e 1B1), do mesmo autor."
     nota: >-
-      Os três modelos declaram inglês como idioma; entram por brasileira = sim
-      (autor brasileiro), não por ptbr (adjudicação do autor em 2026-10-03).
+      Os três modelos declaram inglês como idioma: entram pelo critério
+      "brasileira", não por "pt-BR" (adjudicação do autor em 2026-10-03).
