@@ -1,0 +1,4 @@
+variavel,n,falhas_maquina,verdadeiro_positivo,falso_positivo,falso_negativo,verdadeiro_negativo,precisao,recall,f1,kappa,maquina_incerto,acordo_quando_decide
+e_ia,39,0,13,0,0,26,1,1,1,1,25,1
+brasileira,35,4,7,0,3,25,1,0.7,0.8235294117647058,0.7692307692307692,27,0.875
+ptbr,38,1,8,0,3,27,1,0.7272727272727273,0.8421052631578948,0.7912087912087912,29,1

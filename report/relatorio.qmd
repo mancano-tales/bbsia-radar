@@ -31,32 +31,26 @@ format:
 Relatório de uma proposta voluntária, não uma publicação do BBSIA.
 :::
 
-## Situação
-
-::: {.callout-important}
-### O piloto está em preparação
-
-As soluções do piloto serão classificadas e revisadas uma a uma. Esta página
-vai mostrar as fichas revisadas, os números por tipo de solução e o quanto
-a classificação automática acertou em comparação com a revisão humana. Nada
-aparece aqui antes de ser conferido.
-:::
-
-A data no alto da página é a data em que o relatório foi gerado. Cada rodada de
-busca terá também a sua própria data e a lista do que foi consultado.
+{{< include _piloto.md >}}
 
 ## O que foi buscado
 
-Soluções de IA brasileiras ou adaptadas ao português do Brasil, publicadas no
-GitHub, no Hugging Face e no GitLab. Os termos de busca, os grupos consultados e o
-número de páginas lidas em cada plataforma serão listados aqui, junto com os
-resultados.
+Contas de grupos brasileiros já conhecidos e temas como `brazilian-portuguese`
+no GitHub, contas no Hugging Face e dois termos de busca no GitLab, com uma
+página por consulta. A lista exata está no
+[arquivo da rodada](https://github.com/mancano-tales/bbsia-radar/blob/main/config/rodadas/2026-09-29_piloto.yml),
+e os números de cada etapa, no
+[manifesto público](https://github.com/mancano-tales/bbsia-radar/blob/main/data/runs/2026-09-29_piloto.json).
 
 ## Como ler os resultados
 
-- Cada ficha traz o link para a fonte e o trecho que sustenta cada resposta.
+- Cada ficha traz o link para a fonte. Os trechos de README e model card que
+  sustentam cada resposta ficam no cache do projeto e não são republicados aqui.
 - "Incerto" quer dizer que a documentação não permite responder, não que a
   resposta seja "não".
+- Os dados completos do piloto, um fato por linha e com a fonte de cada um,
+  estão na pasta [`data/`](https://github.com/mancano-tales/bbsia-radar/tree/main/data)
+  do repositório.
 - A maturidade é uma faixa de TRL estimada pelo radar a partir de sinais
   públicos, não uma avaliação do BBSIA.
 - As regras de classificação estão no

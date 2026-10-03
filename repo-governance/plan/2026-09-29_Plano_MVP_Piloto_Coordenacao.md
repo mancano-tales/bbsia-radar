@@ -69,7 +69,10 @@ cache externo.
 7. **Revisão de código:** todo PR do Claude recebe `@codex review` no GitHub antes do merge.
 8. **Merges:** o agente pode mergear os próprios PRs e os do Codex quando os checks estiverem verdes e a revisão cruzada não tiver achado bloqueante pendente ("pode mergear você mesmo").
 9. **Português europeu:** documentação que declara só pt-PT dá `ptbr = nao`, não `incerto` ("pt-PT explícito deve ser nao"). Aplicado no codebook v0.2.2 (PR #31).
-10. **Tarefas fora do radar** (autorizações inválidas; inventário dos repositórios do MancanoSync):
+10. **Agrupamento (2026-10-03):** variantes da mesma família viram uma solução (Aira-2, Sabiá, BERTimbau), em `config/solucoes_piloto.yml`: os 13 artefatos incluídos viram 8 soluções.
+11. **Publicação com rótulos (2026-10-03):** publicar já o piloto; os rótulos `e_ia`, `brasileira` e `ptbr` saem como revisados pelo autor, e tipo, área, TRL e resumo do problema como proposta da máquina, não revisada.
+12. **Adjudicação Aira-2 (2026-10-03):** `ptbr` sim → não nos três modelos, que declaram inglês no card; `brasileira = sim` se mantém. A planilha original do autor fica intacta; a adjudicada fica ao lado, no cache.
+13. **Tarefas fora do radar** (autorizações inválidas; inventário dos repositórios do MancanoSync):
    sessões separadas.
 
 ## 3. Ordem e caminho crítico

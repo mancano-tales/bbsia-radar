@@ -135,6 +135,15 @@ body {
   background: var(--radar-mint);
 }
 
+/* Wide result tables scroll inside the text column instead of overflowing
+   the page (desktop and phone). */
+#quarto-document-content table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  font-size: 0.9rem;
+}
+
 a {
   text-underline-offset: 0.16em;
 }

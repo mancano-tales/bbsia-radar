@@ -1,0 +1,90 @@
+# Curadoria das soluções do piloto (rodada 2026-09-29_piloto; plano #28, WP-F).
+#
+# (pt) O codebook define a unidade como SOLUÇÃO, não repositório: um modelo no
+#      Hugging Face e o código no GitHub do mesmo grupo são uma ficha. O autor
+#      decidiu em 2026-10-03 agrupar as variantes por família (plano #28 §2).
+#      Entram as soluções que o autor revisou como e_ia = sim e brasileira ou
+#      ptbr = sim. `problema_resumo` foi redigido pelo Claude a partir do
+#      README de cada artefato e é PROPOSTA até revisão do autor.
+# (en) Curated solution grouping for the pilot; summaries are proposals.
+versao: "2026-10-03"
+rodada: "2026-09-29_piloto"
+solucoes:
+  - solution_id: s-transcritorio
+    nome: "Transcritório"
+    artefatos: ["github:1210047875"]
+    problema_resumo: >-
+      Ajuda pesquisadores a transcrever entrevistas gravadas em português e
+      separar os falantes, sem enviar o áudio para a internet.
+    justificativa: "Um artefato."
+
+  - solution_id: s-bertimbau
+    nome: "BERTimbau"
+    artefatos: ["github:233952052", "huggingface:models:neuralmind/bert-large-portuguese-cased"]
+    problema_resumo: >-
+      Ajuda quem desenvolve sistemas de texto em português a partir de um modelo
+      de linguagem já treinado em português brasileiro, para tarefas como
+      reconhecer nomes e comparar o sentido de frases.
+    justificativa: "O README do modelo no Hugging Face remete ao repositório GitHub do mesmo grupo."
+
+  - solution_id: s-teenytinyllama
+    nome: "TeenyTinyLlama"
+    artefatos: ["github:749088086"]
+    problema_resumo: >-
+      Ajuda pesquisadores e desenvolvedores com pouco recurso computacional a
+      usar modelos de linguagem pequenos e abertos, treinados em português
+      brasileiro.
+    justificativa: "Um artefato."
+
+  - solution_id: s-tucano
+    nome: "Tucano"
+    artefatos: ["github:885940738"]
+    problema_resumo: >-
+      Ajuda pesquisadores e desenvolvedores a gerar texto em português com
+      modelos abertos treinados desde o início nesse idioma.
+    justificativa: "Um artefato."
+
+  - solution_id: s-robertacrawlpt
+    nome: "RoBERTaCrawlPT"
+    artefatos: ["huggingface:models:eduagarcia/RoBERTaCrawlPT-base"]
+    problema_resumo: >-
+      Ajuda quem desenvolve aplicações de texto em português a partir de um
+      modelo de linguagem genérico, treinado do zero com textos da web em
+      português.
+    justificativa: "Modelo genérico; o RoBERTaLexPT, da mesma pesquisa, é outra solução, com outro problema (texto jurídico)."
+
+  - solution_id: s-robertalexpt
+    nome: "RoBERTaLexPT"
+    artefatos: ["huggingface:models:eduagarcia/RoBERTaLexPT-base"]
+    problema_resumo: >-
+      Ajuda quem desenvolve aplicações para textos jurídicos em português, com
+      um modelo de linguagem treinado em documentos legais.
+    justificativa: "Modelo do domínio jurídico; separado do RoBERTaCrawlPT."
+
+  - solution_id: s-sabia
+    nome: "Sabiá (Maritaca AI)"
+    artefatos: ["huggingface:models:maritaca-ai/sabia-7b",
+                "huggingface:models:maritaca-ai/sabia-2-tokenizer-medium",
+                "huggingface:models:maritaca-ai/sabia-2-tokenizer-small"]
+    problema_resumo: >-
+      Ajuda quem precisa gerar texto em português com modelos de linguagem
+      adaptados a esse idioma pela Maritaca AI.
+    justificativa: "Família Sabiá. O Sabiá-7B tem pesos públicos; os tokenizadores são do Sabiá-2, servido por API comercial."
+    nota: >-
+      Caso-limite pendente com a coordenação do BBSIA (codebook, API comercial
+      fechada): o Sabiá-2 é proprietário e os tokenizadores publicados servem
+      só para estimar o custo de uso da API.
+
+  - solution_id: s-aira2
+    nome: "Aira-2"
+    artefatos: ["huggingface:models:nicholasKluge/Aira-2-124M",
+                "huggingface:models:nicholasKluge/Aira-2-124M-DPO",
+                "huggingface:models:nicholasKluge/Aira-2-1B1"]
+    problema_resumo: >-
+      Ajuda pesquisadores a estudar o ajuste de pequenos modelos de linguagem
+      para seguir instruções, com modelos abertos de 124 milhões e 1,1 bilhão
+      de parâmetros.
+    justificativa: "Família Aira-2: três modelos da mesma série (124M, 124M-DPO e 1B1), do mesmo autor."
+    nota: >-
+      Os três modelos declaram inglês como idioma: entram pelo critério
+      "brasileira", não por "pt-BR" (adjudicação do autor em 2026-10-03).

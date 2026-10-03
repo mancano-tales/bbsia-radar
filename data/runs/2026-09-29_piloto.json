@@ -1,0 +1,73 @@
+{
+  "run_id": "2026-09-29_piloto",
+  "timestamp_utc": "2026-09-29T16:59:44Z",
+  "consultas": {
+    "run_id": "2026-09-29_piloto",
+    "fontes": ["github", "huggingface", "gitlab"],
+    "max_tentativas": 150,
+    "max_documentos": 40,
+    "max_caracteres_documento": 24000,
+    "max_paginas": {
+      "github_conta": 1,
+      "github_topico": 1,
+      "huggingface": 1,
+      "gitlab": 1
+    },
+    "github": {
+      "contas": ["neuralmind-ai", "nkluge-correa", "antrologos"],
+      "topicos": ["portuguese-nlp", "brazilian-portuguese", "pt-br"],
+      "termos_semente": ["Transcritorio", "BERTimbau"],
+      "por_pagina": 100
+    },
+    "huggingface": {
+      "contas": ["neuralmind", "nicholasKluge", "recogna-nlp", "maritaca-ai", "eduagarcia", "pierreguillou"],
+      "tipo": "models",
+      "full": true,
+      "por_pagina": 100
+    },
+    "gitlab": {
+      "termos": ["Transcritorio", "BERTimbau"],
+      "por_pagina": 100
+    },
+    "enriquecimento": {
+      "estratificacao": "proporcional",
+      "minimo_por_plataforma": 1,
+      "prioridade": ["semente", "descricao"]
+    }
+  },
+  "totais": {
+    "github": 275,
+    "huggingface": 103,
+    "gitlab": 1,
+    "corpus": 39,
+    "documentos_cortados": 1
+  },
+  "tentativas_usadas": 67,
+  "documentos_selecionados": 40,
+  "status_http": {
+    "github:200": 26,
+    "huggingface:200": 16,
+    "gitlab:200": 4,
+    "github:404": 11
+  },
+  "contas_hf": {
+    "neuralmind": "com_modelos",
+    "nicholasKluge": "com_modelos",
+    "recogna-nlp": "com_modelos",
+    "maritaca-ai": "com_modelos",
+    "eduagarcia": "com_modelos",
+    "pierreguillou": "com_modelos"
+  },
+  "collector_commit": "fe712e709f962eef37834b7afdce68041f1db10b",
+  "codebook_version": "0.2.2",
+  "decifra_commit": "4df06df",
+  "decifra_modelo": "gemini-3.8-flash-high",
+  "decifra_extracoes": 195,
+  "decifra_falhas": 17,
+  "revisao_humana": {
+    "revisor": "autor",
+    "documentos": 39,
+    "adjudicacoes": 39
+  },
+  "cache_ref": "bbsia-radar/api"
+}

@@ -1,9 +1,18 @@
 # Série longitudinal do radar
 
-Este diretório ainda não contém fichas publicadas. O codebook v0.2.2 e o
-vocabulário lido do [formulário BBSIA](../config/formulario_bbsia.yml) descrevem
-o que poderá ser revisado. Os 104 registros exploratórios são candidatos
-encontrados por buscas limitadas, não 104 soluções verificadas.
+**Primeira rodada publicada: `2026-09-29_piloto`** (plano #28). Oito soluções
+que o autor revisou como IA brasileira ou em português do Brasil, agrupadas por
+família em `config/solucoes_piloto.yml`. Nos arquivos abaixo, os rótulos
+`e_ia`, `brasileira` e `ptbr` têm `revisao = revisado` (autor); tipo, área, TRL
+e o resumo do problema têm `revisao = proposto` (máquina ou radar, sem revisão),
+por decisão do autor em 2026-10-03. Nenhum texto de README, model card ou
+resposta de API é copiado: só links, rótulos e contagens. Os arquivos são
+gerados por `scripts/03_publicar.R`; não edite à mão.
+
+A concordância humano × máquina da rodada está em
+`relatorios/2026-09-29_piloto-concordancia.csv`. As 104 ocorrências da
+sondagem exploratória de 2026-09-27 continuam fora deste diretório: eram
+candidatos de buscas limitadas, não soluções verificadas.
 
 ## Contrato público proposto (v1)
 
@@ -38,8 +47,9 @@ imutável; correções criam novo evento ligado ao anterior.
 
 ## Porta de publicação
 
-As respostas brutas de APIs, documentos completos, propostas sem revisão e
-fichas com dados de contato ficam fora deste diretório. A preparação semanal
+As respostas brutas de APIs, documentos completos e fichas com dados de
+contato ficam fora deste diretório. Propostas sem revisão só entram rotuladas
+como `proposto`, por decisão do autor em 2026-10-03. A preparação semanal
 grava manifestos no cache externo por padrão. Antes do primeiro dado real no Git,
 é preciso testar a ida e volta do `external_id` no Decifra, revisar uma amostra
 humana, confirmar direitos de uso e obter a autorização específica da primeira
