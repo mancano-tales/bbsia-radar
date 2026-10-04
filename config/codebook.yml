@@ -20,15 +20,15 @@
 #   depende_bbsia   -> depende da coordenação do BBSIA (issue #2 / plano §3).
 # ==============================================================================
 
-versao: "0.2.2"
-data: "2026-09-29"
+versao: "0.2.3"
+data: "2026-10-03"
 status: rascunho          # rascunho | em_validacao | estavel
 issue: 24
-versao_anterior: "0.2.1"
+versao_anterior: "0.2.2"
 formulario_bbsia: "config/formulario_bbsia.yml"
 politica_migracao: >
   As versões anteriores permanecem no histórico Git. Nenhum valor antigo é substituído
-  em silêncio. Reclassificar uma amostra com a 0.2.2 e registrar lado a lado
+  em silêncio. Reclassificar uma amostra com a 0.2.3 e registrar lado a lado
   rótulo anterior, rótulo novo, motivo, fonte e decisão humana.
 
 # ------------------------------------------------------------------------------
@@ -92,9 +92,8 @@ vinculo:
         - "Financiamento brasileiro declarado (CNPq, CAPES, FAPs, FINEP, BNDES, órgão público)."
         - "Site oficial do projeto em domínio `.br`."
       medios:
-        - "Campo `location` do dono cita Brasil, uma UF ou uma cidade brasileira."
+        - "Localização declarada pela ORGANIZAÇÃO dona cita Brasil, uma UF ou uma cidade brasileira (v0.2.3: o radar não coleta localização de pessoas físicas; regra LGPD do AGENTS.md)."
         - "Documentação principal em português brasileiro."
-        - "Contribuidores principais com `location` no Brasil."
       fracos:
         - "Nome do projeto em português."
         - "Problema tipicamente brasileiro (SUS, ENEM, Pix, CPF, Diário Oficial)."
@@ -104,7 +103,7 @@ vinculo:
       `nao` exige evidência positiva de origem não brasileira. Sinal fraco
       sozinho nunca basta.
     exemplos_sim:
-      - "Transcritório (antrologos): app de transcrição de entrevistas, autor brasileiro."
+      - "Transcritório (antrologos): app de transcrição de entrevistas; o README nomeia o IESP-UERJ / CERES como instituição de desenvolvimento."
       - "BERTimbau (NeuralMind): modelo e código de empresa brasileira."
     exemplos_nao:
       - "Whisper (OpenAI): usado em muitas soluções brasileiras, mas não é uma delas."
@@ -146,7 +145,7 @@ vinculo:
     definicao: >
       Solução aberta que resolve um problema típico do setor público e poderia
       ser adaptada ao Brasil, mesmo sem vínculo com o país.
-    # Dimensão RESERVADA na v0.2.2, não codificável. Único valor permitido nesta
+    # Dimensão RESERVADA na v0.2.3, não codificável. Único valor permitido nesta
     # versão: `nao_avaliado`. Sinais, regra de decisão e exemplos entram numa
     # versão futura, junto com os valores sim/nao/incerto.
     valores: [nao_avaliado]

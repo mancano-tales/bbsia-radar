@@ -64,7 +64,7 @@ test_that("BBSIA form mapping uses observed options and leaves ambiguous categor
                                                  locale = readr::locale(encoding = "UTF-8")))
   form <- yaml::yaml.load(readr::read_file(file.path(repo_root, "config", "formulario_bbsia.yml"),
                                              locale = readr::locale(encoding = "UTF-8")))
-  expect_equal(codebook$versao, "0.2.2")
+  expect_equal(codebook$versao, "0.2.3")
   expect_equal(form$fonte, "https://bancobrasileiro.ia.br/contribuir")
   for (entry in list(list(internal = codebook$tipo_artefato, form = form$campos$tipo_ativo),
                      list(internal = codebook$area_problema, form = form$campos$area))) {

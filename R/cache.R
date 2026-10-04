@@ -78,20 +78,28 @@ radar_validate_cache_root <- function(root = Sys.getenv("MANCANO_BBSIA_RADAR_ROO
 #      25 reserved attempts: two GitHub searches, one HF listing, two GitLab
 #      searches, and up to two attempts for each of ten documents (GitLab
 #      HEAD+GET or an HF GET plus one redirect). A declared pilot run can raise
-#      the limits to absolute caps of 150 attempts and 40 documents.
+#      the limits to absolute caps of RADAR_TETO_TENTATIVAS attempts and
+#      RADAR_TETO_DOCUMENTOS documents (full classification round, plan #28).
 #      Clients never retry failures.
+# (pt) Tetos absolutos de segurança. Cada rodada declara os seus limites em
+#      config/rodadas/; estes tetos só barram um arquivo de rodada errado. A
+#      rodada completa do plano #28 lê todos os candidatos descobertos.
+# (en) Absolute safety ceilings; each round declares its own lower limits.
+RADAR_TETO_TENTATIVAS <- 2000L
+RADAR_TETO_DOCUMENTOS <- 500L
+
 radar_novo_orcamento <- function(max_tentativas = 25L, max_documentos = 10L) {
   tentativas_n <- suppressWarnings(as.integer(max_tentativas))
   documentos_n <- suppressWarnings(as.integer(max_documentos))
   if (length(tentativas_n) != 1L || is.na(tentativas_n) ||
       !is.numeric(max_tentativas) || max_tentativas != tentativas_n ||
-      tentativas_n < 1L || tentativas_n > 150L) {
-    stop("max_tentativas precisa estar entre 1 e 150.", call. = FALSE)
+      tentativas_n < 1L || tentativas_n > RADAR_TETO_TENTATIVAS) {
+    stop("max_tentativas precisa estar entre 1 e ", RADAR_TETO_TENTATIVAS, ".", call. = FALSE)
   }
   if (length(documentos_n) != 1L || is.na(documentos_n) ||
       !is.numeric(max_documentos) || max_documentos != documentos_n ||
-      documentos_n < 0L || documentos_n > 40L) {
-    stop("max_documentos precisa estar entre 0 e 40.", call. = FALSE)
+      documentos_n < 0L || documentos_n > RADAR_TETO_DOCUMENTOS) {
+    stop("max_documentos precisa estar entre 0 e ", RADAR_TETO_DOCUMENTOS, ".", call. = FALSE)
   }
   budget <- new.env(parent = emptyenv())
   budget$radar_budget <- TRUE
@@ -111,12 +119,12 @@ radar_validar_orcamento <- function(budget) {
     stop("Crie e compartilhe o orçamento com radar_novo_orcamento().", call. = FALSE)
   }
   if (length(budget$max_tentativas) != 1L || is.na(budget$max_tentativas) ||
-      budget$max_tentativas < 1L || budget$max_tentativas > 150L ||
+      budget$max_tentativas < 1L || budget$max_tentativas > RADAR_TETO_TENTATIVAS ||
       length(budget$max_documentos) != 1L || is.na(budget$max_documentos) ||
-      budget$max_documentos < 0L || budget$max_documentos > 40L ||
+      budget$max_documentos < 0L || budget$max_documentos > RADAR_TETO_DOCUMENTOS ||
       budget$tentativas_reservadas < 0L || budget$tentativas_reservadas > budget$max_tentativas ||
       length(budget$documentos) > budget$max_documentos) {
-    stop("O orçamento HTTP está inválido ou excede o teto absoluto de 150 tentativas.", call. = FALSE)
+    stop("O orçamento HTTP está inválido ou excede o teto absoluto de ", RADAR_TETO_TENTATIVAS, " tentativas.", call. = FALSE)
   }
   invisible(budget)
 }
