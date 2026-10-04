@@ -55,3 +55,27 @@ test_that("only the dedicated public-read token is sent, never a general GITHUB_
   # httr2 keeps the secret obfuscated; the header must exist.
   expect_true("Authorization" %in% names(github_http_request("GET /repos/a/b")$headers))
 })
+
+test_that("the cache keeps only counts and the organisation allow-list, and 409 does not stop the round", {
+  root <- contexto_root()
+  fake <- function(path, query) {
+    switch(path,
+      "GET /repos/org/a/releases" = list(list(tag_name = "v1", author = list(login = "autor-release"))),
+      "GET /repos/org/a/contributors" = list(list(login = "contribuidora-secreta")),
+      "GET /repos/org/vazio/releases" = list(.radar_http_status = 409L, .radar_http_body = list(message = "empty")),
+      "GET /repos/org/vazio/contributors" = list(.radar_http_status = 409L, .radar_http_body = list(message = "empty")),
+      "GET /orgs/org" = list(name = "Lab", description = "d", blog = "b", location = "Recife",
+                             email = "contato@org.br", members_url = "membros-secretos"),
+      stop("caminho inesperado: ", path))
+  }
+  repos <- tibble::tibble(full_name = c("org/a", "org/vazio"), owner = "org", owner_type = "Organization")
+  out <- coletar_contexto_github(repos, root, fake, radar_novo_orcamento(20L, 2L))
+  expect_equal(out$contribuidores, c(1L, NA))
+  expect_equal(out$releases, c(1L, NA))
+  cache <- paste(vapply(list.files(root, recursive = TRUE, full.names = TRUE), readr::read_file, character(1)),
+                 collapse = "\n")
+  expect_false(grepl("contribuidora-secreta|autor-release|membros-secretos|contato@org", cache))
+  expect_match(cache, "Recife")
+  rate <- function(path, query) list(.radar_http_status = 403L, .radar_http_body = list(message = "rate limit"))
+  expect_error(coletar_contexto_github(repos[1, ], contexto_root(), rate, radar_novo_orcamento(20L, 2L)), "403")
+})

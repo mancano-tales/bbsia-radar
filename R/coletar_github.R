@@ -16,13 +16,18 @@
 #      Requests are anonymous and automatic retries are disabled.
 
 github_request <- function(path, query = list(), root = Sys.getenv("MANCANO_BBSIA_RADAR_ROOT", ""),
-                           request_fn = NULL, budget, public_only = FALSE) {
+                           request_fn = NULL, budget, public_only = FALSE, reduzir = NULL) {
   radar_validar_orcamento(budget)
   radar_validate_cache_root(root)
   key <- list(
     provider = "github", path = path, query = query,
     public_only = public_only
   )
+  # (pt) `reduzir` encolhe a resposta ANTES do cache: o disco nunca guarda o
+  #      que o radar não usa (ex.: logins de contribuidores, só a contagem).
+  #      A chave muda junto, para não misturar respostas inteiras e reduzidas.
+  # (en) `reduzir` shrinks the payload before it is cached.
+  if (!is.null(reduzir)) key$reduzida <- TRUE
   payload <- radar_cached(key, function() {
     radar_reservar_requisicao(budget, "github", path)
     if (!is.null(request_fn)) {
@@ -32,8 +37,10 @@ github_request <- function(path, query = list(), root = Sys.getenv("MANCANO_BBSI
       # never inherited (it is usually broad and shared with other tools).
       # Only BBSIA_RADAR_GITHUB_TOKEN is sent: a fine-grained token created
       # for this project with public-repositories read-only access, which
-      # only raises the rate limit and cannot read private content. Every
-      # listing still passes github_validar_itens_publicos().
+      # only raises the rate limit and cannot read private content.
+      # Repository listings pass github_validar_itens_publicos(); context
+      # calls (releases, contributors, organisations) are about repositories
+      # already validated as public in discovery.
       request <- github_http_request(path, query)
       response <- httr2::req_perform(request)
       status <- httr2::resp_status(response)
@@ -53,6 +60,7 @@ github_request <- function(path, query = list(), root = Sys.getenv("MANCANO_BBSI
         payload, require_explicit_repo = repo_metadata, expected_repo = expected_repo
       )
     }
+    if (!is.null(reduzir) && is.null(payload$.radar_http_status)) payload <- reduzir(payload)
     payload
   }, root = root)
   if (is.list(payload) && !is.null(payload$.radar_http_status)) {
@@ -202,11 +210,19 @@ coletar_contexto_github <- function(repositories, root = Sys.getenv("MANCANO_BBS
                                     request_fn = NULL, budget) {
   radar_validar_orcamento(budget)
   radar_validate_cache_root(root)
+  # 404 (sem dados), 409 (repositório vazio) e 451 (bloqueio legal) deixam a
+  # contagem ausente só para aquele repositório. 403/429 (limite da API) e
+  # demais erros param a rodada, que não faz retentativas automáticas.
+  ausente <- function(error) {
+    if (inherits(error, c("http_error_404", "http_error_409", "http_error_451"))) NULL else stop(error)
+  }
+  contagem <- function(payload) list(.radar_contagem = length(payload))
   contar <- function(path) {
     payload <- tryCatch(
-      github_request(path, list(per_page = 100L, page = 1L), root, request_fn, budget, public_only = TRUE),
-      error = function(error) if (inherits(error, "http_error_404")) NULL else stop(error))
-    if (is.null(payload)) NA_integer_ else length(payload)
+      github_request(path, list(per_page = 100L, page = 1L), root, request_fn, budget,
+                     public_only = TRUE, reduzir = contagem),
+      error = ausente)
+    if (is.null(payload) || is.null(payload$.radar_contagem)) NA_integer_ else as.integer(payload$.radar_contagem)
   }
   repositories$releases <- purrr::map_int(repositories$full_name, function(full_name) {
     if (is.na(full_name)) NA_integer_ else contar(paste0("GET /repos/", full_name, "/releases"))
@@ -214,14 +230,17 @@ coletar_contexto_github <- function(repositories, root = Sys.getenv("MANCANO_BBS
   repositories$contribuidores <- purrr::map_int(repositories$full_name, function(full_name) {
     if (is.na(full_name)) NA_integer_ else contar(paste0("GET /repos/", full_name, "/contributors"))
   })
+  # Explicit allow-list applied before caching: nothing else of the
+  # organisation's profile (e-mail, members, avatars) reaches the disk.
+  perfil_org <- function(payload) list(nome = payload$name %||% NA_character_,
+                                       descricao = payload$description %||% NA_character_,
+                                       site = payload$blog %||% NA_character_,
+                                       local = payload$location %||% NA_character_)
   orgs <- unique(stats::na.omit(repositories$owner[repositories$owner_type %in% "Organization"]))
   perfis <- purrr::map(stats::setNames(orgs, orgs), function(login) {
-    payload <- tryCatch(github_request(paste0("GET /orgs/", login), list(), root, request_fn, budget,
-                                       public_only = TRUE),
-                        error = function(error) if (inherits(error, "http_error_404")) NULL else stop(error))
-    if (is.null(payload)) return(NULL)
-    list(nome = payload$name %||% NA_character_, descricao = payload$description %||% NA_character_,
-         site = payload$blog %||% NA_character_, local = payload$location %||% NA_character_)
+    tryCatch(github_request(paste0("GET /orgs/", login), list(), root, request_fn, budget,
+                            public_only = TRUE, reduzir = perfil_org),
+             error = ausente)
   })
   campo <- function(field) vapply(seq_len(nrow(repositories)), function(i) {
     if (!(repositories$owner_type[[i]] %in% "Organization")) return(NA_character_)
