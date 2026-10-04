@@ -395,31 +395,35 @@ coletar_readme_github <- function(repositories,
   radar_validate_cache_root(root)
   radar_reservar_documentos(budget, "github", repositories$full_name)
   details <- purrr::map(repositories$full_name, function(full_name) {
-      if (is.na(full_name) || !grepl("/", full_name, fixed = TRUE))
-        return(list(readme = NA_character_, content_hash = NA_character_))
+      vazio <- function(status) list(readme = NA_character_, content_hash = NA_character_, readme_status = status)
+      if (is.na(full_name) || !grepl("/", full_name, fixed = TRUE)) return(vazio("missing"))
       payload <- tryCatch(
         github_request(paste0("GET /repos/", full_name, "/readme"), list(), root,
                        request_fn, budget),
         error = function(error) {
-          # Repositories without a README commonly return 404; this is a
-          # missing document, not a reason to discard otherwise valid metadata.
-          # A 301 means the repository was renamed or moved: redirects are not
-          # followed (followlocation = FALSE, so the token never leaves the
-          # requested URL), and the README is treated as missing for this round.
-          if (inherits(error, c("http_error_404", "http_error_301"))) return(NULL)
+          # (pt) Ausência só deste item, com motivo registrado para revisão:
+          #      404 = sem README; 301 = repositório renomeado ou movido (o
+          #      redirecionamento não é seguido: followlocation = FALSE, o token
+          #      não sai da URL pedida); 451 = bloqueio legal. 403/429 (limite)
+          #      e outros erros param a rodada.
+          # (en) Item-level absence with a recorded reason; other errors stop.
+          if (inherits(error, "http_error_404")) return(list(.radar_ausente = "missing"))
+          if (inherits(error, "http_error_301")) return(list(.radar_ausente = "movido"))
+          if (inherits(error, "http_error_451")) return(list(.radar_ausente = "bloqueio_legal"))
           stop(error)
         }
       )
-      if (is.null(payload) || is.null(payload$content))
-        return(list(readme = NA_character_, content_hash = NA_character_))
+      if (!is.null(payload$.radar_ausente)) return(vazio(payload$.radar_ausente))
+      if (is.null(payload) || is.null(payload$content)) return(vazio("missing"))
       raw <- jsonlite::base64_dec(gsub("\\s+", "", payload$content))
       text <- rawToChar(raw)
       text <- enc2utf8(text)
       sha <- payload$sha %||% NA_character_
       list(readme = text, content_hash = if (is.na(sha)) NA_character_ else
-             radar_content_hash("github", sha, text))
+             radar_content_hash("github", sha, text), readme_status = "read")
     })
   repositories$readme <- purrr::map_chr(details, "readme")
   repositories$content_hash <- purrr::map_chr(details, "content_hash")
+  repositories$readme_status <- purrr::map_chr(details, "readme_status")
   repositories
 }

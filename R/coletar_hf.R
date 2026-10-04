@@ -144,9 +144,15 @@ coletar_readme_hf <- function(repositories,
         httr2::resp_body_string(response, encoding = "UTF-8")
       }, root = root)
       if (is.list(payload) && !is.null(payload$.radar_http_status)) {
-        if (identical(as.integer(payload$.radar_http_status), 404L))
+        # (pt) 404 = sem card; 401/403 = modelo de acesso restrito (gated),
+        #      que exige aceitar termos com login; 451 = bloqueio legal. São
+        #      ausências deste item. 429 (limite) e outros erros param a rodada.
+        # (en) Gated or missing cards are item-level absences.
+        status_hf <- as.integer(payload$.radar_http_status)
+        motivo <- c(`404` = "missing", `401` = "restrito", `403` = "restrito", `451` = "bloqueio_legal")
+        if (as.character(status_hf) %in% names(motivo))
           return(list(readme = NA_character_, content_hash = NA_character_,
-                      readme_status = "missing"))
+                      readme_status = unname(motivo[as.character(status_hf)])))
         radar_verificar_status_http(payload$.radar_http_status, "Hugging Face", "README.md")
       }
       list(readme = payload, content_hash = radar_content_hash("huggingface", sha, payload),
