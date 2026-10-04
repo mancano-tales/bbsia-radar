@@ -60,7 +60,13 @@ radar_linhas_contexto <- function(rows) {
     if (is.na(value)) NULL else paste0(rotulo, ": ", value)
   }
   tipo <- first("owner_type")
+  status <- first("readme_status")
+  motivos <- c(missing = "não existe", movido = "repositório renomeado ou movido",
+               acesso_negado = "acesso negado sem login (modelo de acesso controlado ou removido)",
+               bloqueio_legal = "bloqueio legal")
   c(
+    # Tells the classifier that the document has metadata only, and why.
+    if (!is.na(status) && status %in% names(motivos)) paste0("README não lido: ", motivos[[status]]),
     if (!is.na(tipo)) paste0("Tipo de dono: ", if (tipo == "Organization") "organização" else "pessoa"),
     linha("Organização dona (nome declarado)", "org_nome"),
     linha("Descrição da organização", "org_descricao"),

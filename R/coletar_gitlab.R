@@ -434,6 +434,7 @@ coletar_readme_gitlab <- function(repositories,
     status <- payload$.radar_http_status %||% NA_integer_
     if (!is.na(status)) {
       if (identical(as.integer(status), 404L)) return(list(readme = NA_character_, readme_status = "missing", content_hash = NA_character_))
+      if (identical(as.integer(status), 451L)) return(list(readme = NA_character_, readme_status = "bloqueio_legal", content_hash = NA_character_))
       radar_verificar_status_http(status, "GitLab", "README.md")
     }
     skip <- payload$.radar_skip %||% NULL

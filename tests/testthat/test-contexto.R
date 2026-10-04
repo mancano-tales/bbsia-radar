@@ -79,3 +79,35 @@ test_that("the cache keeps only counts and the organisation allow-list, and 409 
   rate <- function(path, query) list(.radar_http_status = 403L, .radar_http_body = list(message = "rate limit"))
   expect_error(coletar_contexto_github(repos[1, ], contexto_root(), rate, radar_novo_orcamento(20L, 2L)), "403")
 })
+
+test_that("a renamed repository (HTTP 301) leaves its README and counts missing without stopping", {
+  moved <- function(path, query) list(.radar_http_status = 301L, .radar_http_body = list(message = "Moved Permanently"))
+  repos <- tibble::tibble(full_name = "dono/antigo", url = "https://github.com/dono/antigo", owner = "dono",
+                          owner_type = "User")
+  lido <- coletar_readme_github(repos, contexto_root(), moved, radar_novo_orcamento(20L, 2L))
+  expect_true(is.na(lido$readme))
+  ctx <- coletar_contexto_github(repos, contexto_root(), moved, radar_novo_orcamento(20L, 2L))
+  expect_true(is.na(ctx$releases) && is.na(ctx$contribuidores))
+})
+
+test_that("absences keep their reason: moved GitHub repository and gated Hugging Face card", {
+  moved <- function(path, query) list(.radar_http_status = 301L, .radar_http_body = list(message = "Moved"))
+  repos <- tibble::tibble(full_name = "dono/antigo", url = "https://github.com/dono/antigo")
+  expect_equal(coletar_readme_github(repos, contexto_root(), moved, radar_novo_orcamento(20L, 2L))$readme_status, "movido")
+  gated <- function(repo_id, kind, file) list(.radar_http_status = 401L, .radar_http_body = "gated")
+  hf <- tibble::tibble(id = "org/gated", kind = "models", sha = strrep("a", 40))
+  lido <- coletar_readme_hf(hf, contexto_root(), gated, radar_novo_orcamento(20L, 2L))
+  expect_equal(lido$readme_status, "acesso_negado")
+  expect_true(is.na(lido$readme))
+  limite <- function(repo_id, kind, file) list(.radar_http_status = 429L, .radar_http_body = "rate")
+  expect_error(coletar_readme_hf(hf, contexto_root(), limite, radar_novo_orcamento(20L, 2L)), "429")
+})
+
+
+test_that("the corpus document says when and why the README was not read", {
+  rows <- tibble::tibble(name = "a", url = "u", owner = "o", description = NA, topics = list(character()),
+                         readme = NA, readme_status = "movido")
+  expect_match(documento_solucao(rows), "README não lido: repositório renomeado ou movido")
+  rows$readme_status <- "read"
+  expect_false(grepl("README não lido", documento_solucao(rows)))
+})
