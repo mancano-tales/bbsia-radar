@@ -144,7 +144,11 @@ radar_montar_planilha_formulario <- function(candidatos, decifra, run_id, codebo
   )
 }
 
-radar_planilha_revisao <- function(corpus, candidatos, decifra, max_chars = 4000L) {
+radar_planilha_revisao <- function(corpus, candidatos, decifra, max_chars = 4000L, ids = NULL) {
+  # `ids` fixes which documents enter and in what order (e.g. the shuffled
+  # sample of radar_amostra_revisao()); default: the whole corpus.
+  if (!is.null(ids)) corpus <- corpus[match(ids, corpus$id), , drop = FALSE]
+  if (anyNA(corpus$id)) stop("Há ids da revisão fora do corpus.", call. = FALSE)
   base <- dplyr::left_join(corpus[c("id", "text", "source_urls")],
                            candidatos[c("id", "name", "url")], by = "id")
   codificar <- tibble::tibble(
@@ -164,4 +168,71 @@ radar_planilha_revisao <- function(corpus, candidatos, decifra, max_chars = 4000
   ))
   # Two workbooks, so the machine's answers are not one click away while coding.
   list(autor = list(instrucoes = instrucoes, codificar = codificar), maquina = list(maquina = maquina))
+}
+
+# (pt) Amostra da revisão de inclusão (protocolo do autor, 2026-10-03): todos
+#      os documentos que a máquina propõe incluir (e_ia = sim e brasileira ou
+#      ptbr = sim) mais uma amostra aleatória dos demais, para estimar o que a
+#      máquina deixou passar. A ordem é embaralhada e o grupo não aparece na
+#      planilha, para a codificação continuar cega. Semente fixa: reprodutível.
+# (en) All machine-included documents plus a random sample of the rest,
+#      shuffled so the reviewer cannot tell which group a row came from.
+radar_amostra_revisao <- function(maquina_larga, n_amostra = 30L, semente = 20261003L) {
+  sim <- function(v) !is.na(v) & v == "sim"
+  propostos <- maquina_larga$id[sim(maquina_larga$e_ia) & (sim(maquina_larga$brasileira) | sim(maquina_larga$ptbr))]
+  resto <- setdiff(maquina_larga$id, propostos)
+  set.seed(semente)
+  amostra <- if (length(resto) <= n_amostra) resto else sample(resto, n_amostra)
+  ids <- c(propostos, amostra)
+  ordem <- sample(ids)
+  # The group stays in this table for the agreement analysis; the review
+  # workbook must not show it.
+  tibble::tibble(id = ordem, grupo = ifelse(ordem %in% propostos, "proposto_pela_maquina", "amostra_do_resto"))
+}
+
+# (pt) Trecho curto de evidência para publicação: no máximo `max_chars`
+#      caracteres, em uma linha, com reticências se cortado. Citação curta com
+#      link para a fonte, como prevê o plano #24; nunca o documento inteiro.
+# (en) Short single-line quotation, truncated with an ellipsis.
+radar_trecho_curto <- function(x, max_chars = 300L) {
+  if (length(max_chars) != 1L || is.na(max_chars) || max_chars < 2L) {
+    stop("max_chars precisa ser pelo menos 2.", call. = FALSE)
+  }
+  x <- gsub("[[:space:]]+", " ", trimws(x))
+  ifelse(is.na(x) | !nzchar(x), NA_character_,
+         ifelse(nchar(x) > max_chars, paste0(substr(x, 1L, max_chars - 1L), "…"), x))
+}
+
+# (pt) Planilha de revisão das fichas: uma linha por artefato incluído, com a
+#      proposta para cada campo e o trecho que a sustenta, e colunas em branco
+#      para o autor confirmar ("ok") ou escrever a correção.
+# (en) One row per included artifact: proposal, short evidence, blank review.
+radar_planilha_fichas <- function(incluidos, maquina, candidatos, corpus, resumos = NULL,
+                                  referencia = Sys.Date(), max_resumo = 400L) {
+  wide <- radar_decifra_largo(maquina)
+  base <- candidatos[match(incluidos, candidatos$id), , drop = FALSE]
+  if (anyNA(base$id)) stop("Há artefatos incluídos sem candidato correspondente.", call. = FALSE)
+  # The candidates table keeps only README size; TRL needs the README text,
+  # taken from the corpus document without its metadata block.
+  base$readme <- radar_readme_do_documento(corpus$text[match(incluidos, corpus$id)])
+  # Summaries are written by the radar team, one or two plain sentences; a
+  # long one is likely copied documentation and must not reach publication.
+  if (!is.null(resumos) && any(nchar(stats::na.omit(resumos)) > max_resumo)) {
+    stop("Resumo do problema acima de ", max_resumo, " caracteres: reescreva, não copie a documentação.", call. = FALSE)
+  }
+  trl <- radar_estimar_trl(base, referencia = referencia)
+  col <- function(nome) if (nome %in% names(wide)) wide[[nome]][match(incluidos, wide$id)] else rep(NA_character_, length(incluidos))
+  tibble::tibble(
+    id = incluidos, nome = base$name, url = base$url,
+    tipo_proposto = col("tipo_artefato"), tipo_trecho = radar_trecho_curto(col("tipo_artefato_evidencia")),
+    tipo_revisao = "",
+    area_proposta = col("area_problema"), area_trecho = radar_trecho_curto(col("area_problema_evidencia")),
+    area_revisao = "",
+    trl_proposto = trl$trl_provavel, trl_sinais = trl$trl_sinais, trl_revisao = "",
+    resumo_proposto = if (is.null(resumos)) NA_character_ else unname(resumos[incluidos]),
+    resumo_revisao = "",
+    e_ia_trecho = radar_trecho_curto(col("e_ia_evidencia")),
+    brasileira_trecho = radar_trecho_curto(col("brasileira_evidencia")),
+    ptbr_trecho = radar_trecho_curto(col("ptbr_evidencia"))
+  )
 }
