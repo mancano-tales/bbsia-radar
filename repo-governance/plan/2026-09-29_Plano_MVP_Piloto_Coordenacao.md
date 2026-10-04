@@ -72,7 +72,11 @@ cache externo.
 10. **Agrupamento (2026-10-03):** variantes da mesma família viram uma solução (Aira-2, Sabiá, BERTimbau), em `config/solucoes_piloto.yml`: os 13 artefatos incluídos viram 8 soluções.
 11. **Publicação com rótulos (2026-10-03):** publicar já o piloto; os rótulos `e_ia`, `brasileira` e `ptbr` saem como revisados pelo autor, e tipo, área, TRL e resumo do problema como proposta da máquina, não revisada.
 12. **Adjudicação Aira-2 (2026-10-03):** `ptbr` sim → não nos três modelos, que declaram inglês no card; `brasileira = sim` se mantém. A planilha original do autor fica intacta; a adjudicada fica ao lado, no cache.
-13. **Tarefas fora do radar** (autorizações inválidas; inventário dos repositórios do MancanoSync):
+13. **Classificar todos os candidatos (2026-10-03):** o piloto leu só 40 dos 379; o autor decidiu ler e classificar todos antes de apresentar. Token fino só de leitura de repositórios públicos, criado pelo autor e guardado em `BBSIA_RADAR_GITHUB_TOKEN` (o `GITHUB_PAT` geral continua nunca herdado). O documento enviado ao Gemini ganha o contexto do GitHub: releases, contribuidores e perfil de organizações; de pessoas físicas, nada além do login.
+14. **Modelo e paralelismo (2026-10-03):** "pode até manter no low", com chamadas paralelas e intervalo aleatório. Validação nos 39 do piloto contra o gabarito do autor: κ 0,94 (IA), 0,70 (brasileira) e 0,87 (pt-BR), sem falhas, em cerca de 10 minutos; o Low foi adotado.
+15. **Protocolo de revisão da rodada completa (2026-10-03):** o autor revisa todos os documentos que a máquina propõe incluir mais uma amostra aleatória de cerca de 30 dos demais, embaralhados e às cegas. Só o que o autor confirmar é publicado.
+16. **Fichas (2026-10-03):** publicar trechos curtos de evidência (até 300 caracteres, com link) e revisar os demais campos (tipo, área, TRL e resumo) das soluções incluídas.
+17. **Tarefas fora do radar** (autorizações inválidas; inventário dos repositórios do MancanoSync):
    sessões separadas.
 
 ## 3. Ordem e caminho crítico
