@@ -210,11 +210,12 @@ coletar_contexto_github <- function(repositories, root = Sys.getenv("MANCANO_BBS
                                     request_fn = NULL, budget) {
   radar_validar_orcamento(budget)
   radar_validate_cache_root(root)
-  # 404 (sem dados), 409 (repositório vazio) e 451 (bloqueio legal) deixam a
+  # 301 (repositório renomeado), 404 (sem dados), 409 (repositório vazio) e
+  # 451 (bloqueio legal) deixam a
   # contagem ausente só para aquele repositório. 403/429 (limite da API) e
   # demais erros param a rodada, que não faz retentativas automáticas.
   ausente <- function(error) {
-    if (inherits(error, c("http_error_404", "http_error_409", "http_error_451"))) NULL else stop(error)
+    if (inherits(error, c("http_error_301", "http_error_404", "http_error_409", "http_error_451"))) NULL else stop(error)
   }
   contagem <- function(payload) list(.radar_contagem = length(payload))
   contar <- function(path) {
@@ -402,7 +403,10 @@ coletar_readme_github <- function(repositories,
         error = function(error) {
           # Repositories without a README commonly return 404; this is a
           # missing document, not a reason to discard otherwise valid metadata.
-          if (inherits(error, "http_error_404")) return(NULL)
+          # A 301 means the repository was renamed or moved: redirects are not
+          # followed (followlocation = FALSE, so the token never leaves the
+          # requested URL), and the README is treated as missing for this round.
+          if (inherits(error, c("http_error_404", "http_error_301"))) return(NULL)
           stop(error)
         }
       )

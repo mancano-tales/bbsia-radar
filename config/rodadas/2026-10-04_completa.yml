@@ -1,0 +1,29 @@
+# (pt) Rodada completa (plano #28): as mesmas consultas do piloto, mas lê e
+#      classifica TODOS os candidatos descobertos (até 400), com o contexto do
+#      GitHub (releases, contribuidores, perfil de organizações). Precisa de
+#      BBSIA_RADAR_GITHUB_TOKEN para caber no limite da API. Sem execução implícita.
+# (en) Full round: same queries as the pilot, reads every discovered candidate.
+run_id: 2026-10-04_completa
+fontes: [github, huggingface, gitlab]
+max_tentativas: 1500
+max_documentos: 400
+max_caracteres_documento: 24000
+max_paginas: { github_conta: 1, github_topico: 1, huggingface: 1, gitlab: 1 }
+github:
+  contas: [neuralmind-ai, nkluge-correa, antrologos]
+  topicos: [portuguese-nlp, brazilian-portuguese, pt-br]
+  termos_semente: [Transcritorio, BERTimbau]
+  por_pagina: 100
+huggingface:
+  contas: [neuralmind, nicholasKluge, recogna-nlp, maritaca-ai, eduagarcia, pierreguillou]
+  tipo: models
+  full: true
+  por_pagina: 100
+gitlab:
+  termos: [Transcritorio, BERTimbau]
+  por_pagina: 100
+enriquecimento:
+  estratificacao: proporcional
+  minimo_por_plataforma: 1
+  prioridade: [semente, descricao]
+  contexto: true

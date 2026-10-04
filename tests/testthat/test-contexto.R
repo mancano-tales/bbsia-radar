@@ -79,3 +79,13 @@ test_that("the cache keeps only counts and the organisation allow-list, and 409 
   rate <- function(path, query) list(.radar_http_status = 403L, .radar_http_body = list(message = "rate limit"))
   expect_error(coletar_contexto_github(repos[1, ], contexto_root(), rate, radar_novo_orcamento(20L, 2L)), "403")
 })
+
+test_that("a renamed repository (HTTP 301) leaves its README and counts missing without stopping", {
+  moved <- function(path, query) list(.radar_http_status = 301L, .radar_http_body = list(message = "Moved Permanently"))
+  repos <- tibble::tibble(full_name = "dono/antigo", url = "https://github.com/dono/antigo", owner = "dono",
+                          owner_type = "User")
+  lido <- coletar_readme_github(repos, contexto_root(), moved, radar_novo_orcamento(20L, 2L))
+  expect_true(is.na(lido$readme))
+  ctx <- coletar_contexto_github(repos, contexto_root(), moved, radar_novo_orcamento(20L, 2L))
+  expect_true(is.na(ctx$releases) && is.na(ctx$contribuidores))
+})

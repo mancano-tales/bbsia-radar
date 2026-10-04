@@ -200,8 +200,12 @@ test_that("GitHub refuses curated metadata without explicit public visibility be
 })
 
 test_that("GitHub public requests never inherit a local personal access token", {
-  previous <- Sys.getenv("GITHUB_PAT", unset = NA_character_)
-  on.exit(if (is.na(previous)) Sys.unsetenv("GITHUB_PAT") else Sys.setenv(GITHUB_PAT = previous))
+  previous <- Sys.getenv(c("GITHUB_PAT", "BBSIA_RADAR_GITHUB_TOKEN"), unset = NA_character_)
+  on.exit(for (k in names(previous))
+    if (is.na(previous[[k]])) Sys.unsetenv(k) else do.call(Sys.setenv, as.list(previous[k])))
+  # The dedicated token may be set on the author's machine; this test is about
+  # the general GITHUB_PAT only.
+  Sys.unsetenv("BBSIA_RADAR_GITHUB_TOKEN")
   Sys.setenv(GITHUB_PAT = "test-token-must-not-be-sent")
   request <- github_http_request("GET /repos/example/model/readme")
   headers <- names(request$headers)
