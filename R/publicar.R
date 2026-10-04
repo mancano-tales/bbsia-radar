@@ -35,15 +35,15 @@ radar_concordancia <- function(gold, maquina, variaveis = RADAR_MARCACOES) {
     hv <- hv[ok]; mv <- mv[ok]; n <- length(hv)
     tp <- sum(mv == "sim" & hv == "sim"); fp <- sum(mv == "sim" & hv != "sim")
     fn <- sum(mv != "sim" & hv == "sim"); tn <- n - tp - fp - fn
-    safe <- function(a, b) if (b == 0) NA_real_ else a / b
+    safe <- function(a, b) if (is.na(b) || b == 0) NA_real_ else a / b
     p <- safe(tp, tp + fp); r <- safe(tp, tp + fn)
-    pe <- ((tp + fp) * (tp + fn) + (fn + tn) * (fp + tn)) / n^2
+    pe <- if (n == 0) NA_real_ else ((tp + fp) * (tp + fn) + (fn + tn) * (fp + tn)) / n^2
     decididos <- mv != "incerto"
     tibble::tibble(
       variavel = v, n = n, falhas_maquina = sum(!ok),
       verdadeiro_positivo = tp, falso_positivo = fp, falso_negativo = fn, verdadeiro_negativo = tn,
       precisao = p, recall = r, f1 = if (is.na(p) || is.na(r) || p + r == 0) NA_real_ else 2 * p * r / (p + r),
-      kappa = safe((tp + tn) / n - pe, 1 - pe),
+      kappa = if (n == 0) NA_real_ else safe((tp + tn) / n - pe, 1 - pe),
       maquina_incerto = sum(mv == "incerto"),
       acordo_quando_decide = safe(sum(hv[decididos] == mv[decididos]), sum(decididos))
     )

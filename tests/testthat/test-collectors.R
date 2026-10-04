@@ -2,8 +2,8 @@ test_that("request budget enforces the hard exploratory ceilings", {
   expect_equal(radar_novo_orcamento(max_tentativas = 25L)$max_tentativas, 25L)
   expect_equal(radar_novo_orcamento(max_tentativas = 26L)$max_tentativas, 26L)
   expect_equal(radar_novo_orcamento(max_documentos = 11L)$max_documentos, 11L)
-  expect_error(radar_novo_orcamento(max_tentativas = 151L), "1 e 150")
-  expect_error(radar_novo_orcamento(max_documentos = 41L), "0 e 40")
+  expect_error(radar_novo_orcamento(max_tentativas = 2001L), "1 e 2000")
+  expect_error(radar_novo_orcamento(max_documentos = 501L), "0 e 500")
 
   budget <- radar_novo_orcamento(max_tentativas = 2L)
   radar_reservar_requisicao(budget, "github", "search one")

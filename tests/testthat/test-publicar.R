@@ -105,3 +105,13 @@ test_that("the curated pilot file is consistent", {
   expect_true(all(startsWith(purrr::map_chr(spec$solucoes, "solution_id"), "s-")))
   expect_true(all(nzchar(purrr::map_chr(spec$solucoes, "problema_resumo"))))
 })
+
+test_that("agreement survives a variable where every machine answer failed", {
+  f <- publicar_fixtures()
+  m <- radar_decifra_largo(f$maquina)
+  m$ptbr <- NA_character_
+  conc <- radar_concordancia(f$gold, m)
+  ptbr <- conc[conc$variavel == "ptbr", ]
+  expect_equal(ptbr$n, 0L)
+  expect_true(is.na(ptbr$kappa) && is.na(ptbr$precisao))
+})

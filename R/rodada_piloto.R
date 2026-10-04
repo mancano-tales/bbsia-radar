@@ -153,7 +153,9 @@ radar_manifesto_piloto <- function(rodada, budget, counts, corpus, hf_checks = l
 radar_tabela_candidatos <- function(docs) {
   keep <- intersect(c("id", "platform", "kind", "name", "full_name", "url", "owner", "description",
                       "language", "stars", "downloads", "license", "created_at", "pushed_at",
-                      "updated_at", "fork", "archived", "pipeline_tag", "readme_status", "sha"),
+                      "updated_at", "fork", "archived", "pipeline_tag", "readme_status", "sha",
+                      "owner_type", "homepage", "releases", "contribuidores", "org_nome", "org_site",
+                      "org_local"),
                     names(docs))
   table <- docs[keep]
   table$id <- purrr::pmap_chr(
@@ -221,6 +223,11 @@ radar_executar_rodada <- function(path, root = Sys.getenv("MANCANO_BBSIA_RADAR_R
       request_gitlab_fn, selected_repositories = selected
     )
     docs <- enriched$documents
+    if (isTRUE(rodada$enriquecimento$contexto) && any(docs$platform == "github")) {
+      gh <- docs$platform == "github"
+      contexto <- coletar_contexto_github(docs[gh, , drop = FALSE], root, request_github_fn, budget)
+      docs <- dplyr::bind_rows(contexto, docs[!gh, , drop = FALSE])
+    }
     corpus <- montar_corpus(
       github = docs[docs$platform == "github", , drop = FALSE],
       huggingface = docs[docs$platform == "huggingface", , drop = FALSE],

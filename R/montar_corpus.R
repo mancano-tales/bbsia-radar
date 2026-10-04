@@ -45,6 +45,36 @@ aplicar_ids_sementes <- function(artifacts, seeds) {
   artifacts
 }
 
+# (pt) Linhas de contexto (R/coletar_github.R): tipo de dono, organização,
+#      site do projeto, licença e contagens. Só entram campos presentes.
+# (en) Optional context lines; absent fields are skipped.
+radar_linhas_contexto <- function(rows) {
+  first <- function(col) {
+    if (!col %in% names(rows)) return(NA)
+    values <- stats::na.omit(rows[[col]])
+    values <- values[nzchar(as.character(values))]
+    if (length(values)) values[[1]] else NA
+  }
+  linha <- function(rotulo, col) {
+    value <- first(col)
+    if (is.na(value)) NULL else paste0(rotulo, ": ", value)
+  }
+  tipo <- first("owner_type")
+  c(
+    if (!is.na(tipo)) paste0("Tipo de dono: ", if (tipo == "Organization") "organização" else "pessoa"),
+    linha("Organização dona (nome declarado)", "org_nome"),
+    linha("Descrição da organização", "org_descricao"),
+    linha("Site da organização", "org_site"),
+    linha("Localização declarada pela organização", "org_local"),
+    linha("Site do projeto", "homepage"),
+    linha("Licença", "license"),
+    linha("Releases publicadas (até 100)", "releases"),
+    linha("Contribuidores (até 100)", "contribuidores"),
+    linha("Criado em", "created_at"),
+    linha("Último push", "pushed_at")
+  )
+}
+
 documento_solucao <- function(rows) {
   # Keep metadata in plain text because the Decifra prompt must be able to cite
   # both prose and API metadata as evidence, rather than seeing a detached JSON.
@@ -75,7 +105,8 @@ documento_solucao <- function(rows) {
     if (length(owners)) paste0("Responsável público: ", paste(owners, collapse = ", ")),
     if (length(descriptions)) paste0("Descrição da API: ", paste(descriptions, collapse = " | ")),
       activity_metadata,
-    paste0("Tópicos/tags: ", paste(unique(unlist(rows$topics, use.names = FALSE)), collapse = ", "))
+    paste0("Tópicos/tags: ", paste(unique(unlist(rows$topics, use.names = FALSE)), collapse = ", ")),
+    radar_linhas_contexto(rows)
   )
   prose <- paste(unique(stats::na.omit(rows$readme)), collapse = "\n\n--- Documento do artefato ---\n\n")
   paste(c(prose, paste(metadata, collapse = "\n"))[nzchar(c(prose, paste(metadata, collapse = "\n")))], collapse = "\n\n")

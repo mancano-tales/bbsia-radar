@@ -68,7 +68,7 @@ test_that("Decifra results are joined by external id and failed extractions stay
   expect_equal(planilha$form_aberta, c("Sim, código aberto", "Sim, código aberto", "Não sei"))
   expect_true(all(planilha$form_ja_usado == "nao_verificavel_publicamente"))
   expect_true(all(planilha$estado_revisao == "proposto"))
-  expect_equal(unique(planilha$versao_codebook), "0.2.2")
+  expect_equal(unique(planilha$versao_codebook), "0.2.3")
 })
 
 test_that("the review workbook hides nothing but keeps the machine answers apart", {

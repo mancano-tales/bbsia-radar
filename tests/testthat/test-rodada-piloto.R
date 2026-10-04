@@ -9,10 +9,10 @@ test_that("pilot declaration is bounded and uses only listed seeds", {
   for (field in c("max_tentativas", "max_documentos")) {
     altered <- readr::read_file(path)
     altered <- sub(paste0(field, ": [0-9]+"),
-                   paste0(field, ": ", if (field == "max_tentativas") 151L else 41L), altered)
+                   paste0(field, ": ", if (field == "max_tentativas") 2001L else 501L), altered)
     fixture <- tempfile(fileext = ".yml")
     writeLines(altered, fixture, useBytes = TRUE)
-    expect_error(radar_ler_rodada(fixture), if (field == "max_tentativas") "150" else "40")
+    expect_error(radar_ler_rodada(fixture), if (field == "max_tentativas") "2000" else "500")
   }
 })
 

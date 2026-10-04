@@ -29,3 +29,11 @@ __pycache__/
 # --- Sistema ---
 .DS_Store
 Thumbs.db
+
+# Artefatos de um quarto render interrompido (LaTeX e HTML soltos fora de _site)
+report/*.aux
+report/*.log
+report/*.tex
+report/*.toc
+report/*.html
+report/*.pdf

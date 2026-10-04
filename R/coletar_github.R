@@ -16,20 +16,31 @@
 #      Requests are anonymous and automatic retries are disabled.
 
 github_request <- function(path, query = list(), root = Sys.getenv("MANCANO_BBSIA_RADAR_ROOT", ""),
-                           request_fn = NULL, budget, public_only = FALSE) {
+                           request_fn = NULL, budget, public_only = FALSE, reduzir = NULL) {
   radar_validar_orcamento(budget)
   radar_validate_cache_root(root)
   key <- list(
     provider = "github", path = path, query = query,
     public_only = public_only
   )
+  # (pt) `reduzir` encolhe a resposta ANTES do cache: o disco nunca guarda o
+  #      que o radar não usa (ex.: logins de contribuidores, só a contagem).
+  #      A chave muda junto, para não misturar respostas inteiras e reduzidas.
+  # (en) `reduzir` shrinks the payload before it is cached.
+  if (!is.null(reduzir)) key$reduzida <- TRUE
   payload <- radar_cached(key, function() {
     radar_reservar_requisicao(budget, "github", path)
     if (!is.null(request_fn)) {
       payload <- request_fn(path, query)
     } else {
-      # Public endpoints work without credentials. Ignoring GITHUB_PAT ensures
-      # direct README reads cannot expose private content to this collector.
+      # Public endpoints work without credentials. A general GITHUB_PAT is
+      # never inherited (it is usually broad and shared with other tools).
+      # Only BBSIA_RADAR_GITHUB_TOKEN is sent: a fine-grained token created
+      # for this project with public-repositories read-only access, which
+      # only raises the rate limit and cannot read private content.
+      # Repository listings pass github_validar_itens_publicos(); context
+      # calls (releases, contributors, organisations) are about repositories
+      # already validated as public in discovery.
       request <- github_http_request(path, query)
       response <- httr2::req_perform(request)
       status <- httr2::resp_status(response)
@@ -49,6 +60,7 @@ github_request <- function(path, query = list(), root = Sys.getenv("MANCANO_BBSI
         payload, require_explicit_repo = repo_metadata, expected_repo = expected_repo
       )
     }
+    if (!is.null(reduzir) && is.null(payload$.radar_http_status)) payload <- reduzir(payload)
     payload
   }, root = root)
   if (is.list(payload) && !is.null(payload$.radar_http_status)) {
@@ -68,6 +80,8 @@ github_http_request <- function(path, query = list()) {
     httr2::req_options(followlocation = FALSE) |>
     httr2::req_error(is_error = function(response) FALSE) |>
     httr2::req_timeout(30)
+  token <- Sys.getenv("BBSIA_RADAR_GITHUB_TOKEN", "")
+  if (nzchar(token)) request <- httr2::req_auth_bearer_token(request, token)
   do.call(httr2::req_url_query, c(list(request), query))
 }
 
@@ -148,7 +162,7 @@ bind_github_items <- function(pages) {
       description = character(), url = character(), owner = character(), language = character(),
       stars = integer(), updated_at = character(), topics = list(), readme = character(),
       license = character(), created_at = character(), pushed_at = character(),
-      fork = logical(), archived = logical()
+      fork = logical(), archived = logical(), owner_type = character(), homepage = character()
     ))
   }
   # Explicit field allow-list prevents accidental ingestion of API fields such
@@ -175,8 +189,70 @@ bind_github_items <- function(pages) {
     created_at = purrr::map_chr(items, ~ .x$created_at %||% NA_character_),
     pushed_at = purrr::map_chr(items, ~ .x$pushed_at %||% NA_character_),
     fork = purrr::map_lgl(items, ~ isTRUE(.x$fork)),
-    archived = purrr::map_lgl(items, ~ isTRUE(.x$archived))
+    archived = purrr::map_lgl(items, ~ isTRUE(.x$archived)),
+    owner_type = purrr::map_chr(items, ~ .x$owner$type %||% NA_character_),
+    homepage = purrr::map_chr(items, ~ {
+      value <- .x$homepage %||% NA_character_
+      if (is.na(value) || !nzchar(value)) NA_character_ else value
+    })
   )
+}
+
+# (pt) Contexto que o README não traz, para o Decifra decidir melhor e para o
+#      TRL: número de releases e de contribuidores (só a contagem, nunca os
+#      nomes; até 100, uma página) e, quando o dono é ORGANIZAÇÃO, nome,
+#      descrição, site e localização declarados pela organização. De pessoa
+#      física nada é lido além do login público (regra LGPD do AGENTS.md).
+#      Lista explícita de campos: e-mail da organização nunca é guardado.
+# (en) Counts only for releases/contributors; organisation profile only for
+#      organisation owners, with an explicit field allow-list.
+coletar_contexto_github <- function(repositories, root = Sys.getenv("MANCANO_BBSIA_RADAR_ROOT", ""),
+                                    request_fn = NULL, budget) {
+  radar_validar_orcamento(budget)
+  radar_validate_cache_root(root)
+  # 404 (sem dados), 409 (repositório vazio) e 451 (bloqueio legal) deixam a
+  # contagem ausente só para aquele repositório. 403/429 (limite da API) e
+  # demais erros param a rodada, que não faz retentativas automáticas.
+  ausente <- function(error) {
+    if (inherits(error, c("http_error_404", "http_error_409", "http_error_451"))) NULL else stop(error)
+  }
+  contagem <- function(payload) list(.radar_contagem = length(payload))
+  contar <- function(path) {
+    payload <- tryCatch(
+      github_request(path, list(per_page = 100L, page = 1L), root, request_fn, budget,
+                     public_only = TRUE, reduzir = contagem),
+      error = ausente)
+    if (is.null(payload) || is.null(payload$.radar_contagem)) NA_integer_ else as.integer(payload$.radar_contagem)
+  }
+  repositories$releases <- purrr::map_int(repositories$full_name, function(full_name) {
+    if (is.na(full_name)) NA_integer_ else contar(paste0("GET /repos/", full_name, "/releases"))
+  })
+  repositories$contribuidores <- purrr::map_int(repositories$full_name, function(full_name) {
+    if (is.na(full_name)) NA_integer_ else contar(paste0("GET /repos/", full_name, "/contributors"))
+  })
+  # Explicit allow-list applied before caching: nothing else of the
+  # organisation's profile (e-mail, members, avatars) reaches the disk.
+  perfil_org <- function(payload) list(nome = payload$name %||% NA_character_,
+                                       descricao = payload$description %||% NA_character_,
+                                       site = payload$blog %||% NA_character_,
+                                       local = payload$location %||% NA_character_)
+  orgs <- unique(stats::na.omit(repositories$owner[repositories$owner_type %in% "Organization"]))
+  perfis <- purrr::map(stats::setNames(orgs, orgs), function(login) {
+    tryCatch(github_request(paste0("GET /orgs/", login), list(), root, request_fn, budget,
+                            public_only = TRUE, reduzir = perfil_org),
+             error = ausente)
+  })
+  campo <- function(field) vapply(seq_len(nrow(repositories)), function(i) {
+    if (!(repositories$owner_type[[i]] %in% "Organization")) return(NA_character_)
+    perfil <- perfis[[repositories$owner[[i]]]]
+    value <- if (is.null(perfil)) NA_character_ else perfil[[field]]
+    if (is.null(value) || is.na(value) || !nzchar(value)) NA_character_ else as.character(value)
+  }, character(1))
+  repositories$org_nome <- campo("nome")
+  repositories$org_descricao <- campo("descricao")
+  repositories$org_site <- campo("site")
+  repositories$org_local <- campo("local")
+  repositories
 }
 
 github_seed_terms <- function(seeds) {
