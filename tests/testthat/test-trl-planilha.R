@@ -137,3 +137,28 @@ test_that("TRL survives missing dates and does not credit forks with upstream si
   fork$fork <- TRUE
   expect_equal(radar_estimar_trl(fork, as.Date("2026-09-29"))$trl_provavel, "1-3")
 })
+
+test_that("the inclusion review takes every machine 'sim' plus a reproducible random sample", {
+  wide <- tibble::tibble(id = paste0("github:", 1:50),
+                         e_ia = c(rep("sim", 10), rep("incerto", 40)),
+                         brasileira = c(rep("sim", 6), rep("incerto", 44)),
+                         ptbr = c(rep("incerto", 6), rep("sim", 2), rep("incerto", 42)))
+  a <- radar_amostra_revisao(wide, n_amostra = 5L)
+  expect_equal(sum(a$grupo == "proposto_pela_maquina"), 8L)
+  expect_equal(sum(a$grupo == "amostra_do_resto"), 5L)
+  expect_equal(a, radar_amostra_revisao(wide, n_amostra = 5L))
+  # Shuffled: the machine's proposals are not simply listed first.
+  expect_false(all(a$grupo[1:8] == "proposto_pela_maquina"))
+})
+
+test_that("evidence quotations are short single lines and the fichas sheet has blank review columns", {
+  expect_equal(radar_trecho_curto(c("a\n  b", NA, strrep("x", 400)), 10L),
+               c("a b", NA, paste0(strrep("x", 9), "…")))
+  path <- decifra_fixture(tempfile(fileext = ".csv"))
+  fichas <- radar_planilha_fichas(c("github:1"), radar_ler_decifra(path), candidatos_fixture(),
+                                  resumos = c(`github:1` = "Ajuda alguém."), referencia = as.Date("2026-09-29"))
+  expect_equal(fichas$tipo_proposto, "aplicacao")
+  expect_equal(fichas$resumo_proposto, "Ajuda alguém.")
+  expect_true(all(fichas[c("tipo_revisao", "area_revisao", "trl_revisao", "resumo_revisao")] == ""))
+  expect_lte(max(nchar(stats::na.omit(unlist(fichas[grepl("trecho", names(fichas))])))), 300L)
+})
