@@ -144,7 +144,11 @@ radar_montar_planilha_formulario <- function(candidatos, decifra, run_id, codebo
   )
 }
 
-radar_planilha_revisao <- function(corpus, candidatos, decifra, max_chars = 4000L) {
+radar_planilha_revisao <- function(corpus, candidatos, decifra, max_chars = 4000L, ids = NULL) {
+  # `ids` fixes which documents enter and in what order (e.g. the shuffled
+  # sample of radar_amostra_revisao()); default: the whole corpus.
+  if (!is.null(ids)) corpus <- corpus[match(ids, corpus$id), , drop = FALSE]
+  if (anyNA(corpus$id)) stop("Há ids da revisão fora do corpus.", call. = FALSE)
   base <- dplyr::left_join(corpus[c("id", "text", "source_urls")],
                            candidatos[c("id", "name", "url")], by = "id")
   codificar <- tibble::tibble(
@@ -191,6 +195,9 @@ radar_amostra_revisao <- function(maquina_larga, n_amostra = 30L, semente = 2026
 #      link para a fonte, como prevê o plano #24; nunca o documento inteiro.
 # (en) Short single-line quotation, truncated with an ellipsis.
 radar_trecho_curto <- function(x, max_chars = 300L) {
+  if (length(max_chars) != 1L || is.na(max_chars) || max_chars < 2L) {
+    stop("max_chars precisa ser pelo menos 2.", call. = FALSE)
+  }
   x <- gsub("[[:space:]]+", " ", trimws(x))
   ifelse(is.na(x) | !nzchar(x), NA_character_,
          ifelse(nchar(x) > max_chars, paste0(substr(x, 1L, max_chars - 1L), "…"), x))
@@ -200,9 +207,19 @@ radar_trecho_curto <- function(x, max_chars = 300L) {
 #      proposta para cada campo e o trecho que a sustenta, e colunas em branco
 #      para o autor confirmar ("ok") ou escrever a correção.
 # (en) One row per included artifact: proposal, short evidence, blank review.
-radar_planilha_fichas <- function(incluidos, maquina, candidatos, resumos = NULL, referencia = Sys.Date()) {
+radar_planilha_fichas <- function(incluidos, maquina, candidatos, corpus, resumos = NULL,
+                                  referencia = Sys.Date(), max_resumo = 400L) {
   wide <- radar_decifra_largo(maquina)
   base <- candidatos[match(incluidos, candidatos$id), , drop = FALSE]
+  if (anyNA(base$id)) stop("Há artefatos incluídos sem candidato correspondente.", call. = FALSE)
+  # The candidates table keeps only README size; TRL needs the README text,
+  # taken from the corpus document without its metadata block.
+  base$readme <- radar_readme_do_documento(corpus$text[match(incluidos, corpus$id)])
+  # Summaries are written by the radar team, one or two plain sentences; a
+  # long one is likely copied documentation and must not reach publication.
+  if (!is.null(resumos) && any(nchar(stats::na.omit(resumos)) > max_resumo)) {
+    stop("Resumo do problema acima de ", max_resumo, " caracteres: reescreva, não copie a documentação.", call. = FALSE)
+  }
   trl <- radar_estimar_trl(base, referencia = referencia)
   col <- function(nome) if (nome %in% names(wide)) wide[[nome]][match(incluidos, wide$id)] else rep(NA_character_, length(incluidos))
   tibble::tibble(

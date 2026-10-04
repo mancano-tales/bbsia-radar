@@ -155,10 +155,37 @@ test_that("evidence quotations are short single lines and the fichas sheet has b
   expect_equal(radar_trecho_curto(c("a\n  b", NA, strrep("x", 400)), 10L),
                c("a b", NA, paste0(strrep("x", 9), "…")))
   path <- decifra_fixture(tempfile(fileext = ".csv"))
-  fichas <- radar_planilha_fichas(c("github:1"), radar_ler_decifra(path), candidatos_fixture(),
+  # Real candidates tables have no README text: TRL must come from the corpus.
+  sem_readme <- candidatos_fixture()
+  sem_readme$readme <- NULL
+  corpus <- tibble::tibble(id = sem_readme$id,
+                           text = paste0(c(strrep("Instalação e exemplo. ", 100), "x", "y"),
+                                         "
+
+Nome: a
+Artefatos: u
+Tópicos/tags: "),
+                           source_urls = "u")
+  fichas <- radar_planilha_fichas(c("github:1"), radar_ler_decifra(path), sem_readme, corpus,
                                   resumos = c(`github:1` = "Ajuda alguém."), referencia = as.Date("2026-09-29"))
+  expect_equal(fichas$trl_proposto, "4-6")
+  expect_error(radar_planilha_fichas(c("github:1"), radar_ler_decifra(path), sem_readme, corpus,
+                                     resumos = c(`github:1` = strrep("copiado ", 80))), "reescreva")
+  expect_error(radar_trecho_curto("abc", 0L), "pelo menos 2")
   expect_equal(fichas$tipo_proposto, "aplicacao")
   expect_equal(fichas$resumo_proposto, "Ajuda alguém.")
   expect_true(all(fichas[c("tipo_revisao", "area_revisao", "trl_revisao", "resumo_revisao")] == ""))
   expect_lte(max(nchar(stats::na.omit(unlist(fichas[grepl("trecho", names(fichas))])))), 300L)
+})
+
+
+test_that("the review workbook follows the sample order and never shows the group", {
+  path <- decifra_fixture(tempfile(fileext = ".csv"))
+  corpus <- tibble::tibble(id = candidatos_fixture()$id, text = c("a", "b", "c"), source_urls = "u")
+  ordem <- rev(candidatos_fixture()$id)[1:2]
+  revisao <- radar_planilha_revisao(corpus, candidatos_fixture(), radar_ler_decifra(path), ids = ordem)
+  expect_equal(revisao$autor$codificar$id, ordem)
+  expect_false("grupo" %in% names(revisao$autor$codificar))
+  expect_error(radar_planilha_revisao(corpus, candidatos_fixture(), radar_ler_decifra(path), ids = "github:999"),
+               "fora do corpus")
 })
