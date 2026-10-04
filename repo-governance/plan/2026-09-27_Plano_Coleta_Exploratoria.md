@@ -260,7 +260,7 @@ Não conceder diretórios adicionais, não pedir ao agente para executar os cole
 ## Critério de conclusão
 
 A primeira exploração termina com o cache e os arquivos de candidatos fora do git, testes offline
-aprovados para os limites, um resumo metodológico reproduzível no plano/NEWS e uma recomendação
+aprovados para os limites, um resumo metodológico reproduzível no plano e uma recomendação
 fundamentada para ampliar, ajustar ou parar. Nenhum registro é enviado ao BBSIA.
 
 ## Aprovação do autor
@@ -270,3 +270,26 @@ fundamentada para ampliar, ajustar ou parar. Nenhum registro é enviado ao BBSIA
 GitLab.com anônimo, README raiz até 256 KiB, dez documentos e 25 tentativas reservadas. Módulos
 adjacentes do BBSIA ficam fora desta coleta. A aprovação autoriza exploração com cache externo, não
 publicação de candidatos, ativação do Pages ou envio ao BBSIA.
+
+## Revisão da prioridade de sementes e reserva HF — 2026-10-03
+
+**Aprovação do autor no chat:** “Podemos seguir sua recomendação mas revise as mudanças antes de
+aplicar”. A recomendação mantém os três itens brasileiros curados como prioritários e reserva
+espaço para um model card do Hugging Face quando houver candidato elegível, dentro do teto de dez
+documentos da exploração inicial.
+
+A revisão encontrou essa regra já integrada pelo PR #22 e presente na `main` examinada
+(`1c62bb3`). Por isso, não houve alteração do seletor nem nova consulta às APIs. Foram revisados
+`R/enriquecer_documentos.R`, os testes dos coletores e os testes da rodada piloto. As suítes
+offline `collectors` e `rodada-piloto` passaram sem falhas.
+
+Uma verificação adicional, temporária e sem rede, simulou quinze candidatos GitHub, dois modelos
+HF e um projeto GitLab. O seletor preservou os três itens curados e selecionou dez URLs únicas:
+oito GitHub, uma HF e uma GitLab. Reordenar a entrada ou repetir uma URL não mudou a seleção;
+retirar os candidatos HF preservou as três sementes e o teto de dez documentos. Esses números
+descrevem fixtures da revisão, não uma nova coleta ou contagem do catálogo.
+
+O seletor proporcional da rodada piloto tem um orçamento próprio e foi revisado separadamente;
+a reserva acima se refere à exploração inicial. O avanço posterior do MVP, incluindo a entrega
+integrada pelo PR #33, é acompanhado na issue #28. Esta revisão resolve a dúvida sobre a seleção,
+mas não comprova cobertura do BBSIA nem substitui validação humana dos candidatos.
