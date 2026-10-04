@@ -97,8 +97,17 @@ test_that("absences keep their reason: moved GitHub repository and gated Hugging
   gated <- function(repo_id, kind, file) list(.radar_http_status = 401L, .radar_http_body = "gated")
   hf <- tibble::tibble(id = "org/gated", kind = "models", sha = strrep("a", 40))
   lido <- coletar_readme_hf(hf, contexto_root(), gated, radar_novo_orcamento(20L, 2L))
-  expect_equal(lido$readme_status, "restrito")
+  expect_equal(lido$readme_status, "acesso_negado")
   expect_true(is.na(lido$readme))
   limite <- function(repo_id, kind, file) list(.radar_http_status = 429L, .radar_http_body = "rate")
   expect_error(coletar_readme_hf(hf, contexto_root(), limite, radar_novo_orcamento(20L, 2L)), "429")
+})
+
+
+test_that("the corpus document says when and why the README was not read", {
+  rows <- tibble::tibble(name = "a", url = "u", owner = "o", description = NA, topics = list(character()),
+                         readme = NA, readme_status = "movido")
+  expect_match(documento_solucao(rows), "README não lido: repositório renomeado ou movido")
+  rows$readme_status <- "read"
+  expect_false(grepl("README não lido", documento_solucao(rows)))
 })
